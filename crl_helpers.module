@@ -1,0 +1,35 @@
+<?php
+// $Id
+
+/**
+ * Display help and module information
+ * @param path which path of the site we're displaying help
+ * @param arg array that holds the current path as would be returned from arg() function
+ * @return help text for the path
+ */
+function crl_helpers_help() {
+  $output = '';
+  
+  switch ($path) {
+    case "admin/help#crl_helpers":
+      $output = '<p>' . t("Provides helper functions, implements hooks to slightly alter default Drupal behavior, or encapsulates PHP snippets used throughout the site.") . '</p>';
+      break;
+  }
+  return $output;
+}
+
+/**
+ * Implementation of hook_e_mail_alter.
+ *
+ * This implementation gets rid of the Sender and Errors-To headers.  
+ * These headers are, by default, set to the the e-mail address specified
+ * at /admin/settings/site-information.  The setting of these headers cause
+ * problems when trying to subscribe to a listserv as the result of a Webform
+ * submission.
+ *
+ * See http://drupal.org/node/461324#comment-1716972 for more about this behavior.
+ */
+function crl_helpers_e_mail_alter(&$message) {
+  unset($message['headers']['Sender']);
+  unset($message['headers']['Errors-To']);
+}
