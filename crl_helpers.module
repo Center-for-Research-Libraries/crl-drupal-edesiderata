@@ -29,7 +29,7 @@ function crl_helpers_help() {
  *
  * See http://drupal.org/node/461324#comment-1716972 for more about this behavior.
  */
-function crl_helpers_e_mail_alter(&$message) {
+function crl_helpers_mail_alter(&$message) {
   unset($message['headers']['Sender']);
   unset($message['headers']['Errors-To']);
 }
