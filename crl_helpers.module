@@ -33,3 +33,55 @@ function crl_helpers_mail_alter(&$message) {
   unset($message['headers']['Sender']);
   unset($message['headers']['Errors-To']);
 }
+
+/**
+ * Return the name of the menu that contains a node's menu item.
+ */
+function crl_helpers_node_get_menu_name($node) {
+  $menu_name = db_result(db_query_range("SELECT menu_name FROM {menu_links} WHERE link_path = 'node/%d' AND module = 'menu'", $node->nid, 0, 1));
+  return $menu_name;
+}
+
+/**
+ * Determines if the current page is a jstor page.
+ *
+ * This function will have to be modified if the JSTOR pages are ever
+ * moved in the menu structure.
+ */
+function crl_helpers_is_jstor_page() {
+  $is_jstor_page = FALSE;
+  $active_trail = menu_get_active_trail();
+
+  if (isset($active_trail[1]) &&
+      strpos($active_trail[1]['title'], 'JSTOR') !== FALSE) {
+    $is_jstor_page = TRUE;
+  }
+
+  return $is_jstor_page;
+}
+
+/**
+ * Return a page node's type based on it's position in the menu structure.
+ *
+ * There are a number of pieces of content in the CRL site that are implemented
+ * using the Page content type, but differ in some ways from a "normal" page.
+ * These "special" pages may require different theming or other handling.
+ * Typically, taxonomy is used to distinguish such pages, but the CRL site
+ * relies on the menu structure to organize the site and distinguish different
+ * types of content.  This function returns a string identifying the "type" of
+ * a page node based on its position in the menu structure.
+ *
+ * @param node page node object.
+ *
+ * @return string identifying the "type" of the page. 
+ */
+function crl_helpers_get_page_type() {
+  if (crl_helpers_is_jstor_page()) {
+    $page_type = 'jstor';
+  }
+  else {
+    $page_type = 'normal';
+  }
+  
+  return $page_type;
+}
