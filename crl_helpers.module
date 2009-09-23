@@ -61,6 +61,53 @@ function crl_helpers_is_jstor_page() {
 }
 
 /**
+ * Determines if the current page is a topic guide.
+ *
+ * This function will have to be modified if the Topic Guide URL paths
+ * ever change.
+ */
+function crl_helpers_is_topic_guide() {
+  $is_topic_guide = FALSE;
+  $alias = drupal_get_path_alias($_GET['q']);
+
+  if (drupal_match_path($alias, 'collections/topics/*')) {
+    $is_topic_guide = TRUE;
+  }
+
+  return $is_topic_guide;
+}
+
+/**
+ * Determines if the current page is a news or events page.
+ */
+function crl_helpers_is_news_events_page(){
+  if (arg(0) == 'node') {
+    $node = node_load(arg(1));
+    if ($node->type == 'news' || $node->type == 'event') {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
+/**
+ * Determines if the current page is a news or events page.
+ *
+ * This function will have to be modified if the JSTOR pages are ever
+ * moved in the menu structure.
+ */
+function crl_helpers_is_news_events_subpage() {
+  $is_news_events_subpage = FALSE;
+
+  $active_trail = menu_get_active_trail();
+
+  // TODO: Finish implementing this.
+
+  return $is_news_events_subpage;
+}
+
+/**
  * Return a page node's type based on it's position in the menu structure.
  *
  * There are a number of pieces of content in the CRL site that are implemented
@@ -77,7 +124,10 @@ function crl_helpers_is_jstor_page() {
  */
 function crl_helpers_get_page_type() {
   if (crl_helpers_is_jstor_page()) {
-    $page_type = 'jstor';
+    $page_type = 'jstor-title-list';
+  }
+  else if (crl_helpers_is_news_events_subpage()) {
+    $page_type = 'news-events-subpage';
   }
   else {
     $page_type = 'normal';
