@@ -183,9 +183,7 @@ function crl_helpers_token_values($type, $object = NULL) {
           $trail[] = check_plain($title);
         }
 
-        // We're only using menupath_raw as our base, but let's keep
-        // some of the code for generating the other tokens for future
-        // reference.
+        // This is how node_token generates the default tokens
         $value_menupath            = implode('/', $trail);
         $value_menupath_raw        = implode('/', $trail_raw);
         $value_menu                = check_plain($menu);
@@ -202,10 +200,31 @@ function crl_helpers_token_values($type, $object = NULL) {
         $value_menu_link_title_raw = '';
       }
 
-      $value_crl_menupath_raw = $value_menupath_raw; // Start with the default ['menupath-raw']
-      $value_crl_menupath_raw = str_replace('Collaborations/Area Studies', 'Area Studies',  $value_crl_menupath_raw);
-      $value_crl_menupath_raw = str_replace('Collaborations/GRN', 'GRN', $value_crl_menupath_raw);
-      $value_crl_menupath_raw = str_replace('Collaborations/Collaborative Digitization', 'Collaborative Digitization', $value_crl_menupath_raw);
+      // NOTE: You'll have to change this if statement if the menu that contains 
+      // events ever changes.
+      if ($menu_link['menu_name'] == 'menu-crl-events') {
+        // If this item is in the events menu
+        $value_crl_menupath_raw = $value_menupath_raw; // Start with the default ['menupath-raw']
+        if (!empty($node->menu['plid'])) {
+          // If the node has a parent in the menu, we want the token to be of
+          // the form: Events/PARENT_NID/Title
+          $plid = $node->menu['plid'];
+          $parent_menu_link = menu_link_load($plid);
+          $parent_link_path_parts = preg_split("/\//", $parent_menu_link['link_path']); 
+          if (count($parent_link_path_parts) == 2 && 
+              $parent_link_path_parts[0] == 'node') {
+            $parent_nid = $parent_link_path_parts[1];
+            $value_crl_menupath_raw = 'Events/' . $parent_nid . '/' . $value_menu_link_title_raw;
+          }
+        }
+      }
+      else {
+        $value_crl_menupath_raw = $value_menupath_raw; // Start with the default ['menupath-raw']
+        $value_crl_menupath_raw = str_replace('Collaborations/Area Studies', 'Area Studies',  $value_crl_menupath_raw);
+        $value_crl_menupath_raw = str_replace('Collaborations/GRN', 'GRN', $value_crl_menupath_raw);
+        $value_crl_menupath_raw = str_replace('Collaborations/Collaborative Digitization', 'Collaborative Digitization', $value_crl_menupath_raw);
+      }
+
       $values['crl-menupath-raw'] = $value_crl_menupath_raw;
       break;
   }
