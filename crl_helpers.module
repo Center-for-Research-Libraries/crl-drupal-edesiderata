@@ -124,14 +124,91 @@ function crl_helpers_is_news_events_subpage() {
  */
 function crl_helpers_get_page_type() {
   if (crl_helpers_is_jstor_page()) {
-    $page_type = 'jstor-title-list';
+    $page_type = 'jstor-title-list-page';
   }
   else if (crl_helpers_is_news_events_subpage()) {
-    $page_type = 'news-events-subpage';
+    $page_type = 'news-events-sub-page';
   }
   else {
-    $page_type = 'normal';
+    $page_type = 'page';
   }
   
   return $page_type;
+}
+
+/**
+ * Implementation of hook_token_list().
+ */
+
+function crl_helpers_token_list($type = 'all') {
+  if ($type == 'global' || $type == 'all') {
+    // We don't implement any global tokens yet.
+  }
+
+  if ($type == 'node' || $type == 'all') {
+    // Node tokens here
+    $tokens['node']['crl-menupath-raw'] = t('A customized version of the [menupath-raw] token for the CRL menus that puts certain items (e.g. GRN) at the top level.');
+  }
+
+  return $tokens;
+}
+
+/**
+ * Implementation of hook_token_values().
+ */
+function crl_helpers_token_values($type, $object = NULL) {
+  $values = array();
+  switch ($type) {
+    case 'global':
+      break;  
+    case 'node':
+      // Node tokens here.
+      $node = $object;
+
+      // This code is from token_node.inc:node_token_values() in the token 
+      // token module.
+
+      // Try to get the menu data.
+      $mlid = db_result(db_query("SELECT mlid FROM {menu_links} WHERE link_path = '%s'", 'node/'. $node->nid));
+
+      // Now get the menu related information.
+      if (!empty($mlid) || !empty($node->menu['mlid']) || !empty($node->menu['plid'])) {
+        $menu_link = menu_link_load($mlid);
+        $menus = menu_get_menus();
+        $menu = isset($menus[$menu_link['menu_name']]) ? $menus[$menu_link['menu_name']] : '';
+        $trail_raw = _menu_titles($menu_link, $node->nid);
+
+        $trail = array();
+        foreach ($trail_raw as $title) {
+          $trail[] = check_plain($title);
+        }
+
+        // We're only using menupath_raw as our base, but let's keep
+        // some of the code for generating the other tokens for future
+        // reference.
+        $value_menupath            = implode('/', $trail);
+        $value_menupath_raw        = implode('/', $trail_raw);
+        $value_menu                = check_plain($menu);
+        $value_menu_raw            = $menu;
+        $value_menu_link_title     = check_plain($menu_link['title']);
+        $value_menu_link_title_raw = $menu_link['link_title'];
+      }
+      else {
+        $value_menupath            = '';
+        $value_menupath_raw        = '';
+        $value_menu                = '';
+        $value_menu_raw            = '';
+        $value_menu_link_title     = '';
+        $value_menu_link_title_raw = '';
+      }
+
+      $value_crl_menupath_raw = $value_menupath_raw; // Start with the default ['menupath-raw']
+      $value_crl_menupath_raw = str_replace('Collaborations/Area Studies', 'Area Studies',  $value_crl_menupath_raw);
+      $value_crl_menupath_raw = str_replace('Collaborations/GRN', 'GRN', $value_crl_menupath_raw);
+      $value_crl_menupath_raw = str_replace('Collaborations/Collaborative Digitization', 'Collaborative Digitization', $value_crl_menupath_raw);
+      $values['crl-menupath-raw'] = $value_crl_menupath_raw;
+      break;
+  }
+
+  return $values;
 }
