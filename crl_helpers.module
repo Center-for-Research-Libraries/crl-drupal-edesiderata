@@ -1,6 +1,10 @@
 <?php
 // $Id
 
+// Some constants.  Perhaps these should be module settings at some point
+define('CRL_HELPERS_TOPIC_VID', 4); // The vocabulary ID of the 'Topic' 
+                                    // taxonomy vocabulary.
+
 /**
  * Display help and module information
  * @param path which path of the site we're displaying help
@@ -230,4 +234,60 @@ function crl_helpers_token_values($type, $object = NULL) {
   }
 
   return $values;
+}
+
+/**
+ * Get a Topic Guide node's term object for it's Topic vocabulary taxonomy term.
+ *
+ * @param $node - Topic Guide node.
+ *
+ * @return Taxonomy term object for the node's Topic vocabulary taxonomy term. NULL 
+ *         if no such term exists.
+ */
+function crl_helpers_get_topic_guide_topic_term($node) {
+  if (isset($node->taxonomy)) {
+    foreach ($node->taxonomy as $term) {
+      if ($term->vid == CRL_HELPERS_TOPIC_VID) {
+        return $term;
+      }
+    }
+  }
+
+  return NULL; 
+}
+
+/**
+ * Get a Topic Guide node's Topic vocabulary taxonomy term.
+ *
+ * @param $node - Topic guide node.
+ *
+ * @return String containing Topic vocabulary term name or NULL if there isn't one.
+ *
+ */
+function crl_helpers_get_topic_guide_topic_name($node) {
+  $term = crl_helpers_get_topic_guide_topic_term($node);
+  if ($term !== NULL) {
+    return $term->name;
+  }
+  else {
+    return NULL;
+  }
+}
+
+/**
+ * Get a Topic Guide node's Topic vocabulary taxonomy term ID.
+ *
+ * @param $node - Topic guide node.
+ *
+ * @return  Integer containing Topic vocabulary term TID or NULL if there isn't one.
+ *
+ */
+function crl_helpers_get_topic_guide_topic_tid($node) {
+  $term = crl_helpers_get_topic_guide_topic_term($node);
+  if ($term !== NULL) {
+    return $term->tid;
+  }
+  else {
+    return NULL;
+  }
 }
