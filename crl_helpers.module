@@ -299,3 +299,24 @@ function crl_helpers_menu_alter(&$items) {
   // Disable the default RSS feed.
   unset($items['rss.xml']);
 }
+
+/**
+ * Implementation of hook_link().
+ */
+// Leave this here for a reference, but I decided to generate this link in the
+// theme to be consistent with the Print/Share links.
+//function crl_helpers_link($type, $object, $teaser = FALSE) {
+  //$links = array();
+
+  //if ($type == 'node' && isset($object->type) && $object->type == 'news') {
+    //// Add a link to the news feed to News nodes.
+    //$links['subscribe'] = array(
+      //'title' => t('Subscribe'),
+      //'href' => 'news/feed',
+      //'attributes' => array('title' => t('Subscribe to the CRL News Feed.'),
+                            //'class' => 'subscribe',),
+    //);
+  //}
+
+  //return $links;
+//}
