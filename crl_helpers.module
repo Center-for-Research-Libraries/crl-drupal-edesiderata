@@ -291,3 +291,11 @@ function crl_helpers_get_topic_guide_topic_tid($node) {
     return NULL;
   }
 }
+
+/**
+ * Implementation of hook_menu_alter().
+ */
+function crl_helpers_menu_alter(&$items) {
+  // Disable the default RSS feed.
+  unset($items['rss.xml']);
+}
