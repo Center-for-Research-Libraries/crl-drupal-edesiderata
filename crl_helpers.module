@@ -301,6 +301,35 @@ function crl_helpers_menu_alter(&$items) {
 }
 
 /**
+ * Use the phpsniff library to determine if the client's browser is supported. 
+ */
+function crl_helpers_is_unsupported_browser() {
+  static $is_unsupported_browser = NULL;
+  if (is_null($is_unsupported_browser)) {
+    $phpsniff_path = drupal_get_path('module', 'crl_helpers') . '/phpsniff/phpSniff.class.php';
+    if (file_exists($phpsniff_path)) { 
+      // Load the phpsniff library and use it.
+      require_once $phpsniff_path;
+      $client = new phpSniff($_REQUEST['UA']);
+
+      if ($client->browser_is('ie')) {
+        if ($client->browser_is('ie7+')) {
+          $is_unsupported_browser = FALSE;
+        }
+        else {
+          $is_unsupported_browser = TRUE;
+        }
+      }
+      else {
+        $is_unsupported_browser = FALSE;
+      }
+    }
+  }
+
+  return $is_unsupported_browser;
+}
+
+/**
  * Implementation of hook_link().
  */
 // Leave this here for a reference, but I decided to generate this link in the
