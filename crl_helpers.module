@@ -329,6 +329,38 @@ function crl_helpers_is_unsupported_browser() {
   return $is_unsupported_browser;
 }
 
+
+
+
+
+
+
+/**
+* This function adds a "reset" button to the views defined in $exposed_views
+* Implementation of hook_form_alter().
+*/
+function crl_helpers_form_alter(&$form, $form_state, $form_id) {
+  if ($form_id == 'views_exposed_form') {
+    $exposed_views = array('page_assignments');
+    if (in_array($form_state['view']->name, $exposed_views)) {
+      $current_display = $form_state['view']->current_display;
+      $form['reset'] = array(
+        '#type' => 'markup',
+        '#value' => '<input class="form-button" type="reset"
+value="Reset" onClick="javascript:window.location=\'/'.
+$form_state['view']->display[$current_display]->
+display_options['path'] .'\';" />',
+      );
+    }
+  }
+}
+
+
+
+
+
+
+
 /**
  * Implementation of hook_link().
  */
