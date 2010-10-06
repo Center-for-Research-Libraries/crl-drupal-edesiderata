@@ -4,6 +4,18 @@
 // Some constants.  Perhaps these should be module settings at some point
 define('CRL_HELPERS_TOPIC_VID', 4); // The vocabulary ID of the 'Topic' 
                                     // taxonomy vocabulary.
+// Pages with path aliases matching these paths are considered landing pages
+// QUESTION: Is it best to implement this by matching paths or to look at the 
+// page's location in a menu structure?
+define('CRL_HELPERS_LANDING_PAGE_PATHS', <<<EOT
+about
+membership
+collaborations
+collections
+services
+archiving-preservation
+EOT
+);
 
 /**
  * Display help and module information
@@ -112,6 +124,19 @@ function crl_helpers_is_news_events_subpage() {
 }
 
 /**
+ * Determines if the current page is a landing page.
+ *
+ * Landing pages are pages at the top level of the navigation menu.
+ */
+function crl_helpers_is_landing_page() {
+  $alias = drupal_get_path_alias($_GET['q']);
+
+  $is_landing_page = drupal_match_path($alias, CRL_HELPERS_LANDING_PAGE_PATHS); 
+
+  return $is_landing_page;
+}
+
+/**
  * Return a page node's type based on it's position in the menu structure.
  *
  * There are a number of pieces of content in the CRL site that are implemented
@@ -132,6 +157,9 @@ function crl_helpers_get_page_type() {
   }
   else if (crl_helpers_is_news_events_subpage()) {
     $page_type = 'news-events-sub-page';
+  }
+  else if (crl_helpers_is_landing_page()) {
+    $page_type = 'landing-page';
   }
   else {
     $page_type = 'page';
