@@ -1,16 +1,9 @@
 <?php
-// $Id: example.drush.inc,v 1.3 2009/04/15 01:13:45 weitzman Exp $
+// $Id$
 
 /**
  * @file
- *   Example drush command.
- *
- *   Shows how to make your own drush command.
- *
- *   You can copy this file to any of the following
- *     1. A .drush folder in your HOME folder.
- *     2. Anywhere in a folder tree below an active module on your site.
- *     3. In an arbitrary folder specified with the --include option.
+ *   Implementation of a node body search and replace drush command. 
  */
 
 /**
