@@ -1,2 +1,10 @@
+# Ignore library dependencies not packaged with this module
 phpsniff
+
+# Ignore vim swapfiles
 *.swp
+
+# Ignore Eclipse files
+.buildpath
+.settings
+.project
