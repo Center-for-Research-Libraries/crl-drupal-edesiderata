@@ -77,6 +77,10 @@ function crl_helpers_is_topic_guide() {
   if (drupal_match_path($alias, 'collections/topics/*')) {
     $is_topic_guide = TRUE;
   }
+  
+    if (drupal_match_path($alias, 'guide/*')) {
+    $is_topic_guide = TRUE;
+  }
 
   return $is_topic_guide;
 }
