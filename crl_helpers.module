@@ -150,6 +150,28 @@ function crl_helpers_is_landing_page() {
 /**
 
 
+
+/**
+
+
+ * Determines if the current page is a review.
+ *
+ * 
+ */
+function crl_helpers_is_review() {
+  $is_review = FALSE;
+  $alias = drupal_get_path_alias($_GET['q']);
+
+  if (drupal_match_path($alias, 'review/*')) {
+    $is_review = TRUE;
+  }
+  return $is_review;
+}
+
+/**
+
+
+
  * Return a page node's type based on it's position in the menu structure.
  *
  * There are a number of pieces of content in the CRL site that are implemented
