@@ -425,6 +425,280 @@ display_options['path'] .'\';" />',
 
 
 
+/**
+* Implementation of hook_webform_select_options_info().
+* See webform/webform_hooks.php for further information on this hook in the Webform API.
+*/
+function crl_helpers_webform_select_options_info() {
+  $items = array();
+  $items['institutions'] = array(
+    'title' => t('Institution'),
+    'options callback' => 'crl_helpers_options_institutions'
+  );
+  return $items;}
+
+
+
+
+/**
+* Build an options list for use by webforms.
+*/
+function crl_helpers_options_institutions() {
+  $options = array();
+  $options['001A000000JLBZJ'] = 'Arkansas State University';
+$options['001A000000AWiV0'] = 'United States Environmental Protection Agency';
+$options['001A000000AWiV1'] = 'Valparaiso University';
+$options['001A000000AWiV2'] = 'Wright State University';
+$options['001A000000AWiV3'] = 'Carnegie-Mellon University';
+$options['001A000000AWiV4'] = 'Chicago State University';
+$options['001A000000AWiV5'] = 'William and Mary, College of';
+$options['001A000000AWiV6'] = 'Denver, University of';
+$options['001A000000AWiV7'] = 'Florida Atlantic University';
+$options['001A000000AWiV8'] = 'George Mason University';
+$options['001A000000AWiV9'] = 'Marquette University';
+$options['001A000000AWiVA'] = 'North Texas, University of';
+$options['001A000000AWiVB'] = 'Ottawa, University of';
+$options['001A000000AWiVC'] = 'Texas, University of - San Antonio';
+$options['001A000000AWiVD'] = 'Victoria, University of';
+$options['001A000000AWiVE'] = 'Belmont Technical College';
+$options['001A000000AWiVF'] = 'Cincinnati State Technical and Community College';
+$options['001A000000AWiVG'] = 'Cleveland State University';
+$options['001A000000AWiVH'] = 'Wooster, College of';
+$options['001A000000AWiVI'] = 'Cuyahoga Community College';
+$options['001A000000AWiVJ'] = 'Edison Community College';
+$options['001A000000AWiVK'] = 'Jefferson Community College';
+$options['001A000000AWiVL'] = 'Lakeland Community College';
+$options['001A000000AWiVM'] = 'Medical College of Ohio';
+$options['001A000000AWiVN'] = 'Northeastern Ohio Universities College of Medicine';
+$options['001A000000AWiVO'] = 'Oberlin College';
+$options['001A000000AWiVP'] = 'Ohio Northern University';
+$options['001A000000AWiVQ'] = 'Owens Community College';
+$options['001A000000AWiVR'] = 'Shawnee State University';
+$options['001A000000AWiVS'] = 'Southern State Community College';
+$options['001A000000AWiVT'] = 'Terra Community College';
+$options['001A000000AWiVU'] = 'Xavier University';
+$options['001A000000AWiVV'] = 'Youngstown State University';
+$options['001A000000AWiVW'] = 'Capital University';
+$options['001A000000AWiVX'] = 'Central State University';
+$options['001A000000AWiVY'] = 'Clark State Community College';
+$options['001A000000AWiVZ'] = 'Mount St. Joseph, College of';
+$options['001A000000AWiVa'] = 'Columbus State Community College';
+$options['001A000000AWiVb'] = 'Denison University';
+$options['001A000000AWiVc'] = 'Hocking College';
+$options['001A000000AWiVd'] = 'Kenyon College';
+$options['001A000000AWiVe'] = 'Lorain County Community College';
+$options['001A000000AWiVf'] = 'Mount Vernon Nazarene University';
+$options['001A000000AWiVg'] = 'Northwest State Community College';
+$options['001A000000AWiVh'] = 'Ohio Dominican University';
+$options['001A000000AWiVi'] = 'Ohio Wesleyan University';
+$options['001A000000AWiVj'] = 'Rio Grande Community College';
+$options['001A000000AWiVk'] = 'Sinclair Community College';
+$options['001A000000AWiVl'] = 'State Library of Ohio';
+$options['001A000000AWiVm'] = 'Toledo, University of';
+$options['001A000000AWiVn'] = 'Ursuline College';
+$options['001A000000AWiVo'] = 'Loyola Marymount University';
+$options['001A000000AWiVp'] = 'Carleton College';
+$options['001A000000AWiVq'] = 'Colorado College';
+$options['001A000000AWiVr'] = 'Georgia State University';
+$options['001A000000AWiVs'] = 'Grinnell College';
+$options['001A000000AWiVt'] = 'Knox College';
+$options['001A000000AWiVu'] = 'Monmouth College';
+$options['001A000000AWiVw'] = 'Winona State University';
+$options['001A000000AWiVy'] = 'Oklahoma State University';
+$options['001A000000AWiW1'] = 'Hong Kong, University of';
+$options['001A000000AWiW2'] = 'Antioch College';
+$options['001A000000AWiW3'] = 'Ashland University';
+$options['001A000000AWiW4'] = 'Athenaeum of Ohio';
+$options['001A000000AWiW5'] = 'Baldwin-Wallace College';
+$options['001A000000AWiW6'] = 'Bluffton University';
+$options['001A000000AWiW7'] = 'Central Ohio Technical College';
+$options['001A000000AWiW8'] = 'Defiance College';
+$options['001A000000AWiW9'] = 'Franciscan University of Steubenville';
+$options['001A000000AWiWA'] = 'Heidelberg University';
+$options['001A000000AWiWB'] = 'Hiram College';
+$options['001A000000AWiWC'] = 'John Carroll University';
+$options['001A000000AWiWD'] = 'Rhodes State College';
+$options['001A000000AWiWE'] = 'Malone College';
+$options['001A000000AWiWF'] = 'Marion Technical College';
+$options['001A000000AWiWG'] = 'Mount Union College';
+$options['001A000000AWiWH'] = 'Zane State College';
+$options['001A000000AWiWI'] = 'Otterbein College';
+$options['001A000000AWiWJ'] = 'Stark State College of Technology';
+$options['001A000000AWiWK'] = 'Tiffin University';
+$options['001A000000AWiWL'] = 'Findlay, University of';
+$options['001A000000AWiWM'] = 'Washington State Community College';
+$options['001A000000AWiWN'] = 'Wilberforce University';
+$options['001A000000AWiWO'] = 'Wilmington College';
+$options['001A000000AWiWP'] = 'Wittenberg University';
+$options['001A000000AWiWQ'] = 'Cedarville University';
+$options['001A000000AWiWR'] = 'North Central State College';
+$options['001A000000AWiWS'] = 'Brigham Young University';
+$options['001A000000AWiWT'] = 'New York Public Library';
+$options['001A000000AWiWU'] = 'Connecticut, University of';
+$options['001A000000AWiWW'] = 'South Florida, University of';
+$options['001A000000AWiWX'] = 'Temple University';
+$options['001A000000AWiWY'] = 'Manitoba, University of';
+$options['001A000000AWiWZ'] = 'Pennsylvania, University of';
+$options['001A000000AWiWa'] = 'Queens University';
+$options['001A000000AWiWb'] = 'Dartmouth College';
+$options['001A000000AWiWc'] = 'Cincinnati Christian University';
+$options['001A000000AWiWd'] = 'Cleveland Clinic';
+$options['001A000000AWiWe'] = 'Columbus College of Art and Design';
+$options['001A000000AWiWf'] = 'Franklin University';
+$options['001A000000AWiWg'] = 'Lourdes College';
+$options['001A000000AWiWh'] = 'Marietta College';
+$options['001A000000AWiWi'] = 'Mercy College of Northwest Ohio';
+$options['001A000000AWiWj'] = 'Muskingum College';
+$options['001A000000AWiWk'] = 'Myers University';
+$options['001A000000AWiWl'] = 'Notre Dame College';
+$options['001A000000AWiWm'] = 'Urbana University';
+$options['001A000000AWiWn'] = 'Walsh University';
+$options['001A000000AWiWo'] = 'Mount Carmel College of Nursing';
+$options['001A000000AWiWp'] = 'Field Museum, The';
+$options['001A000000AWiWq'] = 'Vassar College';
+$options['001A000000AWiWt'] = 'Lakehead University';
+$options['001A000000AWiWu'] = 'McMaster University';
+$options['001A000000AWiQh'] = 'Akron, University of';
+$options['001A000000AWiQi'] = 'Alberta, University of';
+$options['001A000000AWiQj'] = 'Arizona State University';
+$options['001A000000AWiQk'] = 'British Columbia, University of';
+$options['001A000000AWiTa'] = 'California, University of - Davis';
+$options['001A000000AWiTb'] = 'California, University of - Los Angeles';
+$options['001A000000AWiTc'] = 'California, University of - San Diego';
+$options['001A000000AWiTd'] = 'California, University of - Santa Cruz';
+$options['001A000000AWiWx'] = 'Western Ontario, University of';
+$options['001A000000AWiWz'] = 'Windsor, University of';
+$options['001A000000AWiX0'] = 'Wilfrid Laurier University';
+$options['001A000000AWiX1'] = 'Athabasca University';
+$options['001A000000AWiX3'] = 'Regina, University of';
+$options['001A000000AWiX4'] = 'Saskatchewan, University of';
+$options['001A000000AWiX6'] = 'Florida International University';
+$options['001A000000AWiX7'] = 'Texas Tech University';
+$options['001A000000AWiX8'] = 'Oklahoma, University of';
+$options['001A000000AWiX9'] = 'Simon Fraser University';
+$options['001A000000AWiXA'] = 'St. Lawrence University';
+$options['001A000000AWiXB'] = 'Massachusetts, University of, Amherst';
+$options['001A000000AWiXC'] = 'Grambling State University';
+$options['001A000000AWiXD'] = 'Calgary, University of';
+$options['001A000000AWiXE'] = 'Canisius College';
+$options['001A000000AWiWw'] = 'Trent University';
+$options['001A000000AWiXF'] = 'Rochester Institute of Technology';
+$options['001A000000AWiXG'] = 'Brock University';
+$options['001A000000AWiXH'] = 'Colgate University';
+$options['001A000000AWiXI'] = 'Le Moyne College';
+$options['001A000000AWiXJ'] = 'Siena College';
+$options['001A000000AWiXK'] = 'Ontario College of Art and Design';
+$options['001A000000AWiXL'] = 'Newberry Library';
+$options['001A000000AWiXM'] = 'New Mexico, University of';
+$options['001A000000AWiXN'] = 'Skidmore College';
+$options['001A000000AWiXO'] = 'Colby College';
+$options['001A000000AWiXP'] = 'Art Institute of Chicago, The School of';
+$options['001A000000AWiXQ'] = 'Illinois College';
+$options['001A000000AWiXS'] = 'Hope College';
+$options['001A000000AWiXT'] = 'Benedictine University';
+$options['001A000000AWiXU'] = 'Adler School of Professional Psychology';
+$options['001A000000AWiXV'] = 'Illinois Wesleyan University';
+$options['001A000000AWiXW'] = 'Wayne State University';
+$options['001A000000AWiXX'] = 'Virginia Tech';
+$options['001A000000AWiXY'] = 'Millikin University';
+$options['001A000000AWiXZ'] = 'DePaul University';
+$options['001A000000AWiTe'] = 'Cincinnati, University of';
+$options['001A000000AWiTf'] = 'Colorado, University of';
+$options['001A000000AWiTg'] = 'Cornell University';
+$options['001A000000AWiTh'] = 'Emory University';
+$options['001A000000AWiTi'] = 'Florida State University';
+$options['001A000000AWiTj'] = 'Harvard University';
+$options['001A000000AWiTk'] = 'Illinois, University of - Chicago';
+$options['001A000000AWiTl'] = 'Indiana University';
+$options['001A000000AWiTm'] = 'Iowa, University of';
+$options['001A000000AWiTn'] = 'Kansas, University of';
+$options['001A000000AWiTo'] = 'Kent State University';
+$options['001A000000AWiTp'] = 'Loyola University of Chicago';
+$options['001A000000AWiTq'] = 'McGill University';
+$options['001A000000AWiTr'] = 'Michigan State University';
+$options['001A000000AWiTs'] = 'Missouri, University of - Columbia';
+$options['001A000000AWiTt'] = 'North Carolina, University of - Chapel Hill';
+$options['001A000000AWiTu'] = 'Northern Illinois University';
+$options['001A000000AWiTv'] = 'Notre Dame, University of';
+$options['001A000000AWiTw'] = 'Ohio University';
+$options['001A000000AWiTy'] = 'Oregon State University';
+$options['001A000000AWiTz'] = 'Pittsburgh, University of';
+$options['001A000000AWiU0'] = 'Purdue University';
+$options['001A000000AWiU1'] = 'Rochester, University of';
+$options['001A000000AWiU2'] = 'Southern California, University of';
+$options['001A000000AWiU3'] = 'Texas, University of - Austin';
+$options['001A000000AWiU4'] = 'Toronto, University of';
+$options['001A000000AWiU5'] = 'Utah, University of';
+$options['001A000000AWiU6'] = 'Vanderbilt University';
+$options['001A000000AWiU7'] = 'Virginia, University of';
+$options['001A000000AWiU8'] = 'Washington, University of';
+$options['001A000000AWiU9'] = 'Western Michigan University';
+$options['001A000000AWiUA'] = 'Yale University';
+$options['001A000000AWiUB'] = 'Alabama, University of';
+$options['001A000000AWiUC'] = 'Arizona, University of';
+$options['001A000000AWiUD'] = 'Arkansas, University of';
+$options['001A000000AWiUE'] = 'California, University of - Berkeley';
+$options['001A000000AWiUF'] = 'California, University of - Irvine';
+$options['001A000000AWiUG'] = 'California, University of - Riverside';
+$options['001A000000AWiUH'] = 'California, University of - Santa Barbara';
+$options['001A000000AWiUI'] = 'Chicago, University of';
+$options['001A000000AWiUJ'] = 'Claremont Colleges';
+$options['001A000000AWiUK'] = 'Columbia University';
+$options['001A000000AWiUL'] = 'Delaware, University of';
+$options['001A000000AWiUM'] = 'Duke University';
+$options['001A000000AWiUN'] = 'Florida, University of';
+$options['001A000000AWiUO'] = 'Georgia, University of';
+$options['001A000000AWiUP'] = 'Houston, University of';
+$options['001A000000AWiUQ'] = 'Illinois, University of - Urbana-Champaign';
+$options['001A000000AWiUR'] = 'Iowa State University';
+$options['001A000000AWiUS'] = 'Kansas State University';
+$options['001A000000AWiUT'] = 'Kentucky, University of';
+$options['001A000000AWiUU'] = 'Miami University of Ohio';
+$options['001A000000AWiUV'] = 'Michigan, University of';
+$options['001A000000AWiUW'] = 'Minnesota, University of - Twin Cities';
+$options['001A000000AWiUX'] = 'Missouri, University of - Kansas City';
+$options['001A000000AWiUY'] = 'New York University';
+$options['001A000000AWiUZ'] = 'State University of New York at Binghamton';
+$options['001A000000AWiUa'] = 'State University of New York at Stony Brook';
+$options['001A000000AWiUb'] = 'North Carolina State University';
+$options['001A000000AWiUc'] = 'Northwestern University';
+$options['001A000000AWiUd'] = 'Ohio State University';
+$options['001A000000AWiUe'] = 'Oregon, University of';
+$options['001A000000AWiUf'] = 'Pennsylvania State University';
+$options['001A000000AWiUg'] = 'Princeton University';
+$options['001A000000AWiUh'] = 'Rutgers, The State University of New Jersey';
+$options['001A000000AWiUi'] = 'South Carolina, University of';
+$options['001A000000AWiUj'] = 'Texas A & M University';
+$options['001A000000AWiUk'] = 'Tennessee, University of';
+$options['001A000000AWiUl'] = 'Tulane University';
+$options['001A000000AWiUm'] = 'Vermont, University of';
+$options['001A000000AWiUn'] = 'Washington University';
+$options['001A000000AWiUo'] = 'Wisconsin, University of - Madison';
+$options['001A000000AWiUp'] = 'Bowling Green State University';
+$options['001A000000AWiUq'] = 'Carleton University';
+$options['001A000000AWiUr'] = 'Case Western Reserve University';
+$options['001A000000AWiUs'] = 'Clemson University';
+$options['001A000000AWiUt'] = 'Dayton, University of';
+$options['001A000000AWiUu'] = 'Lake Forest College';
+$options['001A000000AWiUw'] = 'National Humanities Center';
+$options['001A000000AWiUx'] = 'School of Advanced International Studies at Johns Hopkins University';
+$options['001A000000AWiUy'] = 'Princeton Theological Seminary';
+$options['001A000000AWiUz'] = 'Reed College';
+$options['001A000000C6g1e'] = 'Maryland, University of';
+$options['001A000000C6eOw'] = 'Central Florida, University of';
+$options['001A000000GWd9w'] = 'Olivet Nazarene University';
+$options['001A000000C6g1L'] = 'Utah State University';
+$options['001A000000C6g11'] = 'South, University of';
+$options['001A000000GWn76'] = 'Northern British Columbia, University of';
+$options['001A000000GWnD2'] = 'Williams College';
+$options['001A000000RBNyB'] = 'Middlebury College';
+
+
+  asort($options);
+  return $options;}
+
+
+
 
 
 
