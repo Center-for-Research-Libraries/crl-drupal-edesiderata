@@ -172,6 +172,24 @@ function crl_helpers_is_review() {
 
 
 
+ * Determines if the current page is a profile.
+ *
+ * 
+ */
+function crl_helpers_is_profile() {
+  $is_profile = FALSE;
+  $alias = drupal_get_path_alias($_GET['q']);
+
+  if (drupal_match_path($alias, 'profile/*')) {
+    $is_profile = TRUE;
+  }
+  return $is_profile;
+}
+
+/** 
+
+
+
  * Return a page node's type based on it's position in the menu structure.
  *
  * There are a number of pieces of content in the CRL site that are implemented
