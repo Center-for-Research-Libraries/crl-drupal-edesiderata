@@ -38,6 +38,30 @@ function crl_helpers_help() {
   return $output;
 }
 
+
+
+
+function crl_helpers_init() {
+  //Disable sticky table headers if conditions met
+  //if (variable_get('mymodulename_disable_sticky_js_headers', FALSE)) {
+    drupal_add_js('Drupal.behaviors.tableHeader = function(){};', 'inline', 'footer');
+  //}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Implementation of hook_e_mail_alter.
  *
