@@ -487,7 +487,10 @@ function crl_helpers_webform_select_options_info() {
 */
 function crl_helpers_options_institutions() {
   $options = array();
-  $options['001A000000JLBZJ'] = 'Arkansas State University';
+$options['001A000000AWiVz'] = 'Association for Research Libraries';
+$options['001A000000AWiW0'] = 'OCLC (Online Computer Library Center';
+$options['001A000000awoIB'] = 'Research Libraries Group';
+$options['001A000000JLBZJ'] = 'Arkansas State University';
 $options['001A000000AWiV0'] = 'United States Environmental Protection Agency';
 $options['001A000000AWiV1'] = 'Valparaiso University';
 $options['001A000000AWiV2'] = 'Wright State University';
