@@ -474,19 +474,15 @@ display_options['path'] .'\';" />',
 function crl_helpers_webform_select_options_info() {
   $items = array();
   $items['institutions'] = array(
-    'title' => t('Institution'),
+    'title' => t('Institutions'),
     'options callback' => 'crl_helpers_options_institutions'
   );
 
   $items['institutions_all'] = array(
-    'title' => t('Institution_ALL'),
+    'title' => t('Institutions and GRN non-members'),
     'options callback' => 'crl_helpers_options_institutions_all'
   );
   
-  $items['institutions_grn'] = array(
-    'title' => t('Institution_GRN'),
-    'options callback' => 'crl_helpers_options_institutions_grn'
-  );
   
   return $items;}
 
