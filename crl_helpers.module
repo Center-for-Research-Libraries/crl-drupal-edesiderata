@@ -16,6 +16,20 @@ collaborations
 collections
 services
 archiving-preservation
+area-studies
+area-studies/camp
+area-studies/lamp
+area-studies/memp
+area-studies/samp
+area-studies/seam
+area-studies/seemp
+grn
+grn/gnarp
+grn/cifnal
+grn/afrinul
+grn/hradp
+grn/larrp
+grn/trail
 EOT
 );
 
@@ -214,6 +228,30 @@ function crl_helpers_is_profile() {
 
 
 
+ * Determines if the current page is GRN / AMP.
+ *
+ * 
+ */
+function crl_helpers_is_grn_amp() {
+  $is_grn_amp = FALSE;
+  $alias = drupal_get_path_alias($_GET['q']);
+
+  if (drupal_match_path($alias, 'grn/*')) {
+    $is_grn_amp = TRUE;
+  }
+  
+   if (drupal_match_path($alias, 'area-studies/*')) {
+    $is_grn_amp = TRUE;
+  } 
+  
+  
+  return $is_grn_amp;
+}
+
+/**
+
+
+
  * Return a page node's type based on it's position in the menu structure.
  *
  * There are a number of pieces of content in the CRL site that are implemented
@@ -332,10 +370,10 @@ function crl_helpers_token_values($type, $object = NULL) {
         }
       }
       else {
-        $value_crl_menupath_raw = $value_menupath_raw; // Start with the default ['menupath-raw']
-        $value_crl_menupath_raw = str_replace('Collaborations/Area Studies', 'Area Studies',  $value_crl_menupath_raw);
-        $value_crl_menupath_raw = str_replace('Collaborations/GRN', 'GRN', $value_crl_menupath_raw);
-        $value_crl_menupath_raw = str_replace('Collaborations/Collaborative Digitization', 'Collaborative Digitization', $value_crl_menupath_raw);
+        //$value_crl_menupath_raw = $value_menupath_raw; // Start with the default ['menupath-raw']
+        //$value_crl_menupath_raw = str_replace('Forum/Area Studies', 'Area Studies',  $value_crl_menupath_raw);
+        //$value_crl_menupath_raw = str_replace('Forum/GRN', 'GRN', $value_crl_menupath_raw);
+        //$value_crl_menupath_raw = str_replace('Collaborations/Collaborative Digitization', 'Collaborative Digitization', $value_crl_menupath_raw);
       }
 
       $values['crl-menupath-raw'] = $value_crl_menupath_raw;
