@@ -776,7 +776,8 @@ $options['001F000000fKfk0'] = 'University of Texas at El Paso - MAIN';
 $options['001F000000fKfqQ'] = 'West Virginia University - MAIN';                                        
 $options['001F000000fKfqo'] = 'University of California, Merced - MAIN';                                
 $options['001F000000fyPyM'] = 'City University of New York - College of Staten Island - MAIN';   
-$options['001A000000KLmwS'] = 'Baylor University';         
+$options['001A000000KLmwS'] = 'Baylor University';    
+$options['001F000000fKfjd'] = 'Air Force Institute of Technology - MAIN';     
 
 
   asort($options);
