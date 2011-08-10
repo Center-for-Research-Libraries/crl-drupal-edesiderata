@@ -486,6 +486,22 @@ display_options['path'] .'\';" />',
       );
     }
   }
+  if ($form_id == 'user_register') {
+    //$form['#tree'] = 1;
+    //$form['mail']['#tree'] = 1;
+    unset($form['#pre_render']);
+    $form['field_user_profile_fname']['#weight'] = 1;
+    $form['field_user_profile_lname']['#weight'] = 2;
+    $form['mail']['#weight'] = 3;
+    $form['group_user_profile_professional']['#weight'] = 5;
+    $form['field_user_profile_notes']['#weight'] = 6;
+    $form['mail']['#title'] = 'Email Address (user name)';
+    //print_r($form);
+    
+    //$form['group_user_profile_professional']['mail'] = 'E-mail address (user name)';
+    //$form['group_user_profile_professional']['mail'] = 'A valid! e-mail address, which will also function as your user name. All e-mails from the system will be sent to this address. The e-mail address is not made public and will only be used if you wish to receive a new password or wish to receive certain news or notifications by e-mail.';
+  }
+  
 }
 
 
