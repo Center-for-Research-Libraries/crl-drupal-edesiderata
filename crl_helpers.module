@@ -506,9 +506,10 @@ display_options['path'] .'\';" />',
     drupal_add_js('sites/default/themes/crl/registration.js', 'file'); 
 
     unset($form['#pre_render']);
-    $form['field_user_profile_fname']['#weight'] = 1;
-    $form['field_user_profile_lname']['#weight'] = 2;
-    $form['mail']['#weight'] = 3;
+    $form['field_user_profile_fname']['#weight'] = 2;
+    $form['field_user_profile_lname']['#weight'] = 3;
+    $form['mail']['#weight'] = 1;
+    $form['pass']['#weight'] = 4;
     $form['group_user_profile_professional']['#weight'] = 5;
     $form['field_user_profile_notes']['#weight'] = 6;
     $form['mail']['#title'] = 'Email Address (user name)';
