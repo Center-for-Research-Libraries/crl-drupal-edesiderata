@@ -57,6 +57,21 @@ function crl_helpers_init() {
   //if (variable_get('mymodulename_disable_sticky_js_headers', FALSE)) {
     drupal_add_js('Drupal.behaviors.tableHeader = function(){};', 'inline', 'footer');
   //}
+  
+      // Customize the user login/register/password page titles
+    // Strings match the page titles as set in user_menu() so they are translated
+    if (arg(0) == 'user' && arg(1) == 'register') {
+      drupal_set_title(t('Register'));
+    } elseif (arg(0) == 'user' && arg(1) == 'password') {
+      drupal_set_title(t('Request new password'));
+    } elseif (arg(0) == 'user' && arg(1) == 'login') {
+      drupal_set_title(t('Log in'));
+    } elseif (arg(0) == 'user' && arg(1) == '') {
+      drupal_set_title(t('Log in'));
+    }
+      elseif (arg(0) == 'user' && arg(2) == 'profile') {
+      drupal_set_title(t('Edit User Profile'));
+    }
 }
 
 
@@ -487,8 +502,9 @@ display_options['path'] .'\';" />',
     }
   }
   if ($form_id == 'user_register') {
-    //$form['#tree'] = 1;
-    //$form['mail']['#tree'] = 1;
+    array_unshift($form['#validate'], 'crl_reg_validate');
+    drupal_add_js('sites/default/themes/crl/registration.js', 'file'); 
+
     unset($form['#pre_render']);
     $form['field_user_profile_fname']['#weight'] = 1;
     $form['field_user_profile_lname']['#weight'] = 2;
@@ -502,6 +518,38 @@ display_options['path'] .'\';" />',
     //$form['group_user_profile_professional']['mail'] = 'A valid! e-mail address, which will also function as your user name. All e-mails from the system will be sent to this address. The e-mail address is not made public and will only be used if you wish to receive a new password or wish to receive certain news or notifications by e-mail.';
   }
   
+  
+  if ($form_id == 'user_profile_node_form') {
+    array_unshift($form['#validate'], 'crl_reg_validate');
+    drupal_add_js('sites/default/themes/crl/registration.js', 'file');
+  }
+  
+}
+
+function crl_truncate($name){
+	  $names = explode(" ", $name);
+	  $names[1] = substr($names[1], 0, 1);
+	  $edited = $names[0] . " " . $names[1] . ".";
+	  return $edited;
+}
+
+function crl_reg_validate ($form, $form_state)  {
+
+    if ($form_state['values']['field_user_profile_inst'][0]['value'] && $form_state['values']['field_user_profile_nm_inst'][0]['value']){
+    form_set_error('field_user_profile_member_check' , t('You cant have values for both a member institution and a non-member institution.'));
+    drupal_add_js('sites/default/themes/crl/registration.js', 'file'); 
+    }
+    
+    if ($form_state['values']['field_user_profile_member_check'][0]['value'] == "Yes" && !$form_state['values']['field_user_profile_inst'][0]['value']){
+    form_set_error('field_user_profile_inst' , t('You must choose a CRL member institution.'));
+    drupal_add_js('sites/default/themes/crl/registration.js', 'file'); 
+    } 
+    
+     if ($form_state['values']['field_user_profile_member_check'][0]['value'] == "No" && !$form_state['values']['field_user_profile_nm_inst'][0]['value']){
+    form_set_error('field_user_profile_nm_inst' , t('You must enter the name of your institution.'));
+    drupal_add_js('sites/default/themes/crl/registration.js', 'file'); 
+    }    
+     
 }
 
 
@@ -525,6 +573,8 @@ function crl_helpers_webform_select_options_info() {
   
   
   return $items;}
+
+
 
 
 
@@ -859,4 +909,5 @@ function crl_helpers_options_institutions() {
 /**
 * Implementation of hook_webform_select_options_info().
 * See webform/webform_hooks.php for further information on this hook in the Webform API.
-*/                                                                                                    
+*/
+                                                                                                  
