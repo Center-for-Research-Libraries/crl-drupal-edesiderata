@@ -525,7 +525,17 @@ display_options['path'] .'\';" />',
     drupal_add_js('sites/default/themes/crl/registration.js', 'file');
   }
   
+  if ($form_id == 'user_login') {
+    $form['name']['#size'] = 37;
+    $form['pass']['#size'] = 37;
+    $path = 'node/7387/signups?pc=1';
+    $form['#action'] = url($_GET['q'], array('query' => array('destination' => $path)));
+    
+  }
+  
 }
+
+
 
 function crl_truncate($name){
 	  $names = explode(" ", $name);
