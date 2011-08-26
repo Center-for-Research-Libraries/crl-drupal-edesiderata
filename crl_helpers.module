@@ -525,15 +525,28 @@ display_options['path'] .'\';" />',
     drupal_add_js('sites/default/themes/crl/registration.js', 'file');
   }
   
-  if ($form_id == 'user_login') {
+  if ($form_id == 'user_login' && $_GET['event'] == 1) {
     $form['name']['#size'] = 37;
     $form['pass']['#size'] = 37;
-    $path = 'node/7387/signups?pc=1';
-    $form['#action'] = url($_GET['q'], array('query' => array('destination' => $path)));
+    //destination is given over the url
+    $path = $_GET['destination'];
+    //unset default form destination
+    unset($_REQUEST['destination'], $_REQUEST['edit']['destination']);
+    //redirect to signup form with additional variables that give theming parameters
+    $form['#redirect'] = array($path . '/signups', "pc=1&event=1&signup=1");
     
+       
+  }
+  
+  if ($form_id == 'signup_form') {
+    $path = 'event-thanks?pc=1';
+    $form['#action'] = url($_GET['q'], array('query' => array('destination' => $path)));
+
   }
   
 }
+
+
 
 
 
