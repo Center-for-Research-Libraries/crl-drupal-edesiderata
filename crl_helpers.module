@@ -225,6 +225,22 @@ function crl_helpers_is_profile() {
   return $is_profile;
 }
 
+function crl_helpers_can_edit() {
+  $can_edit = FALSE;
+  
+  if(arg(0) == 'node' && is_numeric(arg(1))){
+    //load $node object
+    $node = node_load(arg(1));
+    //check for node update access
+    if (node_access("update", $node)){
+      $can_edit = TRUE;
+    }
+  }
+
+  
+  return $can_edit;
+}
+
 /** 
 
 
@@ -444,6 +460,12 @@ function crl_helpers_get_topic_guide_topic_tid($node) {
  * Implementation of hook_menu_alter().
  */
 function crl_helpers_menu_alter(&$items) {
+
+ $items['node/%node/track']['type'] = MENU_CALLBACK;
+
+
+
+
   // Disable the default RSS feed.
   unset($items['rss.xml']);
 }
@@ -513,6 +535,16 @@ display_options['path'] .'\';" />',
     $form['group_user_profile_professional']['#weight'] = 5;
     $form['field_user_profile_notes']['#weight'] = 6;
     $form['mail']['#title'] = 'Email Address (user name)';
+    
+    if($_GET['event'] == 1){
+      //destination is given over the url
+    $path = $_GET['destination'];
+    //unset default form destination
+    unset($_REQUEST['destination'], $_REQUEST['edit']['destination']);
+    //redirect to signup form with additional variables that give theming parameters
+    $form['#redirect'] = array($path . '/signups', "pc=1&event=1&signup=1");
+    
+    }
     //print_r($form);
     
     //$form['group_user_profile_professional']['mail'] = 'E-mail address (user name)';
@@ -528,6 +560,7 @@ display_options['path'] .'\';" />',
   if ($form_id == 'user_login' && $_GET['event'] == 1) {
     $form['name']['#size'] = 37;
     $form['pass']['#size'] = 37;
+
     //destination is given over the url
     $path = $_GET['destination'];
     //unset default form destination
@@ -926,8 +959,6 @@ function crl_helpers_options_institutions() {
 
 
 
-/**
-* Implementation of hook_webform_select_options_info().
-* See webform/webform_hooks.php for further information on this hook in the Webform API.
-*/
+
+
                                                                                                   
