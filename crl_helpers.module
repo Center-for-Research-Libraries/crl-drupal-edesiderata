@@ -536,13 +536,14 @@ display_options['path'] .'\';" />',
     $form['field_user_profile_notes']['#weight'] = 6;
     $form['mail']['#title'] = 'Email Address (user name)';
     
-    if($_GET['event'] == 1){
+    if($_GET['signup'] == 1){
       //destination is given over the url
     $path = $_GET['destination'];
+    //$path = $path . "/signups";
     //unset default form destination
-    unset($_REQUEST['destination'], $_REQUEST['edit']['destination']);
+    //unset($_REQUEST['destination'], $_REQUEST['edit']['destination']);
     //redirect to signup form with additional variables that give theming parameters
-    $form['#redirect'] = array($path . '/signups', "pc=1&event=1&signup=1");
+    $form['#redirect'] = array($path, 'pc=1&event=1&signup=1');
     
     }
     //print_r($form);
