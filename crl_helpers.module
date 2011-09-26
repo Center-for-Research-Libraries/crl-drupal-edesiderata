@@ -577,6 +577,15 @@ display_options['path'] .'\';" />',
     
        
   }
+ 
+   if ($form_id == 'user_profile_form' && !user_access('administer users')) {
+    unset($form['locale']);
+    unset($form['timezone']);
+    unset($form['block']);
+    unset($form['mimemail']);
+    unset($form['wysiwyg']);
+
+  }
 
 
   
@@ -939,7 +948,7 @@ function crl_helpers_options_institutions() {
   
   
   
-  
+
   
   
   /**
