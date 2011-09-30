@@ -535,7 +535,7 @@ display_options['path'] .'\';" />',
      //$form['group_user_profile_professional']['#weight'] = 5;
      //$form['field_user_profile_notes']['#weight'] = 6;
      $form['mail']['#title'] = 'Email Address (user name)';
-     $form['submit']['#value'] = 'Sign Up';
+     //$form['submit']['#value'] = 'Sign Up';
     
     
     if($_GET['event'] == 1){
