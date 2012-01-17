@@ -516,88 +516,11 @@ function crl_helpers_form_alter(&$form, $form_state, $form_id) {
       $current_display = $form_state['view']->current_display;
       $form['reset'] = array(
         '#type' => 'markup',
-        '#value' => '<input class="form-button" type="reset"
-value="Reset" onClick="javascript:window.location=\'/'.
-$form_state['view']->display[$current_display]->
-display_options['path'] .'\';" />',
+        '#value' => '<input class="form-button" type="reset" value="Reset" onClick="javascript:window.location=\'/'. 
+          $form_state['view']->display[$current_display]->display_options['path'] .'\';" />',
       );
     }
   }
-  if ($form_id == 'user_register') {
-    array_unshift($form['#validate'], 'crl_reg_validate');
-    drupal_add_js('sites/default/themes/crl/registration.js', 'file'); 
-
-     //unset($form['#pre_render']);
-     //$form['field_user_profile_fn']['#weight'] = 2;
-     //$form['field_user_profile_ln']['#weight'] = 3;
-     //$form['mail']['#weight'] = 1;
-     //$form['pass']['#weight'] = 4;
-     //$form['group_user_profile_professional']['#weight'] = 5;
-     //$form['field_user_profile_notes']['#weight'] = 6;
-     $form['mail']['#title'] = 'Email Address (user name)';
-     //$form['submit']['#value'] = 'Sign Up';
-    
-    
-    if($_GET['event'] == 1){
-      //destination is given over the url
-    $path = $_GET['destination'];
-    //$path = $path . "/signups";
-    //unset default form destination
-    //unset($_REQUEST['destination'], $_REQUEST['edit']['destination']);
-    //redirect to signup form with additional variables that give theming parameters
-    $form['#redirect'] = array($path, 'pc=1&event=1&signup=1');
-    
-    }
-    //print_r($form);
-    
-    //$form['group_user_profile_professional']['mail'] = 'E-mail address (user name)';
-    //$form['group_user_profile_professional']['mail'] = 'A valid! e-mail address, which will also function as your user name. All e-mails from the system will be sent to this address. The e-mail address is not made public and will only be used if you wish to receive a new password or wish to receive certain news or notifications by e-mail.';
-  }
-  
-  
-  if ($form_id == 'user_profile_node_form') {
-    array_unshift($form['#validate'], 'crl_reg_validate');
-    drupal_add_js('sites/default/themes/crl/registration.js', 'file');
-  }
-  
-  if ($form_id == 'user_login') {
-    $form['submit']['#value'] = 'Sign In';
-  }
-  
-  if ($form_id == 'user_login' && $_GET['event'] == 1) {
-    $form['name']['#size'] = 37;
-    $form['pass']['#size'] = 37;
-
-    //destination is given over the url
-    $path = $_GET['destination'];
-    //unset default form destination
-    unset($_REQUEST['destination'], $_REQUEST['edit']['destination']);
-    //redirect to signup form with additional variables that give theming parameters
-    $form['#redirect'] = array($path . '/signups', "pc=1&event=1&signup=1");
-    
-       
-  }
- 
-   if ($form_id == 'user_profile_form' && !user_access('administer users')) {
-    unset($form['locale']);
-    unset($form['timezone']);
-    unset($form['block']);
-    unset($form['mimemail']);
-    unset($form['wysiwyg']);
-
-  }
-  
-    if ($form['#id'] == 'node-form') {
-
-    if($form['#node']->type == 'user_profile') {
-
-       unset($form['title']);
-       unset($form['body_field']);
-    }
-}
-
-
-  
 }
 
 
@@ -610,27 +533,6 @@ function crl_truncate($name){
 	  $edited = $names[0] . " " . $names[1] . ".";
 	  return $edited;
 }
-
-function crl_reg_validate ($form, $form_state)  {
-
-    if ($form_state['values']['field_user_profile_inst'][0]['value'] && $form_state['values']['field_user_profile_nm_inst'][0]['value']){
-    form_set_error('field_user_profile_member_check' , t('You cant have values for both a member institution and a non-member institution.'));
-    drupal_add_js('sites/default/themes/crl/registration.js', 'file'); 
-    }
-    
-    if ($form_state['values']['field_user_profile_member_check'][0]['value'] == "Yes" && !$form_state['values']['field_user_profile_inst'][0]['value']){
-    form_set_error('field_user_profile_inst' , t('You must choose a CRL member institution.'));
-    drupal_add_js('sites/default/themes/crl/registration.js', 'file'); 
-    } 
-    
-     if ($form_state['values']['field_user_profile_member_check'][0]['value'] == "No" && !$form_state['values']['field_user_profile_nm_inst'][0]['value']){
-    form_set_error('field_user_profile_nm_inst' , t('You must enter the name of your institution.'));
-    drupal_add_js('sites/default/themes/crl/registration.js', 'file'); 
-    }    
-     
-}
-
-
 
 
 /**
@@ -921,7 +823,11 @@ function crl_helpers_options_institutions() {
 '001F000000fKfjd' => array('nameforsort'=>'Air Force Institute of Technology', 'name'=>'Air Force Institute of Technology'),                                                                                         
 '001A000000ZqhuK' => array('nameforsort'=>'Massachusetts-Boston, University of', 'name'=>'University of Massachusetts-Boston'),                                                                                      
 '001A000000ZqgoR' => array('nameforsort'=>'North Florida, University of', 'name'=>'University of North Florida'),                                                                                                    
-'001A000000RBNyB' => array('nameforsort'=>'Middlebury College', 'name'=>'Middlebury College')                                                                                                                       
+'001A000000RBNyB' => array('nameforsort'=>'Middlebury College', 'name'=>'Middlebury College'),
+
+'001F000000j2MYX' => array('nameforsort'=>'Mississippi State University', 'name'=>'Mississippi State University - MAIN'),
+
+'001F000000j2qLp' => array('nameforsort'=>'National University', 'name'=>'National University - MAIN')                                                                                                                       
 
 	);
   
@@ -982,8 +888,8 @@ function crl_helpers_options_institutions() {
   //return $links;
 //}
 
-
-
-
-
-                                                                                                  
+function crl_helpers_user ($op, &$edit, &$account, $category) {
+  //$messages = drupal_get_messages(NULL, FALSE);
+  //dpm($messages, "messages");
+  //dpm($op, "op");
+}
