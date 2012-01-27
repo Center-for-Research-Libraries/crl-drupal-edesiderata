@@ -543,322 +543,26 @@ function crl_helpers_webform_select_options_info() {
   $items = array();
   $items['institutions'] = array(
     'title' => t('Institutions'),
-    'options callback' => 'crl_helpers_options_institutions'
+    'options callback' => 'crl_helpers_options_institutions_list'
   );
-
   $items['institutions_all'] = array(
     'title' => t('Institutions and GRN non-members'),
     'options callback' => 'crl_helpers_options_institutions_all'
-  );
-  
-  
+  ); 
   return $items;}
 
-
-
-
-
-
-/**
-* Build an options list for use by webforms.
-* 
-*/
-
-function crl_helpers_options_institutions() {
-  // initial multidimensional associative array of institution names and sorting names, with the SF index as the key
-  $options =  array(
-'001A000000JLBZJ' => array('nameforsort'=>'Arkansas State University', 'name'=>'Arkansas State University'),                                                                                                         
-'001A000000AWiV0' => array('nameforsort'=>'United States Environmental Protection Agency', 'name'=>'United States Environmental Protection Agency'),                                                                 
-'001A000000AWiV1' => array('nameforsort'=>'Valparaiso University', 'name'=>'Valparaiso University'),                                                                                                                 
-'001A000000AWiV2' => array('nameforsort'=>'Wright State University', 'name'=>'Wright State University'),                                                                                                             
-'001A000000AWiV3' => array('nameforsort'=>'Carnegie-Mellon University', 'name'=>'Carnegie-Mellon University'),                                                                                                       
-'001A000000AWiV4' => array('nameforsort'=>'Chicago State University', 'name'=>'Chicago State University'),                                                                                                           
-'001A000000AWiV5' => array('nameforsort'=>'William and Mary, College of', 'name'=>'College of William and Mary'),                                                                                                    
-'001A000000AWiV6' => array('nameforsort'=>'Denver, University of', 'name'=>'University of Denver'),                                                                                                                  
-'001A000000AWiV7' => array('nameforsort'=>'Florida Atlantic University', 'name'=>'Florida Atlantic University'),                                                                                                     
-'001A000000AWiV8' => array('nameforsort'=>'George Mason University', 'name'=>'George Mason University'),                                                                                                             
-'001A000000AWiV9' => array('nameforsort'=>'Marquette University', 'name'=>'Marquette University'),                                                                                                                   
-'001A000000AWiVA' => array('nameforsort'=>'North Texas, University of', 'name'=>'University of North Texas'),                                                                                                        
-'001A000000AWiVB' => array('nameforsort'=>'Ottawa, University of', 'name'=>'University of Ottawa'),                                                                                                                  
-'001A000000AWiVC' => array('nameforsort'=>'Texas, University of - San Antonio', 'name'=>'University of Texas at San Antonio'),                                                                                       
-'001A000000AWiVD' => array('nameforsort'=>'Victoria, University of', 'name'=>'University of Victoria'),                                                                                                              
-'001A000000AWiVE' => array('nameforsort'=>'Belmont Technical College', 'name'=>'Belmont Technical College'),                                                                                                         
-'001A000000AWiVF' => array('nameforsort'=>'Cincinnati State Technical and Community College', 'name'=>'Cincinnati State Technical and Community College'),                                                         
-'001A000000AWiVG' => array('nameforsort'=>'Cleveland State University', 'name'=>'Cleveland State University'),                                                                                                       
-'001A000000AWiVH' => array('nameforsort'=>'Wooster, College of', 'name'=>'College of Wooster'),                                                                                                                    
-'001A000000AWiVI' => array('nameforsort'=>'Cuyahoga Community College', 'name'=>'Cuyahoga Community College'),                                                                                                       
-'001A000000AWiVJ' => array('nameforsort'=>'Edison Community College', 'name'=>'Edison Community College'),                                                                                                           
-'001A000000AWiVK' => array('nameforsort'=>'Jefferson Community College', 'name'=>'Jefferson Community College'),                                                                                                     
-'001A000000AWiVL' => array('nameforsort'=>'Lakeland Community College', 'name'=>'Lakeland Community College'),                                                                                                       
-'001A000000AWiVM' => array('nameforsort'=>'Medical College of Ohio', 'name'=>'Medical College of Ohio'),                                                                                                             
-'001A000000AWiVN' => array('nameforsort'=>'Northeastern Ohio Universities College of Medicine', 'name'=>'Northeastern Ohio Universities College of Medicine (NEOUCOM)'),                                             
-'001A000000AWiVO' => array('nameforsort'=>'Oberlin College', 'name'=>'Oberlin College'),                                                                                                                             
-'001A000000AWiVP' => array('nameforsort'=>'Ohio Northern University', 'name'=>'Ohio Northern University'),                                                                                                           
-'001A000000AWiVQ' => array('nameforsort'=>'Owens Community College', 'name'=>'Owens Community College'),                                                                                                             
-'001A000000AWiVR' => array('nameforsort'=>'Shawnee State University', 'name'=>'Shawnee State University'),                                                                                                           
-'001A000000AWiVS' => array('nameforsort'=>'Southern State Community College', 'name'=>'Southern State Community College'),                                                                                           
-'001A000000AWiVT' => array('nameforsort'=>'Terra Community College', 'name'=>'Terra Community College'),                                                                                                             
-'001A000000AWiVU' => array('nameforsort'=>'Xavier University', 'name'=>'Xavier University'),                                                                                                                         
-'001A000000AWiVV' => array('nameforsort'=>'Youngstown State University', 'name'=>'Youngstown State University'),                                                                                                     
-'001A000000AWiVW' => array('nameforsort'=>'Capital University', 'name'=>'Capital University'),                                                                                                                       
-'001A000000AWiVX' => array('nameforsort'=>'Central State University', 'name'=>'Central State University'),                                                                                                           
-'001A000000AWiVY' => array('nameforsort'=>'Clark State Community College', 'name'=>'Clark State Community College'),                                                                                                 
-'001A000000AWiVZ' => array('nameforsort'=>'Mount St. Joseph, College of', 'name'=>'College of Mount St. Joseph'),                                                                                                    
-'001A000000AWiVa' => array('nameforsort'=>'Columbus State Community College', 'name'=>'Columbus State Community College'),                                                                                           
-'001A000000AWiVb' => array('nameforsort'=>'Denison University', 'name'=>'Denison University'),                                                                                                                       
-'001A000000AWiVc' => array('nameforsort'=>'Hocking College', 'name'=>'Hocking College'),                                                                                                                             
-'001A000000AWiVd' => array('nameforsort'=>'Kenyon College', 'name'=>'Kenyon College'),                                                                                                                               
-'001A000000AWiVe' => array('nameforsort'=>'Lorain County Community College', 'name'=>'Lorain County Community College'),                                                                                             
-'001A000000AWiVf' => array('nameforsort'=>'Mount Vernon Nazarene University', 'name'=>'Mount Vernon Nazarene Univesity'),                                                                                            
-'001A000000AWiVg' => array('nameforsort'=>'Northwest State Community College', 'name'=>'Northwest State Community College'),                                                                                         
-'001A000000AWiVh' => array('nameforsort'=>'Ohio Dominican University', 'name'=>'Ohio Dominican University'),                                                                                                         
-'001A000000AWiVi' => array('nameforsort'=>'Ohio Wesleyan University', 'name'=>'Ohio Wesleyan University'),                                                                                                           
-'001A000000AWiVj' => array('nameforsort'=>'Rio Grande Community College', 'name'=>'Rio Grande Community College'),                                                                                                   
-'001A000000AWiVk' => array('nameforsort'=>'Sinclair Community College', 'name'=>'Sinclair Community College'),                                                                                                       
-'001A000000AWiVl' => array('nameforsort'=>'State Library of Ohio', 'name'=>'State Library of Ohio'),                                                                                                                 
-'001A000000AWiVm' => array('nameforsort'=>'Toledo, University of', 'name'=>'University of Toledo'),                                                                                                                  
-'001A000000AWiVn' => array('nameforsort'=>'Ursuline College', 'name'=>'Ursuline College'),                                                                                                                           
-'001A000000AWiVp' => array('nameforsort'=>'Carleton College', 'name'=>'Carleton College'),                                                                                                                           
-'001A000000AWiVq' => array('nameforsort'=>'Colorado College', 'name'=>'Colorado College'),                                                                                                                           
-'001A000000AWiVr' => array('nameforsort'=>'Georgia State University', 'name'=>'Georgia State University'),                                                                                                           
-'001A000000AWiVs' => array('nameforsort'=>'Grinnell College', 'name'=>'Grinnell College'),                                                                                                                           
-'001A000000AWiVt' => array('nameforsort'=>'Knox College', 'name'=>'Knox College'),                                                                                                                                   
-'001A000000AWiVu' => array('nameforsort'=>'Monmouth College', 'name'=>'Monmouth College'),                                                                                                                           
-'001A000000AWiVy' => array('nameforsort'=>'Oklahoma State University', 'name'=>'Oklahoma State University'),                                                                                                         
-'001A000000AWiW1' => array('nameforsort'=>'Hong Kong, University of', 'name'=>'University of Hong Kong'),                                                                                                            
-'001A000000AWiW2' => array('nameforsort'=>'Antioch College', 'name'=>'Antioch College'),                                                                                                                             
-'001A000000AWiW3' => array('nameforsort'=>'Ashland University', 'name'=>'Ashland University'),                                                                                                                       
-'001A000000AWiW4' => array('nameforsort'=>'Athenaeum of Ohio', 'name'=>'The Athenaeum of Ohio'),                                                                                                                     
-'001A000000AWiW5' => array('nameforsort'=>'Baldwin-Wallace College', 'name'=>'Baldwin-Wallace College'),                                                                                                             
-'001A000000AWiW6' => array('nameforsort'=>'Bluffton University', 'name'=>'Bluffton University'),                                                                                                                     
-'001A000000AWiW7' => array('nameforsort'=>'Central Ohio Technical College', 'name'=>'Central Ohio Technical College'),                                                                                               
-'001A000000AWiW8' => array('nameforsort'=>'Defiance College', 'name'=>'Defiance College'),                                                                                                                           
-'001A000000AWiW9' => array('nameforsort'=>'Franciscan University of Steubenville', 'name'=>'Franciscan University of Steubenville'),                                                                                 
-'001A000000AWiWA' => array('nameforsort'=>'Heidelberg University', 'name'=>'Heidelberg University'),                                                                                                                 
-'001A000000AWiWB' => array('nameforsort'=>'Hiram College', 'name'=>'Hiram College'),                                                                                                                                 
-'001A000000AWiWC' => array('nameforsort'=>'John Carroll University', 'name'=>'John Carroll University'),                                                                                                             
-'001A000000AWiWD' => array('nameforsort'=>'Rhodes State College', 'name'=>'James A. Rhodes State College'),                                                                                                          
-'001A000000AWiWE' => array('nameforsort'=>'Malone College', 'name'=>'Malone College'),                                                                                                                               
-'001A000000AWiWF' => array('nameforsort'=>'Marion Technical College', 'name'=>'Marion Technical College'),                                                                                                           
-'001A000000AWiWG' => array('nameforsort'=>'Mount Union College', 'name'=>'Mount Union College'),                                                                                                                     
-'001A000000AWiWH' => array('nameforsort'=>'Zane State College', 'name'=>'Zane State College'),                                                                                                                       
-'001A000000AWiWI' => array('nameforsort'=>'Otterbein University', 'name'=>'Otterbein University'),                                                                                                                   
-'001A000000AWiWJ' => array('nameforsort'=>'Stark State College of Technology', 'name'=>'Stark State College of Technology'),                                                                                         
-'001A000000AWiWK' => array('nameforsort'=>'Tiffin University', 'name'=>'Tiffin University'),                                                                                                                         
-'001A000000AWiWL' => array('nameforsort'=>'Findlay, University of', 'name'=>'The University of Findlay'),                                                                                                            
-'001A000000AWiWM' => array('nameforsort'=>'Washington State Community College', 'name'=>'Washington State Community College'),                                                                                       
-'001A000000AWiWN' => array('nameforsort'=>'Wilberforce University', 'name'=>'Wilberforce University'),                                                                                                               
-'001A000000AWiWO' => array('nameforsort'=>'Wilmington College', 'name'=>'Wilmington College'),                                                                                                                       
-'001A000000AWiWP' => array('nameforsort'=>'Wittenberg University', 'name'=>'Wittenberg University'),                                                                                                                 
-'001A000000AWiWQ' => array('nameforsort'=>'Cedarville University', 'name'=>'Cedarville University'),                                                                                                                 
-'001A000000AWiWR' => array('nameforsort'=>'North Central State College', 'name'=>'North Central State College'),                                                                                                     
-'001A000000AWiWS' => array('nameforsort'=>'Brigham Young University', 'name'=>'Brigham Young University'),                                                                                                           
-'001A000000AWiWT' => array('nameforsort'=>'New York Public Library', 'name'=>'New York Public Library'),                                                                                                             
-'001A000000AWiWU' => array('nameforsort'=>'Connecticut, University of', 'name'=>'University of Connecticut'),                                                                                                        
-'001A000000AWiWW' => array('nameforsort'=>'South Florida, University of', 'name'=>'University of South Florida'),                                                                                                    
-'001A000000AWiWX' => array('nameforsort'=>'Temple University', 'name'=>'Temple University'),                                                                                                                         
-'001A000000AWiWY' => array('nameforsort'=>'Manitoba, University of', 'name'=>'University of Manitoba'),                                                                                                              
-'001A000000AWiWZ' => array('nameforsort'=>'Pennsylvania, University of', 'name'=>'University of Pennsylvania'),                                                                                                      
-'001A000000AWiWa' => array('nameforsort'=>'Queen\'s University', 'name'=>'Queen\'s University'),                                                                                                                       
-'001A000000AWiWb' => array('nameforsort'=>'Dartmouth College', 'name'=>'Dartmouth College'),                                                                                                                         
-'001A000000AWiWc' => array('nameforsort'=>'Cincinnati Christian University', 'name'=>'Cincinnati Christian University'),                                                                                             
-'001A000000AWiWd' => array('nameforsort'=>'Cleveland Clinic', 'name'=>'Cleveland Clinic'),                                                                                                                           
-'001A000000AWiWe' => array('nameforsort'=>'Columbus College of Art and Design', 'name'=>'Columbus College of Art and Design'),                                                                                       
-'001A000000AWiWf' => array('nameforsort'=>'Franklin University', 'name'=>'Franklin University'),                                                                                                                     
-'001A000000AWiWg' => array('nameforsort'=>'Lourdes College', 'name'=>'Lourdes College'),                                                                                                                             
-'001A000000AWiWh' => array('nameforsort'=>'Marietta College', 'name'=>'Marietta College'),                                                                                                                           
-'001A000000AWiWi' => array('nameforsort'=>'Mercy College of Northwest Ohio', 'name'=>'Mercy College of Northwest Ohio'),                                                                                             
-'001A000000AWiWj' => array('nameforsort'=>'Muskingum College', 'name'=>'Muskingum College'),                                                                                                                         
-'001A000000AWiWk' => array('nameforsort'=>'Myers University', 'name'=>'Myers University'),                                                                                                                           
-'001A000000AWiWl' => array('nameforsort'=>'Notre Dame College', 'name'=>'Notre Dame College'),                                                                                                                       
-'001A000000AWiWm' => array('nameforsort'=>'Urbana University', 'name'=>'Urbana University'),                                                                                                                         
-'001A000000AWiWn' => array('nameforsort'=>'Walsh University', 'name'=>'Walsh University'),                                                                                                                           
-'001A000000AWiWo' => array('nameforsort'=>'Mount Carmel College of Nursing', 'name'=>'Mount Carmel College of Nursing'),                                                                                             
-'001A000000AWiWp' => array('nameforsort'=>'Field Museum, The', 'name'=>'The Field Museum'),                                                                                                                          
-'001A000000AWiWq' => array('nameforsort'=>'Vassar College', 'name'=>'Vassar College'),                                                                                                                               
-'001A000000AWiWt' => array('nameforsort'=>'Lakehead University', 'name'=>'Lakehead University'),                                                                                                                     
-'001A000000AWiWu' => array('nameforsort'=>'McMaster University', 'name'=>'McMaster University'),                                                                                                                     
-'001A000000AWiQh' => array('nameforsort'=>'Akron, University of', 'name'=>'University of Akron'),                                                                                                                    
-'001A000000AWiQi' => array('nameforsort'=>'Alberta, University of', 'name'=>'University of Alberta'),                                                                                                                
-'001A000000AWiQj' => array('nameforsort'=>'Arizona State University', 'name'=>'Arizona State University'),                                                                                                           
-'001A000000AWiQk' => array('nameforsort'=>'British Columbia, University of', 'name'=>'University of British Columbia'),                                                                                              
-'001A000000AWiTa' => array('nameforsort'=>'California, University of - Davis', 'name'=>'University of California, Davis'),                                                                                           
-'001A000000AWiTb' => array('nameforsort'=>'California, University of - Los Angeles', 'name'=>'University of California, Los Angeles'),                                                                               
-'001A000000AWiTc' => array('nameforsort'=>'California, University of - San Diego', 'name'=>'University of California, San Diego'),                                                                                   
-'001A000000AWiTd' => array('nameforsort'=>'California, University of - Santa Cruz', 'name'=>'University of California, Santa Cruz'),                                                                                 
-'001A000000AWiWx' => array('nameforsort'=>'Western Ontario, University of', 'name'=>'University of Western Ontario'),                                                                                                
-'001A000000AWiWz' => array('nameforsort'=>'Windsor, University of', 'name'=>'University of Windsor'),                                                                                                                
-'001A000000AWiX0' => array('nameforsort'=>'Wilfrid Laurier University', 'name'=>'Wilfrid Laurier University'),                                                                                                       
-'001A000000AWiX1' => array('nameforsort'=>'Athabasca University', 'name'=>'Athabasca University'),                                                                                                                   
-'001A000000AWiX3' => array('nameforsort'=>'Regina, University of', 'name'=>'University of Regina'),                                                                                                                  
-'001A000000AWiX4' => array('nameforsort'=>'Saskatchewan, University of', 'name'=>'University of Saskatchewan'),                                                                                                      
-'001A000000AWiX6' => array('nameforsort'=>'Florida International University', 'name'=>'Florida International University'),                                                                                           
-'001A000000AWiX7' => array('nameforsort'=>'Texas Tech University', 'name'=>'Texas Tech University'),                                                                                                                 
-'001A000000AWiX8' => array('nameforsort'=>'Oklahoma, University of', 'name'=>'University of Oklahoma'),                                                                                                              
-'001A000000AWiX9' => array('nameforsort'=>'Simon Fraser University', 'name'=>'Simon Fraser University'),                                                                                                             
-'001A000000AWiXA' => array('nameforsort'=>'St. Lawrence University', 'name'=>'St. Lawrence University'),                                                                                                             
-'001A000000AWiXB' => array('nameforsort'=>'Massachusetts, University of, Amherst', 'name'=>'University of Massachusetts Amherst'),                                                                                   
-'001A000000AWiXC' => array('nameforsort'=>'Grambling State University', 'name'=>'Grambling State University'),                                                                                                       
-'001A000000AWiXD' => array('nameforsort'=>'Calgary, University of', 'name'=>'University of Calgary'),                                                                                                                
-'001A000000AWiXE' => array('nameforsort'=>'Canisius College', 'name'=>'Canisius College'),                                                                                                                           
-'001A000000AWiWw' => array('nameforsort'=>'Trent University', 'name'=>'Trent University'),                                                                                                                           
-'001A000000AWiXG' => array('nameforsort'=>'Brock University', 'name'=>'Brock University'),                                                                                                                           
-'001A000000AWiXH' => array('nameforsort'=>'Colgate University', 'name'=>'Colgate University'),                                                                                                                       
-'001A000000AWiXI' => array('nameforsort'=>'Le Moyne College', 'name'=>'Le Moyne College'),                                                                                                                           
-'001A000000AWiXJ' => array('nameforsort'=>'Siena College', 'name'=>'Siena College'),                                                                                                                                 
-'001A000000AWiXK' => array('nameforsort'=>'Ontario College of Art and Design', 'name'=>'Ontario College of Art and Design'),                                                                                         
-'001A000000AWiXL' => array('nameforsort'=>'Newberry Library', 'name'=>'The Newberry Library'),                                                                                                                       
-'001A000000AWiXM' => array('nameforsort'=>'New Mexico, University of', 'name'=>'University of New Mexico'),                                                                                                          
-'001A000000AWiXN' => array('nameforsort'=>'Skidmore College', 'name'=>'Skidmore College'),                                                                                                                           
-'001A000000AWiXO' => array('nameforsort'=>'Colby College', 'name'=>'Colby College'),                                                                                                                                 
-'001A000000AWiXP' => array('nameforsort'=>'Art Institute of Chicago, The School of', 'name'=>'The School of the Art Institute of Chicago'),                                                                          
-'001A000000AWiXQ' => array('nameforsort'=>'Illinois College', 'name'=>'Illinois College'),                                                                                                                           
-'001A000000AWiXS' => array('nameforsort'=>'Hope College', 'name'=>'Hope College'),                                                                                                                                   
-'001A000000AWiXT' => array('nameforsort'=>'Benedictine University', 'name'=>'Benedictine University'),                                                                                                               
-'001A000000AWiXU' => array('nameforsort'=>'Adler School of Professional Psychology', 'name'=>'Adler School of Professional Psychology'),                                                                             
-'001A000000AWiXV' => array('nameforsort'=>'Illinois Wesleyan University', 'name'=>'Illinois Wesleyan University'),                                                                                                   
-'001A000000AWiXW' => array('nameforsort'=>'Wayne State University', 'name'=>'Wayne State University'),                                                                                                               
-'001A000000AWiXX' => array('nameforsort'=>'Virginia Tech', 'name'=>'Virginia Tech'),                                                                                                                                 
-'001A000000AWiXY' => array('nameforsort'=>'Millikin University', 'name'=>'Millikin University'),                                                                                                                     
-'001A000000AWiXZ' => array('nameforsort'=>'DePaul University', 'name'=>'DePaul University'),                                                                                                                         
-'001A000000AWiXq' => array('nameforsort'=>'Hawaii, University of - Manoa', 'name'=>'University of Hawaii at Manoa'),                                                                                                 
-'001A000000AWiTe' => array('nameforsort'=>'Cincinnati, University of', 'name'=>'University of Cincinnati'),                                                                                                          
-'001A000000AWiTf' => array('nameforsort'=>'Colorado, University of', 'name'=>'University of Colorado'),                                                                                                              
-'001A000000AWiTg' => array('nameforsort'=>'Cornell University', 'name'=>'Cornell University'),                                                                                                                       
-'001A000000AWiTh' => array('nameforsort'=>'Emory University', 'name'=>'Emory University'),                                                                                                                           
-'001A000000AWiTi' => array('nameforsort'=>'Florida State University', 'name'=>'Florida State University'),                                                                                                           
-'001A000000AWiTj' => array('nameforsort'=>'Harvard University', 'name'=>'Harvard University'),                                                                                                                       
-'001A000000AWiTk' => array('nameforsort'=>'Illinois, University of - Chicago', 'name'=>'University of Illinois at Chicago'),                                                                                         
-'001A000000AWiTl' => array('nameforsort'=>'Indiana University', 'name'=>'Indiana University'),                                                                                                                       
-'001A000000AWiTm' => array('nameforsort'=>'Iowa, University of', 'name'=>'University of Iowa'),                                                                                                                      
-'001A000000AWiTn' => array('nameforsort'=>'Kansas, University of', 'name'=>'University of Kansas'),                                                                                                                  
-'001A000000AWiTo' => array('nameforsort'=>'Kent State University', 'name'=>'Kent State University'),                                                                                                                 
-'001A000000AWiTp' => array('nameforsort'=>'Loyola University of Chicago', 'name'=>'Loyola University of Chicago'),                                                                                                   
-'001A000000AWiTq' => array('nameforsort'=>'McGill University', 'name'=>'McGill University'),                                                                                                                         
-'001A000000AWiTr' => array('nameforsort'=>'Michigan State University', 'name'=>'Michigan State University'),                                                                                                         
-'001A000000AWiTs' => array('nameforsort'=>'Missouri, University of - Columbia', 'name'=>'University of Missouri-Columbia'),                                                                                          
-'001A000000AWiTt' => array('nameforsort'=>'North Carolina, University of - Chapel Hill', 'name'=>'University of North Carolina at Chapel Hill'),                                                                     
-'001A000000AWiTu' => array('nameforsort'=>'Northern Illinois University', 'name'=>'Northern Illinois University'),                                                                                                   
-'001A000000AWiTv' => array('nameforsort'=>'Notre Dame, University of', 'name'=>'University of Notre Dame'),                                                                                                          
-'001A000000AWiTw' => array('nameforsort'=>'Ohio University', 'name'=>'Ohio University'),                                                                                                                             
-'001A000000AWiTy' => array('nameforsort'=>'Oregon State University', 'name'=>'Oregon State University'),                                                                                                             
-'001A000000AWiTz' => array('nameforsort'=>'Pittsburgh, University of', 'name'=>'University of Pittsburgh'),                                                                                                          
-'001A000000AWiU0' => array('nameforsort'=>'Purdue University', 'name'=>'Purdue University'),                                                                                                                         
-'001A000000AWiU1' => array('nameforsort'=>'Rochester, University of', 'name'=>'University of Rochester'),                                                                                                            
-'001A000000AWiU2' => array('nameforsort'=>'Southern California, University of', 'name'=>'University of Southern California'),                                                                                        
-'001A000000AWiU3' => array('nameforsort'=>'Texas, University of - Austin', 'name'=>'University of Texas at Austin'),                                                                                                 
-'001A000000AWiU4' => array('nameforsort'=>'Toronto, University of', 'name'=>'University of Toronto'),                                                                                                                
-'001A000000AWiU5' => array('nameforsort'=>'Utah, University of', 'name'=>'University of Utah'),                                                                                                                      
-'001A000000AWiU6' => array('nameforsort'=>'Vanderbilt University', 'name'=>'Vanderbilt University'),                                                                                                                 
-'001A000000AWiU7' => array('nameforsort'=>'Virginia, University of', 'name'=>'University of Virginia'),                                                                                                              
-'001A000000AWiU8' => array('nameforsort'=>'Washington, University of', 'name'=>'University of Washington'),                                                                                                          
-'001A000000AWiU9' => array('nameforsort'=>'Western Michigan University', 'name'=>'Western Michigan University'),                                                                                                     
-'001A000000AWiUA' => array('nameforsort'=>'Yale University', 'name'=>'Yale University'),                                                                                                                             
-'001A000000AWiUB' => array('nameforsort'=>'Alabama, University of', 'name'=>'University of Alabama'),                                                                                                                
-'001A000000AWiUC' => array('nameforsort'=>'Arizona, University of', 'name'=>'University of Arizona'),                                                                                                                
-'001A000000AWiUD' => array('nameforsort'=>'Arkansas, University of', 'name'=>'University of Arkansas'),                                                                                                              
-'001A000000AWiUE' => array('nameforsort'=>'California, University of - Berkeley', 'name'=>'University of California, Berkeley'),                                                                                     
-'001A000000AWiUF' => array('nameforsort'=>'California, University of - Irvine', 'name'=>'University of California, Irvine'),                                                                                         
-'001A000000AWiUG' => array('nameforsort'=>'California, University of - Riverside', 'name'=>'University of California, Riverside'),                                                                                   
-'001A000000AWiUH' => array('nameforsort'=>'California, University of - Santa Barbara', 'name'=>'University of California, Santa Barbara'),                                                                           
-'001A000000AWiUI' => array('nameforsort'=>'Chicago, University of', 'name'=>'University of Chicago'),                                                                                                                
-'001A000000AWiUJ' => array('nameforsort'=>'Claremont Colleges', 'name'=>'The Claremont Colleges'),                                                                                                                   
-'001A000000AWiUK' => array('nameforsort'=>'Columbia University', 'name'=>'Columbia University'),                                                                                                                     
-'001A000000AWiUL' => array('nameforsort'=>'Delaware, University of', 'name'=>'University of Delaware'),                                                                                                              
-'001A000000AWiUM' => array('nameforsort'=>'Duke University', 'name'=>'Duke University'),                                                                                                                             
-'001A000000AWiUN' => array('nameforsort'=>'Florida, University of', 'name'=>'University of Florida'),                                                                                                                
-'001A000000AWiUO' => array('nameforsort'=>'Georgia, University of', 'name'=>'University of Georgia'),                                                                                                                
-'001A000000AWiUP' => array('nameforsort'=>'Houston, University of', 'name'=>'University of Houston'),                                                                                                                
-'001A000000AWiUQ' => array('nameforsort'=>'Illinois, University of - Urbana-Champaign', 'name'=>'University of Illinois at Urbana-Champaign'),                                                                       
-'001A000000AWiUR' => array('nameforsort'=>'Iowa State University', 'name'=>'Iowa State University'),                                                                                                                 
-'001A000000AWiUS' => array('nameforsort'=>'Kansas State University', 'name'=>'Kansas State University'),                                                                                                             
-'001A000000AWiUT' => array('nameforsort'=>'Kentucky, University of', 'name'=>'University of Kentucky'),                                                                                                              
-'001A000000AWiUU' => array('nameforsort'=>'Miami University of Ohio', 'name'=>'Miami University of Ohio'),                                                                                                           
-'001A000000AWiUV' => array('nameforsort'=>'Michigan, University of', 'name'=>'University of Michigan'),                                                                                                              
-'001A000000AWiUW' => array('nameforsort'=>'Minnesota, University of - Twin Cities', 'name'=>'University of Minnesota-Twin Cities'),                                                                                  
-'001A000000AWiUX' => array('nameforsort'=>'Missouri, University of - Kansas City', 'name'=>'University of Missouri-Kansas City'),                                                                                    
-'001A000000AWiUY' => array('nameforsort'=>'New York University', 'name'=>'New York University'),                                                                                                                     
-'001A000000AWiUZ' => array('nameforsort'=>'State University of New York at Binghamton', 'name'=>'State University of New York at Binghamton'),                                                                       
-'001A000000AWiUa' => array('nameforsort'=>'State University of New York at Stony Brook', 'name'=>'State University of New York at Stony Brook'),                                                                     
-'001A000000AWiUb' => array('nameforsort'=>'North Carolina State University', 'name'=>'North Carolina State University'),                                                                                             
-'001A000000AWiUc' => array('nameforsort'=>'Northwestern University', 'name'=>'Northwestern University'),                                                                                                             
-'001A000000AWiUd' => array('nameforsort'=>'Ohio State University', 'name'=>'Ohio State University'),                                                                                                                 
-'001A000000AWiUe' => array('nameforsort'=>'Oregon, University of', 'name'=>'University of Oregon'),                                                                                                                  
-'001A000000AWiUf' => array('nameforsort'=>'Pennsylvania State University', 'name'=>'Pennsylvania State University'),                                                                                                 
-'001A000000AWiUg' => array('nameforsort'=>'Princeton University', 'name'=>'Princeton University'),                                                                                                                   
-'001A000000AWiUh' => array('nameforsort'=>'Rutgers, The State University of New Jersey', 'name'=>'Rutgers, The State University of New Jersey'),                                                                     
-'001A000000AWiUi' => array('nameforsort'=>'South Carolina, University of', 'name'=>'University of South Carolina'),                                                                                                  
-'001A000000AWiUj' => array('nameforsort'=>'Texas A & M University', 'name'=>'Texas A & M University'),                                                                                                               
-'001A000000AWiUk' => array('nameforsort'=>'Tennessee, University of', 'name'=>'University of Tennessee'),                                                                                                            
-'001A000000AWiUl' => array('nameforsort'=>'Tulane University', 'name'=>'Tulane University'),                                                                                                                         
-'001A000000AWiUm' => array('nameforsort'=>'Vermont, University of', 'name'=>'University of Vermont'),                                                                                                                
-'001A000000AWiUn' => array('nameforsort'=>'Washington University', 'name'=>'Washington University'),                                                                                                                 
-'001A000000AWiUo' => array('nameforsort'=>'Wisconsin, University of - Madison', 'name'=>'University of Wisconsin-Madison'),                                                                                          
-'001A000000AWiUp' => array('nameforsort'=>'Bowling Green State University', 'name'=>'Bowling Green State University'),                                                                                               
-'001A000000AWiUq' => array('nameforsort'=>'Carleton University', 'name'=>'Carleton University'),                                                                                                                     
-'001A000000AWiUr' => array('nameforsort'=>'Case Western Reserve University', 'name'=>'Case Western Reserve University'),                                                                                             
-'001A000000AWiUt' => array('nameforsort'=>'Dayton, University of', 'name'=>'University of Dayton'),                                                                                                                  
-'001A000000AWiUu' => array('nameforsort'=>'Lake Forest College', 'name'=>'Lake Forest College'),                                                                                                                     
-'001A000000AWiUw' => array('nameforsort'=>'National Humanities Center', 'name'=>'National Humanities Center'),                                                                                                       
-'001A000000AWiUx' => array('nameforsort'=>'School of Advanced International Studies at Johns Hopkins University', 'name'=>'Paul H Nitze School of Advanced International Studies at Johns Hopkins University'),      
-'001A000000AWiUy' => array('nameforsort'=>'Princeton Theological Seminary', 'name'=>'Princeton Theological Seminary'),                                                                                               
-'001A000000KLmwS' => array('nameforsort'=>'Baylor University', 'name'=>'Baylor University'),                                                                                                                         
-'001A000000C6g1e' => array('nameforsort'=>'Maryland, University of', 'name'=>'University of Maryland, College Park'),                                                                                                
-'001A000000C6eOw' => array('nameforsort'=>'Central Florida, University of', 'name'=>'University of Central Florida'),                                                                                                
-'001A000000GWd9w' => array('nameforsort'=>'Olivet Nazarene University', 'name'=>'Olivet Nazarene University'),                                                                                                       
-'001A000000C6g1L' => array('nameforsort'=>'Utah State University', 'name'=>'Utah State University'),                                                                                                                 
-'001A000000C6g11' => array('nameforsort'=>'South, University of', 'name'=>'University of the South'),                                                                                                                
-'001A000000GWn76' => array('nameforsort'=>'Northern British Columbia, University of', 'name'=>'University of Northern British Columbia'),                                                                            
-'001A000000GWnD2' => array('nameforsort'=>'Williams College', 'name'=>'Williams College'),                                                                                                                           
-'001F000000fKfTJ' => array('nameforsort'=>'Carroll College', 'name'=>'Carroll College'),                                                                                                                             
-'001F000000fIFsZ' => array('nameforsort'=>'York University', 'name'=>'York University'),                                                                                                                             
-'001F000000fKfk0' => array('nameforsort'=>'Texas, University of - El Paso', 'name'=>'University of Texas at El Paso'),                                                                                               
-'001F000000fKfqo' => array('nameforsort'=>'California, University of - Merced', 'name'=>'University of California, Merced'),                                                                                         
-'001F000000fKfVR' => array('nameforsort'=>'City University of New York - Graduate Center', 'name'=>'City University of New York - Graduate Center'),                                                                 
-'001F000000fKfic' => array('nameforsort'=>'City University of New York - Queensborough Community College', 'name'=>'City University of New York - Queensborough Community College'),                                 
-'001F000000fKfgg' => array('nameforsort'=>'City University of New York - Baruch College', 'name'=>'City University of New York - Baruch College'),                                                                   
-'001A000000cjJTp' => array('nameforsort'=>'Georgia Southern University', 'name'=>'Georgia Southern University'),                                                                                                     
-'001F000000fKfqQ' => array('nameforsort'=>'West Virginia University', 'name'=>'West Virginia University'),                                                                                                           
-'001F000000fyPyM' => array('nameforsort'=>'City University of New York - College of Staten Island', 'name'=>'City University of New York - College of Staten Island'),                                               
-'001F000000fKfjd' => array('nameforsort'=>'Air Force Institute of Technology', 'name'=>'Air Force Institute of Technology'),                                                                                         
-'001A000000ZqhuK' => array('nameforsort'=>'Massachusetts-Boston, University of', 'name'=>'University of Massachusetts-Boston'),                                                                                      
-'001A000000ZqgoR' => array('nameforsort'=>'North Florida, University of', 'name'=>'University of North Florida'),                                                                                                    
-'001A000000RBNyB' => array('nameforsort'=>'Middlebury College', 'name'=>'Middlebury College'),
-
-'001F000000j2MYX' => array('nameforsort'=>'Mississippi State University', 'name'=>'Mississippi State University - MAIN'),
-
-'001F000000j2qLp' => array('nameforsort'=>'National University', 'name'=>'National University - MAIN')                                                                                                                       
-
-	);
   
-  // array used for sorting on 'nameforsort'
-  $sortArray = array(); 
-  
-  // add each key (nameforsort and name) as options to sort by
-  foreach($options as $inst){ 
-      foreach($inst as $key=>$value){ 
-          if(!isset($sortArray[$key])){ 
-              $sortArray[$key] = array(); 
-          } 
-        $sortArray[$key][] = $value; 
-      } 
-  } 
-  
-  // sort by nameforsort
-  $orderby = "nameforsort"; 
-  array_multisort($sortArray[$orderby],SORT_ASC,$options);
-  
-  // new array to be returned to drupal
-  $options_clean = array();
-  
-  // loop through (now properly sorted) options array, and build $options_clean using the salesforce ID and name element
-  foreach ($options as $key => $val){
-    $options_clean[$key] = $options[$key]['name'];
-  }
-  
-  // return a simple, flat array of institutions
-  return $options_clean;
-
+  // Callback to build institutions list from variable string.
+  function crl_helpers_options_institutions_list() {
+    $institutions = variable_get('crl_institutions', 'key|value');
+    $institutions_array = array();
+    $lines = explode("\n", $institutions);
+    foreach ($lines as $line) {
+      $line = trim($line);
+      list($key, $value) = explode("|", $line);
+      $institutions_array += array($key => $value);
+    }
+    return $institutions_array;
   }
   
   
@@ -892,4 +596,32 @@ function crl_helpers_user ($op, &$edit, &$account, $category) {
   //$messages = drupal_get_messages(NULL, FALSE);
   //dpm($messages, "messages");
   //dpm($op, "op");
+}
+
+
+
+/**
+ * Implementation of hook_menu().
+ */
+function crl_helpers_menu() {
+  $items = array();
+  $items['admin/settings/crl'] = array(
+    'title'            => 'CRL Customizations',
+    'description'      => 'Administer CRL Customizations.',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('crl_admin_settings'),
+    'access arguments' => array('access administration pages'),
+    'type'             => MENU_NORMAL_ITEM,
+    'file' => 'crl_helpers.admin.inc',
+  );
+  $items['admin/settings/crl/main'] = array(
+    'title'            => 'CRL Customizations',
+    'description'      => 'Administer CRL Customizations.',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('crl_admin_settings'),
+    'access arguments' => array('access administration pages'),
+    'type'             => MENU_DEFAULT_LOCAL_TASK,
+    'file' => 'crl_helpers.admin.inc',
+  );
+  return $items;
 }
