@@ -545,63 +545,29 @@ function crl_helpers_webform_select_options_info() {
     'title' => t('Institutions'),
     'options callback' => 'crl_helpers_options_institutions_list'
   );
-  $items['institutions_all'] = array(
-    'title' => t('Institutions and GRN non-members'),
-    'options callback' => 'crl_helpers_options_institutions_all'
-  ); 
-  return $items;}
+  return $items; 
+}
 
   
-  // Callback to build institutions list from variable string.
-  function crl_helpers_options_institutions_list() {
-    $institutions = variable_get('crl_institutions', 'key|value');
-    $institutions_array = array();
-    $lines = explode("\n", $institutions);
-    foreach ($lines as $line) {
-      $line = trim($line);
-      list($key, $value) = explode("|", $line);
-      $institutions_array += array($key => $value);
-    }
-    return $institutions_array;
+// Callback to build institutions list from variable string.
+function crl_helpers_options_institutions_list() {
+  $institutions = variable_get('crl_institutions', 'key|value');
+  $institutions_array = array();
+  $lines = explode("\n", $institutions);
+  foreach ($lines as $line) {
+    $line = trim($line);
+    list($key, $value) = explode("|", $line);
+    $institutions_array += array($key => $value);
   }
-  
-  
-  
-
-  
-  
-  /**
- * Implementation of hook_link().
- */
-// Leave this here for a reference, but I decided to generate this link in the
-// theme to be consistent with the Print/Share links.
-//function crl_helpers_link($type, $object, $teaser = FALSE) {
-  //$links = array();
-  
-
-  //if ($type == 'node' && isset($object->type) && $object->type == 'news') {
-    //// Add a link to the news feed to News nodes.
-    //$links['subscribe'] = array(
-      //'title' => t('Subscribe'),
-      //'href' => 'news/feed',
-      //'attributes' => array('title' => t('Subscribe to the CRL News Feed.'),
-                            //'class' => 'subscribe',),
-    //);
-  //}
-
-  //return $links;
-//}
-
-function crl_helpers_user ($op, &$edit, &$account, $category) {
-  //$messages = drupal_get_messages(NULL, FALSE);
-  //dpm($messages, "messages");
-  //dpm($op, "op");
+  return $institutions_array;
 }
 
 
 
 /**
  * Implementation of hook_menu().
+ * 
+ * This defines the top of the menu tree for all Drupal admin options.
  */
 function crl_helpers_menu() {
   $items = array();
