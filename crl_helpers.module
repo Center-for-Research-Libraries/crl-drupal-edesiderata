@@ -71,7 +71,7 @@ function crl_helpers_init() {
     }
       elseif (arg(0) == 'user' && arg(2) == 'profile') {
       drupal_set_title(t('Edit User Profile'));
-    }
+    }  
 }
 
 

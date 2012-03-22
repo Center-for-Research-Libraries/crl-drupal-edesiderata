@@ -1,0 +1,252 @@
+<?php
+
+/**
+ * Implementation of hook_boot().
+ * 
+ * This is where the real magic happens. Here, during the bootstrap, we check 
+ * to see if the current user has member access based on their IP, and if so
+ * we given them a member role and ensure they are not shown any cached data.
+ * 
+ * IMPORTANT NOTE: In order for the "$conf['cache'] = CACHE_DISABLED;" 
+ * statements to work the dymanic_cache module must be installed.
+ */
+function crl_access_by_ip_boot() {
+  global $conf;
+  global $user;
+  $ip = ip_address();
+  // Check if we already have member access details stored for this user.
+  // This check will fail if their IP has changed since the last check, and 
+  // in this case we'll need to re-test thier ip (which is by design). Note
+  // that Drupal stores session variables in its own DB, so a user can't
+  // 'fake' a session variable that hacks past this check (unless they fake
+  // their IP, which is a whole other story).
+  if (isset($_SESSION['crl_member_data']['member_result'])) {
+    if ($_SESSION['crl_member_data']['member_result'] === $ip . '_pass') {
+      // Be sure cache is disabled for this page and grant member role
+      $conf['cache'] = CACHE_DISABLED;
+      $user->roles[variable_get('crl_access_by_ip_options_roles', FALSE)] = "member";
+      _crl_access_by_ip_stats(TRUE);
+      return;
+    }
+    if ($_SESSION['crl_member_data']['member_result'] === $ip . '_fail') {
+      _crl_access_by_ip_stats(TRUE);
+      return;
+    }
+  }
+  // If we get here we don't have any member data for this user, so we have
+  // to run the full IP check to the DDS server.
+  require_once('./includes/common.inc');
+  $_SESSION['crl_member_data'] = _crl_access_by_ip_check();
+  if ($_SESSION['crl_member_data']['member_result'] === $ip . '_pass') {
+    // Be sure cache is disabled for this page and grant member role
+    $conf['cache'] = CACHE_DISABLED;
+    $user->roles[variable_get('crl_access_by_ip_options_roles', FALSE)] = "member";
+  }
+  _crl_access_by_ip_stats();
+}
+
+
+// This function runs the formal IP check. It creates a simple http request
+// that includes the IP address as a parameter and passes it to DDS. The
+// response must be properly formatted XHTML that we can parse the member status
+// and other member details from.
+function _crl_access_by_ip_check() {
+  // Prep the request.
+  $ip = ip_address();
+  $target_url = variable_get('crl_access_by_ip_options_url', NULL);
+  $request_method = 'GET';
+  $request_retry = 3; // Number of redirects to follow
+  $timeout = 1; // Max time (seconds) we can allow our check to delay a page load
+  $query = 'ip=' . $ip;
+  $data ='';  // not required for GET
+  $request_headers = array();  // not required for GET
+  $request_url = $target_url . '?' . $query;
+  // Send the request.
+  $request_result = drupal_http_request($request_url, $request_headers, $request_method, $data, $request_retry);
+  // Verify and parse the request results.
+  $response = 0;
+  $member_data = array();
+  if (is_object($request_result)) {
+    if ($request_result->status_message == "OK" && isset($request_result->data)) {
+      // Parse the result for our specific member data.
+      $matches1 = '';
+      $matches2 = '';
+      $matches3 = '';
+      $response1 = preg_match('/(\<span class\=\"member_result\"\>)(.*)(\<\/span\>)/siU', $request_result->data, &$matches1);
+      $response2 = preg_match('/(\<span class\=\"member_result_id\"\>)(.*)(\<\/span\>)/siU', $request_result->data, &$matches2);
+      $response3 = preg_match('/(\<span class\=\"member_result_name\"\>)(.*)(\<\/span\>)/siU', $request_result->data, &$matches3);
+      if ($response1) { // Only continue if we at least have a clear true/fales on the member status
+        if ($matches1[2] === 'TRUE') {
+          $member_data['member'] = TRUE;
+          $member_data['member_result'] = $ip . '_pass';
+        }
+        if ($matches1[2] === 'FALSE') {
+          $member_data['member'] = FALSE;
+          $member_data['member_result'] = $ip . '_fail';
+        }
+        $member_data['id'] = $matches2[2];
+        $member_data['name'] = $matches3[2];
+        return $member_data;
+      }
+    }
+  }
+  // If we get here it means that we could not successfully gather the member
+  // data.
+  return FALSE;
+}
+
+
+/**
+ * Implementation of hook_nodeapi().
+ * 
+ * This is only used to set messages about member access. When loading a node
+ * see if its access is controlled by our member role. If so, and if the user
+ * does not have member access, display appropriate messages.
+ */
+function crl_access_by_ip_nodeapi(&$node, $op) {
+  if ($op == 'load') {
+    global $user;
+    // See if we are on a views page.
+    static $views_page = FALSE;
+    if (!$views_page) {
+      $views_page = views_get_page_view();
+    }
+    // See if we have access to this node.
+    if (!node_access('view', $node)) {
+      // If we don't have access see if the access is restricted specifically 
+      // because of the members role, and set message as needed.
+      $user_temp = clone $user;
+      $user_temp->roles[variable_get('crl_access_by_ip_options_roles', FALSE)] = "member";
+      if (node_access('view', $node, $user_temp)) { // "Member" role does give access
+        // Only display any messages once per page-load. This prevents view
+        // lists from triggering a message per list item, etc.
+        static $displayed_access_messages = FALSE;
+        if (!$displayed_access_messages) {        
+          if (is_object($views_page)) {
+            drupal_set_message(t("Some content listed below is only availalbe to members."), error);
+          }
+          else {
+            drupal_set_message(t("This content was restricted as you currently do not have member access."), error);
+          }
+          $displayed_access_messages = TRUE;
+        }
+        // Set a flag on the node in case other modules want to use this info
+        // (e.g. special message by a restricted node on a view list).
+        $node->member_restricted = TRUE;
+      }
+    }
+  }
+}
+
+
+// Simple helper function to log stats about each hit to the DB.
+function _crl_access_by_ip_stats($cached = FALSE) {
+  // We can structure our specific values to go into the DB by re-using the
+  // hook_token_values function. Good for consistency.
+  $tokens = crl_access_by_ip_token_values('user');
+  $sql = '';
+  if ($cached) {
+    $sql = 'INSERT INTO crl_member_hits (member_id, member_name, hits_cached, hits_not_cached) VALUES (' . $tokens['member_id'] . ', "' . $tokens['member_institution'] . '", ' . 1 . ', ' . 0 . ') ON DUPLICATE KEY UPDATE hits_cached = hits_cached + 1';
+  }
+  else {
+    $sql = 'INSERT INTO crl_member_hits (member_id, member_name, hits_cached, hits_not_cached) VALUES (' . $tokens['member_id'] . ', "' . $tokens['member_institution'] . '", ' . 0 . ', ' . 1 . ') ON DUPLICATE KEY UPDATE hits_not_cached = hits_not_cached + 1';
+  }
+  db_query($sql);
+}
+
+
+/**
+ * Implementation of hook_token_values().
+ * 
+ * Here we set new tokens that can be used to report member details. Any
+ * modules that use tokens can then take advantage of this data.
+ * 
+ * Note that this hook function is also used by _crl_access_by_ip_stats.
+ * 
+ * Special values include:
+ * Member ID: 10000 = Nonmember (that was calculated)
+ * Member ID: 9999 = Unknown (could not get data)
+ */
+function crl_access_by_ip_token_values($type, $object = NULL, $options = array()) {
+  if ($type == 'user') {
+    $user = $object;
+    // Set default values if we can't determine proper member/nonmember details.
+    $member_status = 'unknown';
+    $member_institution = 'unknown';
+    $member_id = 9999;
+    if (isset($_SESSION['crl_member_data']) && $_SESSION['crl_member_data'] !== FALSE) { // We have actual data
+      if ($_SESSION['crl_member_data']['member']) { // We have a member
+        $member_status = 'member';
+        if (empty($_SESSION['crl_member_data']['name'])) {
+          $member_institution = 'special';
+          if (isset($_SESSION['crl_member_data']['id'])) {
+            $member_id = $_SESSION['crl_member_data']['id'];
+          }
+        }
+        else {
+          if (!empty($_SESSION['crl_member_data']['name'])) {
+            $member_institution = $_SESSION['crl_member_data']['name'];
+          }
+          if (!empty($_SESSION['crl_member_data']['id'])) {
+            $member_id = $_SESSION['crl_member_data']['id'];
+          }
+        }
+      }
+      else {
+        $member_status = 'nonmember';
+        $member_id = 10000;
+      }
+    }
+    $tokens['member_status'] = $member_status;
+    $tokens['member_institution'] = $member_institution;
+    $tokens['member_id'] = $member_id;
+    return $tokens;
+  }
+}
+
+
+/**
+ * Implementation of hook_token_list().
+ * 
+ * Set listing details for our new member status tokens.
+ */
+function crl_access_by_ip_token_list($type = 'all') {
+  if ($type == 'user' || $type == 'all') {
+    $tokens['user']['member_status'] = t("The user's CRL member status");
+    $tokens['user']['member_institution'] = t("The user's CRL member institution (if member)");
+    $tokens['user']['member_id'] = t("The CRL member ID for an institution (if member)");
+    return $tokens;
+  }
+}
+
+
+/**
+ * Implementation of hook_form_alter().
+ * 
+ * Add some configuration details to the admin interface.
+ */
+function crl_access_by_ip_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == crl_admin_settings) {
+    $form['crl_access_by_ip_options'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Access-by-IP Options'),
+      '#description' => t('Options related to the member access-by-ip feature'),
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+      '#weight' => 0,
+      );
+    $form['crl_access_by_ip_options']['crl_access_by_ip_options_url'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Lookup URL'),
+      '#default_value' => variable_get('crl_access_by_ip_options_url', NULL),
+      '#description' => t('The URL for IP validation'),
+      );
+    $form['crl_access_by_ip_options']['crl_access_by_ip_options_roles']  = array(
+      '#title' => t('Member Role'),
+      '#type' => 'select',
+      '#options' => user_roles(),
+      '#default_value' => variable_get('crl_access_by_ip_options_roles', 0),
+      '#description' => t('Specify the member role that will be assigned to all users that pass the IP check (including anonmyous).'),
+      );
+  }
+}
