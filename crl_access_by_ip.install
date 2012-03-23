@@ -63,6 +63,20 @@ function crl_access_by_ip_schema() {
         'unsigned' => TRUE,
         'default' => 0,
       ),
+      'timer_cached' => array(
+        'description' => 'Cummulative time for cached member checks.',
+        'type' => 'float',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
+      'timer_not_cached' => array(
+        'description' => 'Cummulative time for non-cached member checks.',
+        'type' => 'float',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
     ),
     'unique keys' => array(
       'name' => array('member_id'),

@@ -1,5 +1,10 @@
 <?php
 
+// Set a 'salt' value that we can use for securing key data in cookie hashes
+define('CRL_COOKIE_SALT', '28hsY73Hdfs');
+// Set general crl cookie lifetime
+define('CRL_COOKIE_LIFETIME', 60*60*24*5);
+
 /**
  * Implementation of hook_boot().
  * 
@@ -13,33 +18,69 @@
 function crl_access_by_ip_boot() {
   global $conf;
   global $user;
+  // Start a timer that we can use to see how long the member check process
+  // takes
+  $mtime = microtime();
+  $mtime = explode(" ",$mtime);
+  $mtime = $mtime[1] + $mtime[0];
+  $user->crl_timer_start = $mtime; 
   $ip = ip_address();
-  // Check if we already have member access details stored for this user.
-  // This check will fail if their IP has changed since the last check, and 
-  // in this case we'll need to re-test thier ip (which is by design). Note
-  // that Drupal stores session variables in its own DB, so a user can't
-  // 'fake' a session variable that hacks past this check (unless they fake
-  // their IP, which is a whole other story).
-  if (isset($_SESSION['crl_member_data']['member_result'])) {
-    if ($_SESSION['crl_member_data']['member_result'] === $ip . '_pass') {
-      // Be sure cache is disabled for this page and grant member role
-      $conf['cache'] = CACHE_DISABLED;
-      $user->roles[variable_get('crl_access_by_ip_options_roles', FALSE)] = "member";
-      _crl_access_by_ip_stats(TRUE);
-      return;
-    }
-    if ($_SESSION['crl_member_data']['member_result'] === $ip . '_fail') {
-      _crl_access_by_ip_stats(TRUE);
-      return;
+  // If we detect a crawler/spider, then don't run checks (no need for 
+  // the overhead in these cases), but log the hit.
+  if (crl_access_by_ip_check_if_spider()) {
+    $member_data['member'] = 'nonmember';
+    $member_data['id'] = 10002; // Crawler code
+    $member_data['name'] = 'crawler';
+    $user->crl_member_data = $member_data;
+    _crl_access_by_ip_stats(TRUE);
+    return;
+  } 
+  // Check if we already have member access details stored in cookie for this 
+  // user. This check will fail if their IP has changed since the last check, 
+  // and in this case we'll need to re-test thier ip (which is by design).
+  if (isset($_COOKIE['crl_member_data_key']) && isset($_COOKIE['crl_member_data'])) {
+    // Confirm member data is valid for this IP.
+    if (md5($_COOKIE['crl_member_data'] . $ip . CRL_COOKIE_SALT) == $_COOKIE['crl_member_data_key']) {
+      $member_data = unserialize(urldecode($_COOKIE['crl_member_data']));
+      if (is_array($member_data)) {
+        // Do some sanitizing on the values, just in case.
+        foreach ($member_data as $key => $value) {
+          $member_data[$key] = strip_tags(htmlspecialchars($value));
+        }
+        $user->crl_member_data = $member_data;
+        // If we have a member, react accordingly.
+        if ($member_data['member'] === 'member') {    
+          // Be sure cache is disabled for this page and grant member role.
+          $conf['cache'] = CACHE_DISABLED; // Will only with with dynamic_cache enabled!
+          $user->roles[variable_get('crl_access_by_ip_options_roles', FALSE)] = "member";
+          _crl_access_by_ip_stats(TRUE);
+          return;
+        }
+        // If we don't have a member, just record stats.
+        else {
+          _crl_access_by_ip_stats(TRUE);
+          return;
+        }
+      }
     }
   }
-  // If we get here we don't have any member data for this user, so we have
-  // to run the full IP check to the DDS server.
+  
+  // If we get here we don't have cookie-based member data for this user, so we
+  // have to run the full IP check to the DDS server.
   require_once('./includes/common.inc');
-  $_SESSION['crl_member_data'] = _crl_access_by_ip_check();
-  if ($_SESSION['crl_member_data']['member_result'] === $ip . '_pass') {
+  $member_data = _crl_access_by_ip_check();
+  $user->crl_member_data = $member_data;
+  // Set the cookie so we can recognize this users easier next time, but only
+  // if there was not an error.
+  if ($member_data['id'] != 10001) {
+    $member_data_encoded = urlencode(serialize($member_data));
+    $member_data_key = md5($member_data_encoded . $ip . CRL_COOKIE_SALT);
+    setcookie('crl_member_data', $member_data_encoded, time()+CRL_COOKIE_LIFETIME, '/');
+    setcookie('crl_member_data_key', $member_data_key, time()+CRL_COOKIE_LIFETIME, '/');
+  }
+  if ($member_data['member'] === 'member') {
     // Be sure cache is disabled for this page and grant member role
-    $conf['cache'] = CACHE_DISABLED;
+    $conf['cache'] = CACHE_DISABLED; // Will only with with dynamic_cache enabled!
     $user->roles[variable_get('crl_access_by_ip_options_roles', FALSE)] = "member";
   }
   _crl_access_by_ip_stats();
@@ -75,24 +116,37 @@ function _crl_access_by_ip_check() {
       $response1 = preg_match('/(\<span class\=\"member_result\"\>)(.*)(\<\/span\>)/siU', $request_result->data, &$matches1);
       $response2 = preg_match('/(\<span class\=\"member_result_id\"\>)(.*)(\<\/span\>)/siU', $request_result->data, &$matches2);
       $response3 = preg_match('/(\<span class\=\"member_result_name\"\>)(.*)(\<\/span\>)/siU', $request_result->data, &$matches3);
-      if ($response1) { // Only continue if we at least have a clear true/fales on the member status
-        if ($matches1[2] === 'TRUE') {
-          $member_data['member'] = TRUE;
-          $member_data['member_result'] = $ip . '_pass';
+      // Only continue if we at least have a clear response on the member status
+      if ($response1) {
+        $member_data['member'] = $matches1[2]; // TRUE/FALSE string
+        if ($response2) {
+          $member_data['id'] = (int)$matches2[2];
         }
-        if ($matches1[2] === 'FALSE') {
-          $member_data['member'] = FALSE;
-          $member_data['member_result'] = $ip . '_fail';
+        if ($response3) {
+          $member_data['name'] = $matches3[2];
         }
-        $member_data['id'] = $matches2[2];
-        $member_data['name'] = $matches3[2];
+        // Clean-up $member_data       
+        if ($member_data['member'] == 'FALSE') { // KNOWN nonmember
+          $member_data['member'] = 'nonmember'; // Convert
+          $member_data['id'] = (int)10000; // KNOWN nonmember code
+          $member_data['name'] = 'na';
+        }
+        if ($member_data['member'] == 'TRUE') {
+          $member_data['member'] = 'member'; // Converr
+          if (empty($member_data['name'])) {
+            $member_data['name'] = 'unnamed member';
+          }
+        }
         return $member_data;
-      }
-    }
+      }  
+    } 
   }
   // If we get here it means that we could not successfully gather the member
-  // data.
-  return FALSE;
+  // data via our XHTML call.
+  $member_data['member'] = 'nonmember';
+  $member_data['id'] = 10001; // Error code
+  $member_data['name'] = 'na';
+  return $member_data;
 }
 
 
@@ -135,21 +189,27 @@ function crl_access_by_ip_nodeapi(&$node, $op) {
         $node->member_restricted = TRUE;
       }
     }
+    // dpm($user, "user");
+    // dpm($_SERVER['HTTP_USER_AGENT']);
   }
 }
 
 
 // Simple helper function to log stats about each hit to the DB.
 function _crl_access_by_ip_stats($cached = FALSE) {
-  // We can structure our specific values to go into the DB by re-using the
-  // hook_token_values function. Good for consistency.
-  $tokens = crl_access_by_ip_token_values('user');
+  // Stop the timer that checks how long the member check process takes
+  global $user;
+  $mtime = microtime();
+  $mtime = explode(" ",$mtime);
+  $mtime = $mtime[1] + $mtime[0];
+  $check_time = $mtime - $user->crl_timer_start;
+  $member_data = $user->crl_member_data;
   $sql = '';
   if ($cached) {
-    $sql = 'INSERT INTO crl_member_hits (member_id, member_name, hits_cached, hits_not_cached) VALUES (' . $tokens['member_id'] . ', "' . $tokens['member_institution'] . '", ' . 1 . ', ' . 0 . ') ON DUPLICATE KEY UPDATE hits_cached = hits_cached + 1';
+    $sql = 'INSERT INTO crl_member_hits (member_id, member_name, hits_cached, hits_not_cached, timer_cached, timer_not_cached) VALUES (' . $member_data['id'] . ', "' . $member_data['name'] . '", ' . 1 . ', ' . 0 . ', ' . $check_time . ', ' . 0 . ') ON DUPLICATE KEY UPDATE hits_cached = hits_cached + 1, timer_cached = timer_cached + ' . $check_time;
   }
   else {
-    $sql = 'INSERT INTO crl_member_hits (member_id, member_name, hits_cached, hits_not_cached) VALUES (' . $tokens['member_id'] . ', "' . $tokens['member_institution'] . '", ' . 0 . ', ' . 1 . ') ON DUPLICATE KEY UPDATE hits_not_cached = hits_not_cached + 1';
+    $sql = 'INSERT INTO crl_member_hits (member_id, member_name, hits_cached, hits_not_cached, timer_cached, timer_not_cached) VALUES (' . $member_data['id'] . ', "' . $member_data['name'] . '", ' . 0 . ', ' . 1 . ', ' . 0 . ', ' . $check_time . ') ON DUPLICATE KEY UPDATE hits_not_cached = hits_not_cached + 1, timer_not_cached = timer_not_cached + ' . $check_time;
   }
   db_query($sql);
 }
@@ -160,46 +220,13 @@ function _crl_access_by_ip_stats($cached = FALSE) {
  * 
  * Here we set new tokens that can be used to report member details. Any
  * modules that use tokens can then take advantage of this data.
- * 
- * Note that this hook function is also used by _crl_access_by_ip_stats.
- * 
- * Special values include:
- * Member ID: 10000 = Nonmember (that was calculated)
- * Member ID: 9999 = Unknown (could not get data)
  */
 function crl_access_by_ip_token_values($type, $object = NULL, $options = array()) {
   if ($type == 'user') {
-    $user = $object;
-    // Set default values if we can't determine proper member/nonmember details.
-    $member_status = 'unknown';
-    $member_institution = 'unknown';
-    $member_id = 9999;
-    if (isset($_SESSION['crl_member_data']) && $_SESSION['crl_member_data'] !== FALSE) { // We have actual data
-      if ($_SESSION['crl_member_data']['member']) { // We have a member
-        $member_status = 'member';
-        if (empty($_SESSION['crl_member_data']['name'])) {
-          $member_institution = 'special';
-          if (isset($_SESSION['crl_member_data']['id'])) {
-            $member_id = $_SESSION['crl_member_data']['id'];
-          }
-        }
-        else {
-          if (!empty($_SESSION['crl_member_data']['name'])) {
-            $member_institution = $_SESSION['crl_member_data']['name'];
-          }
-          if (!empty($_SESSION['crl_member_data']['id'])) {
-            $member_id = $_SESSION['crl_member_data']['id'];
-          }
-        }
-      }
-      else {
-        $member_status = 'nonmember';
-        $member_id = 10000;
-      }
-    }
-    $tokens['member_status'] = $member_status;
-    $tokens['member_institution'] = $member_institution;
-    $tokens['member_id'] = $member_id;
+    global $user;
+    $tokens['member_status'] = $user->crl_member_data['member'];
+    $tokens['member_institution'] = $user->crl_member_data['name'];
+    $tokens['member_id'] = $user->crl_member_data['id'];
     return $tokens;
   }
 }
@@ -249,4 +276,16 @@ function crl_access_by_ip_form_alter(&$form, &$form_state, $form_id) {
       '#description' => t('Specify the member role that will be assigned to all users that pass the IP check (including anonmyous).'),
       );
   }
+}
+
+
+// Helper function to detect a spider. We do not use php's get_browser() as
+// browsecap.ini may not be enabled.
+function crl_access_by_ip_check_if_spider() {
+  // Define spider list and use in preg_match
+  $spiders = 'Googlebot|Adsbot|Bingbot|DotBot|FeedFetcher|LinkWalker|QihooBot|Yammybot|Openbot|Slurp|msnbot|ia_archiver|Scooter|Teoma|Gigabot|Spider|Crawler';
+  if (preg_match('/' . $spiders . '/i', $_SERVER['HTTP_USER_AGENT'])) {
+    return TRUE;
+  }
+  return FALSE;
 }

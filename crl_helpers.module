@@ -1,5 +1,4 @@
 <?php
-// $Id
 
 // Some constants.  Perhaps these should be module settings at some point
 define('CRL_HELPERS_TOPIC_VID', 4); // The vocabulary ID of the 'Topic' 
