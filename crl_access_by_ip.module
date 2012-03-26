@@ -35,7 +35,7 @@ function crl_access_by_ip_boot() {
     _crl_access_by_ip_stats(TRUE);
     return;
   } 
-  // Check if we already have member access details stored in cookie for this 
+  // Check if we already have member access details stored in a cookie for this 
   // user. This check will fail if their IP has changed since the last check, 
   // and in this case we'll need to re-test thier ip (which is by design).
   if (isset($_COOKIE['crl_member_data_key']) && isset($_COOKIE['crl_member_data'])) {
@@ -64,15 +64,14 @@ function crl_access_by_ip_boot() {
       }
     }
   }
-  
   // If we get here we don't have cookie-based member data for this user, so we
   // have to run the full IP check to the DDS server.
-  require_once('./includes/common.inc');
+  require_once('./includes/common.inc'); // Needed are we are still in bootstrap
   $member_data = _crl_access_by_ip_check();
   $user->crl_member_data = $member_data;
-  // Set the cookie so we can recognize this users easier next time, but only
+  // Set the cookie so we can recognize this user easier next time, but only
   // if there was not an error.
-  if ($member_data['id'] != 10001) {
+  if ($member_data['id'] != 10001) { // Error code
     $member_data_encoded = urlencode(serialize($member_data));
     $member_data_key = md5($member_data_encoded . $ip . CRL_COOKIE_SALT);
     setcookie('crl_member_data', $member_data_encoded, time()+CRL_COOKIE_LIFETIME, '/');
@@ -113,9 +112,9 @@ function _crl_access_by_ip_check() {
       $matches1 = '';
       $matches2 = '';
       $matches3 = '';
-      $response1 = preg_match('/(\<span class\=\"member_result\"\>)(.*)(\<\/span\>)/siU', $request_result->data, &$matches1);
-      $response2 = preg_match('/(\<span class\=\"member_result_id\"\>)(.*)(\<\/span\>)/siU', $request_result->data, &$matches2);
-      $response3 = preg_match('/(\<span class\=\"member_result_name\"\>)(.*)(\<\/span\>)/siU', $request_result->data, &$matches3);
+      $response1 = preg_match('/(\<span class\=\"member_result\"\>)(.*)(\<\/span\>)/siU', $request_result->data, $matches1);
+      $response2 = preg_match('/(\<span class\=\"member_result_id\"\>)(.*)(\<\/span\>)/siU', $request_result->data, $matches2);
+      $response3 = preg_match('/(\<span class\=\"member_result_name\"\>)(.*)(\<\/span\>)/siU', $request_result->data, $matches3);
       // Only continue if we at least have a clear response on the member status
       if ($response1) {
         $member_data['member'] = $matches1[2]; // TRUE/FALSE string
@@ -132,9 +131,9 @@ function _crl_access_by_ip_check() {
           $member_data['name'] = 'na';
         }
         if ($member_data['member'] == 'TRUE') {
-          $member_data['member'] = 'member'; // Converr
+          $member_data['member'] = 'member'; // Convert
           if (empty($member_data['name'])) {
-            $member_data['name'] = 'unnamed member';
+            $member_data['name'] = 'Center for Research Libraries';
           }
         }
         return $member_data;
