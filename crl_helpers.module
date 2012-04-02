@@ -562,6 +562,20 @@ function crl_helpers_options_institutions_list() {
 }
 
 
+/**
+ * Implementation of hook_wysiwyg_editor_settings_alter().
+ * 
+ * Quick method to override some global config.js settings for ckeditor
+ */
+function crl_helpers_wysiwyg_editor_settings_alter(&$settings, $context) {
+  if ($context['profile']->editor == 'ckeditor') {
+    //$settings['scayt_autoStartup'] = true;
+    $settings['bodyClass'] = 'contents ckeditor_editor';
+    $settings['bodyId'] = 'pagebody';
+  }
+}
+
+
 
 /**
  * Implementation of hook_menu().

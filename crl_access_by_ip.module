@@ -1,9 +1,11 @@
 <?php
 
+
 // Set a 'salt' value that we can use for securing key data in cookie hashes
 define('CRL_COOKIE_SALT', '28hsY73Hdfs');
 // Set general crl cookie lifetime
 define('CRL_COOKIE_LIFETIME', 60*60*24*5);
+
 
 /**
  * Implementation of hook_boot().
@@ -51,7 +53,7 @@ function crl_access_by_ip_boot() {
         // If we have a member, react accordingly.
         if ($member_data['member'] === 'member') {    
           // Be sure cache is disabled for this page and grant member role.
-          $conf['cache'] = CACHE_DISABLED; // Will only with with dynamic_cache enabled!
+          $conf['cache'] = CACHE_DISABLED; // Will only work with with dynamic_cache enabled!
           $user->roles[variable_get('crl_access_by_ip_options_roles', FALSE)] = "member";
           _crl_access_by_ip_stats(TRUE);
           return;
@@ -66,7 +68,7 @@ function crl_access_by_ip_boot() {
   }
   // If we get here we don't have cookie-based member data for this user, so we
   // have to run the full IP check to the DDS server.
-  require_once('./includes/common.inc'); // Needed are we are still in bootstrap
+  require_once('./includes/common.inc'); // Needed as we are still in bootstrap
   $member_data = _crl_access_by_ip_check();
   $user->crl_member_data = $member_data;
   // Set the cookie so we can recognize this user easier next time, but only
@@ -79,17 +81,27 @@ function crl_access_by_ip_boot() {
   }
   if ($member_data['member'] === 'member') {
     // Be sure cache is disabled for this page and grant member role
-    $conf['cache'] = CACHE_DISABLED; // Will only with with dynamic_cache enabled!
+    $conf['cache'] = CACHE_DISABLED; // Will only work with with dynamic_cache enabled!
     $user->roles[variable_get('crl_access_by_ip_options_roles', FALSE)] = "member";
   }
   _crl_access_by_ip_stats();
 }
 
 
-// This function runs the formal IP check. It creates a simple http request
-// that includes the IP address as a parameter and passes it to DDS. The
-// response must be properly formatted XHTML that we can parse the member status
-// and other member details from.
+/**
+ * Run an actual IP check to DDS server.
+ * 
+ * This function runs the formal IP check. It creates a simple http request
+ * that includes the IP address as a parameter and passes it to DDS. The
+ * response must be properly formatted XHTML that we can parse the member status
+ * and other member details from.
+ * 
+ * The response we parse from DDS follows a custom format where the formal 
+ * data is wrapped in <span> tags. If we could set up DDS to formally deal with
+ * XML-RPC calls, this function could be built to instead send/recieve the info
+ * via XML-RPC (may require services module, etc.).
+ *
+ */
 function _crl_access_by_ip_check() {
   // Prep the request.
   $ip = ip_address();
@@ -188,8 +200,6 @@ function crl_access_by_ip_nodeapi(&$node, $op) {
         $node->member_restricted = TRUE;
       }
     }
-    // dpm($user, "user");
-    // dpm($_SERVER['HTTP_USER_AGENT']);
   }
 }
 
@@ -282,7 +292,7 @@ function crl_access_by_ip_form_alter(&$form, &$form_state, $form_id) {
 // browsecap.ini may not be enabled.
 function crl_access_by_ip_check_if_spider() {
   // Define spider list and use in preg_match
-  $spiders = 'Googlebot|Adsbot|Bingbot|DotBot|FeedFetcher|LinkWalker|QihooBot|Yammybot|Openbot|Slurp|msnbot|ia_archiver|Scooter|Teoma|Gigabot|Spider|Crawler';
+  $spiders = 'Spider|Crawler|Googlebot|Adsbot|Bingbot|DotBot|FeedFetcher|LinkWalker|QihooBot|Yammybot|Openbot|Slurp|msnbot|ia_archiver|Scooter|Teoma|Rambler|AbachoBOT|accoona|AcioRobot|ASPSeek|Dumbot|GeonaBot|Gigabot|Lycos|MSRBOT|Scooter|AltaVista|IDBot|eStyle|Scrubby|alexa|froogle|dotbot|inktomi|looksmart|InfoSeek|Spade|ZyBorg|rabaz|TechnoratiSnoop|Rankivabot|StackRambler';
   if (preg_match('/' . $spiders . '/i', $_SERVER['HTTP_USER_AGENT'])) {
     return TRUE;
   }
