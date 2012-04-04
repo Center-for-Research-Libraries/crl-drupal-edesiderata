@@ -191,7 +191,7 @@ function crl_access_by_ip_nodeapi(&$node, $op) {
             drupal_set_message(t("Some content listed below is only available to CRL members."), error);
           }
           else {
-            drupal_set_message(t("Access to this content is restricted to users visiting this page from a CRL member institution."), error);
+            drupal_set_message(t("Access to this content is restricted for users who are not visiting this page from a CRL member institution."), error);
           }
           $displayed_access_messages = TRUE;
         }
