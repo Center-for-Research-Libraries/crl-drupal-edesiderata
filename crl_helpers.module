@@ -366,7 +366,6 @@ function crl_helpers_token_values($type, $object = NULL) {
         $value_menu_link_title     = '';
         $value_menu_link_title_raw = '';
       }
-
       // NOTE: You'll have to change this if statement if the menu that contains 
       // events ever changes.
       if ($menu_link['menu_name'] == 'menu-crl-events') {
@@ -392,7 +391,7 @@ function crl_helpers_token_values($type, $object = NULL) {
         //$value_crl_menupath_raw = str_replace('Collaborations/Collaborative Digitization', 'Collaborative Digitization', $value_crl_menupath_raw);
       }
 
-      $values['crl-menupath-raw'] = $value_crl_menupath_raw;
+      $values['crl-menupath-raw'] = $value_crl_menupath_raw;    
       break;
   }
 
