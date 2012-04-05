@@ -27,8 +27,9 @@ function crl_access_by_ip_boot() {
   $mtime = $mtime[1] + $mtime[0];
   $user->crl_timer_start = $mtime; 
   $ip = ip_address();
-  // If we detect a crawler/spider, then don't run checks (no need for 
-  // the overhead in these cases), but log the hit.
+  
+  // CHECK FOR SPIDERS. If we detect a crawler/spider, then don't run checks 
+  // (no need for the overhead in these cases), but log the hit.
   if (crl_access_by_ip_check_if_spider()) {
     $member_data['member'] = 'nonmember';
     $member_data['id'] = 10002; // Crawler code
@@ -36,10 +37,46 @@ function crl_access_by_ip_boot() {
     $user->crl_member_data = $member_data;
     _crl_access_by_ip_stats(TRUE);
     return;
-  } 
-  // Check if we already have member access details stored in a cookie for this 
-  // user. This check will fail if their IP has changed since the last check, 
-  // and in this case we'll need to re-test thier ip (which is by design).
+  }
+  
+  // CHECK SPECIAL DENY CASES. Bypass any logic if we are emulating a nonmember.
+  $denied_users = variable_get('crl_access_by_ip_options_users_deny', '');
+  $denied_users_array = explode(',', trim($denied_users));
+  if ($_GET['emulate_nonmember'] || (!empty($denied_users_array[0]) && array_search($user->uid, $denied_users_array) !==  FALSE)) {
+    // Be sure to force the removal of our special member role (incase this role
+    // is directly assigned to a logged-in user).
+    if (array_key_exists(variable_get('crl_access_by_ip_options_roles', FALSE), $user->roles)) {
+      unset($user->roles[variable_get('crl_access_by_ip_options_roles', FALSE)]);
+    }
+    $conf['cache'] = CACHE_DISABLED; // Will only work with with dynamic_cache enabled!
+    drupal_set_message('You are currently emulating a user who <strong>failed</strong> the member IP check. The content that you see (with the exception of this message) represents what you would see if browsing from a nonmember IP. Please note that you may still have some "member" rights if your user account grants them to you directly.');
+    $member_data['member'] = 'nonmember';
+    $member_data['id'] = (int)10003; // EMULATED nonmember code
+    $member_data['name'] = 'na';
+    $user->crl_member_data = $member_data;
+    _crl_access_by_ip_stats(TRUE);
+    return;
+  }
+  
+  // CHECK SPECIAL GRANT CASES. Check to see if we should force the member role 
+  // based on another role
+  $grant_role_array = variable_get('crl_access_by_ip_options_roles_grant', array());
+  $intersect = array_intersect(array_flip($user->roles), array_flip($grant_role_array));
+  if (!empty($intersect)) {
+    $conf['cache'] = CACHE_DISABLED; // Will only work with with dynamic_cache enabled!
+    $user->roles[variable_get('crl_access_by_ip_options_roles', FALSE)] = "member";
+    $member_data['member'] = 'member';
+    $member_data['id'] = (int)10004; // Existing role-based access code
+    $member_data['name'] = 'na';
+    $user->crl_member_data = $member_data;
+    _crl_access_by_ip_stats(TRUE);
+    return;
+  }
+  
+  // TEST ACCESS BASED ON COOKIE. Check if we already have member access details 
+  // stored in a cookie for this user. This check will fail if their IP has 
+  // changed since the last check, and in this case we'll need to re-test thier 
+  // ip (which is by design).
   if (isset($_COOKIE['crl_member_data_key']) && isset($_COOKIE['crl_member_data'])) {
     // Confirm member data is valid for this IP.
     if (md5($_COOKIE['crl_member_data'] . $ip . CRL_COOKIE_SALT) == $_COOKIE['crl_member_data_key']) {
@@ -66,8 +103,10 @@ function crl_access_by_ip_boot() {
       }
     }
   }
-  // If we get here we don't have cookie-based member data for this user, so we
-  // have to run the full IP check to the DDS server.
+  
+  // TEST ACCESS BASED ON FULL IP LOOKUP. If we get here we don't have 
+  // cookie-based member data for this user, so we have to run the full IP check
+  // to the DDS server.
   require_once('./includes/common.inc'); // Needed as we are still in bootstrap
   $member_data = _crl_access_by_ip_check();
   $user->crl_member_data = $member_data;
@@ -188,7 +227,7 @@ function crl_access_by_ip_nodeapi(&$node, $op) {
         static $displayed_access_messages = FALSE;
         if (!$displayed_access_messages) {        
           if (is_object($views_page)) {
-            drupal_set_message(t("Some content listed below is only available to CRL members only with on-campus IP addresses or Proxy service."), error);
+            drupal_set_message(t("Some content listed below is only available to CRL members with on-campus IP addresses or Proxy service."), error);
           }
           else {
             drupal_set_message(t("Access to this resource is only available to CRL members with on-campus IP addresses or Proxy service."), error);
@@ -278,11 +317,24 @@ function crl_access_by_ip_form_alter(&$form, &$form_state, $form_id) {
       '#description' => t('The URL for IP validation'),
       );
     $form['crl_access_by_ip_options']['crl_access_by_ip_options_roles']  = array(
-      '#title' => t('Member Role'),
+      '#title' => t('Member role'),
       '#type' => 'select',
       '#options' => user_roles(),
       '#default_value' => variable_get('crl_access_by_ip_options_roles', 0),
       '#description' => t('Specify the member role that will be assigned to all users that pass the IP check (including anonmyous).'),
+      );
+    $form['crl_access_by_ip_options']['crl_access_by_ip_options_roles_grant']  = array(
+      '#title' => t('Roles that should always have member access'),
+      '#type' => 'checkboxes',
+      '#options' => user_roles(),
+      '#default_value' => variable_get('crl_access_by_ip_options_roles_grant', array()),
+      '#description' => t('Specify the roles that will always be granted the member role regardless of the IP check.'),
+      );
+    $form['crl_access_by_ip_options']['crl_access_by_ip_options_users_deny']  = array(
+      '#title' => t('Users that should never have member access'),
+      '#type' => 'textfield',
+      '#default_value' => variable_get('crl_access_by_ip_options_users_deny', ''),
+      '#description' => t('Specify the user IDs for any users that should never recieve the member role (comma separated list).'),
       );
   }
 }
