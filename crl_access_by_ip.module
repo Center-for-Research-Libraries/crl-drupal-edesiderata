@@ -188,10 +188,10 @@ function crl_access_by_ip_nodeapi(&$node, $op) {
         static $displayed_access_messages = FALSE;
         if (!$displayed_access_messages) {        
           if (is_object($views_page)) {
-            drupal_set_message(t("Some content listed below is only available to CRL members."), error);
+            drupal_set_message(t("Some content listed below is only available to CRL members only with on-campus IP addresses or Proxy service."), error);
           }
           else {
-            drupal_set_message(t("Access to this content is restricted for users who are not visiting this page from a CRL member institution."), error);
+            drupal_set_message(t("Access to this resource is only available to CRL members only with on-campus IP addresses or Proxy service."), error);
           }
           $displayed_access_messages = TRUE;
         }
