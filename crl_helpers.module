@@ -571,6 +571,7 @@ function crl_helpers_wysiwyg_editor_settings_alter(&$settings, $context) {
     //$settings['scayt_autoStartup'] = true;
     $settings['bodyClass'] = 'contents ckeditor_editor';
     $settings['bodyId'] = 'pagebody';
+    $setting['height'] = 200;
   }
 }
 

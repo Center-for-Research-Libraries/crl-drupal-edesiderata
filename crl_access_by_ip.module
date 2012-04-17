@@ -42,7 +42,7 @@ function crl_access_by_ip_boot() {
   // CHECK SPECIAL DENY CASES. Bypass any logic if we are emulating a nonmember.
   $denied_users = variable_get('crl_access_by_ip_options_users_deny', '');
   $denied_users_array = explode(',', trim($denied_users));
-  if ($_GET['emulate_nonmember'] || (!empty($denied_users_array[0]) && array_search($user->uid, $denied_users_array) !==  FALSE)) {
+  if (isset($_GET['emulate_nonmember']) || (!empty($denied_users_array[0]) && array_search($user->uid, $denied_users_array) !==  FALSE)) {
     // Be sure to force the removal of our special member role (incase this role
     // is directly assigned to a logged-in user).
     if (array_key_exists(variable_get('crl_access_by_ip_options_roles', FALSE), $user->roles)) {
