@@ -604,3 +604,60 @@ function crl_helpers_menu() {
   );
   return $items;
 }
+
+
+function crl_helpers_theme_registry_alter(&$theme_registry) {
+  if (!empty($theme_registry['node_add_list'])) {
+    $theme_registry['node_add_list']['function'] = 'theme_crl_helpers_node_add_list';
+  }
+}
+
+function theme_crl_helpers_node_add_list($content) {
+  $output = '';
+  if ($content) {
+    // Group types into multi-dimentional array
+    $grouped_items = array(0 => array('title' => 'Other'));
+    $groups = array(0 => 'Other');
+    foreach ($content as $c_type_key => $value) {
+      $title_parts = explode(':', $value['title']);
+      if (!empty($title_parts) && count($title_parts) == 2) {
+        $title_parts[0] = trim($title_parts[0]);
+        $value['title'] = str_replace($title_parts[0], '', $value['title']);
+        $value['title'] = trim(str_replace(':', '', $value['title']));
+        $group_key = array_search($title_parts[0], $groups);
+        if ($group_key) {
+          $grouped_items[$group_key]['types'][$c_type_key] = $value;
+        }
+        else {
+          $groups[] = $title_parts[0];
+          $groups_count = count($groups);
+          $grouped_items[]['types'] = array($c_type_key => $value);
+          $grouped_items[$groups_count - 1]['title'] = $title_parts[0];       
+        }
+      }
+      else {
+        $grouped_items[0]['types'][$c_type_key] = $value;
+      }
+    }
+    // Put "other" group at end
+    if (isset($grouped_items[0]['types'])) {
+      $other = $grouped_items[0];
+      unset($grouped_items[0]);
+      $grouped_items[] = $other;
+    }
+    else {
+      unset($grouped_items[0]);
+    }
+    // Render the grouped_items list
+    foreach ($grouped_items as $group) {
+      $output .= '<h2>' . $group['title'] . '</h2>';
+      $output .= '<dl class="node-type-list">';
+      foreach ($group['types'] as $item) {
+        $output .= '<dt>' . l($item['title'], $item['href'], $item['localized_options']) . '</dt>';
+        $output .= '<dd>' . filter_xss_admin($item['description']) . '</dd>';   
+      }
+      $output .= '</dl>';
+    }
+  }
+  return $output;
+}
