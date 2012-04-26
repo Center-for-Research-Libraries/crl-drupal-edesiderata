@@ -589,7 +589,7 @@ function crl_helpers_menu() {
     'description'      => 'Administer CRL Customizations.',
     'page callback'    => 'drupal_get_form',
     'page arguments'   => array('crl_admin_settings'),
-    'access arguments' => array('access administration pages'),
+    'access arguments' => array('administer site configuration'),
     'type'             => MENU_NORMAL_ITEM,
     'file' => 'crl_helpers.admin.inc',
   );
@@ -598,7 +598,7 @@ function crl_helpers_menu() {
     'description'      => 'Administer CRL Customizations.',
     'page callback'    => 'drupal_get_form',
     'page arguments'   => array('crl_admin_settings'),
-    'access arguments' => array('access administration pages'),
+    'access arguments' => array('administer site configuration'),
     'type'             => MENU_DEFAULT_LOCAL_TASK,
     'file' => 'crl_helpers.admin.inc',
   );
