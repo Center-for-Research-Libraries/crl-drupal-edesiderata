@@ -2,7 +2,7 @@
 
 
 // Set a 'salt' value that we can use for securing key data in cookie hashes
-define('CRL_COOKIE_SALT', '28hsY73Hdfs');
+define('CRL_COOKIE_SALT', '23dpY51Hsfs');
 // Set general crl cookie lifetime
 define('CRL_COOKIE_LIFETIME', 60*60*24*5);
 
@@ -20,12 +20,6 @@ define('CRL_COOKIE_LIFETIME', 60*60*24*5);
 function crl_access_by_ip_boot() {
   global $conf;
   global $user;
-  // Start a timer that we can use to see how long the member check process
-  // takes
-  $mtime = microtime();
-  $mtime = explode(" ",$mtime);
-  $mtime = $mtime[1] + $mtime[0];
-  $user->crl_timer_start = $mtime; 
   $ip = ip_address();
   
   // CHECK FOR SPIDERS. If we detect a crawler/spider, then don't run checks 
@@ -35,7 +29,7 @@ function crl_access_by_ip_boot() {
     $member_data['id'] = 10002; // Crawler code
     $member_data['name'] = 'crawler';
     $user->crl_member_data = $member_data;
-    _crl_access_by_ip_stats(TRUE);
+    $user->crl_member_data['cached'] = TRUE;
     return;
   }
   
@@ -52,9 +46,9 @@ function crl_access_by_ip_boot() {
     drupal_set_message('You are currently emulating a user who <strong>failed</strong> the member IP check. The content that you see (with the exception of this message) represents what you would see if browsing from a nonmember IP. Please note that you may still have some "member" rights if your user account grants them to you directly.');
     $member_data['member'] = 'nonmember';
     $member_data['id'] = (int)10003; // EMULATED nonmember code
-    $member_data['name'] = 'na';
+    $member_data['name'] = 'emulated nonmember';
     $user->crl_member_data = $member_data;
-    _crl_access_by_ip_stats(TRUE);
+    $user->crl_member_data['cached'] = TRUE;
     return;
   }
   
@@ -67,9 +61,9 @@ function crl_access_by_ip_boot() {
     $user->roles[variable_get('crl_access_by_ip_options_roles', FALSE)] = "member";
     $member_data['member'] = 'member';
     $member_data['id'] = (int)10004; // Existing role-based access code
-    $member_data['name'] = 'na';
+    $member_data['name'] = 'member based on role';
     $user->crl_member_data = $member_data;
-    _crl_access_by_ip_stats(TRUE);
+    $user->crl_member_data['cached'] = TRUE;
     return;
   }
   
@@ -87,19 +81,17 @@ function crl_access_by_ip_boot() {
           $member_data[$key] = strip_tags(htmlspecialchars($value));
         }
         $user->crl_member_data = $member_data;
+        $user->crl_member_data['cached'] = TRUE;
         // If we have a member, react accordingly.
         if ($member_data['member'] === 'member') {    
           // Be sure cache is disabled for this page and grant member role.
           $conf['cache'] = CACHE_DISABLED; // Will only work with with dynamic_cache enabled!
           $user->roles[variable_get('crl_access_by_ip_options_roles', FALSE)] = "member";
-          _crl_access_by_ip_stats(TRUE);
+          //_crl_access_by_ip_stats(TRUE);
           return;
         }
-        // If we don't have a member, just record stats.
-        else {
-          _crl_access_by_ip_stats(TRUE);
-          return;
-        }
+        // If we don't have a member, just return.
+        return;
       }
     }
   }
@@ -109,7 +101,6 @@ function crl_access_by_ip_boot() {
   // to the DDS server.
   require_once('./includes/common.inc'); // Needed as we are still in bootstrap
   $member_data = _crl_access_by_ip_check();
-  $user->crl_member_data = $member_data;
   // Set the cookie so we can recognize this user easier next time, but only
   // if there was not an error.
   if ($member_data['id'] != 10001) { // Error code
@@ -123,7 +114,42 @@ function crl_access_by_ip_boot() {
     $conf['cache'] = CACHE_DISABLED; // Will only work with with dynamic_cache enabled!
     $user->roles[variable_get('crl_access_by_ip_options_roles', FALSE)] = "member";
   }
-  _crl_access_by_ip_stats();
+  $user->crl_member_data = $member_data;
+  $user->crl_member_data['cached'] = FALSE;
+}
+
+
+/**
+ * Implementation of hook_exit().
+ * 
+ * Record stats in database
+ */
+function crl_access_by_ip_exit($destination = NULL) {
+  global $user;
+  $check_time = 0;
+  if (isset($user->crl_timer)) {
+    $check_time = $user->crl_timer;
+  }
+  $member_data = $user->crl_member_data;
+  // Check for 404 and set codes accordingly
+  if (strpos(drupal_get_headers(), "404 Not Found") !== FALSE) {
+    if ($member_data['member'] == 'nonmember') {
+      $member_data['id'] = 10005; // Nonmember 404 code
+      $member_data['name'] = 'nonmember 404';
+    }
+    else {
+      $member_data['id'] = 10006; // Member 404 code
+      $member_data['name'] = 'member 404';
+    }
+  }
+  $sql = '';
+  if ($member_data['cached']) {
+    $sql = 'INSERT INTO crl_member_hits (member_id, member_name, hits_cached, hits_not_cached, timer_cached, timer_not_cached) VALUES (' . $member_data['id'] . ', "' . $member_data['name'] . '", ' . 1 . ', ' . 0 . ', ' . $check_time . ', ' . 0 . ') ON DUPLICATE KEY UPDATE hits_cached = hits_cached + 1, timer_cached = timer_cached + ' . $check_time;
+  }
+  else {
+    $sql = 'INSERT INTO crl_member_hits (member_id, member_name, hits_cached, hits_not_cached, timer_cached, timer_not_cached) VALUES (' . $member_data['id'] . ', "' . $member_data['name'] . '", ' . 0 . ', ' . 1 . ', ' . 0 . ', ' . $check_time . ') ON DUPLICATE KEY UPDATE hits_not_cached = hits_not_cached + 1, timer_not_cached = timer_not_cached + ' . $check_time;
+  }
+  db_query($sql);
 }
 
 
@@ -142,6 +168,11 @@ function crl_access_by_ip_boot() {
  *
  */
 function _crl_access_by_ip_check() {
+  global $user;
+  // Start a timer that we can use to see how long the full check process takes
+  $mtime = microtime();
+  $mtime = explode(" ",$mtime);
+  $mtime = $mtime[1] + $mtime[0]; 
   // Prep the request.
   $ip = ip_address();
   $target_url = variable_get('crl_access_by_ip_options_url', NULL);
@@ -179,7 +210,7 @@ function _crl_access_by_ip_check() {
         if ($member_data['member'] == 'FALSE') { // KNOWN nonmember
           $member_data['member'] = 'nonmember'; // Convert
           $member_data['id'] = (int)10000; // KNOWN nonmember code
-          $member_data['name'] = 'na';
+          $member_data['name'] = 'known nonmember';
         }
         if ($member_data['member'] == 'TRUE') {
           $member_data['member'] = 'member'; // Convert
@@ -187,6 +218,10 @@ function _crl_access_by_ip_check() {
             $member_data['name'] = 'Center for Research Libraries';
           }
         }
+        $stime = microtime();
+        $stime = explode(" ",$stime);
+        $stime = $stime[1] + $stime[0];
+        $user->crl_timer = $stime - $mtime; 
         return $member_data;
       }  
     } 
@@ -195,7 +230,11 @@ function _crl_access_by_ip_check() {
   // data via our XHTML call.
   $member_data['member'] = 'nonmember';
   $member_data['id'] = 10001; // Error code
-  $member_data['name'] = 'na';
+  $member_data['name'] = 'error';
+  $stime = microtime();
+  $stime = explode(" ",$stime);
+  $stime = $stime[1] + $stime[0];
+  $user->crl_timer = $stime - $mtime; 
   return $member_data;
 }
 
@@ -240,26 +279,6 @@ function crl_access_by_ip_nodeapi(&$node, $op) {
       }
     }
   }
-}
-
-
-// Simple helper function to log stats about each hit to the DB.
-function _crl_access_by_ip_stats($cached = FALSE) {
-  // Stop the timer that checks how long the member check process takes
-  global $user;
-  $mtime = microtime();
-  $mtime = explode(" ",$mtime);
-  $mtime = $mtime[1] + $mtime[0];
-  $check_time = $mtime - $user->crl_timer_start;
-  $member_data = $user->crl_member_data;
-  $sql = '';
-  if ($cached) {
-    $sql = 'INSERT INTO crl_member_hits (member_id, member_name, hits_cached, hits_not_cached, timer_cached, timer_not_cached) VALUES (' . $member_data['id'] . ', "' . $member_data['name'] . '", ' . 1 . ', ' . 0 . ', ' . $check_time . ', ' . 0 . ') ON DUPLICATE KEY UPDATE hits_cached = hits_cached + 1, timer_cached = timer_cached + ' . $check_time;
-  }
-  else {
-    $sql = 'INSERT INTO crl_member_hits (member_id, member_name, hits_cached, hits_not_cached, timer_cached, timer_not_cached) VALUES (' . $member_data['id'] . ', "' . $member_data['name'] . '", ' . 0 . ', ' . 1 . ', ' . 0 . ', ' . $check_time . ') ON DUPLICATE KEY UPDATE hits_not_cached = hits_not_cached + 1, timer_not_cached = timer_not_cached + ' . $check_time;
-  }
-  db_query($sql);
 }
 
 
