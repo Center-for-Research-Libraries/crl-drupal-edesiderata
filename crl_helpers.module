@@ -143,14 +143,16 @@ function crl_helpers_is_topic_guide() {
 /**
  * Determines if the current page is a news or events page.
  */
-function crl_helpers_is_news_events_page(){
+function crl_helpers_is_news_events_page() {
   if (arg(0) == 'node') {
     $node = node_load(arg(1));
-    if ($node->type == 'news' || $node->type == 'event') {
-      return TRUE;
+    if (strpos(strtolower($node->type), 'news') !== FALSE) {
+      return 'News';
+    }
+    if (strpos(strtolower($node->type), 'event') !== FALSE) {
+      return 'Events';
     }
   }
-
   return FALSE;
 }
 
