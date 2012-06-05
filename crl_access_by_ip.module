@@ -126,30 +126,35 @@ function crl_access_by_ip_boot() {
  */
 function crl_access_by_ip_exit($destination = NULL) {
   global $user;
-  $check_time = 0;
-  if (isset($user->crl_timer)) {
-    $check_time = $user->crl_timer;
-  }
   $member_data = $user->crl_member_data;
-  // Check for 404 and set codes accordingly
-  if (strpos(drupal_get_headers(), "404 Not Found") !== FALSE) {
-    if ($member_data['member'] == 'nonmember') {
-      $member_data['id'] = 10005; // Nonmember 404 code
-      $member_data['name'] = 'nonmember 404';
+  // If $destination is populated it probably means that a redirect is happening
+  // (drupal_goto). In this case member data may not be available, so don't
+  // do any logging if so.
+  if (empty($destination) && !empty($member_data)) {
+    $check_time = 0;
+    if (isset($user->crl_timer)) {
+      $check_time = $user->crl_timer;
+    }
+    // Check for 404 and set codes accordingly
+    if (strpos(drupal_get_headers(), "404 Not Found") !== FALSE) {
+      if ($member_data['member'] == 'nonmember') {
+        $member_data['id'] = 10005; // Nonmember 404 code
+        $member_data['name'] = 'nonmember 404';
+      }
+      else {
+        $member_data['id'] = 10006; // Member 404 code
+        $member_data['name'] = 'member 404';
+      }
+    }
+    $sql = '';
+    if ($member_data['cached']) {
+      $sql = 'INSERT INTO crl_member_hits (member_id, member_name, hits_cached, hits_not_cached, timer_cached, timer_not_cached) VALUES (' . $member_data['id'] . ', "' . $member_data['name'] . '", ' . 1 . ', ' . 0 . ', ' . $check_time . ', ' . 0 . ') ON DUPLICATE KEY UPDATE hits_cached = hits_cached + 1, timer_cached = timer_cached + ' . $check_time;
     }
     else {
-      $member_data['id'] = 10006; // Member 404 code
-      $member_data['name'] = 'member 404';
+      $sql = 'INSERT INTO crl_member_hits (member_id, member_name, hits_cached, hits_not_cached, timer_cached, timer_not_cached) VALUES (' . $member_data['id'] . ', "' . $member_data['name'] . '", ' . 0 . ', ' . 1 . ', ' . 0 . ', ' . $check_time . ') ON DUPLICATE KEY UPDATE hits_not_cached = hits_not_cached + 1, timer_not_cached = timer_not_cached + ' . $check_time;
     }
+    db_query($sql);
   }
-  $sql = '';
-  if ($member_data['cached']) {
-    $sql = 'INSERT INTO crl_member_hits (member_id, member_name, hits_cached, hits_not_cached, timer_cached, timer_not_cached) VALUES (' . $member_data['id'] . ', "' . $member_data['name'] . '", ' . 1 . ', ' . 0 . ', ' . $check_time . ', ' . 0 . ') ON DUPLICATE KEY UPDATE hits_cached = hits_cached + 1, timer_cached = timer_cached + ' . $check_time;
-  }
-  else {
-    $sql = 'INSERT INTO crl_member_hits (member_id, member_name, hits_cached, hits_not_cached, timer_cached, timer_not_cached) VALUES (' . $member_data['id'] . ', "' . $member_data['name'] . '", ' . 0 . ', ' . 1 . ', ' . 0 . ', ' . $check_time . ') ON DUPLICATE KEY UPDATE hits_not_cached = hits_not_cached + 1, timer_not_cached = timer_not_cached + ' . $check_time;
-  }
-  db_query($sql);
 }
 
 
