@@ -1,9 +1,43 @@
 <?php
 
+
+/**
+ * Implementation of hook_menu().
+ * 
+ * This defines the top of the menu tree for all Drupal admin options.
+ */
+function crl_helpers_menu() {
+  $items = array();
+  $items['admin/settings/crl'] = array(
+    'title'            => 'CRL Customizations',
+    'description'      => 'Administer CRL Customizations.',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('crl_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+    'type'             => MENU_NORMAL_ITEM,
+    'file' => 'crl_helpers.admin.inc',
+  );
+  $items['admin/settings/crl/main'] = array(
+    'title'            => 'CRL Customizations',
+    'description'      => 'Administer CRL Customizations.',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('crl_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+    'type'             => MENU_DEFAULT_LOCAL_TASK,
+    'file' => 'crl_helpers.admin.inc',
+  );
+  return $items;
+}
+
+
+
+/*****************************************************************************
+ * Old context stuff. May have links to CRL theme
+ *****************************************************************************/
+
 // Some constants.  Perhaps these should be module settings at some point
 define('CRL_HELPERS_TOPIC_VID', 4); // The vocabulary ID of the 'Topic' 
                                     // taxonomy vocabulary.
-
 
 // Pages with path aliases matching these paths are considered landing pages
 // QUESTION: Is it best to implement this by matching paths or to look at the 
@@ -57,7 +91,7 @@ function crl_helpers_init() {
     drupal_add_js('Drupal.behaviors.tableHeader = function(){};', 'inline', 'footer');
   //}
   
-      // Customize the user login/register/password page titles
+    // Customize the user login/register/password page titles
     // Strings match the page titles as set in user_menu() so they are translated
     if (arg(0) == 'user' && arg(1) == 'register') {
       drupal_set_title(t('Register'));
@@ -81,7 +115,7 @@ function crl_helpers_init() {
  *
  * This implementation gets rid of the Sender and Errors-To headers.  
  * These headers are, by default, set to the the e-mail address specified
- * at /admin/settings/site-information.  The setting of these headers cause
+ * at /admin/settings/site-information. The setting of these headers cause
  * problems when trying to subscribe to a listserv as the result of a Webform
  * submission.
  *
@@ -456,84 +490,10 @@ function crl_helpers_get_topic_guide_topic_tid($node) {
   }
 }
 
-/**
- * Implementation of hook_menu_alter().
- */
-function crl_helpers_menu_alter(&$items) {
 
- $items['node/%node/track']['type'] = MENU_CALLBACK;
-
-
-
-
-  // Disable the default RSS feed.
-  unset($items['rss.xml']);
-}
-
-/**
- * Use the phpsniff library to determine if the client's browser is supported. 
- */
-function crl_helpers_is_unsupported_browser() {
-  static $is_unsupported_browser = NULL;
-  if (is_null($is_unsupported_browser)) {
-    $phpsniff_path = drupal_get_path('module', 'crl_helpers') . '/phpsniff/phpSniff.class.php';
-    if (file_exists($phpsniff_path)) { 
-      // Load the phpsniff library and use it.
-      require_once $phpsniff_path;
-      $client = new phpSniff($_REQUEST['UA']);
-
-      if ($client->browser_is('ie')) {
-        if ($client->browser_is('ie7+')) {
-          $is_unsupported_browser = FALSE;
-        }
-        else {
-          $is_unsupported_browser = TRUE;
-        }
-      }
-      else {
-        $is_unsupported_browser = FALSE;
-      }
-    }
-  }
-
-  return $is_unsupported_browser;
-}
-
-
-
-
-
-
-
-/**
-* This function adds a "reset" button to the views defined in $exposed_views
-* Implementation of hook_form_alter().
-*/
-function crl_helpers_form_alter(&$form, $form_state, $form_id) {
-  if ($form_id == 'views_exposed_form') {
-    $exposed_views = array('page_assignments');
-    if (in_array($form_state['view']->name, $exposed_views)) {
-      $current_display = $form_state['view']->current_display;
-      $form['reset'] = array(
-        '#type' => 'markup',
-        '#value' => '<input class="form-button" type="reset" value="Reset" onClick="javascript:window.location=\'/'. 
-          $form_state['view']->display[$current_display]->display_options['path'] .'\';" />',
-      );
-    }
-  }
-}
-
-
-
-
-
-function crl_truncate($name){
-	  $names = explode(" ", $name);
-	  $names[1] = substr($names[1], 0, 1);
-	  $edited = $names[0] . " " . $names[1] . ".";
-	  return $edited;
-}
-
+/*****************************************************************************
+ * Manage institution pick-lists
+ *****************************************************************************/
 
 /**
 * Implementation of hook_webform_select_options_info().
@@ -549,8 +509,15 @@ function crl_helpers_webform_select_options_info() {
 }
 
   
-// Callback to build institutions list from variable string.
+// Callback to build institutions list from variable string. This can be called 
+// though weboform hook and directly (default options on profile form, etc.).
 function crl_helpers_options_institutions_list() {
+  // If we are using salesforce integartion we will get the list from the
+  // variable that module populates
+  if (module_exists('crl_sf_sync')) {
+    return variable_get('crl_sf_sync_institutions_array', array());
+  }
+  // If not, we have to get the values from a statically maintained variable
   $institutions = variable_get('crl_institutions', 'key|value');
   $institutions_array = array();
   $lines = explode("\n", $institutions);
@@ -563,57 +530,18 @@ function crl_helpers_options_institutions_list() {
 }
 
 
-/**
- * Implementation of hook_wysiwyg_editor_settings_alter().
- * 
- * Quick method to override some global config.js settings for ckeditor
- */
-function crl_helpers_wysiwyg_editor_settings_alter(&$settings, $context) {
-  if ($context['profile']->editor == 'ckeditor') {
-    //$settings['scayt_autoStartup'] = true;
-    $settings['bodyClass'] = 'contents ckeditor_editor';
-    $settings['bodyId'] = 'pagebody';
-    $setting['height'] = 200;
-  }
-}
+/*****************************************************************************
+ * Add custom "grouped" structure to create content page
+ *****************************************************************************/
 
-
-
-/**
- * Implementation of hook_menu().
- * 
- * This defines the top of the menu tree for all Drupal admin options.
- */
-function crl_helpers_menu() {
-  $items = array();
-  $items['admin/settings/crl'] = array(
-    'title'            => 'CRL Customizations',
-    'description'      => 'Administer CRL Customizations.',
-    'page callback'    => 'drupal_get_form',
-    'page arguments'   => array('crl_admin_settings'),
-    'access arguments' => array('administer site configuration'),
-    'type'             => MENU_NORMAL_ITEM,
-    'file' => 'crl_helpers.admin.inc',
-  );
-  $items['admin/settings/crl/main'] = array(
-    'title'            => 'CRL Customizations',
-    'description'      => 'Administer CRL Customizations.',
-    'page callback'    => 'drupal_get_form',
-    'page arguments'   => array('crl_admin_settings'),
-    'access arguments' => array('administer site configuration'),
-    'type'             => MENU_DEFAULT_LOCAL_TASK,
-    'file' => 'crl_helpers.admin.inc',
-  );
-  return $items;
-}
-
-
+// Setup our own theme override for create content screen
 function crl_helpers_theme_registry_alter(&$theme_registry) {
   if (!empty($theme_registry['node_add_list'])) {
     $theme_registry['node_add_list']['function'] = 'theme_crl_helpers_node_add_list';
   }
 }
 
+// Theme override for create content screen
 function theme_crl_helpers_node_add_list($content) {
   $output = '';
   if ($content) {
@@ -664,6 +592,165 @@ function theme_crl_helpers_node_add_list($content) {
   return $output;
 }
 
+
+/*****************************************************************************
+ * Functionality for 2-level expanded menu blocks
+ *****************************************************************************/
+
+/**
+* Implementation of hook_menu_block_tree_alter().
+*/
+function crl_helpers_menu_block_tree_alter(&$tree, &$config) {
+  if (variable_get('crl_expand_menublock', FALSE) && !$config['expanded']) {
+    $tree = _crl_helpers_menu_tree_page_data($config['menu_name']);
+    // Set menu to be "expanded". We have already rendered the meny with the
+    // correct number of branches open via the call above, but we want menu
+    // block to think this menu is expanded from this point forward so that it
+    // does not do any trimming to the ends of our branches.
+    $config['expanded'] = TRUE;
+  }
+}
+
+// This function is essentially a small rewtire of the core 
+// menu_tree_page_data(). This verson has an addition that does one extra query
+// to gather all the children of the children of the current item and ensure
+// they are also added to the tree that is to be built.
+function _crl_helpers_menu_tree_page_data($menu_name = 'navigation') {
+  static $tree = array();
+
+  // Load the menu item corresponding to the current page.
+  if ($item = menu_get_item()) {
+    // Generate a cache ID (cid) specific for this page.
+    // $cid= 'links:'. $menu_name .':page-cid:'. $item['href'] .':'. (int)$item['access'];
+    $cid = 'links:'. $menu_name .'_special:page-cid:'. $item['href'] .':'. (int)$item['access'];
+
+    if (!isset($tree[$cid])) {
+      // If the static variable doesn't have the data, check {cache_menu}.
+      $cache = cache_get($cid, 'cache_menu');
+      if ($cache && isset($cache->data)) {
+        // If the cache entry exists, it will just be the cid for the actual data.
+        // This avoids duplication of large amounts of data.
+        $cache = cache_get($cache->data, 'cache_menu');
+        if ($cache && isset($cache->data)) {
+          $data = $cache->data;
+        }
+      }
+      // If the tree data was not in the cache, $data will be NULL.
+      if (!isset($data)) {
+        // Build and run the query, and build the tree.
+        if ($item['access']) {
+          // Check whether a menu link exists that corresponds to the current path.
+          $args = array($menu_name, $item['href']);
+          $placeholders = "'%s'";
+          if (drupal_is_front_page()) {
+            $args[] = '<front>';
+            $placeholders .= ", '%s'";
+          }
+          $parents = db_fetch_array(db_query("SELECT p1, p2, p3, p4, p5, p6, p7, p8 FROM {menu_links} WHERE menu_name = '%s' AND link_path IN (". $placeholders .")", $args));
+          if (empty($parents)) {
+            // If no link exists, we may be on a local task that's not in the links.
+            // TODO: Handle the case like a local task on a specific node in the menu.
+            $parents = db_fetch_array(db_query("SELECT p1, p2, p3, p4, p5, p6, p7, p8 FROM {menu_links} WHERE menu_name = '%s' AND link_path = '%s'", $menu_name, $item['tab_root']));
+          }
+          // We always want all the top-level links with plid == 0.
+          $parents[] = '0';
+
+          // Use array_values() so that the indices are numeric for array_merge().
+          $args = $parents = array_unique(array_values($parents));
+          $placeholders = implode(', ', array_fill(0, count($args), '%d'));
+          $expanded = variable_get('menu_expanded', array());
+          // Check whether the current menu has any links set to be expanded.
+          if (in_array($menu_name, $expanded)) {
+            // Collect all the links set to be expanded, and then add all of
+            // their children to the list as well.
+            do {
+              $result = db_query("SELECT mlid FROM {menu_links} WHERE menu_name = '%s' AND expanded = 1 AND has_children = 1 AND plid IN (". $placeholders .') AND mlid NOT IN ('. $placeholders .')', array_merge(array($menu_name), $args, $args));
+              $num_rows = FALSE;
+              while ($item = db_fetch_array($result)) {
+                $args[] = $item['mlid'];
+                $num_rows = TRUE;
+              }
+              $placeholders = implode(', ', array_fill(0, count($args), '%d'));
+            } while ($num_rows);
+          }
+          array_unshift($args, $menu_name);
+          
+          // Begin addition to initial function ------------------------------
+          // Set an extra level to be expanded. We do this by adding the mlids
+          // of the CHILDREN of our current item to the arg list
+          $current_item = array_pop(menu_get_active_trail());
+          $current_mlid = $current_item['mlid'];
+          // Get children of current item that have children
+          $result2 = db_query("SELECT mlid FROM {menu_links} WHERE menu_name = '" . $menu_name . "' AND has_children = 1 AND plid = " . $current_mlid . " AND mlid != " . $current_mlid);
+          while ($item2 = db_fetch_array($result2)) {
+            // Make sure the mlid wasn't already added as an "expanded" item
+            // from above, and if not, add to args.
+            if (!in_array($item2['mlid'], $args)) {
+              $args[] = $item2['mlid'];
+            }
+          }
+          // Also re-adjust placeholders to accomodate any new arg additions
+
+          $placeholders = implode(', ', array_fill(0, count($args), '%d'));          
+          // End adddition to initial function --------------------------------
+             
+        }
+        else {
+          // Show only the top-level menu items when access is denied.
+          $args = array($menu_name, '0');
+          $placeholders = '%d';
+          $parents = array();
+        }
+        // Select the links from the table, and recursively build the tree. We
+        // LEFT JOIN since there is no match in {menu_router} for an external
+        // link.
+        $data['tree'] = menu_tree_data(db_query("
+          SELECT m.load_functions, m.to_arg_functions, m.access_callback, m.access_arguments, m.page_callback, m.page_arguments, m.title, m.title_callback, m.title_arguments, m.type, m.description, ml.*
+          FROM {menu_links} ml LEFT JOIN {menu_router} m ON m.path = ml.router_path
+          WHERE ml.menu_name = '%s' AND ml.plid IN (". $placeholders .")
+          ORDER BY p1 ASC, p2 ASC, p3 ASC, p4 ASC, p5 ASC, p6 ASC, p7 ASC, p8 ASC, p9 ASC", $args), $parents);
+        $data['node_links'] = array();
+        menu_tree_collect_node_links($data['tree'], $data['node_links']);
+        // Cache the data, if it is not already in the cache.
+        $tree_cid = _menu_tree_cid($menu_name, $data);
+        if (!cache_get($tree_cid, 'cache_menu')) {
+          cache_set($tree_cid, $data, 'cache_menu');
+        }
+        // Cache the cid of the (shared) data using the page-specific cid.
+        cache_set($cid, $tree_cid, 'cache_menu');
+        //cache_set($cid_old, $tree_cid, 'cache_menu');
+      }
+      // Check access for the current user to each item in the tree.
+      menu_tree_check_access($data['tree'], $data['node_links']);
+      $tree[$cid] = $data['tree'];
+    }
+    return $tree[$cid];
+  }
+
+  return array();
+}
+
+
+/*****************************************************************************
+ * Misc Helpers (Isolated functions)
+ *****************************************************************************/
+
+
+/**
+ * Implementation of hook_wysiwyg_editor_settings_alter().
+ * 
+ * Quick method to override some global config.js settings for ckeditor
+ */
+function crl_helpers_wysiwyg_editor_settings_alter(&$settings, $context) {
+  if ($context['profile']->editor == 'ckeditor') {
+    //$settings['scayt_autoStartup'] = true;
+    $settings['bodyClass'] = 'contents ckeditor_editor';
+    $settings['bodyId'] = 'pagebody';
+    $setting['height'] = 200;
+  }
+}
+
+
 /* Use nodeapi to check for badly formatted links upon each page save and
  * preview (catch internal links that are formatted as external links).
  */
@@ -702,4 +789,72 @@ function crl_helpers_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       drupal_set_message($message, 'warning');
     }
   }
+}
+
+
+/**
+ * Implementation of hook_menu_alter().
+ */
+function crl_helpers_menu_alter(&$items) {
+  $items['node/%node/track']['type'] = MENU_CALLBACK;
+  // Disable the default RSS feed.
+  unset($items['rss.xml']);
+}
+
+
+/**
+ * Use the phpsniff library to determine if the client's browser is supported. 
+ */
+function crl_helpers_is_unsupported_browser() {
+  static $is_unsupported_browser = NULL;
+  if (is_null($is_unsupported_browser)) {
+    $phpsniff_path = drupal_get_path('module', 'crl_helpers') . '/phpsniff/phpSniff.class.php';
+    if (file_exists($phpsniff_path)) { 
+      // Load the phpsniff library and use it.
+      require_once $phpsniff_path;
+      $client = new phpSniff($_REQUEST['UA']);
+
+      if ($client->browser_is('ie')) {
+        if ($client->browser_is('ie7+')) {
+          $is_unsupported_browser = FALSE;
+        }
+        else {
+          $is_unsupported_browser = TRUE;
+        }
+      }
+      else {
+        $is_unsupported_browser = FALSE;
+      }
+    }
+  }
+
+  return $is_unsupported_browser;
+}
+
+
+/**
+* This function adds a "reset" button to the views defined in $exposed_views
+* Implementation of hook_form_alter().
+*/
+function crl_helpers_form_alter(&$form, $form_state, $form_id) {
+  if ($form_id == 'views_exposed_form') {
+    $exposed_views = array('page_assignments');
+    if (in_array($form_state['view']->name, $exposed_views)) {
+      $current_display = $form_state['view']->current_display;
+      $form['reset'] = array(
+        '#type' => 'markup',
+        '#value' => '<input class="form-button" type="reset" value="Reset" onClick="javascript:window.location=\'/'. 
+          $form_state['view']->display[$current_display]->display_options['path'] .'\';" />',
+      );
+    }
+  }
+}
+
+
+// Jelper truncate function
+function crl_truncate($name){
+	  $names = explode(" ", $name);
+	  $names[1] = substr($names[1], 0, 1);
+	  $edited = $names[0] . " " . $names[1] . ".";
+	  return $edited;
 }

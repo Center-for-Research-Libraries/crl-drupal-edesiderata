@@ -5,9 +5,22 @@ function crl_admin_settings() {
 
   $form['crl_admin_description'] = array(
     '#type' => 'markup',
-    '#value' => t('The options on this form provide ways to customize various case-specific CRL functionality') . "<br/><br/>"
+    '#value' => t('The options on this form provide ways to customize various case-specific CRL functionality') . "<br/><br/>"   
   );
-  $form['crl_institution_options'] = array(
+  $form['crl_general'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('General'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#weight' => -1,
+    );
+    $form['crl_general']['crl_expand_menublock'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Expand Menublocks an Extra Level'),
+      '#description' => t('Expand all menu blocks <em>2 levels past the current</em> by default instead of 1 (when not already set to be fully expanded).'),
+      '#default_value' => variable_get('crl_expand_menublock', FALSE),
+    );
+  /*$form['crl_institution_options'] = array(
     '#type' => 'fieldset',
     '#title' => t('Institution List Management'),
     '#description' => t('Options related to the central management of Institution select options'),
@@ -20,7 +33,7 @@ function crl_admin_settings() {
       '#default_value' => variable_get('crl_institutions', NULL),
       '#description' => t('The master list of CRL institutions, in key|value pairs. This list is automatically used by webform components and CCK fields that are configured to be CRL institution select lists. <strong>Note that the order of items in this list represents the order that users will see in their selection pulldowns.<strong>'),
       '#element_validate' => array('_crl_helpers_edit_validate_select'),
-    );
+    ); */
   return system_settings_form($form);
 }
 
