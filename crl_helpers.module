@@ -681,17 +681,18 @@ function _crl_helpers_menu_tree_page_data($menu_name = 'navigation') {
           $current_item = array_pop(menu_get_active_trail());
           $current_mlid = $current_item['mlid'];
           // Get children of current item that have children
-          $result2 = db_query("SELECT mlid FROM {menu_links} WHERE menu_name = '" . $menu_name . "' AND has_children = 1 AND plid = " . $current_mlid . " AND mlid != " . $current_mlid);
-          while ($item2 = db_fetch_array($result2)) {
-            // Make sure the mlid wasn't already added as an "expanded" item
-            // from above, and if not, add to args.
-            if (!in_array($item2['mlid'], $args)) {
-              $args[] = $item2['mlid'];
+          if (!empty($current_mlid)) {
+            $result2 = db_query("SELECT mlid FROM {menu_links} WHERE menu_name = '" . $menu_name . "' AND has_children = 1 AND plid = " . $current_mlid . " AND mlid != " . $current_mlid);
+            while ($item2 = db_fetch_array($result2)) {
+              // Make sure the mlid wasn't already added as an "expanded" item
+              // from above, and if not, add to args.
+              if (!in_array($item2['mlid'], $args)) {
+                $args[] = $item2['mlid'];
+              }
             }
+            // Also re-adjust placeholders to accomodate any new arg additions
+            $placeholders = implode(', ', array_fill(0, count($args), '%d')); 
           }
-          // Also re-adjust placeholders to accomodate any new arg additions
-
-          $placeholders = implode(', ', array_fill(0, count($args), '%d'));          
           // End adddition to initial function --------------------------------
              
         }
