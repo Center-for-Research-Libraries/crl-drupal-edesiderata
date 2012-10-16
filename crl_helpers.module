@@ -786,7 +786,7 @@ function crl_helpers_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       }
     }
     // If we found "bad" links, set a message to the editor
-    if (!empty($bad_links)) { 
+    if (!empty($bad_links) && $node->created > 1349049600) { // Created after Oct 1, 2012
       $message = t('<strong>Warning:</strong> The <em>internal</em> links listed below appear to be formatted incorrectly. Please consider revising these links so that they use an <em>internal</em> path structure. For page links the internal path structure is shown in green text at the bottom of the page that you want to link to, and for file links and images you may need to simply exclude the "http://www.crl.edu" part. This is just a notice, not an indication that anything is "broken".<ul>');
       foreach($bad_links as $field => $value) {
         $field = str_replace('field_', '', $field);
