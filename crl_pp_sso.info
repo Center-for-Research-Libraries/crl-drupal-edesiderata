@@ -1,0 +1,8 @@
+; $Id$
+name = CRL Purchase Proposal SSO
+description = Provides pseudo-sso integration with the Purchase Proposal website.
+core = 6.x
+dependencies[] = crl_helpers
+package = CRL
+
+

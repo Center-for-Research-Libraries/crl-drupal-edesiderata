@@ -1,0 +1,161 @@
+<?php
+
+define('CRL_PP_TOKEN_SALT', "Hkui8lhL");
+
+
+/**
+ * Implementation of hook_menu().
+ * 
+ */
+function crl_pp_sso_menu() {
+  $items = array();
+  // Special "traffic control" page for Purchase Proposal SSO.
+  $items['pp-sso'] = array(
+    'title'            => 'CRL Purchase Proposal Access',
+    'description'      => '',
+    'page callback'    => 'crl_pp_sso_direct',
+    'access arguments' => array('access content'),
+    'type'             => MENU_CALLBACK,
+  );
+  // Admin pages for this module
+  $items['admin/settings/crl/pp-sso'] = array(
+    'title'            => 'Purchase Proposal SSO',
+    'description'      => '',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('crl_pp_sso_settings'),
+    'access arguments' => array('administer site configuration'),
+    'type'             => MENU_LOCAL_TASK,
+  );
+  $items['admin/settings/crl/pp-sso/main'] = array(
+    'title'            => 'Settings',
+    'description'      => '',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('crl_pp_sso_settings'),
+    'access arguments' => array('administer site configuration'),
+    'type'             => MENU_DEFAULT_LOCAL_TASK,
+  );
+  $items['admin/settings/crl/pp-sso/validate'] = array(
+    'title'            => 'Validate',
+    'description'      => '',
+    'page callback'    => 'crl_pp_sso_validate',
+    'access arguments' => array('administer site configuration'),
+    'type'             => MENU_LOCAL_TASK,
+  );
+  return $items;
+}
+
+
+// Callback meny function that acts as "traffic control" for PP SSO.
+function crl_pp_sso_direct() {
+  global $user;
+  $user_maps = variable_get('crl_pp_sso_user_map', 'key|value');
+  $user_maps_array = array();
+  $lines = explode("\n", $user_maps);
+  foreach ($lines as $line) {
+    $line = trim($line);
+    list($key, $value) = explode("|", $line);
+    $user_maps_array += array($key => $value);
+  }
+  if ($user->uid) {
+    $match = array_search($user->uid, $user_maps_array);
+    if ($match !== FALSE) {
+      $ip = ip_address();
+      // @TODO: Remove... for testing environemnts set a working ip
+      if ($ip == '::1' || $ip == '127.0.0.1') {
+        $ip = '192.168.1.92';
+      }
+      $token = md5($ip . $match . CRL_PP_TOKEN_SALT);
+      $link = variable_get('crl_pp_sso_remote_url', 'http://www-apps.crl.edu/content/pp/ballot2.asp') . '?inst=' . $match . '&token=' . $token;
+      if (!$_GET['stop']) {
+        drupal_goto($link);
+      }
+      drupal_set_message(t("Remote login attempted at www-apps.crl.edu, but it was rejected. <a href='/pp-sso'>Try again</a>"), 'error');
+    }
+    $message = t("Message for users who are logged-in but can't access PP goes here");
+  }
+  else {
+    $message = t("Message for non-logged-in users goes here");;
+  }
+  $new_js = 'jQuery("form#user-login-form .item-list .last a").attr("href", "user/password?destination=pp-sso");';
+  drupal_add_js($new_js, 'inline', 'footer');
+  return $message;
+}
+
+// Callback function for main settings form
+function crl_pp_sso_settings() {
+  $form['crl_pp_sso'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Purchase Proposal SSO'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#weight' => -1,
+  );
+    $form['crl_pp_sso']['crl_pp_sso_remote_url'] = array(
+      '#title' => t('Purchase Proposal (PP) Remote URL'),
+      '#type' => 'textfield',
+      '#default_value' => variable_get('crl_pp_sso_remote_url', 'http://www-apps.crl.edu/content/pp/ballot2.asp'),
+      '#description' => t('The PP URL that Drupal should redirect users to upon successful credential check (with remote login query paramaters).'),
+    );
+    $form['crl_pp_sso']['crl_pp_sso_user_map'] = array(
+      '#title' => t('User to Purchase Proposal (PP) Institution Mappings'),
+      '#type' => 'textarea',
+      '#default_value' => variable_get('crl_pp_sso_user_map', 'key|value'),
+      '#description' => t('key|value pairs where the key matches the PP insitiution ID and the value matches the local Drupal user ID that is the PP user for the keyed institution.'),
+      '#element_validate' => array('_crl_helpers_edit_validate_select'),
+    );
+  return system_settings_form($form);
+}
+
+function crl_pp_sso_validate() {
+  $user_maps = variable_get('crl_pp_sso_user_map', 'key|value');
+  $user_maps_array = array();
+  $lines = explode("\n", $user_maps);
+  foreach ($lines as $line) {
+    $line = trim($line);
+    list($key, $value) = explode("|", $line);
+    $user_maps_array += array($key => $value);
+  }
+  $header = array(t('PP Inst ID'), t('Drupal User ID'), t("Drupal Status"), t('Drupal eMail'), t('Test PP Login Link'));
+  $rows = array();
+  foreach ($user_maps_array as $key => $value) {
+    $d_error = FALSE;
+    if (!is_numeric($key) || !is_numeric($value)) {
+      $d_error = t("Non-numeric value for ID");
+    }
+    else {
+      $user = user_load($value);
+      if ($user === FALSE) {
+        $d_error = t("Not a valid Drupal user");
+      }
+    }
+    if ($d_error) {
+      $status = '<strong style="color: red;">' . $d_error . '</strong>';
+      $mail = $link = "";
+    }
+    else {
+      $status = '<strong style="color: green;">OK</strong>';
+      $mail = $user->mail;
+      $name = $user->name;
+      $ip = ip_address();
+      // @TODO: Remove... for testing environemnts set a working ip
+      if ($ip == '::1' || $ip == '127.0.0.1') {
+        $ip = '192.168.1.92';
+      }
+      $token = md5($ip . $key . CRL_PP_TOKEN_SALT);
+      $link = variable_get('crl_pp_sso_remote_url', 'http://www-apps.crl.edu/content/pp/ballot2.asp') . '?inst=' . $key . '&token=' . $token;
+      $link = l(t('link'), $link, array('attributes' => array('target' => '_blank')));
+    }
+    $rows[] = array(
+      'data' => array(
+        $key,
+        $value,
+        $status,
+        $mail,
+        $link,
+      ),
+    );  
+  }
+  $output = theme('table', $header, $rows);
+  $output .= "<br/><br/>";
+  return $output;
+}

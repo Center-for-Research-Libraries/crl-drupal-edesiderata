@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Implementation of hook_menu().
  * 
@@ -24,40 +23,6 @@ function crl_helpers_menu() {
     'page arguments'   => array('crl_admin_settings'),
     'access arguments' => array('administer site configuration'),
     'type'             => MENU_DEFAULT_LOCAL_TASK,
-    'file' => 'crl_helpers.admin.inc',
-  );
-  // Special "traffic control" page for Purchase Proposal SSO.
-  $items['pp-sso'] = array(
-    'title'            => 'CRL Purchase Proposal Access',
-    'description'      => '',
-    'page callback'    => 'crl_helpers_pp_sso',
-    'access arguments' => array('access content'),
-    'type'             => MENU_CALLBACK,
-  );
-  $items['admin/settings/crl/pp-sso'] = array(
-    'title'            => 'Purchase Proposal SSO',
-    'description'      => '',
-    'page callback'    => 'drupal_get_form',
-    'page arguments'   => array('crl_helpers_pp_sso_settings'),
-    'access arguments' => array('administer site configuration'),
-    'type'             => MENU_LOCAL_TASK,
-     'file' => 'crl_helpers.admin.inc',
-  );
-  $items['admin/settings/crl/pp-sso/main'] = array(
-    'title'            => 'Settings',
-    'description'      => '',
-    'page callback'    => 'drupal_get_form',
-    'page arguments'   => array('crl_helpers_pp_sso_settings'),
-    'access arguments' => array('administer site configuration'),
-    'type'             => MENU_DEFAULT_LOCAL_TASK,
-     'file' => 'crl_helpers.admin.inc',
-  );
-  $items['admin/settings/crl/pp-sso/validate'] = array(
-    'title'            => 'Validate',
-    'description'      => '',
-    'page callback'    => 'crl_helpers_pp_sso_validate',
-    'access arguments' => array('administer site configuration'),
-    'type'             => MENU_LOCAL_TASK,
     'file' => 'crl_helpers.admin.inc',
   );
   return $items;
@@ -883,42 +848,6 @@ function crl_helpers_form_alter(&$form, $form_state, $form_id) {
       );
     }
   }
-}
-
-
-// Callback meny function that acts as "traffic control" for PP SSO.
-function crl_helpers_pp_sso() {
-  global $user;
-  $pp_salt = "Hkui8lhL";
-  $user_maps = variable_get('crl_pp_sso_user_map', 'key|value');
-  $user_maps_array = array();
-  $lines = explode("\n", $user_maps);
-  foreach ($lines as $line) {
-    $line = trim($line);
-    list($key, $value) = explode("|", $line);
-    $user_maps_array += array($key => $value);
-  }
-  if ($user->uid) {
-    $match = array_search($user->uid, $user_maps_array);
-    if ($match !== FALSE) {
-      $ip = ip_address();
-      // @TODO: Remove... for testing environemnts set a working ip
-      if ($ip == '::1' || $ip == '127.0.0.1') {
-        $ip = '192.168.1.92';
-      }
-      $token = md5($ip . $match . $pp_salt);
-      $link = variable_get('crl_pp_sso_remote_url', 'http://www-apps.crl.edu/content/pp/ballot2.asp') . '?inst=' . $match . '&token=' . $token;
-      drupal_goto($link);
-      //$message = 'your login is:<br/><a href="' . $link . '">' . $link . '</a>';
-    }
-    else {
-      $message = t("Message for users who are logged-in but can't access PP goes here");
-    }
-  }
-  else {
-    $message = t("Message for non-logged-in users goes here");;
-  }
-  return $message;
 }
 
 

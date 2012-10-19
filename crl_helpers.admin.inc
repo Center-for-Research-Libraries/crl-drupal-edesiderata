@@ -24,31 +24,6 @@ function crl_admin_settings() {
 }
 
 
-function crl_helpers_pp_sso_settings() {
-  $form['crl_pp_sso'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Purchase Proposal SSO'),
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-    '#weight' => -1,
-  );
-    $form['crl_pp_sso']['crl_pp_sso_remote_url'] = array(
-      '#title' => t('Purchase Proposal (PP) Remote URL'),
-      '#type' => 'textfield',
-      '#default_value' => variable_get('crl_pp_sso_remote_url', 'http://www-apps.crl.edu/content/pp/ballot2.asp'),
-      '#description' => t('The PP URL that Drupal should redirect users to upon successful credential check (with remote login query paramaters).'),
-    );
-    $form['crl_pp_sso']['crl_pp_sso_user_map'] = array(
-      '#title' => t('User to Purchase Proposal (PP) Institution Mappings'),
-      '#type' => 'textarea',
-      '#default_value' => variable_get('crl_pp_sso_user_map', 'key|value'),
-      '#description' => t('key|value pairs where the key matches the PP insitiution ID and the value matches the local Drupal user ID that is the PP user for the keyed institution.'),
-      '#element_validate' => array('_crl_helpers_edit_validate_select'),
-    );
-  return system_settings_form($form);
-}
-
-
 /**
  * Element validation callback. Ensure keys are not duplicated.
  * This is taken straight from select.ini in the webform module.
@@ -105,61 +80,5 @@ function _crl_helpers_edit_validate_select($element, &$form_state) {
   }
 
   return TRUE;
-}
-
-function crl_helpers_pp_sso_validate() {
-  $pp_salt = "Hkui8lhL";
-  $user_maps = variable_get('crl_pp_sso_user_map', 'key|value');
-  $user_maps_array = array();
-  $lines = explode("\n", $user_maps);
-  foreach ($lines as $line) {
-    $line = trim($line);
-    list($key, $value) = explode("|", $line);
-    $user_maps_array += array($key => $value);
-  }
-  $header = array(t('PP Inst ID'), t('Drupal User ID'), t("Drupal Status"), t('Drupal eMail'), t('Drupal Username'), t('Test PP Login Link'));
-  $rows = array();
-  foreach ($user_maps_array as $key => $value) {
-    $d_error = FALSE;
-    if (!is_numeric($key) || !is_numeric($value)) {
-      $d_error = t("Non-numeric value for ID");
-    }
-    else {
-      $user = user_load($value);
-      if ($user === FALSE) {
-        $d_error = t("Not a valid Drupal user");
-      }
-    }
-    if ($d_error) {
-      $status = '<strong style="color: red;">' . $d_error . '</strong>';
-      $mail = $name = $link = "";
-    }
-    else {
-      $status = '<strong style="color: green;">OK</strong>';
-      $mail = $user->mail;
-      $name = $user->name;
-      $ip = ip_address();
-      // @TODO: Remove... for testing environemnts set a working ip
-      if ($ip == '::1' || $ip == '127.0.0.1') {
-        $ip = '192.168.1.92';
-      }
-      $token = md5($ip . $key . $pp_salt);
-      $link = variable_get('crl_pp_sso_remote_url', 'http://www-apps.crl.edu/content/pp/ballot2.asp') . '?inst=' . $key . '&token=' . $token;
-      $link = l($link, $link, array('attributes' => array('target' => '_blank')));
-    }
-    $rows[] = array(
-      'data' => array(
-        $key,
-        $value,
-        $status,
-        $mail,
-        $name,
-        $link,
-      ),
-    );  
-  }
-  $output = theme('table', $header, $rows);
-  $output .= "<br/><br/>";
-  return $output;
 }
 
