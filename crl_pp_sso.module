@@ -1,7 +1,9 @@
 <?php
 
 define('CRL_PP_TOKEN_SALT', "Hkui8lhL");
-
+// Set a default value to use for the IP if some form of localhost is detected.
+// This is really just used for testing purposes on development machines
+define('CRL_PP_SSO_LOCALHOST_IP', '192.168.1.92');
 
 /**
  * Implementation of hook_menu().
@@ -45,7 +47,7 @@ function crl_pp_sso_menu() {
 }
 
 
-// Callback meny function that acts as "traffic control" for PP SSO.
+// Callback meny function that acts as public "traffic control" for PP SSO.
 function crl_pp_sso_direct() {
   global $user;
   $user_maps = variable_get('crl_pp_sso_user_map', 'key|value');
@@ -60,9 +62,8 @@ function crl_pp_sso_direct() {
     $match = array_search($user->uid, $user_maps_array);
     if ($match !== FALSE) {
       $ip = ip_address();
-      // @TODO: Remove... for testing environemnts set a working ip
       if ($ip == '::1' || $ip == '127.0.0.1') {
-        $ip = '192.168.1.92';
+        $ip = CRL_PP_SSO_LOCALHOST_IP;
       }
       $token = md5($ip . $match . CRL_PP_TOKEN_SALT);
       $link = variable_get('crl_pp_sso_remote_url', 'http://www-apps.crl.edu/content/pp/ballot2.asp') . '?inst=' . $match . '&token=' . $token;
@@ -96,6 +97,12 @@ function crl_pp_sso_settings() {
       '#default_value' => variable_get('crl_pp_sso_remote_url', 'http://www-apps.crl.edu/content/pp/ballot2.asp'),
       '#description' => t('The PP URL that Drupal should redirect users to upon successful credential check (with remote login query paramaters).'),
     );
+    $form['crl_pp_sso']['crl_pp_sso_remote_validate_url'] = array(
+      '#title' => t('Purchase Proposal (PP) Remote SSO Validate URL'),
+      '#type' => 'textfield',
+      '#default_value' => variable_get('crl_pp_sso_remote_validate_url', 'http://www-apps.crl.edu/content/pp/sso-validate.asp'),
+      '#description' => t('The PP URL that Drupal should use to validate the details of an institution ID (via pseudo-RPC call). This is used when rendering the "validate" page.'),
+    );
     $form['crl_pp_sso']['crl_pp_sso_user_map'] = array(
       '#title' => t('User to Purchase Proposal (PP) Institution Mappings'),
       '#type' => 'textarea',
@@ -106,6 +113,7 @@ function crl_pp_sso_settings() {
   return system_settings_form($form);
 }
 
+// Callback to build the settings page that "validates" all the sso settings
 function crl_pp_sso_validate() {
   $user_maps = variable_get('crl_pp_sso_user_map', 'key|value');
   $user_maps_array = array();
@@ -115,7 +123,7 @@ function crl_pp_sso_validate() {
     list($key, $value) = explode("|", $line);
     $user_maps_array += array($key => $value);
   }
-  $header = array(t('PP Inst ID'), t('Drupal User ID'), t("Drupal Status"), t('Drupal eMail'), t('Test PP Login Link'));
+  $header = array(t('PP Inst ID'), t('Drupal User ID'), t('PP SSO Status'), t('Drupal eMail'), t('PP Inst Name'), t('PP Voting Status'), t('PP Simulate Login Link'));
   $rows = array();
   foreach ($user_maps_array as $key => $value) {
     $d_error = FALSE;
@@ -125,25 +133,33 @@ function crl_pp_sso_validate() {
     else {
       $user = user_load($value);
       if ($user === FALSE) {
-        $d_error = t("Not a valid Drupal user");
+        $d_error = t("Invalid Drupal user");
       }
     }
     if ($d_error) {
       $status = '<strong style="color: red;">' . $d_error . '</strong>';
-      $mail = $link = "";
+      $mail = $login_link = $inst_name = $draft_status = "";
     }
-    else {
-      $status = '<strong style="color: green;">OK</strong>';
+    else { // Drupal detail are happy
       $mail = $user->mail;
       $name = $user->name;
-      $ip = ip_address();
-      // @TODO: Remove... for testing environemnts set a working ip
-      if ($ip == '::1' || $ip == '127.0.0.1') {
-        $ip = '192.168.1.92';
+      $validate_response = _crl_pp_sso_remote_validate($key);
+      if ($validate_response['inst_name'] && $validate_response['draft_status']) { // SSO Link works
+        $status = '<strong style="color: green;">OK</strong>';
+        $inst_name = check_markup($validate_response['inst_name']);
+        $draft_status = check_markup($validate_response['draft_status']);
+        $ip = ip_address();
+        if ($ip == '::1' || $ip == '127.0.0.1') {
+          $ip = CRL_PP_SSO_LOCALHOST_IP;
+        }
+        $token = md5($ip . $key . CRL_PP_TOKEN_SALT);
+        $login_link = variable_get('crl_pp_sso_remote_url', 'http://www-apps.crl.edu/content/pp/ballot2.asp') . '?inst=' . $key . '&token=' . $token;
+        $login_link = l(t('link'), $login_link, array('attributes' => array('target' => '_blank')));
       }
-      $token = md5($ip . $key . CRL_PP_TOKEN_SALT);
-      $link = variable_get('crl_pp_sso_remote_url', 'http://www-apps.crl.edu/content/pp/ballot2.asp') . '?inst=' . $key . '&token=' . $token;
-      $link = l(t('link'), $link, array('attributes' => array('target' => '_blank')));
+      else {
+        $status = '<strong style="color: red;">' . t("Invalid PP Inst ID") . '</strong>';
+        $inst_name = $draft_status = $login_link = "";
+      }
     }
     $rows[] = array(
       'data' => array(
@@ -151,11 +167,61 @@ function crl_pp_sso_validate() {
         $value,
         $status,
         $mail,
-        $link,
+        $inst_name,
+        $draft_status,
+        $login_link,
       ),
     );  
   }
   $output = theme('table', $header, $rows);
   $output .= "<br/><br/>";
   return $output;
+}
+
+
+// Run validation check to PPP server that includes query string "SSO" login.
+function _crl_pp_sso_remote_validate($inst_id) {
+  // Prep the request.
+  $host_ip = $_SERVER['SERVER_ADDR'];
+  if ($host_ip == '::1' || $host_ip == '127.0.0.1') {
+    $host_ip = CRL_PP_SSO_LOCALHOST_IP;
+  }
+  $token = md5($host_ip . $inst_id . CRL_PP_TOKEN_SALT);
+  $target_url = variable_get('crl_pp_sso_remote_validate_url', 'http://www-apps.crl.edu/content/pp/sso-validate.asp');
+  $request_method = 'GET';
+  $request_retry = 3; // Number of redirects to follow
+  $timeout = 1; // Max time (seconds) we can allow our check to delay a page load
+  $query = 'inst=' . $inst_id . '&token=' . $token;
+  $data ='';  // not required for GET
+  $request_headers = array();  // not required for GET
+  $request_url = $target_url . '?' . $query;
+  // Send the request.
+  $request_result = drupal_http_request($request_url, $request_headers, $request_method, $data, $request_retry);
+  // Verify and parse the request results.
+  $response = 0;
+  $response_data = array();
+  $response_data['inst_id'] = FALSE;
+  $response_data['inst_name'] = FALSE;
+  $response_data['draft_status'] = FALSE;
+  if (is_object($request_result)) {
+    if ($request_result->status_message == "OK" && isset($request_result->data)) {
+      // Parse the result for our specific member data.
+      $matches1 = '';
+      $matches2 = '';
+      $matches3 = '';
+      $response1 = preg_match('/(\<span class\=\"inst_id\"\>)(.*)(\<\/span\>)/siU', $request_result->data, $matches1);
+      $response2 = preg_match('/(\<span class\=\"inst_name\"\>)(.*)(\<\/span\>)/siU', $request_result->data, $matches2);
+      $response3 = preg_match('/(\<span class\=\"draft_status\"\>)(.*)(\<\/span\>)/siU', $request_result->data, $matches3);
+      if ($response1) {
+        $response_data['inst_id'] = $matches1[2];
+      }
+      if ($response2) {
+        $response_data['inst_name'] = $matches2[2];
+      }
+      if ($response3) {
+        $response_data['draft_status'] = $matches3[2];
+      }  
+    } 
+  }
+  return $response_data;
 }
