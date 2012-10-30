@@ -19,6 +19,14 @@ function crl_pp_sso_menu() {
     'access arguments' => array('access content'),
     'type'             => MENU_CALLBACK,
   );
+  // Special "traffic control" page for password resets.
+  $items['new-password'] = array(
+    'title'            => 'Reset Password',
+    'description'      => '',
+    'page callback'    => 'crl_pp_sso_pass',
+    'access arguments' => array('access content'),
+    'type'             => MENU_CALLBACK,
+  );
   // Admin pages for this module
   $items['admin/settings/crl/pp-sso'] = array(
     'title'            => 'Purchase Proposal SSO',
@@ -47,7 +55,7 @@ function crl_pp_sso_menu() {
 }
 
 
-// Callback meny function that acts as public "traffic control" for PP SSO.
+// Callback menu function that acts as public "traffic control" for PP SSO.
 function crl_pp_sso_direct() {
   global $user;
   $user_maps = variable_get('crl_pp_sso_user_map', 'key|value');
@@ -86,6 +94,21 @@ function crl_pp_sso_direct() {
   $new_js .= 'jQuery("form#user-login-form .item-list li.first").attr("style", "display: none;");';
   drupal_add_js($new_js, 'inline', 'footer');
   return $message;
+}
+
+
+// Callback function for a URL that directs used to the appropriate URL to
+// reset their password.
+function crl_pp_sso_pass() {
+  global $user;
+  if ($user->uid) { // User is logged-in
+    drupal_set_message(t("You are currently logged-in. Please use the form below to change your password."));
+    drupal_goto('user/' . $user->uid . '/edit');
+  }
+  else { // Not logged-in
+    drupal_set_message(t("You are not currently logged-in. Please enter your email below to reset your password."));
+    drupal_goto('user/password');
+  }
 }
 
 // Callback function for main settings form
