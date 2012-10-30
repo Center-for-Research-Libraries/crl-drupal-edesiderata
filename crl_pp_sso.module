@@ -80,10 +80,10 @@ function crl_pp_sso_direct() {
       }
       drupal_set_message(t("Remote login attempted at www-apps.crl.edu, but it was rejected. <a href='/pp-sso'>Try again</a>"), 'error');
     }
-    $message = t("Message for users who are logged-in but can't access PP goes here");
+    $message = t("You are currently logged-in but our records do not indicate that you have been designated to particpate in the CRL Purchase Proposal voting. If you believe that this message is an error, please contact Mary Wilke at (773) 955-4545 ext. 351.");
   }
   else {
-    $message = t("Message for non-logged-in users goes here");;
+    $message = t("You are not currently logged-in. Please login below to begin the Purchase Proposal voting process.");;
   }
   // We also want to do some small modifications to the login BLOCK that's added
   // to this page. This is a bit ad hoc but it gets the job done.
@@ -110,6 +110,7 @@ function crl_pp_sso_pass() {
     drupal_goto('user/password');
   }
 }
+
 
 // Callback function for main settings form
 function crl_pp_sso_settings() {
@@ -141,6 +142,7 @@ function crl_pp_sso_settings() {
     );
   return system_settings_form($form);
 }
+
 
 // Callback to build the settings page that "validates" all the sso settings
 function crl_pp_sso_validate() {
@@ -208,7 +210,8 @@ function crl_pp_sso_validate() {
   $output = t('The data below shows the full details for each mapped link between a Purchase Proposal Insititution and a Drupal User. This information can be used for validation of the SSO configuration. All columns to the right have been looked-up from the IDs shown in the first two columns, and columns marked with an "*" have been looked-up remotly.');
   $output .= "<h3>" . t("Table Version") . "</h3>";
   $output .= theme('table', $header, $rows);
-  $output .= "<br/><h3>" . t("CSV Version") . "</h3>";
+  $output .= "<br/><h3>" . t("CSV Version (Advanced)") . "</h3>";
+  $output .= "<p>" . t("You can copy-paste the text below into a <em>plain-text</em> CSV file that can be opened with Excel") . "</p><hr/>";
   $output .= $header_css;
   $output .= $rows_css;
   
