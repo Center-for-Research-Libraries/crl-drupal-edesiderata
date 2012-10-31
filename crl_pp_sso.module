@@ -324,3 +324,19 @@ function _crl_pp_sso_edit_validate_select($element, &$form_state) {
 
   return TRUE;
 }
+
+
+// This implementation of hook_form_alter is just used to show a little message
+// on the password reset screen when users save changes. This message gives
+// people a link back to the PPP. It should be removed when voting is over as
+// it has no relevance for non PPP users who may be making changes.
+function crl_pp_sso_form_alter(&$form, &$form_state, $form_id) {  
+  if ($form_id == 'user_profile_form') {
+    if (!empty($form_state['post'])) {
+      global $user;
+      if ($user->uid) {
+        drupal_set_message('If you are logging-in to the Purchase Proposal Program please <a href="/pplogin">click here</a> to continue to the ballot.');
+      }
+    }
+  }
+}
