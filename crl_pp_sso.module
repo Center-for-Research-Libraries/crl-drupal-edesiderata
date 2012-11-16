@@ -80,7 +80,7 @@ function crl_pp_sso_direct() {
       }
       drupal_set_message(t("Remote login attempted at www-apps.crl.edu, but it was rejected. <a href='/pp-sso'>Try again</a>"), 'error');
     }
-    $message = t("You are currently logged-in but our records do not indicate that you have been designated to particpate in the CRL Purchase Proposal voting. If you believe that this message is an error, please contact Mary Wilke at (773) 955-4545 ext. 351.");
+    $message = t("You are currently logged-in but our records do not indicate that you have been designated to participate in the CRL Purchase Proposal voting. If you believe that this message is an error, please contact Mary Wilke at (773) 955-4545 ext. 351.");
   }
   else {
     $message = t("You are not currently logged-in. Please login below to begin the Purchase Proposal voting process.");;
