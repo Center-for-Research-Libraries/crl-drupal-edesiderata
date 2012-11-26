@@ -1,5 +1,9 @@
 <?php
 
+// Define the user ID for the shared "ero" user account.
+// @see: crl_helpers_init()
+define('CRL_ERO_USER_ID', 336);
+
 /**
  * Implementation of hook_menu().
  * 
@@ -103,6 +107,18 @@ function crl_helpers_init() {
     }
       elseif (arg(0) == 'user' && arg(2) == 'profile') {
       drupal_set_title(t('Edit User Profile'));
+    }
+    
+    // Quick ad-hoc way to ensure that the ero user cannot make any changes
+    // to the shared ERO user account. Simply redirect them back to the user
+    // page whenever they try to access any account management forms.
+    $arg2 = arg(2);
+    if (arg(0) == 'user' && arg(1) == CRL_ERO_USER_ID && !empty($arg2)) {
+      global $user;
+      if ($user->uid == CRL_ERO_USER_ID) {
+        drupal_set_message(t('This is a protected shared user account. You are not allowed to make any changes to the account settings.'), 'error');
+        drupal_goto('user/' . CRL_ERO_USER_ID);
+      }
     }
 }
 
