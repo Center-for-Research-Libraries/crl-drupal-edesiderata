@@ -1,7 +1,5 @@
 ; $Id$
 name = CRL Helpers
-description = This module packages up random functions that might alter default Drupal behavior or to encapsulate code used throughout PHP blocks in the site.
-core = 6.x
+description = Provide case-specific functionality
+core = 7.x
 package = CRL
-
-
