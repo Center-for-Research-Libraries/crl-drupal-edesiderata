@@ -51,3 +51,212 @@ function crl_helpers_cron() {
     variable_set('crl_sf_sync_institutions_array_id', $institutions_array_id);
   }
 }
+
+
+// ****** Construct block for resource summary content *******
+function crl_helpers_block_info() {
+  $blocks['crl_helpers_resource_summary'] = array(
+    'info' => t('Resource Summary'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+
+function crl_helpers_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'crl_helpers_resource_summary':
+      $nid = arg(1);
+      $block['subject'] = '';
+      $block['content'] = crl_helpers_resource_summary_builder($nid);
+      break;
+  }
+  return $block;
+}
+
+
+function crl_helpers_resource_summary_builder($nid) {
+  $entities = entity_load('node', array($nid));
+  $entity = $entities[$nid];
+  $jisc_id = field_get_items('node', $entity, 'field_jisc_id');
+  $source_status = field_get_items('node', $entity, 'field_resource_source_status');
+  // Get the comment count
+  $comment_count = 0;
+  if (isset($entity->comment_count)) {
+    $comment_count = $entity->comment_count;
+  }
+  // Get the subscription count info
+  $sub_count = $have_count = $want_count = 0;
+  if (function_exists('crl_desiderata_get_desiderata_resource')) {
+    $des_results = crl_desiderata_get_desiderata_resource($nid);
+    if (!empty($des_results['haves'])) {
+      $have_count = count($des_results['haves']);
+    }
+    if (!empty($des_results['wants'])) {
+      $want_count = count($des_results['wants']);
+    }
+    $sub_count = $have_count + $want_count;
+  }
+  // Get the average vote info (fivestar)
+  $active_tags = $vote_tally = $vote_average = 0;
+  if (function_exists('fivestar_get_votes')) {
+    $vote_tags = array('platform', 'content', 'cost');
+    foreach ($vote_tags as $tag) {
+      $vote_data = fivestar_get_votes('node', $nid, $tag);
+      if (!empty($vote_data['average']['value'])) {
+        $active_tags++;
+        $vote_tally = $vote_tally + $vote_data['average']['value'];
+      }
+    }
+  }
+  if ($active_tags) {
+    $vote_average = number_format(($vote_tally / $active_tags) / 20, 1);
+  }
+  
+  $markup = $entity->body[$entity->language][0]['safe_value'];
+  $markup .= '<p><strong>Source: </strong>' . crl_helpers_source_text($source_status[0]['value'], $jisc_id[0]['value']) . '<p>';
+  $markup .= '<div class="res_highlight"><span class="big_num">' . $comment_count . '</span> Comments';
+  $markup .= '<span class="slasher">/</span></div>';
+  $markup .= '<div class="res_highlight"><span class="big_num">' . $sub_count . '</span> Institutions Reporting';
+  $markup .= '<span class="slasher">/</span></div>';
+  $markup .= '<div class="res_highlight"><span class="big_num">' . $vote_average . '</span> Average Rating';
+  $markup .= '<span class="slasher">/</span></div>';
+  
+  
+$markup_old = '<table>
+<tbody><tr style="background: none;">
+<td style="width: 32%; border-right: 1px solid #ddd; vertical-align: top;">
+<strong>Feedback:</strong>
+<p style="margin: 1em 0em 0.1em 0em;">
+<span class="big_num">3.5</span> average user rating<br>
+<span class="big_num">0</span> comments<br>
+<a href="#" id="openrating">submit your feedback</a>
+</p>
+</td>
+<td style="width: 32%; border-right: 1px solid #ddd; vertical-align: top;">
+<strong>CRL Activity:</strong>
+<p style="margin: 1em 0em 0.1em 0em; line-height: 2.5em;"><strong>Full Review,</strong></p><strong>
+</strong><p><strong>Offer Under Negotiation</strong><br>
+<a href="#" id="openoffers">view the details</a></p>
+</td>
+<td style="vertical-align: top;">
+<strong>Desiderata:</strong>
+<p style="margin: 1em 0em 0.1em 0em;">
+<span class="big_num">3</span> institutions <strong>have</strong> this<br>
+<span class="big_num">6</span> institutions <strong>want</strong> this<br>
+<a href="#">submit your status</a>
+</p>
+</td>
+</tr>
+</tbody></table>';
+  
+  $output = array(
+    'resource_summary' => array(
+      '#type' => 'markup',
+      '#markup' => $markup,
+    ),
+  );
+  return $output;
+}
+
+
+function crl_helpers_resource_view_summary_builder($nid) {
+  $markup = '';
+  $entities = entity_load('node', array($nid)); // Should alerady be in static cache from view as we are using Search API
+  $entity = $entities[$nid];
+  $jisc_id = crl_helpers_get_single_node_field($entity, 'field_jisc_id');
+  $source_status = crl_helpers_get_single_node_field($entity, 'field_resource_source_status');
+  $markup .= '<p><strong>Source: </strong>' . crl_helpers_source_text($source_status, $jisc_id) . '<p>';
+  print $markup;
+}
+
+
+// ******** Helpers to construct special resource fields *********
+
+
+// Custom field to show JISC details.
+function computed_field_field_resource_all_jisc_details_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
+  $output = '';
+  $jisc_id = crl_helpers_get_single_node_field($entity, 'field_jisc_id');
+  $source_status = crl_helpers_get_single_node_field($entity, 'field_resource_source_status');
+  // If the status flags this as a JISC display, and we have a JISC ID, then
+  // display the JISC details fields.
+  if (($source_status == 'jisc_only' || $source_status == 'jisc_crl_update') && !empty($jisc_id)) {
+    $fields_array = array(
+      'field_resource_jisc_full_text' => t("Full Text Linking"),
+      'field_resource_jisc_federated' => t("Federated Searching"),
+      'field_resource_jisc_marc' => t("Marc Records"),
+      'field_resource_jisc_search' => t("Search Options"),
+      'field_resource_jisc_post_search' => t("Post Search Options"),
+      'field_resource_jisc_usage_stat' => t("Usage Statistics"),
+      'field_resource_jisc_auth' => t("Authentication"),
+      'field_resource_jisc_access' => t("Access"),
+    );
+    foreach ($fields_array as $key => $value) {
+      $jisc_field = crl_helpers_get_single_node_field($entity, $key);
+      if ($jisc_field) {
+        $output .= '<h3>' . $value . '</h3>';
+        $output .= $jisc_field;
+      }
+    }
+  }
+  // If this is a CRL review but we also have a JISC ID, show a note about
+  // the fact that additional details may be available at JISC
+  elseif ($source_status == 'crl_review' && !empty($jisc_id)) {
+    $output .= '<h3>' . t("Additional Details from JISC") . '</h3>';
+    $output .= t("Additional details may be available in the !itemlink for this item from !sitelink", array('!itemlink' => crl_helpers_jisc_link(t('catalog entry'), $jisc_id), '!sitelink' => crl_helpers_jisc_link(t('JISC Collections'))));
+  }
+  return $output;
+}
+
+
+// Helper function to build a link to a JISC resource
+function crl_helpers_jisc_link($anchor, $jisc_id = NULL, $sub_path = 'Overview') {
+  if (isset($jisc_id)) {
+    if ($jisc_id == 0) {
+      $path = 'http://www.jisc-collections.ac.uk/Catalogue';
+    }
+    else {
+      $path = 'http://www.jisc-collections.ac.uk/Catalogue/' . $sub_path . '/Index/' . $jisc_id;
+    }
+  }
+  else {
+    $path = 'http://www.jisc-collections.ac.uk';
+  }
+  return l($anchor, $path, array('attributes' => array('target'=>'_blank')));
+}
+
+
+// Helper function to generate fixed "source" text based on status
+function crl_helpers_source_text($source_status, $jisc_id) {
+  $source_text = '';
+  if ($source_status == 'crl_review') {
+    $source_text = t('Data is the direct result of CRL research. Additional sources may also be referenced throughout.');
+  }
+  elseif ($source_status == 'stub') {
+    $source_text = t('Data has been sourced form the CRL community. The information shown has not yet been confirmed by an authoritative source.');
+  }
+  elseif ($source_status == 'jisc_only' && !empty($jisc_id)) {
+    $source_text = t('Data has been sourced from an !itemlink provided by !sitelink.', array('!itemlink' => crl_helpers_jisc_link(t('existing catalog entry'), $jisc_id), '!sitelink' => crl_helpers_jisc_link(t('JISC Collections'))));
+  }
+  elseif ($source_status == 'jisc_crl_update' && !empty($jisc_id)) {
+   $source_text = t('Data has been sourced from an !itemlink provided by !sitelink, with additional edits from CRL.', array('!itemlink' => crl_helpers_jisc_link(t('existing catalog entry'), $jisc_id), '!sitelink' => crl_helpers_jisc_link(t('JISC Collections'))));
+  }
+  else {
+    $source_text = t('Source details are unknown for this entry.');
+  }
+  return $source_text;
+}
+
+
+// Helper to get a single field value from a node entity. This takes care of
+// all the language-specific management, etc. Will not work well for fields
+// that have multiple values.
+function crl_helpers_get_single_node_field($entity, $field_name) {
+  $fields = field_get_items('node', $entity, $field_name);
+  if (isset($fields[0]['value'])) {
+    return $fields[0]['value'];
+  }
+  return FALSE;
+}
