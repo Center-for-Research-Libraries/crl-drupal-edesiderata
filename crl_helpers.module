@@ -1,5 +1,7 @@
 <?php
 
+// Include status sync logic
+require_once dirname(__FILE__) . '/includes/crl_helpers_desiderata_status_sync.inc';
 
 /**
  * Implements hook_menu().
@@ -50,6 +52,10 @@ function crl_helpers_cron() {
     variable_set('crl_sf_sync_institutions_array_sfid', $institutions_array_sfid);
     variable_set('crl_sf_sync_institutions_array_id', $institutions_array_id);
   }
+  
+  // Also do automated status checking for CRl activity entities, etc.
+  $sync = new CrlResourceStatusSync();
+  $sync->calculate_sync()->run_sync();
 }
 
 
@@ -79,6 +85,12 @@ function crl_helpers_block_view($delta = '') {
 function crl_helpers_resource_summary_builder($nid) {
   $entities = entity_load('node', array($nid));
   $entity = $entities[$nid];
+  
+  // How to get metadata values through Entity API
+  //$wrapper = entity_metadata_wrapper('node', $entity);
+  //$value = $wrapper->crl_activity_backref->raw();
+  //dpm($value, 'value');
+  
   $jisc_id = field_get_items('node', $entity, 'field_jisc_id');
   $source_status = field_get_items('node', $entity, 'field_resource_source_status');
   // Get the comment count
@@ -259,4 +271,127 @@ function crl_helpers_get_single_node_field($entity, $field_name) {
     return $fields[0]['value'];
   }
   return FALSE;
+}
+
+
+
+
+
+/*****************************************************************************/
+/****        Additions to manage CRL Status Metadata on Resource          ****/
+/*****************************************************************************/
+
+
+/**
+ * Implements hook_entity_property_info_alter().
+ * 
+ * Add a new entity property that will be used to define the formal CRL status
+ * associated with any given resource.
+ */
+function crl_helpers_entity_property_info_alter(&$info) {
+  $properties = &$info['node']['properties'];
+  $properties['crl_activity_backref'] = array(
+    'label' => t("CRL Actvity Status Through Backreference"),
+    'type' => 'list<text>',
+    'description' => t("Gets CRL Actvity Status Through Backreference."),
+    'getter callback' => 'crl_helpers_activity_status_property_get',
+    'options list' => 'crl_helpers_activity_status_property_oplist',
+  );
+}
+
+
+// Callback function to actaully calculate the status associated with a
+// resource. This function queires numerous places and aggregates the results
+// into this one entity property.
+function crl_helpers_activity_status_property_get($entity, array $options, $name, $type, $info) {
+  $now = date('Y-m-d');
+  $computed_status = array();
+  list($id) = entity_extract_ids($type, $entity);
+  // Get the activity entries that reference this resource.
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node', '=')
+        ->entityCondition('bundle', 'activity')
+        ->fieldCondition('field_resource_reference', 'target_id', $id, '=');
+  $result = $query->execute();
+  // Load the related activity entities and get the status set on them.
+  if (!empty($result['node'])) {
+    $backref_nids = array_keys($result['node']);
+    // Consider revisting to fetch one field instead of full node_load, see:
+    // http://btmash.com/article/2012-04-13/i-just-want-one-field-using-fieldattachload
+    $backref_nodes = node_load_multiple($backref_nids);
+    foreach ($backref_nodes as $nid => $node) {
+      // Get the raw status values set on the activity entity and aggregate
+      // them directly into our computed result.
+      $statuses = field_get_items('node', $node, 'field_activity_crl_status');
+      if (!empty($statuses)) {
+        foreach ($statuses as $status) {
+          if (!in_array($status['value'], $computed_status)) {
+            $computed_status[] = $status['value'];
+          }
+        }
+      }
+      // See if this activity entity contained an offer that's now expired.
+      $offer_duration = field_get_items('node', $node, 'field_activity_offer_duration');
+      if (isset($offer_duration[0]['value2'])) {
+        if ($offer_duration[0]['value2'] < $now && !in_array('past_license_offer', $computed_status)) {
+          $computed_status[] = 'past_license_offer';
+        }
+      }
+    }
+  }
+  // Also see if this resource has a source status that indicates its a full
+  // CRL review.
+  $source_status = crl_helpers_get_single_node_field($entity, 'field_resource_source_status');
+  if ($source_status == 'crl_review' && !in_array('crl_review_available', $computed_status)) {
+    $computed_status[] = 'crl_review_available';
+  }
+  return $computed_status;
+}
+
+
+// Callback to centrally define the key|value pairs used for the various
+// CRL status options. This may be called via multiple contexts.
+function crl_helpers_activity_status_property_oplist($arg1) {
+  // Define fields set be editors on activity entity.
+  $options = array(
+    'crl_desiderata' => t('CRL Desiderata'),
+    'license_under_consideration' => t('License terms under consideration'),
+    'license_available' => t('License offer available'),
+    'license_renewal_available' => t('License renewal available'),
+    'trial_access_available' => t('Trial access available'),
+  );
+  // If $arg1['id'] is set this is probably being called while a node is being
+  // edited. In this case we do NOT want to add the following system-managed
+  // fields to the options array.
+  if (!isset($arg1['id'])) {
+    $options_sys = array(
+      'crl_review_available' => t('CRL Review available'),
+      'past_license_offer' => t('Past (expired) license offer'),
+    );
+    $options = array_merge($options, $options_sys); 
+  }
+  return $options;
+}
+
+
+/**
+ * Implements hook_entity_update().
+ * 
+ * Whenever we save a change to an activity entity, we also want to be sure
+ * to mark the related resource entity as "dirty". This ensures that it will
+ * be re-indexed with updated CRL status metadata.
+ */
+function crl_helpers_entity_update($entity, $type) {
+  $dirty_ids = array();
+  if ($type == 'node' && isset($entity->type)) {
+    if ($entity->type == 'activity') {
+      $refs = field_get_items('node', $entity, 'field_resource_reference');
+      foreach ($refs as $ref) {
+        $dirty_ids[] = $ref['target_id'];
+      }
+    }
+    if (!empty($dirty_ids)) {
+      search_api_track_item_change('node', $dirty_ids);
+    }
+  }
 }
