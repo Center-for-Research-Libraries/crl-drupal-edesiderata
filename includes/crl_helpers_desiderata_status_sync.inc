@@ -17,6 +17,7 @@ class CrlResourceStatusSync {
   public function __construct($lite = FALSE) {
     $this->lite = $lite;
   }  
+ 
   
   // Calculate which resources need status updates of various types and build
   // an array that captures all the specifics for later processing.
@@ -74,17 +75,15 @@ class CrlResourceStatusSync {
   }
 
   
-  
   // Get a set of resource ids that SHOULD have a status based on a time range
   // on the related offer.
   public function get_resources_by_t_range($node_type, $field_duration, $date) {
     // Get the active offers
-    $now = date('Y-m-d');
     $nids_active = array();
     $query = new EntityFieldQuery();
     $entities = $query->entityCondition('entity_type', 'node')
                       ->entityCondition('bundle', $node_type)
-                      ->fieldCondition($field_duration, 'value2', $date, '>')
+                      ->fieldCondition($field_duration, 'value2', $date, '>=')
                       ->execute();
     if (!empty($entities['node'])) {
       $nids_active = array_keys($entities['node']);

@@ -274,6 +274,57 @@ function crl_helpers_get_single_node_field($entity, $field_name) {
 }
 
 
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ * 
+ * When updating an activity entity enforce some custom validation rules on
+ * the CRL status settings.
+ */
+function crl_helpers_form_activity_node_form_alter(&$form, &$form_state, $form_id) {
+  $form['#validate'][] = 'crl_helpers_activity_node_form_validate';
+}
+
+
+// Validation callback for activity_node_form
+function crl_helpers_activity_node_form_validate(&$form, &$form_state) {
+  $set_status = array();
+  $language = $form['language']['#value'];
+  if (!empty($form_state['values']['field_activity_crl_status'][$language])) {
+    foreach($form_state['values']['field_activity_crl_status'][$language] as $item) {
+      if (!empty($item['value'])) {
+        $set_status[] = $item['value'];
+      }
+    }
+  }
+  // Handle case where an offer is set while another status is set that is
+  // mutually exclusive.
+  $dissallow_with_offer = array_intersect($set_status, array('crl_desiderata', 'license_under_consideration'));
+  if (in_array('license_available', $set_status) && !empty($dissallow_with_offer)) {
+    form_set_error('field_activity_crl_status', t('"License Offer Available" cannot be set while "CRL Desiderata" or "License terms under consideration" are also set.'));
+  }
+  // Handle case where "License renewal available" is set without "License
+  // available"
+  if (in_array('license_renewal_available', $set_status) && !in_array('license_available', $set_status)) {
+    form_set_error('field_activity_crl_status', t('"License Renewal Available" should only be set if "License Available" is also set.'));
+  }
+  $now = date('Y-m-d');
+  // If the offer end date is not in the future the offer status should not
+  // be set.
+  if (in_array('license_available', $set_status)) {
+    if ($form_state['values']['field_activity_offer_duration'][$language][0]['value2'] < $now) {
+      form_set_error('field_activity_offer_duration', t('"License Offer Available" cannot be set while the offer expiration date is either not set or is in the past.'));
+    }
+  }
+  // If the trial end date is not in the future the "Trial Access Available"
+  // status should not be set.
+  if (in_array('trial_access_available', $set_status)) {
+    if ($form_state['values']['field_activity_trial_duration'][$language][0]['value2'] < $now) {
+      form_set_error('field_activity_trial_duration', t('"Trial Access Available" cannot be set while the trial expiration date is either not set or is in the past.'));
+    }
+  }
+}
+
+
 
 
 
@@ -330,7 +381,8 @@ function crl_helpers_activity_status_property_get($entity, array $options, $name
           }
         }
       }
-      // See if this activity entity contained an offer that's now expired.
+      // See if this activity entity containes an offer that's now expired, and
+      // if so set the "Past (expired) offer" setting.
       $offer_duration = field_get_items('node', $node, 'field_activity_offer_duration');
       if (isset($offer_duration[0]['value2'])) {
         if ($offer_duration[0]['value2'] < $now && !in_array('past_license_offer', $computed_status)) {
@@ -339,7 +391,7 @@ function crl_helpers_activity_status_property_get($entity, array $options, $name
       }
     }
   }
-  // Also see if this resource has a source status that indicates its a full
+  // Also see if this resource has a source status that indicates it's a full
   // CRL review.
   $source_status = crl_helpers_get_single_node_field($entity, 'field_resource_source_status');
   if ($source_status == 'crl_review' && !in_array('crl_review_available', $computed_status)) {
@@ -378,8 +430,8 @@ function crl_helpers_activity_status_property_oplist($arg1) {
  * Implements hook_entity_update().
  * 
  * Whenever we save a change to an activity entity, we also want to be sure
- * to mark the related resource entity as "dirty". This ensures that it will
- * be re-indexed with updated CRL status metadata.
+ * to mark any related resource entities as "dirty". This ensures that the
+ * related resource will be re-indexed with updated CRL status metadata.
  */
 function crl_helpers_entity_update($entity, $type) {
   $dirty_ids = array();
