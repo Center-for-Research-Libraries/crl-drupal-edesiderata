@@ -1,7 +1,7 @@
 <?php
 
 // Include status sync logic
-require_once dirname(__FILE__) . '/includes/crl_helpers_desiderata_status_sync.inc';
+require_once dirname(__FILE__) . '/includes/crl_helpers_desiderata_status_tools.inc';
 
 /**
  * Implements hook_menu().
@@ -82,22 +82,80 @@ function crl_helpers_block_view($delta = '') {
 }
 
 
+// Callback to build the summary details for a resource
 function crl_helpers_resource_summary_builder($nid) {
+  // @TODO: Perhaps split some of this out as a theme hook one the exact logic
+  // in finalized.
+  $data = crl_helpers_get_resource_summary($nid);
+  $markup = check_markup($data['abstract'], 'full_html');
+  $markup .= '<p><strong>Source: </strong>' . $data['source_text'] . '<p>';
+  $highlights = array();
+  if (!empty($data['status'])) {
+    $status_options = crl_helpers_activity_status_property_oplist();
+    foreach ($data['status'] as $status) {
+      if ($status == 'license_renewal_available' || $status == 'past_license_offer') {
+        continue;
+      }
+      $highlights['r1'][] = '<span class="summary-icon ' . $status . '"></span>' . $status_options[$status];
+    }
+  }
+  $highlights['r2'][] = '<span class="big_num">' . $data['comment_count'] . '</span> Comments';
+  $highlights['r2'][] = '<span class="big_num">' . $data['subscription_count'] . '</span> Institutions Reporting';
+  $highlights['r2'][] = '<span class="big_num">' . $data['vote_average'] . '</span> Average Rating';
+  foreach($highlights as $row) {
+    foreach ($row as $key => $highlight) {
+      $markup .= '<div class="res_highlight">' . $highlight;
+      if (isset($row[$key + 1])) {
+        $markup .= '<span class="slasher">&nbsp;</span>';
+      }
+      else {
+        $markup .= '<span class="slasher">&nbsp;</span>';
+      }
+      $markup .= '</div>';
+    }
+    $markup .= '<div class="clearfix"></div>';
+  }
+  $output = array(
+    'resource_summary' => array(
+      '#type' => 'markup',
+      '#markup' => $markup,
+    ),
+  );
+  return $output;
+}
+
+
+// Get resoruce summary values from an ID.
+function crl_helpers_get_resource_summary($nid) {
   $entities = entity_load('node', array($nid));
-  $entity = $entities[$nid];
+  $entity = $entities[$nid]; 
+  $summary = array();
+  $wrapper = entity_metadata_wrapper('node', $entity);
   
-  // How to get metadata values through Entity API
-  //$wrapper = entity_metadata_wrapper('node', $entity);
-  //$value = $wrapper->crl_activity_backref->raw();
-  //dpm($value, 'value');
+  // Get metadata values through Entity API
+  $crl_statuses = $wrapper->crl_activity_backref->raw();
+  foreach ($crl_statuses as $status) {
+    if (!empty($status)) {
+      $summary['status'][] = $status;
+    }
+  }
   
+  // Get the abstract text through Entity API
+  $abstract = $wrapper->body->raw();
+  $summary['abstract'] = $abstract['safe_value'];
+  
+  // Get the source text
   $jisc_id = field_get_items('node', $entity, 'field_jisc_id');
   $source_status = field_get_items('node', $entity, 'field_resource_source_status');
+  $summary['source_text'] = crl_helpers_source_text($source_status[0]['value'], $jisc_id[0]['value']);
+  
   // Get the comment count
   $comment_count = 0;
   if (isset($entity->comment_count)) {
     $comment_count = $entity->comment_count;
   }
+  $summary['comment_count'] = $comment_count;
+  
   // Get the subscription count info
   $sub_count = $have_count = $want_count = 0;
   if (function_exists('crl_desiderata_get_desiderata_resource')) {
@@ -110,6 +168,8 @@ function crl_helpers_resource_summary_builder($nid) {
     }
     $sub_count = $have_count + $want_count;
   }
+  $summary['subscription_count'] = $sub_count;
+  
   // Get the average vote info (fivestar)
   $active_tags = $vote_tally = $vote_average = 0;
   if (function_exists('fivestar_get_votes')) {
@@ -125,51 +185,9 @@ function crl_helpers_resource_summary_builder($nid) {
   if ($active_tags) {
     $vote_average = number_format(($vote_tally / $active_tags) / 20, 1);
   }
+  $summary['vote_average'] = $vote_average;
   
-  $markup = $entity->body[$entity->language][0]['safe_value'];
-  $markup .= '<p><strong>Source: </strong>' . crl_helpers_source_text($source_status[0]['value'], $jisc_id[0]['value']) . '<p>';
-  $markup .= '<div class="res_highlight"><span class="big_num">' . $comment_count . '</span> Comments';
-  $markup .= '<span class="slasher">/</span></div>';
-  $markup .= '<div class="res_highlight"><span class="big_num">' . $sub_count . '</span> Institutions Reporting';
-  $markup .= '<span class="slasher">/</span></div>';
-  $markup .= '<div class="res_highlight"><span class="big_num">' . $vote_average . '</span> Average Rating';
-  $markup .= '<span class="slasher">/</span></div>';
-  
-  
-$markup_old = '<table>
-<tbody><tr style="background: none;">
-<td style="width: 32%; border-right: 1px solid #ddd; vertical-align: top;">
-<strong>Feedback:</strong>
-<p style="margin: 1em 0em 0.1em 0em;">
-<span class="big_num">3.5</span> average user rating<br>
-<span class="big_num">0</span> comments<br>
-<a href="#" id="openrating">submit your feedback</a>
-</p>
-</td>
-<td style="width: 32%; border-right: 1px solid #ddd; vertical-align: top;">
-<strong>CRL Activity:</strong>
-<p style="margin: 1em 0em 0.1em 0em; line-height: 2.5em;"><strong>Full Review,</strong></p><strong>
-</strong><p><strong>Offer Under Negotiation</strong><br>
-<a href="#" id="openoffers">view the details</a></p>
-</td>
-<td style="vertical-align: top;">
-<strong>Desiderata:</strong>
-<p style="margin: 1em 0em 0.1em 0em;">
-<span class="big_num">3</span> institutions <strong>have</strong> this<br>
-<span class="big_num">6</span> institutions <strong>want</strong> this<br>
-<a href="#">submit your status</a>
-</p>
-</td>
-</tr>
-</tbody></table>';
-  
-  $output = array(
-    'resource_summary' => array(
-      '#type' => 'markup',
-      '#markup' => $markup,
-    ),
-  );
-  return $output;
+  return $summary;
 }
 
 
@@ -271,179 +289,4 @@ function crl_helpers_get_single_node_field($entity, $field_name) {
     return $fields[0]['value'];
   }
   return FALSE;
-}
-
-
-/**
- * Implements hook_form_BASE_FORM_ID_alter().
- * 
- * When updating an activity entity enforce some custom validation rules on
- * the CRL status settings.
- */
-function crl_helpers_form_activity_node_form_alter(&$form, &$form_state, $form_id) {
-  $form['#validate'][] = 'crl_helpers_activity_node_form_validate';
-}
-
-
-// Validation callback for activity_node_form
-function crl_helpers_activity_node_form_validate(&$form, &$form_state) {
-  $set_status = array();
-  $language = $form['language']['#value'];
-  if (!empty($form_state['values']['field_activity_crl_status'][$language])) {
-    foreach($form_state['values']['field_activity_crl_status'][$language] as $item) {
-      if (!empty($item['value'])) {
-        $set_status[] = $item['value'];
-      }
-    }
-  }
-  // Handle case where an offer is set while another status is set that is
-  // mutually exclusive.
-  $dissallow_with_offer = array_intersect($set_status, array('crl_desiderata', 'license_under_consideration'));
-  if (in_array('license_available', $set_status) && !empty($dissallow_with_offer)) {
-    form_set_error('field_activity_crl_status', t('"License Offer Available" cannot be set while "CRL Desiderata" or "License terms under consideration" are also set.'));
-  }
-  // Handle case where "License renewal available" is set without "License
-  // available"
-  if (in_array('license_renewal_available', $set_status) && !in_array('license_available', $set_status)) {
-    form_set_error('field_activity_crl_status', t('"License Renewal Available" should only be set if "License Available" is also set.'));
-  }
-  $now = date('Y-m-d');
-  // If the offer end date is not in the future the offer status should not
-  // be set.
-  if (in_array('license_available', $set_status)) {
-    if ($form_state['values']['field_activity_offer_duration'][$language][0]['value2'] < $now) {
-      form_set_error('field_activity_offer_duration', t('"License Offer Available" cannot be set while the offer expiration date is either not set or is in the past.'));
-    }
-  }
-  // If the trial end date is not in the future the "Trial Access Available"
-  // status should not be set.
-  if (in_array('trial_access_available', $set_status)) {
-    if ($form_state['values']['field_activity_trial_duration'][$language][0]['value2'] < $now) {
-      form_set_error('field_activity_trial_duration', t('"Trial Access Available" cannot be set while the trial expiration date is either not set or is in the past.'));
-    }
-  }
-}
-
-
-
-
-
-/*****************************************************************************/
-/****        Additions to manage CRL Status Metadata on Resource          ****/
-/*****************************************************************************/
-
-
-/**
- * Implements hook_entity_property_info_alter().
- * 
- * Add a new entity property that will be used to define the formal CRL status
- * associated with any given resource.
- */
-function crl_helpers_entity_property_info_alter(&$info) {
-  $properties = &$info['node']['properties'];
-  $properties['crl_activity_backref'] = array(
-    'label' => t("CRL Actvity Status Through Backreference"),
-    'type' => 'list<text>',
-    'description' => t("Gets CRL Actvity Status Through Backreference."),
-    'getter callback' => 'crl_helpers_activity_status_property_get',
-    'options list' => 'crl_helpers_activity_status_property_oplist',
-  );
-}
-
-
-// Callback function to actaully calculate the status associated with a
-// resource. This function queires numerous places and aggregates the results
-// into this one entity property.
-function crl_helpers_activity_status_property_get($entity, array $options, $name, $type, $info) {
-  $now = date('Y-m-d');
-  $computed_status = array();
-  list($id) = entity_extract_ids($type, $entity);
-  // Get the activity entries that reference this resource.
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'node', '=')
-        ->entityCondition('bundle', 'activity')
-        ->fieldCondition('field_resource_reference', 'target_id', $id, '=');
-  $result = $query->execute();
-  // Load the related activity entities and get the status set on them.
-  if (!empty($result['node'])) {
-    $backref_nids = array_keys($result['node']);
-    // Consider revisting to fetch one field instead of full node_load, see:
-    // http://btmash.com/article/2012-04-13/i-just-want-one-field-using-fieldattachload
-    $backref_nodes = node_load_multiple($backref_nids);
-    foreach ($backref_nodes as $nid => $node) {
-      // Get the raw status values set on the activity entity and aggregate
-      // them directly into our computed result.
-      $statuses = field_get_items('node', $node, 'field_activity_crl_status');
-      if (!empty($statuses)) {
-        foreach ($statuses as $status) {
-          if (!in_array($status['value'], $computed_status)) {
-            $computed_status[] = $status['value'];
-          }
-        }
-      }
-      // See if this activity entity containes an offer that's now expired, and
-      // if so set the "Past (expired) offer" setting.
-      $offer_duration = field_get_items('node', $node, 'field_activity_offer_duration');
-      if (isset($offer_duration[0]['value2'])) {
-        if ($offer_duration[0]['value2'] < $now && !in_array('past_license_offer', $computed_status)) {
-          $computed_status[] = 'past_license_offer';
-        }
-      }
-    }
-  }
-  // Also see if this resource has a source status that indicates it's a full
-  // CRL review.
-  $source_status = crl_helpers_get_single_node_field($entity, 'field_resource_source_status');
-  if ($source_status == 'crl_review' && !in_array('crl_review_available', $computed_status)) {
-    $computed_status[] = 'crl_review_available';
-  }
-  return $computed_status;
-}
-
-
-// Callback to centrally define the key|value pairs used for the various
-// CRL status options. This may be called via multiple contexts.
-function crl_helpers_activity_status_property_oplist($arg1) {
-  // Define fields set be editors on activity entity.
-  $options = array(
-    'crl_desiderata' => t('CRL Desiderata'),
-    'license_under_consideration' => t('License terms under consideration'),
-    'license_available' => t('License offer available'),
-    'license_renewal_available' => t('License renewal available'),
-    'trial_access_available' => t('Trial access available'),
-  );
-  // If $arg1['id'] is set this is probably being called while a node is being
-  // edited. In this case we do NOT want to add the following system-managed
-  // fields to the options array.
-  if (!isset($arg1['id'])) {
-    $options_sys = array(
-      'crl_review_available' => t('CRL Review available'),
-      'past_license_offer' => t('Past (expired) license offer'),
-    );
-    $options = array_merge($options, $options_sys); 
-  }
-  return $options;
-}
-
-
-/**
- * Implements hook_entity_update().
- * 
- * Whenever we save a change to an activity entity, we also want to be sure
- * to mark any related resource entities as "dirty". This ensures that the
- * related resource will be re-indexed with updated CRL status metadata.
- */
-function crl_helpers_entity_update($entity, $type) {
-  $dirty_ids = array();
-  if ($type == 'node' && isset($entity->type)) {
-    if ($entity->type == 'activity') {
-      $refs = field_get_items('node', $entity, 'field_resource_reference');
-      foreach ($refs as $ref) {
-        $dirty_ids[] = $ref['target_id'];
-      }
-    }
-    if (!empty($dirty_ids)) {
-      search_api_track_item_change('node', $dirty_ids);
-    }
-  }
 }
