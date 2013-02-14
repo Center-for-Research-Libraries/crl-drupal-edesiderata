@@ -84,36 +84,43 @@ function crl_helpers_block_view($delta = '') {
 
 // Callback to build the summary details for a resource
 function crl_helpers_resource_summary_builder($nid) {
-  // @TODO: Perhaps split some of this out as a theme hook one the exact logic
-  // in finalized.
-  $data = crl_helpers_get_resource_summary($nid);
-  $markup = check_markup($data['abstract'], 'full_html');
-  $markup .= '<p><strong>Source: </strong>' . $data['source_text'] . '<p>';
-  $highlights = array();
-  if (!empty($data['status'])) {
-    $status_options = crl_helpers_activity_status_property_oplist();
-    foreach ($data['status'] as $status) {
-      if ($status == 'license_renewal_available' || $status == 'past_license_offer') {
-        continue;
+  $markup = '';
+  // Load the entity from the nid. This should just reference the static cache
+  // as the entity will probably already have been loaded once.
+  $entities = entity_load('node', array($nid));
+  if (!empty($entities[$nid])) {
+    $entity = $entities[$nid];
+    // @TODO: Perhaps split some of this out as a theme hook once the exact 
+    // logic is finalized.
+    $data = crl_helpers_get_resource_summary($entity);
+    $markup .= check_markup($data['abstract'], 'full_html');
+    $markup .= '<p><strong>Source: </strong>' . $data['source_text'] . '<p>';
+    $highlights = array();
+    if (!empty($data['status'])) {
+      $status_options = crl_helpers_activity_status_property_oplist();
+      foreach ($data['status'] as $status) {
+        if ($status == 'license_renewal_available' || $status == 'past_license_offer') {
+          //continue;
+        }
+        $highlights['r1'][] = '<span class="summary-icon ' . $status . '"></span>' . $status_options[$status];
       }
-      $highlights['r1'][] = '<span class="summary-icon ' . $status . '"></span>' . $status_options[$status];
     }
-  }
-  $highlights['r2'][] = '<span class="big_num">' . $data['comment_count'] . '</span> Comments';
-  $highlights['r2'][] = '<span class="big_num">' . $data['subscription_count'] . '</span> Institutions Reporting';
-  $highlights['r2'][] = '<span class="big_num">' . $data['vote_average'] . '</span> Average Rating';
-  foreach($highlights as $row) {
-    foreach ($row as $key => $highlight) {
-      $markup .= '<div class="res_highlight">' . $highlight;
-      if (isset($row[$key + 1])) {
-        $markup .= '<span class="slasher">&nbsp;</span>';
+    $highlights['r2'][] = '<span class="big_num">' . $data['comment_count'] . '</span> Comments';
+    $highlights['r2'][] = '<span class="big_num">' . $data['subscription_count'] . '</span> Institutions Reporting';
+    $highlights['r2'][] = '<span class="big_num">' . $data['vote_average'] . '</span> Average Rating';
+    foreach($highlights as $row) {
+      foreach ($row as $key => $highlight) {
+        $markup .= '<div class="res_highlight">' . $highlight;
+        if (isset($row[$key + 1])) {
+          $markup .= '<span class="slasher">&nbsp;</span>';
+        }
+        else {
+          $markup .= '<span class="slasher">&nbsp;</span>';
+        }
+        $markup .= '</div>';
       }
-      else {
-        $markup .= '<span class="slasher">&nbsp;</span>';
-      }
-      $markup .= '</div>';
+      $markup .= '<div class="clearfix"></div>';
     }
-    $markup .= '<div class="clearfix"></div>';
   }
   $output = array(
     'resource_summary' => array(
@@ -125,10 +132,56 @@ function crl_helpers_resource_summary_builder($nid) {
 }
 
 
-// Get resoruce summary values from an ID.
-function crl_helpers_get_resource_summary($nid) {
-  $entities = entity_load('node', array($nid));
-  $entity = $entities[$nid]; 
+// Views php field callback to build a summary "teaser" for view displays. We
+// do this in code instead of with view fields (in the GUI) as it makes it
+// easier to control the final rendering and isert some our out custom-computed
+// elements.
+function crl_helpers_resource_view_summary_builder($nid) {
+  $markup = '';
+  $entities = entity_load('node', array($nid)); // Should alerady be in static cache from view as we are using Search API
+  if (!empty($entities[$nid])) {
+    $entity = $entities[$nid];
+    // @TODO: Perhaps split some of this out as a theme hook once the exact 
+    // logic is finalized.
+    $data = crl_helpers_get_resource_summary($entity);
+    
+    if (!empty($data['status'])) {
+      $markup .= '<div class="view-teaser-status-icons">';
+      $status_options = crl_helpers_activity_status_property_oplist();
+      foreach ($data['status'] as $status) {
+        if ($status == 'license_renewal_available' || $status == 'past_license_offer') {
+          //continue;
+        }
+        $markup .= '<span class="summary-icon-small ' . $status . '" title="' . $status_options[$status] . '"></span>';
+      }
+      $markup .= '</div>';
+    }
+    
+    $markup .= '<a href="' . url('node/' . $entity->nid) . '"><h2>' . check_plain($entity->title) . '</h2></a>';
+    
+    $input_form = drupal_render(crl_desiderata_get_input_form($nid));
+    if (!empty($input_form)) {
+      $markup .= '<div class="view-teaser-input-form">' . $input_form . '</div>';
+    }
+    $markup .= check_markup($data['abstract'], 'full_html');
+    $provider_id = crl_helpers_get_single_node_field($entity, 'field_provider');
+    if (isset($provider_id)) {
+      $provider = entity_load('node', array($provider_id));
+      if (isset($provider[$provider_id])) {
+        $markup .= t('Provider') . ': ' . check_plain($provider[$provider_id]->title);
+      }
+    }
+    $markup .= '<br/>' . t('Updated') . ': ' . format_date($entity->changed, 'medium_no_time');
+    $markup .= '<div class="clearer"></div><br /><hr /><br />';
+  }
+  return $markup;
+}
+
+
+
+// Get resoruce summary values from a resource entity.
+function crl_helpers_get_resource_summary($entity) {
+  $nid = $entity->nid;
   $summary = array();
   $wrapper = entity_metadata_wrapper('node', $entity);
   
@@ -145,9 +198,9 @@ function crl_helpers_get_resource_summary($nid) {
   $summary['abstract'] = $abstract['safe_value'];
   
   // Get the source text
-  $jisc_id = field_get_items('node', $entity, 'field_jisc_id');
-  $source_status = field_get_items('node', $entity, 'field_resource_source_status');
-  $summary['source_text'] = crl_helpers_source_text($source_status[0]['value'], $jisc_id[0]['value']);
+  $jisc_id = crl_helpers_get_single_node_field($entity, 'field_jisc_id');
+  $source_status = crl_helpers_get_single_node_field($entity, 'field_resource_source_status');
+  $summary['source_text'] = crl_helpers_source_text($source_status, $jisc_id);
   
   // Get the comment count
   $comment_count = 0;
@@ -190,16 +243,6 @@ function crl_helpers_get_resource_summary($nid) {
   return $summary;
 }
 
-
-function crl_helpers_resource_view_summary_builder($nid) {
-  $markup = '';
-  $entities = entity_load('node', array($nid)); // Should alerady be in static cache from view as we are using Search API
-  $entity = $entities[$nid];
-  $jisc_id = crl_helpers_get_single_node_field($entity, 'field_jisc_id');
-  $source_status = crl_helpers_get_single_node_field($entity, 'field_resource_source_status');
-  $markup .= '<p><strong>Source: </strong>' . crl_helpers_source_text($source_status, $jisc_id) . '<p>';
-  print $markup;
-}
 
 
 // ******** Helpers to construct special resource fields *********
@@ -288,5 +331,73 @@ function crl_helpers_get_single_node_field($entity, $field_name) {
   if (isset($fields[0]['value'])) {
     return $fields[0]['value'];
   }
+  if (isset($fields[0]['target_id'])) {
+    return $fields[0]['target_id'];
+  }
   return FALSE;
+}
+
+
+/**
+* Implementation of hook_views_api().
+*/
+function crl_helpers_views_api() {
+  $path = drupal_get_path('module', 'crl_helpers');
+  return array(
+    'api' => 2.0,
+    'path' => $path,
+    'template path' => $path . '/themes',
+  );
+}
+
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function crl_helpers_views_pre_render(&$view) {
+  // Run entity pre-loading for resource list views. Each item shown on the
+  // resource list view depends on data from other related entities, and it 
+  // behooves us to load all those other entities at once (via an array passed
+  // to entity_load) instead of one-by-one (via separate entity_load calls
+  // for each item). Here we calculate which related items to load and get them
+  // into the static cache in bulk before each individual item is rendered
+  // internally by the view. This could also be done via clever tricks on the
+  // view relationship settings, but we just do it here to keep the view itself
+  // simple.
+  $do_rlist_preloading = TRUE;
+  if ($view->name == 'resource_lists' && $do_rlist_preloading) {
+    $result_ids = array();
+    foreach ($view->result as $result) {
+      if (isset($result->entity)) {
+        $result_ids[] = $result->entity;
+      }
+    }
+    if (!empty($result_ids)) {
+      // The view should have already loaded these into the static cache so
+      // so this load should not cost anything.
+      $entities = entity_load('node', $result_ids);
+      // Get the related provider nodes and load them all at once.
+      $provider_ids = array();
+      foreach ($entities as $entity) {
+        $provider_id = crl_helpers_get_single_node_field($entity, 'field_provider');
+        if (isset($provider_id)) {
+          $provider_ids[] = $provider_id;
+        }
+      }
+      if (!empty($provider_ids)) {
+        entity_load('node', $provider_ids);
+      }
+      // Get the related activity entities and load them all at once
+      $activity_ids = array();
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node', '=')
+            ->entityCondition('bundle', 'activity')
+            ->fieldCondition('field_resource_reference', 'target_id', $result_ids, 'IN');
+      $result = $query->execute();
+      if (!empty($result['node'])) {
+        $activity_ids = array_keys($result['node']);
+        entity_load('node', $activity_ids);
+      }
+    }
+  }
 }
