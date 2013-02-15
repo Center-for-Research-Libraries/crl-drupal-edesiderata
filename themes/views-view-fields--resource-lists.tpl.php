@@ -24,14 +24,13 @@
  * @ingroup views_templates
  */
 ?>
-<?php foreach ($fields as $id => $field): 
-  dpm($field, "field"); ?>
-  <?php if (!empty($field->separator)): ?>
-    <?php print $field->separator; ?>
-  <?php endif; ?>
-
-  <?php print $field->wrapper_prefix; ?>
-    <?php print $field->label_html; ?>
-    <?php print $field->content; ?>
-  <?php print $field->wrapper_suffix; ?>
-<?php endforeach; ?>
+<?php 
+  // Get the nid of our current row.
+  $nid = $view->result[$view->row_index]->entity;
+  // We don't display any fields directly, we just use our custom theme
+  // function to build the whole row from scratch based on the nid.
+  if (isset($nid)) {
+    print theme('crl_helpers_resource_teaser', array('nid' => $nid));
+  }
+  
+  
