@@ -22,18 +22,6 @@ function theme_crl_helpers_resource_teaser(&$vars) {
     $entity = $entities[$nid];
     $data = crl_helpers_get_resource_summary($entity);
     
-    if (!empty($data['status'])) {
-      $markup .= '<div class="view-teaser-status-icons">';
-      $status_options = crl_helpers_activity_status_property_oplist();
-      foreach ($data['status'] as $status) {
-        if ($status == 'license_renewal_available' || $status == 'past_license_offer') {
-          //continue;
-        }
-        $markup .= '<span class="summary-icon-small ' . $status . '" title="' . $status_options[$status] . '"></span>';
-      }
-      $markup .= '</div>';
-    }
-    
     $markup .= '<a href="' . url('node/' . $entity->nid) . '"><h2>' . check_plain($entity->title) . '</h2></a>';
     
     $input_form = drupal_render(crl_desiderata_get_input_form($nid));
@@ -49,7 +37,19 @@ function theme_crl_helpers_resource_teaser(&$vars) {
       }
     }
     $markup .= '<br/>' . t('Updated') . ': ' . format_date($entity->changed, 'medium_no_time');
-    $markup .= '<div class="clearer"></div><br /><hr /><br />';
+    
+    if (!empty($data['status'])) {
+      $markup .= '<div class="view-teaser-status-icons">';
+      $status_options = crl_helpers_activity_status_property_oplist();
+      foreach ($data['status'] as $status) {
+        if ($status == 'license_renewal_available' || $status == 'past_license_offer') {
+          //continue;
+        }
+        $markup .= '<span class="summary-icon-small ' . $status . '" title="' . $status_options[$status] . '"></span>';
+      }
+      $markup .= '</div>';
+    }
+    $markup .= '<div class="clearfix"></div>';
   }
   return $markup;
 }
