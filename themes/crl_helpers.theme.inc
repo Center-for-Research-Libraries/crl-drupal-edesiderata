@@ -21,8 +21,13 @@ function theme_crl_helpers_resource_teaser(&$vars) {
   if (!empty($entities[$nid])) {
     $entity = $entities[$nid];
     $data = crl_helpers_get_resource_summary($entity);
+    $markup .= '<h2>' . l(check_plain($entity->title), 'node/' . $entity->nid) . '</h2>';
+    if (isset($data['status'])) {
+      if (in_array('crl_review_available', $data['status'])) {
+        $markup .= '<p>' . l(t('CRL Review Only'), 'node/' . $entity->nid, array('query' => array('rview' => 1))) . '</p>';
+      }
+    }
     
-    $markup .= '<a href="' . url('node/' . $entity->nid) . '"><h2>' . check_plain($entity->title) . '</h2></a>';
     
     $input_form = drupal_render(crl_desiderata_get_input_form($nid));
     if (!empty($input_form)) {
@@ -42,9 +47,6 @@ function theme_crl_helpers_resource_teaser(&$vars) {
       $markup .= '<div class="view-teaser-status-icons">';
       $status_options = crl_helpers_activity_status_property_oplist();
       foreach ($data['status'] as $status) {
-        if ($status == 'license_renewal_available' || $status == 'past_license_offer') {
-          //continue;
-        }
         $markup .= '<span class="summary-icon-small ' . $status . '" title="' . $status_options[$status] . '"></span>';
       }
       $markup .= '</div>';
@@ -71,36 +73,43 @@ function theme_crl_helpers_resource_summary($vars) {
   $entities = entity_load('node', array($nid));
   if (!empty($entities[$nid])) {
     $entity = $entities[$nid];
-    // @TODO: Perhaps split some of this out as a theme hook once the exact 
-    // logic is finalized.
     $data = crl_helpers_get_resource_summary($entity);
     $markup .= check_markup($data['abstract'], 'full_html');
-    $markup .= '<p><strong>Source: </strong>' . $data['source_text'] . '<p>';
-    $highlights = array();
-    if (!empty($data['status'])) {
-      $status_options = crl_helpers_activity_status_property_oplist();
-      foreach ($data['status'] as $status) {
-        if ($status == 'license_renewal_available' || $status == 'past_license_offer') {
-          //continue;
+    if (!isset($_GET['rview'])) {
+      $highlights = array();
+      if (!empty($data['status'])) {
+        $status_options = crl_helpers_activity_status_property_oplist();
+        foreach ($data['status'] as $status) {
+          $highlights['one'][] = '<span class="summary-icon ' . $status . '"></span>' . $status_options[$status];
         }
-        $highlights['r1'][] = '<span class="summary-icon ' . $status . '"></span>' . $status_options[$status];
       }
-    }
-    $highlights['r2'][] = '<span class="big_num">' . $data['comment_count'] . '</span> Comments';
-    $highlights['r2'][] = '<span class="big_num">' . $data['subscription_count'] . '</span> Institutions Reporting';
-    $highlights['r2'][] = '<span class="big_num">' . $data['vote_average'] . '</span> Average Rating';
-    foreach($highlights as $row) {
-      foreach ($row as $key => $highlight) {
-        $markup .= '<div class="res_highlight">' . $highlight;
-        if (isset($row[$key + 1])) {
-          $markup .= '<span class="slasher">&nbsp;</span>';
+      $highlights['two'][] = '<span class="big_num">' . $data['comment_count'] . '</span> Comments';
+      $highlights['two'][] = '<span class="big_num">' . $data['subscription_count'] . '</span> Institutions Reporting';
+      $highlights['two'][] = '<span class="big_num">' . $data['vote_average'] . '</span> Average Rating';
+
+      foreach($highlights as $row_key => $row) {
+        if ($row_key == 'one') {
+          $heading = t('CRL Status');
         }
         else {
-          $markup .= '<span class="slasher">&nbsp;</span>';
+          $heading = t('Feedback');
         }
-        $markup .= '</div>';
+        $markup .= '<div class="res_highlight_row ' . $row_key . ' clearfix">';
+        $markup .= '<div class="res_highlight_row_label">' . $heading . ':</div>';
+        $markup .= '<div class="res_highlight_row_items">';
+        foreach ($row as $key => $highlight) {
+          $markup .= '<div class="res_highlight">' . $highlight . '</div>';
+        }
+        $markup .= '</div></div>';
       }
-      $markup .= '<div class="clearfix"></div>';
+      $markup .= '<p>' . t('Source') . ': ' . $data['source_text'] . '<p>';
+    }
+    else {
+      $base_path = '/';
+      if ($base_url = parse_url($_SERVER['REQUEST_URI'])) {
+        $base_path = trim($base_url['path'], '/'); 
+      }
+      $markup .= '<p>' . t('View more details for this resource in the ') . l(t('full desiderata resource entry'), $base_path) . '.</p>';
     }
   }
   return $markup;
@@ -117,42 +126,45 @@ function theme_crl_helpers_resource_summary($vars) {
 */
 function theme_crl_helpers_facet_breadcrumb($variables) {
   $output = '';
-  if (isset($_GET['f']) || isset($_GET['search_api_views_fulltext'])) {
-    $glue = "»";
-    
-    // Get the most recent breadcrumb and strip the first 2 items off (for
-    // this case we assume these are "home" and "section")
-    $variables['breadcrumb'] = drupal_get_breadcrumb();
-    if (count($variables['breadcrumb']) > 2) {
-      array_shift($variables['breadcrumb']);
-      array_shift($variables['breadcrumb']);
+  $glue = "»";
+
+  // Get the most recent breadcrumb and strip the first 2 items off (for
+  // this case we assume these are "home" and "section")
+  $variables['breadcrumb'] = drupal_get_breadcrumb();
+  if (count($variables['breadcrumb']) > 2) {
+    array_shift($variables['breadcrumb']);
+    array_shift($variables['breadcrumb']);
+  }
+
+  if (!empty($variables['breadcrumb'])) {
+    $base_path = '/';
+    if ($base_url = parse_url($_SERVER['REQUEST_URI'])) {
+      $base_path = $base_url['path']; 
     }
+    $reset_markup = '<span class="facet-breadcrumb-reset"><a href="' . $base_path . '"><span class="facet-breadcrumb-reset-icon"></span><span class="facet-breadcrumb-label">' . t('New Search') . '</span></a></span>';
 
-    if (!empty($variables['breadcrumb'])) {  
+    $output .= '<div id="facet-breadcrumb" class="clearfix"><ul class="breadcrumb"><li><span class="facet-breadcrumb-label">' . t('Active Filter Trail') . ': </span></li>';
+    $switch = array('odd' => 'even', 'even' => 'odd');
+    $zebra = 'even';
+    $last = count($variables['breadcrumb']) - 1;    
 
-      $output = '<div id="facet-breadcrumb" class="clearfix"><ul class="breadcrumb"><li><strong>' . t('Your Filters') . ': </strong></li>';
-      $switch = array('odd' => 'even', 'even' => 'odd');
-      $zebra = 'even';
-      $last = count($variables['breadcrumb']) - 1;    
+    foreach ($variables['breadcrumb'] as $key => $item) {
+      $zebra = $switch[$zebra];
+      $attributes['class'] = array('depth-' . ($key + 1), $zebra);
 
-      foreach ($variables['breadcrumb'] as $key => $item) {
-        $zebra = $switch[$zebra];
-        $attributes['class'] = array('depth-' . ($key + 1), $zebra);
-
-        if ($key == 0) {
-          $attributes['class'][] = 'first';
-        }
-
-        if ($key == $last) {
-          $attributes['class'][] = 'last';
-          $glue = '';
-        }
-
-        $output .= '<li' . drupal_attributes($attributes) . '>' . $item . ' ' . $glue . '</li>';
+      if ($key == 0) {
+        $attributes['class'][] = 'first';
       }
 
-      $output .= '</ul></div>';
+      if ($key == $last) {
+        $attributes['class'][] = 'last';
+        $glue = '';
+      }
+
+      $output .= '<li' . drupal_attributes($attributes) . '>' . $item . ' ' . $glue . '</li>';
     }
+
+    $output .= '</ul>' . $reset_markup . '</div>';
   }
   return $output;
 }

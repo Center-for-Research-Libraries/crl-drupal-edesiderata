@@ -117,11 +117,14 @@ function crl_helpers_block_view($delta = '') {
       break;
     case 'crl_helpers_facet_breadcrumb':
       $block['subject'] = '';
-      $output = array(
-        'facet_breadcrumb' => array(
-          '#theme' => 'crl_helpers_facet_breadcrumb',
-        ),
-      );
+      $output = '';
+      if (isset($_GET['f']) || isset($_GET['search_api_views_fulltext'])) {
+        $output = array(
+          'facet_breadcrumb' => array(
+            '#theme' => 'crl_helpers_facet_breadcrumb',
+          ),
+        );
+      }
       $block['content'] = $output;
       break;
   }
