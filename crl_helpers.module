@@ -236,6 +236,28 @@ function computed_field_field_resource_all_jisc_details_display($field, $entity_
   return $output;
 }
 
+function computed_field_field_resource_full_crl_summary_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
+  $data = crl_helpers_get_resource_summary($entity);
+  $status_names = crl_helpers_activity_status_property_oplist();
+  $output = '';
+  if (!empty($data['status'])) {
+    foreach ($status_names as $status_key => $text) {
+      $active_class = ' status-inactive';
+      $des = ' - no';
+      if (in_array($status_key, $data['status'])) {
+        $active_class = ' status-active';
+        $des = ' - yes';
+      }
+      $output .= '<span class="activity-report' . $active_class . '"><span class="summary-icon-small ' . $status_key . $active_class . '"></span>' . $status_names[$status_key] . $des . '</span><br/>';
+    }
+  }
+  else {
+    $output .= t('No special CRL Status values are set for this resource');
+  }
+  $output .= '<br/><br/>';
+  return $output;
+}
+
 
 // Helper function to build a link to a JISC resource
 function crl_helpers_jisc_link($anchor, $jisc_id = NULL, $sub_path = 'Overview') {
