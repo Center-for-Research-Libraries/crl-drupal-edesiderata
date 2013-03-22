@@ -218,8 +218,27 @@ function crl_helpers_activity_status_property_oplist($arg1 = NULL) {
  * related resource will be re-indexed with updated CRL status metadata.
  */
 function crl_helpers_entity_presave($entity, $type) {
-  $dirty_ids = array();
+  crl_helpers_check_set_dirty($entity, $type);
+}
+
+
+/**
+ * Implements hook_entity_delete().
+ * 
+ * Whenever we delete an activity entity, we also want to be sure
+ * to mark any related resource entities as "dirty". This ensures that the
+ * related resource will be re-indexed with updated CRL status metadata.
+ */
+function crl_helpers_entity_delete($entity, $type) {
+  crl_helpers_check_set_dirty($entity, $type);
+}
+
+
+// Helper function to actually check and mark resource entries as "dirty" when
+// a related activity entry is added/changed/removed.
+function crl_helpers_check_set_dirty($entity, $type) {
   if ($type == 'node' && isset($entity->type)) {
+    $dirty_ids = array();
     if ($entity->type == 'activity') {
       $refs = field_get_items('node', $entity, 'field_resource_reference');
       foreach ($refs as $ref) {
