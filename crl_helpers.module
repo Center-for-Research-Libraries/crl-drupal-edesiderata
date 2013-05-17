@@ -20,42 +20,51 @@ function crl_helpers_menu() {
   return $items;
 }
 
-// Temporary cron tasks
+
+// Cron tasks
 function crl_helpers_cron() {
+  // Sync inst picklist
+  _crl_sf_sync_picklist();
+  // Also do automated status checking for CRL activity entities, etc.
+  $sync = new CrlResourceStatusSync();
+  $sync->calculate_sync()->run_sync();
+}
+
+
+// Helper to fetch the institution picklist from Salesforce.
+function _crl_sf_sync_picklist() {
   if (module_exists('salesforce_api')) {
     $query = "SELECT Display_Name__c, Id, Member_ID__c From Account WHERE (Active__c = TRUE) AND (Member_Type__c = 'Voting' OR Member_Type__c = 'Group' OR Member_Type__c = 'Global') ORDER BY Name_for_sorting__c ASC";
     $sf_records = salesforce_api_query($query);
     $institutions_array_sfid = array();
     $institutions_array_id = array();
     $no_id_array = array();
-    foreach ($sf_records as $record) {
-      if (!empty($record->Id) && !empty($record->Display_Name__c)) {
-        // For legacy support we want to be sure to store the 15 char version 
-        // of the ID instead of the 18 char version returned in the query
-        $record->Id = substr($record->Id, 0, 15);
-        $institutions_array_sfid[$record->Id] = $record->Display_Name__c;
-        if (!empty($record->Member_ID__c)) {
-          $institutions_array_id[$record->Member_ID__c] = $record->Display_Name__c;
-        }
-        else {
-          $no_id_array[$record->Id] = $record->Display_Name__c;
+    if (!empty($sf_records)) {
+      foreach ($sf_records as $record) {
+        if (!empty($record->Id) && !empty($record->Display_Name__c)) {
+          // For legacy support we want to be sure to store the 15 char version 
+          // of the ID instead of the 18 char version returned in the query
+          $record->Id = substr($record->Id, 0, 15);
+          $institutions_array_sfid[$record->Id] = $record->Display_Name__c;
+          if (!empty($record->Member_ID__c)) {
+            $institutions_array_id[$record->Member_ID__c] = $record->Display_Name__c;
+          }
+          else {
+            $no_id_array[$record->Id] = $record->Display_Name__c;
+          }
         }
       }
-    }
-    if (!empty($no_id_array)) {
-      $institutions_sans_id = '';
-      foreach($no_id_array as $value) {
-        $institutions_sans_id .= $value . ", ";
+      if (!empty($no_id_array)) {
+        $institutions_sans_id = '';
+        foreach($no_id_array as $value) {
+          $institutions_sans_id .= $value . ", ";
+        }
+        watchdog('crl_sf', 'The following institutions have no CRL id in Salesforce: @institutions_sans_id', array('@institutions_sans_id' => $institutions_sans_id), WATCHDOG_WARNING);
       }
-      watchdog('crl_sf', 'The following institutions have no CRL id in Salesforce: @institutions_sans_id', array('@institutions_sans_id' => $institutions_sans_id), WATCHDOG_WARNING);
+      variable_set('crl_sf_sync_institutions_array_sfid', $institutions_array_sfid);
+      variable_set('crl_sf_sync_institutions_array', $institutions_array_id);
     }
-    variable_set('crl_sf_sync_institutions_array_sfid', $institutions_array_sfid);
-    variable_set('crl_sf_sync_institutions_array_id', $institutions_array_id);
   }
-  
-  // Also do automated status checking for CRl activity entities, etc.
-  $sync = new CrlResourceStatusSync();
-  $sync->calculate_sync()->run_sync();
 }
 
 

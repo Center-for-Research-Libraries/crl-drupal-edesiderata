@@ -199,7 +199,7 @@ function crl_helpers_activity_status_property_oplist($arg1 = NULL) {
   // If $arg1['id'] is set this is probably being called while a node is being
   // edited. In this case we do NOT want to add the following system-managed
   // fields to the options array.
-  if (!isset($arg1['id'])) {
+  if (1) {
     $options_sys = array(
       'a60_past_license_offer' => t('Past (expired) license offer'),
       'a70_crl_review_available' => t('CRL Review available'),
