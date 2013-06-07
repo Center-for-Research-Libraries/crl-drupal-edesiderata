@@ -27,19 +27,19 @@ class CrlResourceStatusSync {
   public function calculate_sync() {
     // See what activity entities are marked as "licesne available" and compare
     // to which ones have an offer expiration date that's still in the future.
-    $license_available_marked = $this->get_resources_by_active_status($this->a_node_type, $this->a_field_status, 'a30_license_available');
+    $license_available_marked = $this->get_resources_by_active_status($this->a_node_type, $this->a_field_status, 'license_available');
     $license_available_not_expired = $this->get_resources_by_t_range($this->a_node_type, $this->a_field_offer_duration, date('Y-m-d'));
     foreach (array_diff($license_available_marked, $license_available_not_expired) as $nid) {
-      $this->status_changes[$nid]['remove'][] = 'a30_license_available';
-      $this->status_changes[$nid]['remove'][] = 'a40_license_renewal_available';
+      $this->status_changes[$nid]['remove'][] = 'license_available';
+      $this->status_changes[$nid]['remove'][] = 'license_renewal_available';
     }
     // See what activity entities are marked as "trial access available" and
     // compare to which ones have an offer expiration date that's still in the
     // future.
-    $trial_available_marked = $this->get_resources_by_active_status($this->a_node_type, $this->a_field_status, 'a50_trial_access_available');
+    $trial_available_marked = $this->get_resources_by_active_status($this->a_node_type, $this->a_field_status, 'trial_access_available');
     $trial_available_not_expired = $this->get_resources_by_t_range($this->a_node_type, $this->a_field_trial_duration, date('Y-m-d'));
     foreach (array_diff($trial_available_marked, $trial_available_not_expired) as $nid) {
-      $this->status_changes[$nid]['remove'][] = 'a50_trial_access_available';
+      $this->status_changes[$nid]['remove'][] = 'trial_access_available';
     }
     return $this;   
   }
@@ -200,8 +200,8 @@ function crl_helpers_resource_backref_properties_get($entity, array $options, $n
             // and if so set the "Past (expired) offer" setting.
             $offer_duration = field_get_items('node', $node, 'field_activity_offer_duration');
             if (isset($offer_duration[0]['value2'])) {
-              if ($offer_duration[0]['value2'] < $now && !in_array('a60_past_license_offer', $computed_status)) {
-                $computed_status[] = 'a60_past_license_offer';
+              if ($offer_duration[0]['value2'] < $now && !in_array('past_license_offer', $computed_status)) {
+                $computed_status[] = 'past_license_offer';
               }
             }
           }
@@ -210,8 +210,8 @@ function crl_helpers_resource_backref_properties_get($entity, array $options, $n
       // Also see if this resource has a source status that indicates it's a
       // full CRL review.
       $source_status = crl_helpers_get_single_node_field($entity, 'field_resource_source_status');
-      if ($source_status == 'crl_review' && !in_array('a70_crl_review_available', $computed_status)) {
-        $computed_status[] = 'a70_crl_review_available';
+      if ($source_status == 'crl_review' && !in_array('crl_review_available', $computed_status)) {
+        $computed_status[] = 'crl_review_available';
       }
       return $computed_status;
       
@@ -224,15 +224,54 @@ function crl_helpers_resource_backref_properties_get($entity, array $options, $n
 function crl_helpers_activity_status_property_oplist($arg1 = NULL) {
   // Define fields set be editors on activity entity.
   $options = array(
-    'a10_crl_desiderata' => t('CRL Desiderata'),
-    'a20_license_under_consideration' => t('License terms under consideration'),
-    'a30_license_available' => t('License offer available'),
-    'a40_license_renewal_available' => t('License renewal available'),
-    'a50_trial_access_available' => t('Trial access available'),
-    'a60_past_license_offer' => t('Past (expired) license offer'),
-    'a70_crl_review_available' => t('CRL Review available'),
+    'crl_desiderata' => t('CRL Desiderata'),
+    'license_under_consideration' => t('License terms under consideration'),
+    'license_available' => t('License offer available'),
+    'license_renewal_available' => t('License renewal available'),
+    'trial_access_available' => t('Trial access available'),
+    'past_license_offer' => t('Past (expired) license offer'),
+    'crl_review_available' => t('CRL Review available'),
   );
   return $options;
+}
+
+
+function crl_helpers_facetapi_sort_info() {
+  $sorts = array();
+
+  $sorts['crl_status_sort'] = array(
+    'label' => t('Custom CRL Status Sort'),
+    'callback' => 'crl_helpers_activity_status_property_sort',
+    'description' => t('Custom sort order that only applies to CRL status values.'),
+    'weight' => -50,
+  );
+  return $sorts;
+}
+
+
+function crl_helpers_activity_status_property_sort(array $a, array $b) {
+  $weights = array(
+    'crl_desiderata' => 10,
+    'license_under_consideration' => 20,
+    'license_available' => 30,
+    'license_renewal_available' => 40,
+    'trial_access_available' => 50,
+    'past_license_offer' => 60,
+    'crl_review_available' => 70,
+  );
+  $a_weight = 0;
+  if (isset($a['#indexed_value'])) {
+    if (!empty($weights[$a['#indexed_value']])) {
+      $a_weight = $weights[$a['#indexed_value']];
+    }
+  }
+  $b_weight = 0;
+  if (isset($b['#indexed_value'])) {
+    if (!empty($weights[$b['#indexed_value']])) {
+      $b_weight = $weights[$b['#indexed_value']];
+    }
+  }
+  return ($a_weight < $b_weight) ? -1 : 1;
 }
 
 

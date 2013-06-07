@@ -429,7 +429,7 @@ function crl_helpers_form_activity_node_form_alter(&$form, &$form_state, $form_i
   // the CRL status settings.
   $form['#validate'][] = 'crl_helpers_activity_node_form_validate';
   // Hide the "review available" option as it's purely managed by the system.
-  unset($form['field_activity_crl_status']['und']['#options']['a70_crl_review_available']);
+  unset($form['field_activity_crl_status']['und']['#options']['crl_review_available']);
   
   // Auto-fill some values if they are passed via the URL.
   if (!empty($_GET['resource_id'])) {
@@ -454,26 +454,26 @@ function crl_helpers_activity_node_form_validate(&$form, &$form_state) {
   }
   // Handle case where an offer is set while another status is set that is
   // mutually exclusive.
-  $dissallow_with_offer = array_intersect($set_status, array('a10_crl_desiderata', 'a20_license_under_consideration'));
-  if (in_array('a30_license_available', $set_status) && !empty($dissallow_with_offer)) {
+  $dissallow_with_offer = array_intersect($set_status, array('crl_desiderata', 'license_under_consideration'));
+  if (in_array('license_available', $set_status) && !empty($dissallow_with_offer)) {
     form_set_error('field_activity_crl_status', t('"License Offer Available" cannot be set while "CRL Desiderata" or "License terms under consideration" are also set.'));
   }
   // Handle case where "License renewal available" is set without "License
   // available"
-  if (in_array('a40_license_renewal_available', $set_status) && !in_array('a30_license_available', $set_status)) {
+  if (in_array('license_renewal_available', $set_status) && !in_array('license_available', $set_status)) {
     form_set_error('field_activity_crl_status', t('"License Renewal Available" should only be set if "License Available" is also set.'));
   }
   $now = date('Y-m-d');
   // If the offer end date is not in the future the offer status should not
   // be set.
-  if (in_array('a30_license_available', $set_status)) {
+  if (in_array('license_available', $set_status)) {
     if ($form_state['values']['field_activity_offer_duration'][$language][0]['value2'] < $now) {
       form_set_error('field_activity_offer_duration', t('"License Offer Available" cannot be set while the offer expiration date is either not set or is in the past.'));
     }
   }
   // If the trial end date is not in the future the "Trial Access Available"
   // status should not be set.
-  if (in_array('a50_trial_access_available', $set_status)) {
+  if (in_array('trial_access_available', $set_status)) {
     if ($form_state['values']['field_activity_trial_duration'][$language][0]['value2'] < $now) {
       form_set_error('field_activity_trial_duration', t('"Trial Access Available" cannot be set while the trial expiration date is either not set or is in the past.'));
     }
@@ -488,10 +488,10 @@ function crl_helpers_node_view_alter(&$build) {
     $unset_fields = array();
     if (!empty($build['#node']->field_activity_crl_status['und'])) {
       foreach ($build['#node']->field_activity_crl_status['und'] as $status) {
-        if ($status['value'] == 'a30_license_available') {
+        if ($status['value'] == 'license_available') {
           $license_available = TRUE;
         }
-        if ($status['value'] == 'a50_trial_access_available') {
+        if ($status['value'] == 'trial_access_available') {
           $trial_access_available = TRUE;
         }
       }

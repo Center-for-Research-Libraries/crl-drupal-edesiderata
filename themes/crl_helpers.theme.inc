@@ -23,7 +23,7 @@ function theme_crl_helpers_resource_teaser(&$vars) {
     $data = crl_helpers_get_resource_summary($entity);
     $markup .= '<h2>' . l(check_plain($entity->title), 'node/' . $entity->nid) . '</h2>';
     if (isset($data['status'])) {
-      if (in_array('a70_crl_review_available', $data['status'])) {
+      if (in_array('crl_review_available', $data['status'])) {
         $markup .= '<p>' . l(t('CRL Review'), 'node/' . $entity->nid, array('query' => array('rview' => 1))) . '</p>';
       }
     }
