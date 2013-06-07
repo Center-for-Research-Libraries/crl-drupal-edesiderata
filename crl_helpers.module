@@ -141,14 +141,28 @@ function crl_helpers_block_view($delta = '') {
 }
 
 
-// Get resoruce summary values from a resource entity.
+/**
+ * Get resoruce summary values from a resource entity.
+ * 
+ * The various functions that are called through this function should implement
+ * static caching whenever DB queries are needed, so it should be safe to call
+ * this multiple times on the same page load (e.g. if summary info must be
+ * requested from different contexts for the same resource entitity). We don't
+ * do static caching in this function directly as it would be redundant to
+ * static caching within its later called functions (such as entity_load). This
+ * avoids using up unnecessary memory.
+ */
 function crl_helpers_get_resource_summary($entity) {
   $nid = $entity->nid;
   $summary = array();
   $wrapper = entity_metadata_wrapper('node', $entity);
   
-  // Get metadata values through Entity API
-  $crl_statuses = $wrapper->crl_activity_backref->raw();
+  // Get general backref info through Entity API.
+  $summary['backref_entities'] = $wrapper->crl_resource_backref->raw();
+  
+  // Get status values through Entity API. This also calculated through a
+  // backref.
+  $crl_statuses = $wrapper->crl_resource_status_backref->raw();
   foreach ($crl_statuses as $status) {
     if (!empty($status)) {
       $summary['status'][] = $status;
@@ -211,6 +225,7 @@ function crl_helpers_get_resource_summary($entity) {
 
 
 // Custom field to show JISC details.
+// @todo: make themeable and move out of computed field.
 function computed_field_field_resource_all_jisc_details_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
   $output = '';
   $jisc_id = crl_helpers_get_single_node_field($entity, 'field_jisc_id');
@@ -237,7 +252,7 @@ function computed_field_field_resource_all_jisc_details_display($field, $entity_
     }
   }
   // If this is a CRL review but we also have a JISC ID, show a note about
-  // the fact that additional details may be available at JISC
+  // the fact that additional details may be available at JISC.
   elseif ($source_status == 'crl_review' && !empty($jisc_id)) {
     $output .= '<h3>' . t("Additional Details from JISC") . '</h3>';
     $output .= t("Additional details may be available in the !itemlink for this item from !sitelink", array('!itemlink' => crl_helpers_jisc_link(t('catalog entry'), $jisc_id), '!sitelink' => crl_helpers_jisc_link(t('JISC Collections'))));
@@ -245,10 +260,29 @@ function computed_field_field_resource_all_jisc_details_display($field, $entity_
   return $output;
 }
 
+
+// Custom field to show the activity summary.
+// @todo: make themeable and move out of computed field.
 function computed_field_field_resource_full_crl_summary_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
-  $data = crl_helpers_get_resource_summary($entity);
-  $status_names = crl_helpers_activity_status_property_oplist();
   $output = '';
+  $data = crl_helpers_get_resource_summary($entity);
+  
+  // Add some helpful editor links.
+  if (!empty($data['backref_entities'])) { // Activity data exists
+    // Just get the first backref entity in the array (for now there should
+    // just be one).
+    $activity_entity = reset($data['backref_entities']);
+    if (entity_access('update', 'node', $activity_entity)) {
+      $output .= '<p style="text-align: right;"><strong>' . l('Edit activity details', 'node/' . $activity_entity->nid . '/edit', array('query' => array('destination' => current_path(), 'activity_title' => rawurlencode('Activity: ' . check_plain($entity->title))))) . '</strong></p>';
+    }
+  }
+  else { // No activity data exists
+    if (entity_access('create', 'node')) {
+      $output .= '<p style="text-align: right;"><strong>' . l('Edit activity details', 'node/add/activity', array('query' => array('destination' => current_path(), 'activity_title' => rawurlencode('Activity: ' . check_plain($entity->title)), 'resource_id' => $entity->nid))) . '</strong></p>';
+    }
+  }
+  
+  $status_names = crl_helpers_activity_status_property_oplist();
   if (!empty($data['status'])) {
     foreach ($status_names as $status_key => $text) {
       $active_class = ' status-inactive';
@@ -261,7 +295,7 @@ function computed_field_field_resource_full_crl_summary_display($field, $entity_
     }
   }
   else {
-    $output .= t('No special CRL Status values are set for this resource');
+    // $output .= t('No special CRL Status values are set for this resource');
   }
   $output .= '<br/><br/>';
   return $output;
@@ -328,7 +362,7 @@ function crl_helpers_get_single_node_field($entity, $field_name) {
 function crl_helpers_views_api() {
   $path = drupal_get_path('module', 'crl_helpers');
   return array(
-    'api' => 2.0,
+    'api' => 3.0,
     'path' => $path,
     'template path' => $path . '/themes',
   );
@@ -382,6 +416,104 @@ function crl_helpers_views_pre_render(&$view) {
         $activity_ids = array_keys($result['node']);
         entity_load('node', $activity_ids);
       }
+    }
+  }
+}
+
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function crl_helpers_form_activity_node_form_alter(&$form, &$form_state, $form_id) {
+  // When updating an activity entity enforce some custom validation rules on
+  // the CRL status settings.
+  $form['#validate'][] = 'crl_helpers_activity_node_form_validate';
+  // Hide the "review available" option as it's purely managed by the system.
+  unset($form['field_activity_crl_status']['und']['#options']['a70_crl_review_available']);
+  
+  // Auto-fill some values if they are passed via the URL.
+  if (!empty($_GET['resource_id'])) {
+    $form['field_resource_reference']['und'][0]['target_id']['#default_value'] = 'ref(' . $_GET['resource_id'] . ')';
+  }
+  if (!empty($_GET['activity_title'])) {
+    $form['title']['#default_value'] = rawurldecode($_GET['activity_title']);
+  }
+}
+
+
+// Validation callback for activity_node_form
+function crl_helpers_activity_node_form_validate(&$form, &$form_state) {
+  $set_status = array();
+  $language = $form['language']['#value'];
+  if (!empty($form_state['values']['field_activity_crl_status'][$language])) {
+    foreach($form_state['values']['field_activity_crl_status'][$language] as $item) {
+      if (!empty($item['value'])) {
+        $set_status[] = $item['value'];
+      }
+    }
+  }
+  // Handle case where an offer is set while another status is set that is
+  // mutually exclusive.
+  $dissallow_with_offer = array_intersect($set_status, array('a10_crl_desiderata', 'a20_license_under_consideration'));
+  if (in_array('a30_license_available', $set_status) && !empty($dissallow_with_offer)) {
+    form_set_error('field_activity_crl_status', t('"License Offer Available" cannot be set while "CRL Desiderata" or "License terms under consideration" are also set.'));
+  }
+  // Handle case where "License renewal available" is set without "License
+  // available"
+  if (in_array('a40_license_renewal_available', $set_status) && !in_array('a30_license_available', $set_status)) {
+    form_set_error('field_activity_crl_status', t('"License Renewal Available" should only be set if "License Available" is also set.'));
+  }
+  $now = date('Y-m-d');
+  // If the offer end date is not in the future the offer status should not
+  // be set.
+  if (in_array('a30_license_available', $set_status)) {
+    if ($form_state['values']['field_activity_offer_duration'][$language][0]['value2'] < $now) {
+      form_set_error('field_activity_offer_duration', t('"License Offer Available" cannot be set while the offer expiration date is either not set or is in the past.'));
+    }
+  }
+  // If the trial end date is not in the future the "Trial Access Available"
+  // status should not be set.
+  if (in_array('a50_trial_access_available', $set_status)) {
+    if ($form_state['values']['field_activity_trial_duration'][$language][0]['value2'] < $now) {
+      form_set_error('field_activity_trial_duration', t('"Trial Access Available" cannot be set while the trial expiration date is either not set or is in the past.'));
+    }
+  }
+}
+
+
+function crl_helpers_node_view_alter(&$build) {
+  if ($build['#bundle'] == 'activity') {
+    $license_available = FALSE;
+    $trial_access_available = FALSE;
+    $unset_fields = array();
+    if (!empty($build['#node']->field_activity_crl_status['und'])) {
+      foreach ($build['#node']->field_activity_crl_status['und'] as $status) {
+        if ($status['value'] == 'a30_license_available') {
+          $license_available = TRUE;
+        }
+        if ($status['value'] == 'a50_trial_access_available') {
+          $trial_access_available = TRUE;
+        }
+      }
+    }
+    if (!$license_available) {
+      $unset_fields = array_merge($unset_fields, array('field_activity_offer_duration', 'field_activty_offer_terms', 'field_activity_get_started', 'field_activity_license_doc', 'field_activity_auth_form', 'field_activity_pricing_terms', 'field_activity_offer_notes'));
+    }
+    if (!$trial_access_available) {
+      $unset_fields = array_merge($unset_fields, array('field_activity_trial_duration', 'field_trial_access_info', 'field_access_trial_url', 'field_activity_trial_notes'));
+    }
+    if (!empty($unset_fields)) {
+      foreach($unset_fields as $field) {
+        if (isset($build[$field])) {
+          unset($build[$field]);
+        }
+      }
+    }
+  }
+  
+  if ($build['#bundle'] == 'resource') {
+    if (empty($build['field_resource_all_jisc_details'][0]['#markup'])) {
+      unset($build['field_resource_all_jisc_details']);
     }
   }
 }

@@ -55,11 +55,11 @@ class CrlResourceStatusSync {
       $node = &$nodes_to_edit[$nid];
       foreach ($types as $type_key => $statuses) {
         foreach ($statuses as $status_key => $status) {        
-          // When removing AND adding we check that the given status is not 
-          // already set. If adding a status, and for some reason the EFQ that 
-          // got us to this point is incorrect, we could end up adding a new 
-          // status value each time this is run... which would be bad as it 
-          // would lead to accumulating corrupt status values.
+          // When removing AND adding we unset the status if it's already set.
+          // If adding a status, and for some reason the EFQ that got us to this
+          // point is incorrect, we could end up adding a new status value each
+          // time this is run... which would be bad as it would lead to
+          // accumulating corrupt status values.
           $statuses_active = field_get_items('node', $node, $this->a_field_status);
           if (!empty($statuses_active)) {
             foreach ($statuses_active as $key => $status_active) {
@@ -119,69 +119,103 @@ class CrlResourceStatusSync {
 
 /**
  * Implements hook_entity_property_info_alter().
- * 
- * Add a new entity property that will be used to define the formal CRL status
- * associated with any given resource.
  */
 function crl_helpers_entity_property_info_alter(&$info) {
   $properties = &$info['node']['properties'];
-  $properties['crl_activity_backref'] = array(
-    'label' => t("CRL Actvity Status Through Backreference"),
+  // Add a new entity property that will be used to fetch the general details
+  // for all entities that point to a resource entity through a
+  // field_resource_reference field.
+  $properties['crl_resource_backref'] = array(
+    'label' => t("CRL resource backreference"),
     'type' => 'list<text>',
-    'description' => t("Gets CRL Actvity Status Through Backreference."),
-    'getter callback' => 'crl_helpers_activity_status_property_get',
+    'description' => t("Gets entities through resource backreference."),
+    'getter callback' => 'crl_helpers_resource_backref_properties_get',
+  );
+  // Add a new entity property that will be used to define the formal CRL status
+  // associated with any given resource (based on activity values linked to a
+  // resource entity through a field_resource_reference field.
+  $properties['crl_resource_status_backref'] = array(
+    'label' => t("CRL resource status backreference"),
+    'type' => 'list<text>',
+    'description' => t("Gets CRL resource status through backreference."),
+    'getter callback' => 'crl_helpers_resource_backref_properties_get',
     'options list' => 'crl_helpers_activity_status_property_oplist',
   );
 }
 
 
-// Callback function to actaully calculate the status associated with a
-// resource. This function queires numerous places and aggregates the results
-// into this one entity property.
-function crl_helpers_activity_status_property_get($entity, array $options, $name, $type, $info) {
-  $now = date('Y-m-d');
-  $computed_status = array();
-  list($id) = entity_extract_ids($type, $entity);
-  // Get the activity entries that reference this resource.
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'node', '=')
-        ->entityCondition('bundle', 'activity')
-        ->fieldCondition('field_resource_reference', 'target_id', $id, '=');
-  $result = $query->execute();
-  // Load the related activity entities and get the status set on them.
-  if (!empty($result['node'])) {
-    $backref_nids = array_keys($result['node']);
-    // Consider revisting to fetch one field instead of full node_load, see:
-    // http://btmash.com/article/2012-04-13/i-just-want-one-field-using-fieldattachload
-    $backref_nodes = node_load_multiple($backref_nids);
-    foreach ($backref_nodes as $nid => $node) {
-      // Get the raw status values set on the activity entity and aggregate
-      // them directly into our computed result.
-      $statuses = field_get_items('node', $node, 'field_activity_crl_status');
-      if (!empty($statuses)) {
-        foreach ($statuses as $status) {
-          if (!in_array($status['value'], $computed_status)) {
-            $computed_status[] = $status['value'];
+// Callback function to calculate backreferenced properties.
+function crl_helpers_resource_backref_properties_get($entity, array $options, $name, $type, $info) {
+  // First calculate the backreferences. We store these in a static cache so
+  // that this getter callback can be called multiple times, for multiple
+  // properties that use backreferences, in one page load efficiently.
+  static $backrefs = array();
+  if (!isset($backrefs[$entity->nid])) {
+    $backrefs[$entity->nid] = array();
+    list($id) = entity_extract_ids($type, $entity);
+    // Get the entities that reference this resource through the
+    // field_resource_reference field.
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node', '=')
+          ->entityCondition('bundle', 'activity')
+          ->fieldCondition('field_resource_reference', 'target_id', $id, '=');
+    $result = $query->execute();
+    if (!empty($result['node'])) {
+      $backrefs[$entity->nid] = array_keys($result['node']);
+    }
+  }
+  // Now load the full backreferenced nodes (node_load_multiple has its own
+  // static cache so it does not have to be part of the static caching above.
+  $backref_nodes = node_load_multiple($backrefs[$entity->nid]);
+ 
+  // Once we have the backreference details we can continue with
+  // property-specific logic that uses this info.
+  switch ($info['name']) {
+    
+    // A request for the basic crl_resource_backref propery should just return
+    // the raw backrefrenced nodes.
+    case 'crl_resource_backref':
+      return $backref_nodes;
+      
+    // A request for the crl_resource_status_backref property requires
+    // additional calculation to get the status specifics (based on the
+    // referencing activity status details).
+    case 'crl_resource_status_backref':   
+      $now = date('Y-m-d');
+      $computed_status = array();
+      if (!empty($backref_nodes)) {
+        foreach ($backref_nodes as $nid => $node) {
+          if ($node->type = 'activity')  {
+            // Get the raw status values set on the activity entity and aggregate
+            // them directly into our computed result.
+            $statuses = field_get_items('node', $node, 'field_activity_crl_status');
+            if (!empty($statuses)) {
+              foreach ($statuses as $status) {
+                if (!in_array($status['value'], $computed_status)) {
+                  $computed_status[] = $status['value'];
+                }
+              }
+            }
+            // See if this activity entity contains an offer that's now expired,
+            // and if so set the "Past (expired) offer" setting.
+            $offer_duration = field_get_items('node', $node, 'field_activity_offer_duration');
+            if (isset($offer_duration[0]['value2'])) {
+              if ($offer_duration[0]['value2'] < $now && !in_array('a60_past_license_offer', $computed_status)) {
+                $computed_status[] = 'a60_past_license_offer';
+              }
+            }
           }
         }
       }
-      // See if this activity entity contains an offer that's now expired, and
-      // if so set the "Past (expired) offer" setting.
-      $offer_duration = field_get_items('node', $node, 'field_activity_offer_duration');
-      if (isset($offer_duration[0]['value2'])) {
-        if ($offer_duration[0]['value2'] < $now && !in_array('a60_past_license_offer', $computed_status)) {
-          $computed_status[] = 'a60_past_license_offer';
-        }
+      // Also see if this resource has a source status that indicates it's a
+      // full CRL review.
+      $source_status = crl_helpers_get_single_node_field($entity, 'field_resource_source_status');
+      if ($source_status == 'crl_review' && !in_array('a70_crl_review_available', $computed_status)) {
+        $computed_status[] = 'a70_crl_review_available';
       }
-    }
+      return $computed_status;
+      
   }
-  // Also see if this resource has a source status that indicates it's a full
-  // CRL review.
-  $source_status = crl_helpers_get_single_node_field($entity, 'field_resource_source_status');
-  if ($source_status == 'crl_review' && !in_array('a70_crl_review_available', $computed_status)) {
-    $computed_status[] = 'a70_crl_review_available';
-  }
-  return $computed_status;
 }
 
 
@@ -195,17 +229,9 @@ function crl_helpers_activity_status_property_oplist($arg1 = NULL) {
     'a30_license_available' => t('License offer available'),
     'a40_license_renewal_available' => t('License renewal available'),
     'a50_trial_access_available' => t('Trial access available'),
+    'a60_past_license_offer' => t('Past (expired) license offer'),
+    'a70_crl_review_available' => t('CRL Review available'),
   );
-  // If $arg1['id'] is set this is probably being called while a node is being
-  // edited. In this case we do NOT want to add the following system-managed
-  // fields to the options array.
-  if (1) {
-    $options_sys = array(
-      'a60_past_license_offer' => t('Past (expired) license offer'),
-      'a70_crl_review_available' => t('CRL Review available'),
-    );
-    $options = array_merge($options, $options_sys); 
-  }
   return $options;
 }
 
@@ -247,57 +273,6 @@ function crl_helpers_check_set_dirty($entity, $type) {
     }
     if (!empty($dirty_ids)) {
       search_api_track_item_change('node', $dirty_ids);
-    }
-  }
-}
-
-
-/**
- * Implements hook_form_BASE_FORM_ID_alter().
- * 
- * When updating an activity entity enforce some custom validation rules on
- * the CRL status settings.
- */
-function crl_helpers_form_activity_node_form_alter(&$form, &$form_state, $form_id) {
-  $form['#validate'][] = 'crl_helpers_activity_node_form_validate';
-}
-
-
-// Validation callback for activity_node_form
-function crl_helpers_activity_node_form_validate(&$form, &$form_state) {
-  $set_status = array();
-  $language = $form['language']['#value'];
-  if (!empty($form_state['values']['field_activity_crl_status'][$language])) {
-    foreach($form_state['values']['field_activity_crl_status'][$language] as $item) {
-      if (!empty($item['value'])) {
-        $set_status[] = $item['value'];
-      }
-    }
-  }
-  // Handle case where an offer is set while another status is set that is
-  // mutually exclusive.
-  $dissallow_with_offer = array_intersect($set_status, array('a10_crl_desiderata', 'a20_license_under_consideration'));
-  if (in_array('a30_license_available', $set_status) && !empty($dissallow_with_offer)) {
-    form_set_error('field_activity_crl_status', t('"License Offer Available" cannot be set while "CRL Desiderata" or "License terms under consideration" are also set.'));
-  }
-  // Handle case where "License renewal available" is set without "License
-  // available"
-  if (in_array('a40_license_renewal_available', $set_status) && !in_array('a30_license_available', $set_status)) {
-    form_set_error('field_activity_crl_status', t('"License Renewal Available" should only be set if "License Available" is also set.'));
-  }
-  $now = date('Y-m-d');
-  // If the offer end date is not in the future the offer status should not
-  // be set.
-  if (in_array('a30_license_available', $set_status)) {
-    if ($form_state['values']['field_activity_offer_duration'][$language][0]['value2'] < $now) {
-      form_set_error('field_activity_offer_duration', t('"License Offer Available" cannot be set while the offer expiration date is either not set or is in the past.'));
-    }
-  }
-  // If the trial end date is not in the future the "Trial Access Available"
-  // status should not be set.
-  if (in_array('a50_trial_access_available', $set_status)) {
-    if ($form_state['values']['field_activity_trial_duration'][$language][0]['value2'] < $now) {
-      form_set_error('field_activity_trial_duration', t('"Trial Access Available" cannot be set while the trial expiration date is either not set or is in the past.'));
     }
   }
 }
