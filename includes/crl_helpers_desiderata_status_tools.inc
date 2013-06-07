@@ -1,122 +1,6 @@
 <?php
 
 
-/*****************************************************************************/
-/*      Object to manage status sync tasks 
-/*****************************************************************************/
-class CrlResourceStatusSync {
-  // Define Drupal object and field machine names centrally.
-  public $a_node_type = 'activity';
-  public $a_field_offer_duration = 'field_activity_offer_duration';
-  public $a_field_trial_duration = 'field_activity_trial_duration';
-  public $a_field_status = 'field_activity_crl_status';
-  public $r_node_type = 'resource'; 
-  // Dynamic variables set by object methods.
-  public $lite = FALSE;
-  public $status_changes = array();
-  
-  
-  // Constructor
-  public function __construct($lite = FALSE) {
-    $this->lite = $lite;
-  }  
- 
-  
-  // Calculate which resources need status updates of various types and build
-  // an array that captures all the specifics for later processing.
-  public function calculate_sync() {
-    // See what activity entities are marked as "licesne available" and compare
-    // to which ones have an offer expiration date that's still in the future.
-    $license_available_marked = $this->get_resources_by_active_status($this->a_node_type, $this->a_field_status, 'license_available');
-    $license_available_not_expired = $this->get_resources_by_t_range($this->a_node_type, $this->a_field_offer_duration, date('Y-m-d'));
-    foreach (array_diff($license_available_marked, $license_available_not_expired) as $nid) {
-      $this->status_changes[$nid]['remove'][] = 'license_available';
-      $this->status_changes[$nid]['remove'][] = 'license_renewal_available';
-    }
-    // See what activity entities are marked as "trial access available" and
-    // compare to which ones have an offer expiration date that's still in the
-    // future.
-    $trial_available_marked = $this->get_resources_by_active_status($this->a_node_type, $this->a_field_status, 'trial_access_available');
-    $trial_available_not_expired = $this->get_resources_by_t_range($this->a_node_type, $this->a_field_trial_duration, date('Y-m-d'));
-    foreach (array_diff($trial_available_marked, $trial_available_not_expired) as $nid) {
-      $this->status_changes[$nid]['remove'][] = 'trial_access_available';
-    }
-    return $this;   
-  }
- 
-  
-  // Execute a set of status updates by loading all the nodes that need an
-  // update all at once, and then applying each status update one-by-one.
-  public function run_sync() {
-    // Load nodes that will be changed.
-    $nodes_to_edit = node_load_multiple(array_keys($this->status_changes));  
-    // Loop though our status_changes array and apply the status changes.
-    foreach($this->status_changes as $nid => $types) {
-      $node = &$nodes_to_edit[$nid];
-      foreach ($types as $type_key => $statuses) {
-        foreach ($statuses as $status_key => $status) {        
-          // When removing AND adding we unset the status if it's already set.
-          // If adding a status, and for some reason the EFQ that got us to this
-          // point is incorrect, we could end up adding a new status value each
-          // time this is run... which would be bad as it would lead to
-          // accumulating corrupt status values.
-          $statuses_active = field_get_items('node', $node, $this->a_field_status);
-          if (!empty($statuses_active)) {
-            foreach ($statuses_active as $key => $status_active) {
-              if ($status_active['value'] == $status) {
-                unset($node->{$this->a_field_status}[$node->language][$key]);
-              }
-            }
-          }
-          if ($type_key == 'add') {
-            $node->{$this->a_field_status}[$node->language][] = array('value' => $status);
-          }
-        }
-      }
-      node_save_action($node);
-    }
-  }
-
-  
-  // Get a set of resource ids that SHOULD have a status based on a time range
-  // on the related offer.
-  public function get_resources_by_t_range($node_type, $field_duration, $date) {
-    // Get the active offers
-    $nids_active = array();
-    $query = new EntityFieldQuery();
-    $entities = $query->entityCondition('entity_type', 'node')
-                      ->entityCondition('bundle', $node_type)
-                      ->fieldCondition($field_duration, 'value2', $date, '>=')
-                      ->execute();
-    if (!empty($entities['node'])) {
-      $nids_active = array_keys($entities['node']);
-    }
-    return $nids_active;
-  }
-  
-  
-  // Get a set of resoruce ids that DO have a status.
-  public function get_resources_by_active_status($node_type, $field_status, $status) {    
-    $nids_active = array();
-    $query = new EntityFieldQuery();
-    $entities = $query->entityCondition('entity_type', 'node')
-                      ->entityCondition('bundle', $node_type)
-                      ->fieldCondition($field_status, 'value', $status, '=')
-                      ->execute();
-    if (!empty($entities['node'])) {
-      $nids_active = array_keys($entities['node']);
-    }
-    return $nids_active;  
-  }
-}
-
-
-
-/*****************************************************************************/
-/*        Additions to manage CRL Status Metadata on Resource
-/*****************************************************************************/
-
-
 /**
  * Implements hook_entity_property_info_alter().
  */
@@ -144,44 +28,64 @@ function crl_helpers_entity_property_info_alter(&$info) {
 }
 
 
-// Callback function to calculate backreferenced properties.
+/**
+ * Properties getter callback: calculate backreferenced properties.
+ * 
+ * Note that this getter callback is called from multiple contexts. It is called
+ * upon the display of a resource to dynamically calculate resource data based
+ * on related activity (when loading/display pages). It is also called via the
+ * Search API when content is indexed in order to dynamically calculate resource
+ * status data that will be indexed (and used in facets).
+ * 
+ * @see crl_helpers_entity_property_info_alter().
+ */
 function crl_helpers_resource_backref_properties_get($entity, array $options, $name, $type, $info) {
+  // The logic below may fail in strange ways if we are not dealing with a node.
+  if (empty($entity->nid)) {
+    return FALSE;
+  }
   // First calculate the backreferences. We store these in a static cache so
   // that this getter callback can be called multiple times, for multiple
   // properties that use backreferences, in one page load efficiently.
   static $backrefs = array();
   if (!isset($backrefs[$entity->nid])) {
     $backrefs[$entity->nid] = array();
-    list($id) = entity_extract_ids($type, $entity);
     // Get the entities that reference this resource through the
     // field_resource_reference field.
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node', '=')
           ->entityCondition('bundle', 'activity')
-          ->fieldCondition('field_resource_reference', 'target_id', $id, '=');
+          ->fieldCondition('field_resource_reference', 'target_id', $entity->nid, '='); 
+    // Force query to run without access checks. If we remove the tag below then
+    // status values will reflect the current user's access permissions (status
+    // values will not appear for activity entries they do not have access to)
+    // which could be a very good thing. However, this will cause problems when
+    // this code is called though cron when resoruce content is being indexed.
+    // This is because cron can only run as one user (anon by default) so the
+    // indexed (facet) data can't be user-specific. For now, we just override
+    // access control for all cases but may need to think more about how to deal
+    // with this.
+    $query->addTag('DANGEROUS_ACCESS_CHECK_OPT_OUT');
     $result = $query->execute();
     if (!empty($result['node'])) {
       $backrefs[$entity->nid] = array_keys($result['node']);
     }
   }
   // Now load the full backreferenced nodes (node_load_multiple has its own
-  // static cache so it does not have to be part of the static caching above.
+  // static cache so it does not have to be part of the static caching above).
   $backref_nodes = node_load_multiple($backrefs[$entity->nid]);
  
   // Once we have the backreference details we can continue with
   // property-specific logic that uses this info.
-  switch ($info['name']) {
-    
+  switch ($info['name']) {    
     // A request for the basic crl_resource_backref propery should just return
     // the raw backrefrenced nodes.
     case 'crl_resource_backref':
-      return $backref_nodes;
-      
+      return $backref_nodes;      
     // A request for the crl_resource_status_backref property requires
     // additional calculation to get the status specifics (based on the
     // referencing activity status details).
-    case 'crl_resource_status_backref':   
-      $now = date('Y-m-d');
+    case 'crl_resource_status_backref':
       $computed_status = array();
       if (!empty($backref_nodes)) {
         foreach ($backref_nodes as $nid => $node) {
@@ -196,33 +100,27 @@ function crl_helpers_resource_backref_properties_get($entity, array $options, $n
                 }
               }
             }
-            // See if this activity entity contains an offer that's now expired,
-            // and if so set the "Past (expired) offer" setting.
-            $offer_duration = field_get_items('node', $node, 'field_activity_offer_duration');
-            if (isset($offer_duration[0]['value2'])) {
-              if ($offer_duration[0]['value2'] < $now && !in_array('past_license_offer', $computed_status)) {
-                $computed_status[] = 'past_license_offer';
-              }
-            }
           }
         }
       }
       // Also see if this resource has a source status that indicates it's a
-      // full CRL review.
+      // full CRL review (that status value is always calculated dynamically).
       $source_status = crl_helpers_get_single_node_field($entity, 'field_resource_source_status');
       if ($source_status == 'crl_review' && !in_array('crl_review_available', $computed_status)) {
         $computed_status[] = 'crl_review_available';
       }
       return $computed_status;
-      
   }
 }
 
 
-// Callback to centrally define the key|value pairs used for the various
-// CRL status options. This may be called via multiple contexts.
-function crl_helpers_activity_status_property_oplist($arg1 = NULL) {
-  // Define fields set be editors on activity entity.
+/**
+ * Properties callback: centrally define the key|value pairs used for the
+ * various CRL status options.
+ * 
+ * @see crl_helpers_entity_property_info_alter().
+ */
+function crl_helpers_activity_status_property_oplist() {
   $options = array(
     'crl_desiderata' => t('CRL Desiderata'),
     'license_under_consideration' => t('License terms under consideration'),
@@ -236,9 +134,11 @@ function crl_helpers_activity_status_property_oplist($arg1 = NULL) {
 }
 
 
+/**
+ * Implements hook_facetapi_sort_info().
+ */
 function crl_helpers_facetapi_sort_info() {
   $sorts = array();
-
   $sorts['crl_status_sort'] = array(
     'label' => t('Custom CRL Status Sort'),
     'callback' => 'crl_helpers_activity_status_property_sort',
@@ -249,16 +149,21 @@ function crl_helpers_facetapi_sort_info() {
 }
 
 
+/**
+ * Facet API sort callback: set actualy sort order for CRL status facet.
+ * 
+ * @see crl_helpers_facetapi_sort_info().
+ */
 function crl_helpers_activity_status_property_sort(array $a, array $b) {
-  $weights = array(
-    'crl_desiderata' => 10,
-    'license_under_consideration' => 20,
-    'license_available' => 30,
-    'license_renewal_available' => 40,
-    'trial_access_available' => 50,
-    'past_license_offer' => 60,
-    'crl_review_available' => 70,
-  );
+  // The ordering we want should be taken straight from the hard-coded ordering
+  // of the initial CRL status options array.
+  $options = crl_helpers_activity_status_property_oplist();
+  $weights = array();
+  $i = 0;
+  foreach ($options as $op_key => $op_value) {
+    $i++;
+    $weights[$op_key] = $i;
+  }
   $a_weight = 0;
   if (isset($a['#indexed_value'])) {
     if (!empty($weights[$a['#indexed_value']])) {
@@ -299,8 +204,13 @@ function crl_helpers_entity_delete($entity, $type) {
 }
 
 
-// Helper function to actually check and mark resource entries as "dirty" when
-// a related activity entry is added/changed/removed.
+/**
+ * Helper function to actually check and mark resource entries as "dirty" when
+ * a related activity entry is added/changed/removed.
+ * 
+ * @see: crl_helpers_entity_presave().
+ * @see: crl_helpers_entity_delete().
+ */
 function crl_helpers_check_set_dirty($entity, $type) {
   if ($type == 'node' && isset($entity->type)) {
     $dirty_ids = array();
@@ -313,5 +223,121 @@ function crl_helpers_check_set_dirty($entity, $type) {
     if (!empty($dirty_ids)) {
       search_api_track_item_change('node', $dirty_ids);
     }
+  }
+}
+
+
+/*****************************************************************************/
+/*      Object to manage status sync tasks 
+/*****************************************************************************/
+
+
+class CrlResourceStatusSync {
+  // Define Drupal object and field machine names centrally.
+  public $a_node_type = 'activity';
+  public $a_field_offer_duration = 'field_activity_offer_duration';
+  public $a_field_trial_duration = 'field_activity_trial_duration';
+  public $a_field_status = 'field_activity_crl_status';
+  public $r_node_type = 'resource'; 
+  // Dynamic variables set by object methods.
+  public $lite = FALSE;
+  public $status_changes = array();
+  
+  
+  // Constructor
+  public function __construct($lite = FALSE) {
+    $this->lite = $lite;
+  }  
+ 
+  
+  // Calculate which resources need status updates of various types and build
+  // an array that captures all the specifics for later processing.
+  public function calculate_sync() {
+    // See what activity entities are marked as "licesne available" and compare
+    // to which ones have an offer expiration date that's still in the future.
+    $license_available_marked = $this->get_resources_by_active_status($this->a_node_type, $this->a_field_status, 'license_available');
+    $license_available_not_expired = $this->get_resources_by_t_range($this->a_node_type, $this->a_field_offer_duration, date('Y-m-d'));
+    foreach (array_diff($license_available_marked, $license_available_not_expired) as $nid) {
+      $this->status_changes[$nid]['remove'][] = 'license_available';
+      $this->status_changes[$nid]['remove'][] = 'license_renewal_available';
+      $this->status_changes[$nid]['add'][] = 'past_license_offer';
+    }
+    // See what activity entities are marked as "trial access available" and
+    // compare to which ones have an offer expiration date that's still in the
+    // future.
+    $trial_available_marked = $this->get_resources_by_active_status($this->a_node_type, $this->a_field_status, 'trial_access_available');
+    $trial_available_not_expired = $this->get_resources_by_t_range($this->a_node_type, $this->a_field_trial_duration, date('Y-m-d'));
+    foreach (array_diff($trial_available_marked, $trial_available_not_expired) as $nid) {
+      $this->status_changes[$nid]['remove'][] = 'trial_access_available';
+    }
+    return $this;   
+  }
+ 
+  // Execute a set of status updates by loading all the nodes that need an
+  // update all at once, and then applying each status update one-by-one.
+  public function run_sync() {
+    // Load nodes that will be changed.
+    $nodes_to_edit = node_load_multiple(array_keys($this->status_changes));  
+    // Loop though our status_changes array and apply the status changes.
+    foreach($this->status_changes as $nid => $types) {
+      $node = &$nodes_to_edit[$nid];
+      foreach ($types as $type_key => $statuses) {
+        foreach ($statuses as $status_key => $status) {        
+          // When removing AND adding we unset the status if it's already set.
+          // If adding a status, and for some reason the EFQ that got us to this
+          // point is incorrect, we could end up adding a new status value each
+          // time this is run... which would be bad as it would lead to
+          // accumulating corrupt status values.
+          $statuses_active = field_get_items('node', $node, $this->a_field_status);
+          if (!empty($statuses_active)) {
+            foreach ($statuses_active as $key => $status_active) {
+              if ($status_active['value'] == $status) {
+                unset($node->{$this->a_field_status}[$node->language][$key]);
+              }
+            }
+          }
+          if ($type_key == 'add') {
+            $node->{$this->a_field_status}[$node->language][] = array('value' => $status);
+          }
+        }
+      }
+      node_save_action($node);
+    }
+  }
+
+  // Get a set of resource ids that SHOULD have a status based on a time range
+  // on the related offer.
+  public function get_resources_by_t_range($node_type, $field_duration, $date) {
+    // Get the active offers
+    $nids_active = array();
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+          ->entityCondition('bundle', $node_type)
+          ->fieldCondition($field_duration, 'value2', $date, '>=')
+          // Force query to run without access checks. This is safe as this is
+          // just maintenance logic that's only called via cron.
+          ->addTag('DANGEROUS_ACCESS_CHECK_OPT_OUT');
+    $entities = $query->execute();
+    if (!empty($entities['node'])) {
+      $nids_active = array_keys($entities['node']);
+    }
+    return $nids_active;
+  }
+  
+  // Get a set of resoruce ids that DO have a status.
+  public function get_resources_by_active_status($node_type, $field_status, $status) {    
+    $nids_active = array();
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+          ->entityCondition('bundle', $node_type)
+          ->fieldCondition($field_status, 'value', $status, '=')
+          // Force query to run without access checks. This is safe as this is
+          // just maintenance logic that's only called via cron.
+          ->addTag('DANGEROUS_ACCESS_CHECK_OPT_OUT');
+    $entities = $query->execute();
+    if (!empty($entities['node'])) {
+      $nids_active = array_keys($entities['node']);
+    }
+    return $nids_active;  
   }
 }

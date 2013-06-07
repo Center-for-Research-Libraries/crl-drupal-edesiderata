@@ -3,6 +3,7 @@
 // Include status sync logic
 require_once dirname(__FILE__) . '/includes/crl_helpers_desiderata_status_tools.inc';
 
+
 /**
  * Implements hook_menu().
  */
@@ -21,7 +22,9 @@ function crl_helpers_menu() {
 }
 
 
-// Cron tasks
+/**
+ * Implements hook_cron().
+ */
 function crl_helpers_cron() {
   // Sync inst picklist
   _crl_sf_sync_picklist();
@@ -31,7 +34,11 @@ function crl_helpers_cron() {
 }
 
 
-// Helper to fetch the institution picklist from Salesforce.
+/**
+ * Helper to fetch the institution picklist from Salesforce.
+ * 
+ * @see: crl_helpers_cron().
+ */
 function _crl_sf_sync_picklist() {
   if (module_exists('salesforce_api')) {
     $query = "SELECT Display_Name__c, Id, Member_ID__c From Account WHERE (Active__c = TRUE) AND (Member_Type__c = 'Voting' OR Member_Type__c = 'Group' OR Member_Type__c = 'Global') ORDER BY Name_for_sorting__c ASC";
@@ -405,7 +412,7 @@ function crl_helpers_views_pre_render(&$view) {
       if (!empty($provider_ids)) {
         entity_load('node', $provider_ids);
       }
-      // Get the related activity entities and load them all at once
+      // Get the related activity entities and load them all at once.
       $activity_ids = array();
       $query = new EntityFieldQuery();
       $query->entityCondition('entity_type', 'node', '=')
@@ -427,7 +434,7 @@ function crl_helpers_views_pre_render(&$view) {
 function crl_helpers_form_activity_node_form_alter(&$form, &$form_state, $form_id) {
   // When updating an activity entity enforce some custom validation rules on
   // the CRL status settings.
-  $form['#validate'][] = 'crl_helpers_activity_node_form_validate';
+  //$form['#validate'][] = 'crl_helpers_activity_node_form_validate';
   // Hide the "review available" option as it's purely managed by the system.
   unset($form['field_activity_crl_status']['und']['#options']['crl_review_available']);
   
