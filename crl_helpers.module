@@ -80,19 +80,19 @@ function _crl_sf_sync_picklist() {
  */
 function crl_helpers_theme() {
   return array(
-    // Theme hook to generate a resource teaser.
+    // Theme hook to generate a resource teaser (used in views rows).
     'crl_helpers_resource_teaser' => array(
       'variables' => array('nid' => NULL),
       'path' => drupal_get_path('module', 'crl_helpers') . '/themes',
       'file' => 'crl_helpers.theme.inc',
     ),
-    // Theme hook to generate a full resource summary.
+    // Theme hook to generate a full resource summary (used at top of resource).
     'crl_helpers_resource_summary' => array(
       'variables' => array('nid' => NULL),
       'path' => drupal_get_path('module', 'crl_helpers') . '/themes',
       'file' => 'crl_helpers.theme.inc',
     ),
-    // Theme hook to generate facet breadcrumb
+    // Theme hook to generate our custom facet breadcrumb.
     'crl_helpers_facet_breadcrumb' => array(
       'variables' => array('breadcrumb' => array()),
       'path' => drupal_get_path('module', 'crl_helpers') . '/themes',
@@ -106,10 +106,13 @@ function crl_helpers_theme() {
  * Implements hook_block_info().
  */
 function crl_helpers_block_info() {
+  // The resource summary is a block at the top of each resoruce.
   $blocks['crl_helpers_resource_summary'] = array(
     'info' => t('CRL Resource Summary'), 
     'cache' => DRUPAL_NO_CACHE,
   );
+  // The facet breadcrumb is a block that can be displayed on the top of a
+  // resoruce index.
   $blocks['crl_helpers_facet_breadcrumb'] = array(
     'info' => t('CRL Facet Breadcrumb'), 
     'cache' => DRUPAL_NO_CACHE,
@@ -118,9 +121,13 @@ function crl_helpers_block_info() {
 }
 
 
+/**
+ * Implements hook_block_view().
+ */
 function crl_helpers_block_view($delta = '') {
   $block = array();
   switch ($delta) {
+    // Render the resoruce summary block.
     case 'crl_helpers_resource_summary':
       $block['subject'] = '';
       $output = array(
@@ -131,6 +138,7 @@ function crl_helpers_block_view($delta = '') {
       );
       $block['content'] = $output;
       break;
+    // Render the facet breadcrumb block.
     case 'crl_helpers_facet_breadcrumb':
       $block['subject'] = '';
       $output = '';
@@ -149,15 +157,15 @@ function crl_helpers_block_view($delta = '') {
 
 
 /**
- * Get resoruce summary values from a resource entity.
+ * Get all the resoruce summary values from a resource entity.
  * 
- * The various functions that are called through this function should implement
- * static caching whenever DB queries are needed, so it should be safe to call
- * this multiple times on the same page load (e.g. if summary info must be
- * requested from different contexts for the same resource entitity). We don't
- * do static caching in this function directly as it would be redundant to
- * static caching within its later called functions (such as entity_load). This
- * avoids using up unnecessary memory.
+ * The various functions that are called through this function implement static
+ * caching whenever DB queries are needed, so it should be safe to call this
+ * multiple times on the same page load (e.g. if summary info must be requested
+ * from different contexts for the same resource entitity). We don't do static
+ * caching in this function directly as it would be redundant to static caching
+ * within its later called functions (such as entity_load). This avoids using up
+ * unnecessary memory.
  */
 function crl_helpers_get_resource_summary($entity) {
   $nid = $entity->nid;
@@ -364,7 +372,7 @@ function crl_helpers_get_single_node_field($entity, $field_name) {
 
 
 /**
-* Implementation of hook_views_api().
+* Implements hook_views_api().
 */
 function crl_helpers_views_api() {
   $path = drupal_get_path('module', 'crl_helpers');
@@ -434,7 +442,7 @@ function crl_helpers_views_pre_render(&$view) {
 function crl_helpers_form_activity_node_form_alter(&$form, &$form_state, $form_id) {
   // When updating an activity entity enforce some custom validation rules on
   // the CRL status settings.
-  //$form['#validate'][] = 'crl_helpers_activity_node_form_validate';
+  $form['#validate'][] = 'crl_helpers_activity_node_form_validate';
   // Hide the "review available" option as it's purely managed by the system.
   unset($form['field_activity_crl_status']['und']['#options']['crl_review_available']);
   
@@ -488,6 +496,7 @@ function crl_helpers_activity_node_form_validate(&$form, &$form_state) {
 }
 
 
+// Custom show/hide display logic on activity and resource nodes.
 function crl_helpers_node_view_alter(&$build) {
   if ($build['#bundle'] == 'activity') {
     $license_available = FALSE;

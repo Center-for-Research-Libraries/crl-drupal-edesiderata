@@ -3,6 +3,9 @@
 
 /**
  * Implements hook_entity_property_info_alter().
+ * 
+ * This is where we define our status values through backrefrences (activites
+ * that point to resources).
  */
 function crl_helpers_entity_property_info_alter(&$info) {
   $properties = &$info['node']['properties'];
@@ -74,7 +77,6 @@ function crl_helpers_resource_backref_properties_get($entity, array $options, $n
   // Now load the full backreferenced nodes (node_load_multiple has its own
   // static cache so it does not have to be part of the static caching above).
   $backref_nodes = node_load_multiple($backrefs[$entity->nid]);
- 
   // Once we have the backreference details we can continue with
   // property-specific logic that uses this info.
   switch ($info['name']) {    
