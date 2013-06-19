@@ -68,8 +68,12 @@ function _crl_sf_sync_picklist() {
         }
         watchdog('crl_sf', 'The following institutions have no CRL id in Salesforce: @institutions_sans_id', array('@institutions_sans_id' => $institutions_sans_id), WATCHDOG_WARNING);
       }
+      // Set explicit variabled for each of the id types
       variable_set('crl_sf_sync_institutions_array_sfid', $institutions_array_sfid);
-      variable_set('crl_sf_sync_institutions_array', $institutions_array_id);
+      variable_set('crl_sf_sync_institutions_array_crlid', $institutions_array_id);
+      // Then choose one which will be used as the default (for referece by
+      // applications that don't distinguish which type of ID to use).
+      variable_set('crl_sf_sync_institutions_array', $institutions_array_sfid);
     }
   }
 }
