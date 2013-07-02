@@ -117,6 +117,42 @@ function theme_crl_helpers_resource_summary($vars) {
 
 
 /**
+ * Returns HTML for a resoruce status summary field.
+ *
+ * @param array $variables
+ *   An associative array containing variables used to render this HTML.
+ *
+ * @ingroup themeable
+*/
+function theme_crl_helpers_resource_status_summary($vars) {
+  $data = $vars['data'];
+  $status_names = $vars['status_names'];
+  $output = '';
+  // Add editor link.
+  if (!empty($vars['edit_link'])) {
+    $output .= '<p style="text-align: right;"><strong><a href="' . $vars['edit_link'] . '">' . t('Edit activity details') . '</a></strong></p>';
+  }
+  // Build the status display.
+  if (!empty($data['status'])) {
+    foreach ($status_names as $status_key => $text) {
+      $active_class = ' status-inactive';
+      $des = ' - no';
+      if (in_array($status_key, $data['status'])) {
+        $active_class = ' status-active';
+        $des = ' - yes';
+      }
+      $output .= '<span class="activity-report' . $active_class . '"><span class="summary-icon-small ' . $status_key . $active_class . '"></span>' . $status_names[$status_key] . $des . '</span><br/>';
+    }
+  }
+  else {
+    $output .= t('No special CRL Status values are set for this resource');
+  }
+  $output .= '<br/><br/>';
+  return $output;
+}
+
+
+/**
  * Returns HTML for a facet breadcrumb.
  *
  * @param array $variables
