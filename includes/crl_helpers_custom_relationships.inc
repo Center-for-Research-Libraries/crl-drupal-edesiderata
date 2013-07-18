@@ -13,10 +13,9 @@
  * The various functions that are called through this function implement static
  * caching whenever DB queries are needed, so it should be safe to call this
  * multiple times on the same page load (e.g. if backref info must be requested
- * from different contexts for the same resource entitity). We don't do static
- * caching in this function directly as it would be redundant to static caching
- * within its later called functions (such as entity_load). This avoids using up
- * unnecessary memory.
+ * from different contexts for the same resource entity). We don't do static
+ * caching in this function directly as it would be redundant to this other
+ * static caching. This avoids using up unnecessary memory.
  * 
  * @param object $entity
  *   A resoruce entity.
@@ -34,9 +33,11 @@ function crl_helpers_get_backref_summary($entity) {
   // Get status values through Entity API. This also calculated through a
   // backref.
   $crl_statuses = $wrapper->crl_resource_status_backref->raw();
-  foreach ($crl_statuses as $status) {
-    if (!empty($status)) {
-      $summary['status'][] = $status;
+  if (!empty($crl_statuses)) {
+    foreach ($crl_statuses as $status) {
+      if (!empty($status)) {
+        $summary['status'][] = $status;
+      }
     }
   }
   return $summary;

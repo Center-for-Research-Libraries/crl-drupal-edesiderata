@@ -20,10 +20,10 @@ function computed_field_field_resource_all_jisc_details_display($field, $entity_
   $source_status = crl_helpers_get_single_node_field($entity, 'field_resource_source_status');
   // If the status flags this as a JISC display, and we have a JISC ID, then
   // display the JISC details fields.
-  if (($source_status == 'jisc_only' || $source_status == 'jisc_crl_update') && !empty($jisc_id)) {
+  if (($source_status == 'jisc' || $source_status == 'jisc_crl_update') && !empty($jisc_id)) {
     $fields_array = array('field_resource_jisc_full_text', 'field_resource_jisc_federated', 'field_resource_jisc_marc', 'field_resource_jisc_search', 'field_resource_jisc_post_search', 'field_resource_jisc_usage_stat', 'field_resource_jisc_auth', 'field_resource_jisc_access');
     foreach ($fields_array as $fieldname) {
-      $output .= drupal_render(field_view_field('node', $entity, $fieldname, 'default'));
+      $output .= drupal_render(field_view_field('node', $entity, $fieldname));
     }
   }
   // If this is a CRL review but we also have a JISC ID, show a note about
@@ -139,7 +139,10 @@ function computed_field_field_coll_content_tax_display($field, $entity_field_ite
  */
 function computed_field_field_resource_glossary_compute(&$entity_field, $entity_type, $entity, $field, $instance, $langcode, $items) {
   // Grab first character from the field title_for_sort
-  $entity_field[0]['value'] = strtoupper($entity->field_resource_title_for_sort[$entity->language][0]['value'][0]);
+  $entity_field[0]['value'] = '';
+  if (!empty($entity->field_resource_title_for_sort[$entity->language][0]['value'][0])) {
+    $entity_field[0]['value'] = strtoupper($entity->field_resource_title_for_sort[$entity->language][0]['value'][0]);
+  }
 }
 
 

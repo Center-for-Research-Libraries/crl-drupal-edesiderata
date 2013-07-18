@@ -28,10 +28,11 @@ function theme_crl_helpers_resource_teaser(&$vars) {
       }
     }
     
-    
-    $input_form = drupal_render(crl_desiderata_get_input_form($nid));
-    if (!empty($input_form)) {
-      $markup .= '<div class="view-teaser-input-form">' . $input_form . '</div>';
+    if (function_exists('crl_desiderata_get_input_form')) {
+      $input_form = drupal_render(crl_desiderata_get_input_form($nid));
+      if (!empty($input_form)) {
+        $markup .= '<div class="view-teaser-input-form">' . $input_form . '</div>';
+      }
     }
     $markup .= check_markup($data['abstract'], 'full_html');
     $provider_id = crl_helpers_get_single_node_field($entity, 'field_provider');
@@ -42,6 +43,7 @@ function theme_crl_helpers_resource_teaser(&$vars) {
       }
     }
     $markup .= '<br/>' . t('Updated') . ': ' . format_date($entity->changed, 'medium_no_time');
+    $markup .= '<br/>' . t('Added') . ': ' . format_date($entity->created, 'medium_no_time');
     
     if (!empty($data['status'])) {
       $markup .= '<div class="view-teaser-status-icons">';
@@ -167,10 +169,6 @@ function theme_crl_helpers_facet_breadcrumb($variables) {
   // Get the most recent breadcrumb and strip the first 2 items off (for
   // this case we assume these are "home" and "section")
   $variables['breadcrumb'] = drupal_get_breadcrumb();
-  if (count($variables['breadcrumb']) > 2) {
-    array_shift($variables['breadcrumb']);
-    array_shift($variables['breadcrumb']);
-  }
 
   if (!empty($variables['breadcrumb'])) {
     $base_path = '/';

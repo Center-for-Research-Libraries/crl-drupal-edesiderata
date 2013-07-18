@@ -181,7 +181,7 @@ function crl_helpers_get_resource_summary($entity) {
     // Get the abstract text through Entity API
     $wrapper = entity_metadata_wrapper('node', $entity);
     $abstract = $wrapper->body->raw();
-    $summary['abstract'] = $abstract['safe_value'];
+    $summary['abstract'] = $abstract['value'];
 
     // Get the source text
     $jisc_id = crl_helpers_get_single_node_field($entity, 'field_jisc_id');
@@ -279,7 +279,7 @@ function crl_helpers_source_text($source_status, $jisc_id) {
   elseif ($source_status == 'stub') {
     $source_text = t('Data has been sourced form the CRL community. The information shown has not yet been confirmed by an authoritative source.');
   }
-  elseif ($source_status == 'jisc_only' && !empty($jisc_id)) {
+  elseif ($source_status == 'jisc' && !empty($jisc_id)) {
     $source_text = t('Data has been sourced from an !itemlink provided by !sitelink.', array('!itemlink' => crl_helpers_jisc_link(t('existing catalog entry'), $jisc_id), '!sitelink' => crl_helpers_jisc_link(t('JISC Collections'))));
   }
   elseif ($source_status == 'jisc_crl_update' && !empty($jisc_id)) {
@@ -376,7 +376,7 @@ function crl_helpers_views_pre_render(&$view) {
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
  * 
- * Add some customizations and validation rules while editing an activity entry.
+ * Add some customizations and validation rules for the activity node edit form.
  */
 function crl_helpers_form_activity_node_form_alter(&$form, &$form_state, $form_id) {
   // When updating an activity entity enforce some custom validation rules on
@@ -391,6 +391,21 @@ function crl_helpers_form_activity_node_form_alter(&$form, &$form_state, $form_i
   }
   if (!empty($_GET['activity_title'])) {
     $form['title']['#default_value'] = rawurldecode($_GET['activity_title']);
+  }
+}
+
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ * 
+ * Add some customizations for the resource node edit form.
+ */
+function crl_helpers_form_resource_node_form_alter(&$form, &$form_state, $form_id) {
+  // If we are adding a resource post a popup that reminds editors to create a
+  // provider entry first.
+  if (drupal_match_path(current_path(), 'node/add/resource') && empty($form_state['values'])) {
+    $message = t('REMINDER: Please ensure that the provider for this resource is listed in the provider picklist (the orange box) before entering any data on this form. If it is not yet listed please create a new provider entry in the system before entering any data here.');
+    drupal_add_js('jQuery(document).ready(function () { alert("' . $message . '"); });', 'inline');
   }
 }
 
@@ -499,9 +514,7 @@ function _crl_sf_sync_picklist() {
     if (!empty($sf_records)) {
       foreach ($sf_records as $record) {
         if (!empty($record->Id) && !empty($record->Display_Name__c)) {
-          // For legacy support we want to be sure to store the 15 char version 
-          // of the ID instead of the 18 char version returned in the query
-          $record->Id = substr($record->Id, 0, 15);
+          // $record->Id = substr($record->Id, 0, 15);
           $institutions_array_sfid[$record->Id] = $record->Display_Name__c;
           if (!empty($record->Member_ID__c)) {
             $institutions_array_id[$record->Member_ID__c] = $record->Display_Name__c;
@@ -526,4 +539,29 @@ function _crl_sf_sync_picklist() {
       variable_set('crl_sf_sync_institutions_array', $institutions_array_sfid);
     }
   }
+}
+
+
+/**
+ * Implements hook_filter_info().
+ */
+function crl_helpers_filter_info() {
+  $filters['crl_content_tokens'] = array(
+    'title' => t('CRL content tokens'),
+    'description' => t('Replace tokens in content areas with fixed values.'),
+    'process callback' => '_crl_helpers_content_tokens',
+    'cache' => FALSE,
+  );
+  return $filters;
+}
+
+
+/**
+ * Callback to process the custom "crl content tokens" filter.
+ * 
+ * @see crl_helpers_filter_info().
+ */
+function _crl_helpers_content_tokens($text, $filter, $format, $langcode, $cache, $cache_id) {
+  $text = str_replace('[provider]', 'Provider', $text);
+  return $text;
 }
