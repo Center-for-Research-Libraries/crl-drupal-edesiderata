@@ -20,8 +20,8 @@ function computed_field_field_resource_all_jisc_details_display($field, $entity_
   $source_status = crl_helpers_get_single_node_field($entity, 'field_resource_source_status');
   // If the status flags this as a JISC display, and we have a JISC ID, then
   // display the JISC details fields.
-  if (($source_status == 'jisc' || $source_status == 'jisc_crl_update') && !empty($jisc_id)) {
-    $fields_array = array('field_resource_jisc_full_text', 'field_resource_jisc_federated', 'field_resource_jisc_marc', 'field_resource_jisc_search', 'field_resource_jisc_post_search', 'field_resource_jisc_usage_stat', 'field_resource_jisc_auth', 'field_resource_jisc_access');
+  if (($source_status == 'jisc_only') && !empty($jisc_id)) {
+    $fields_array = array('field_resource_jisc_full_text', 'field_resource_jisc_federated', 'field_resource_jisc_metadata_std', 'field_resource_jisc_marc', 'field_resource_jisc_search', 'field_resource_jisc_post_search', 'field_resource_jisc_usage_stat', 'field_resource_jisc_auth', 'field_resource_jisc_access');
     foreach ($fields_array as $fieldname) {
       $output .= drupal_render(field_view_field('node', $entity, $fieldname));
     }
@@ -42,7 +42,6 @@ function computed_field_field_resource_all_jisc_details_display($field, $entity_
  * field_resource_status_summary
  */
 function computed_field_field_resource_status_summary_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
-  $output = '';
   $data = crl_helpers_get_backref_summary($entity);
   $status_names = crl_helpers_activity_status_property_oplist();
   // Calculate editor link.
@@ -104,8 +103,15 @@ function computed_field_field_resource_activity_display($field, $entity_field_it
       $activity_entity_build['#node']->title = '';
       return drupal_render($activity_entity_build);
     }
+    else {
+      $restricted_message = t('The complete offer and activity details for this resource are only available to CRL members.');
+      global $user;
+      if (!$user->uid) {
+        $restricted_message .= '<br/>' . t('Please <a href="!link">login</a> to view more.', array('!link' => url('user')));
+      }
+      return $restricted_message;
+    }
   }
-  return t('No activity details are active for this resource or you do not have sufficient permissions to view them.');
 }
 
 
@@ -154,4 +160,12 @@ function computed_field_field_resource_glossary_compute(&$entity_field, $entity_
 function computed_field_field_resource_glossary_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
   // Just display the value from the database.
   return $entity_field_item['value'];
+}
+
+
+function computed_field_field_resource_table_sources_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
+  $source_status = crl_helpers_get_single_node_field($entity, 'field_resource_source_status');
+  if ($source_status == 'crl_review') {
+    return '<div style="float: right; margin: 5px 0px 10px 10px;"><img style="vertical-align: middle;" title="Direct from Publisher" src="/' . drupal_get_path('module', 'crl_helpers') . '/images/icon_publisher.png"> - Denotes data sourced directly from publisher.</div>';
+  }
 }

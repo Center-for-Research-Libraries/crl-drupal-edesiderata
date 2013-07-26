@@ -180,7 +180,7 @@ function crl_helpers_get_resource_summary($entity) {
   if (empty($summary_cache[$nid])) {
     // Get the abstract text through Entity API
     $wrapper = entity_metadata_wrapper('node', $entity);
-    $abstract = $wrapper->body->raw();
+    $abstract = $wrapper->body->value();
     $summary['abstract'] = $abstract['value'];
 
     // Get the source text
@@ -193,19 +193,11 @@ function crl_helpers_get_resource_summary($entity) {
       $comment_count = $entity->comment_count;
     }
     $summary['comment_count'] = $comment_count;
-    // Get the subscription count info
-    $sub_count = $have_count = $want_count = 0;
-    if (function_exists('crl_desiderata_get_desiderata_resource')) {
-      $des_results = crl_desiderata_get_desiderata_resource($nid);
-      if (!empty($des_results['haves'])) {
-        $have_count = count($des_results['haves']);
-      }
-      if (!empty($des_results['wants'])) {
-        $want_count = count($des_results['wants']);
-      }
-      $sub_count = $have_count + $want_count;
+    // Get the desiderata count info
+    $summary['des_input_count'] = 0;
+    if (function_exists('crl_desiderata_get_resource_desiderata')) {
+      $summary['des_input_count'] = count(crl_desiderata_get_resource_desiderata($nid));
     }
-    $summary['subscription_count'] = $sub_count;
     // Get the average vote info (fivestar)
     $active_tags = $vote_tally = $vote_average = 0;
     if (function_exists('fivestar_get_votes')) {
@@ -226,6 +218,35 @@ function crl_helpers_get_resource_summary($entity) {
   }
   // Return the full merged summary.
   return array_merge($backref_summary, $summary_cache[$nid]);
+}
+
+
+/**
+ * Helper function to generate fixed "source" text based on resoruce status.
+ * 
+ * @param string $source_status
+ *   The source status of a resoruce (based on the selected key of the
+ *   resource's "source status" field).
+ * @param int $jisc_id
+ *   The ID to a JISC resrouce if JISC is a source.
+ * @return string
+ *   The source text to display.
+ */
+function crl_helpers_source_text($source_status, $jisc_id) {
+  $source_text = '';
+  if ($source_status == 'crl_review') {
+    $source_text = t('CRL reviews are based on independent research by CRL staff and others.  Other sources are credited where used.');
+  }
+  elseif ($source_status == 'stub') {
+    $source_text = t('Information provided here draws from a number of sources, and may not yet be verified by CRL.');
+  }
+  elseif ($source_status == 'jisc_only' && !empty($jisc_id)) {
+    $source_text = t('Data has been sourced from a !sitelink entry, with additional edits by CRL.', array('!sitelink' => crl_helpers_jisc_link(t('JISC catalog'))));
+  }
+  else {
+    $source_text = t('Source details are unknown for this entry.');
+  }
+  return $source_text;
 }
 
 
@@ -257,38 +278,6 @@ function crl_helpers_jisc_link($anchor, $jisc_id = NULL, $sub_path = 'Overview')
     $path = 'http://www.jisc-collections.ac.uk';
   }
   return l($anchor, $path, array('attributes' => array('target'=>'_blank')));
-}
-
-
-/**
- * Helper function to generate fixed "source" text based on resoruce status.
- * 
- * @param string $source_status
- *   The source status of a resoruce (based on the selected key of the
- *   resource's "source status" field).
- * @param int $jisc_id
- *   The ID to a JISC resrouce if JISC is a source.
- * @return string
- *   The source text to display.
- */
-function crl_helpers_source_text($source_status, $jisc_id) {
-  $source_text = '';
-  if ($source_status == 'crl_review') {
-    $source_text = t('Data is the direct result of CRL research. Additional sources may also be referenced throughout.');
-  }
-  elseif ($source_status == 'stub') {
-    $source_text = t('Data has been sourced form the CRL community. The information shown has not yet been confirmed by an authoritative source.');
-  }
-  elseif ($source_status == 'jisc' && !empty($jisc_id)) {
-    $source_text = t('Data has been sourced from an !itemlink provided by !sitelink.', array('!itemlink' => crl_helpers_jisc_link(t('existing catalog entry'), $jisc_id), '!sitelink' => crl_helpers_jisc_link(t('JISC Collections'))));
-  }
-  elseif ($source_status == 'jisc_crl_update' && !empty($jisc_id)) {
-   $source_text = t('Data has been sourced from an !itemlink provided by !sitelink, with additional edits from CRL.', array('!itemlink' => crl_helpers_jisc_link(t('existing catalog entry'), $jisc_id), '!sitelink' => crl_helpers_jisc_link(t('JISC Collections'))));
-  }
-  else {
-    $source_text = t('Source details are unknown for this entry.');
-  }
-  return $source_text;
 }
 
 
@@ -562,6 +551,6 @@ function crl_helpers_filter_info() {
  * @see crl_helpers_filter_info().
  */
 function _crl_helpers_content_tokens($text, $filter, $format, $langcode, $cache, $cache_id) {
-  $text = str_replace('[provider]', 'Provider', $text);
+  $text = str_replace('[provider]', '<img title="Direct from Publisher" src="/' . drupal_get_path('module', 'crl_helpers') . '/images/icon_publisher.png">', $text);
   return $text;
 }

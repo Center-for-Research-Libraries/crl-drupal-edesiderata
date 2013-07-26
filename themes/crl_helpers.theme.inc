@@ -21,7 +21,7 @@ function theme_crl_helpers_resource_teaser(&$vars) {
   if (!empty($entities[$nid])) {
     $entity = $entities[$nid];
     $data = crl_helpers_get_resource_summary($entity);
-    $markup .= '<h2>' . l(check_plain($entity->title), 'node/' . $entity->nid) . '</h2>';
+    $markup .= '<h2>' . l($entity->title, 'node/' . $entity->nid) . '</h2>';
     if (isset($data['status'])) {
       if (in_array('crl_review_available', $data['status'])) {
         $markup .= '<p>' . l(t('CRL Review'), 'node/' . $entity->nid, array('query' => array('rview' => 1))) . '</p>';
@@ -34,7 +34,8 @@ function theme_crl_helpers_resource_teaser(&$vars) {
         $markup .= '<div class="view-teaser-input-form">' . $input_form . '</div>';
       }
     }
-    $markup .= check_markup($data['abstract'], 'full_html');
+    $markup .= $data['abstract'];
+    $markup .= '<div class="teaser-details">';
     $provider_id = crl_helpers_get_single_node_field($entity, 'field_provider');
     if (isset($provider_id)) {
       $provider = entity_load('node', array($provider_id));
@@ -44,6 +45,7 @@ function theme_crl_helpers_resource_teaser(&$vars) {
     }
     $markup .= '<br/>' . t('Updated') . ': ' . format_date($entity->changed, 'medium_no_time');
     $markup .= '<br/>' . t('Added') . ': ' . format_date($entity->created, 'medium_no_time');
+    $markup .= '</div>';
     
     if (!empty($data['status'])) {
       $markup .= '<div class="view-teaser-status-icons">';
@@ -86,7 +88,7 @@ function theme_crl_helpers_resource_summary($vars) {
         }
       }
       $highlights['two'][] = '<span class="big_num">' . $data['comment_count'] . '</span> Comments';
-      $highlights['two'][] = '<span class="big_num">' . $data['subscription_count'] . '</span> Institutions Reporting';
+      $highlights['two'][] = '<span class="big_num">' . $data['des_input_count'] . '</span> Institutions Reporting';
       $highlights['two'][] = '<span class="big_num">' . $data['vote_average'] . '</span> Average Rating';
 
       foreach($highlights as $row_key => $row) {
@@ -107,11 +109,7 @@ function theme_crl_helpers_resource_summary($vars) {
       $markup .= '<p>' . t('Source') . ': ' . $data['source_text'] . '<p>';
     }
     else {
-      $base_path = '/';
-      if ($base_url = parse_url($_SERVER['REQUEST_URI'])) {
-        $base_path = trim($base_url['path'], '/'); 
-      }
-      $markup .= '<p>' . t('View more details for this resource in the ') . l(t('full desiderata resource entry'), $base_path) . '.</p>';
+      $markup .= '<p>' . t('View more details for this resource in the ') . l(t('full desiderata resource entry'), current_path()) . '.</p>';
     }
   }
   return $markup;
@@ -145,11 +143,8 @@ function theme_crl_helpers_resource_status_summary($vars) {
       }
       $output .= '<span class="activity-report' . $active_class . '"><span class="summary-icon-small ' . $status_key . $active_class . '"></span>' . $status_names[$status_key] . $des . '</span><br/>';
     }
+    $output .= '<br/><br/>';
   }
-  else {
-    $output .= t('No special CRL Status values are set for this resource');
-  }
-  $output .= '<br/><br/>';
   return $output;
 }
 
