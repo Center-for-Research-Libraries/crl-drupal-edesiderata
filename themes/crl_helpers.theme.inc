@@ -22,11 +22,6 @@ function theme_crl_helpers_resource_teaser(&$vars) {
     $entity = $entities[$nid];
     $data = crl_helpers_get_resource_summary($entity);
     $markup .= '<h2>' . l($entity->title, 'node/' . $entity->nid) . '</h2>';
-    if (isset($data['status'])) {
-      if (in_array('crl_review_available', $data['status'])) {
-        $markup .= '<p>' . l(t('CRL Review'), 'node/' . $entity->nid, array('query' => array('rview' => 1))) . '</p>';
-      }
-    }
     
     if (function_exists('crl_desiderata_get_input_form')) {
       $input_form = drupal_render(crl_desiderata_get_input_form($nid));

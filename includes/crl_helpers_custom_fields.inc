@@ -6,6 +6,10 @@
  * Custom field display handlers for fields defined with the Computed Fields
  * module. IMPORTANT - most of these functions depend on the patch decribed in
  * https://drupal.org/node/1883156 being applied!
+ * 
+ * @todo: See if we could implement these fields with hook_node_load()
+ * (to compute the field) and hook_field_extra_fields() (to add the computed
+ * data as a field) instead of computed field.
  */
 
 
