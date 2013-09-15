@@ -20,8 +20,8 @@
  */
 function computed_field_field_resource_all_jisc_details_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
   $output = '';
-  $jisc_id = crl_helpers_get_single_node_field($entity, 'field_jisc_id');
-  $source_status = crl_helpers_get_single_node_field($entity, 'field_resource_source_status');
+  $jisc_id = crl_resource_get_single_node_field($entity, 'field_jisc_id');
+  $source_status = crl_resource_get_single_node_field($entity, 'field_resource_source_status');
   // If the status flags this as a JISC display, and we have a JISC ID, then
   // display the JISC details fields.
   if (($source_status == 'jisc_only') && !empty($jisc_id)) {
@@ -29,12 +29,6 @@ function computed_field_field_resource_all_jisc_details_display($field, $entity_
     foreach ($fields_array as $fieldname) {
       $output .= drupal_render(field_view_field('node', $entity, $fieldname));
     }
-  }
-  // If this is a CRL review but we also have a JISC ID, show a note about
-  // the fact that additional details may be available at JISC.
-  elseif ($source_status == 'crl_review' && !empty($jisc_id)) {
-    $output .= '<h3>' . t("Additional Details from JISC") . '</h3>';
-    $output .= t("Additional details may be available in the !itemlink for this item from !sitelink", array('!itemlink' => crl_helpers_jisc_link(t('catalog entry'), $jisc_id), '!sitelink' => crl_helpers_jisc_link(t('JISC Collections'))));
   }
   return $output;
 }
@@ -46,8 +40,7 @@ function computed_field_field_resource_all_jisc_details_display($field, $entity_
  * field_resource_status_summary
  */
 function computed_field_field_resource_status_summary_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
-  $data = crl_helpers_get_backref_summary($entity);
-  $status_names = crl_helpers_activity_status_property_oplist();
+  $data = $entity->resource_summary;
   // Calculate editor link.
   $edit_link = '';
   if (!empty($data['backref_entities'])) { // Activity data exists
@@ -55,15 +48,15 @@ function computed_field_field_resource_status_summary_display($field, $entity_fi
     // just be one).
     $activity_entity = reset($data['backref_entities']);
     if (entity_access('update', 'node', $activity_entity)) {
-      $edit_link = url('node/' . $activity_entity->nid . '/edit', array('query' => array('destination' => current_path(), 'activity_title' => rawurlencode('Activity: ' . check_plain($entity->title)))));
+      $edit_link = url('node/' . $activity_entity->nid . '/edit', array('query' => array('activity_title' => rawurlencode('Activity: ' . check_plain($entity->title)))));
     }
   }
   else { // No activity data exists
     if (entity_access('create', 'node')) {
-      $edit_link = url('node/add/activity', array('query' => array('destination' => current_path(), 'activity_title' => rawurlencode('Activity: ' . check_plain($entity->title)), 'resource_id' => $entity->nid)));
+      $edit_link = url('node/add/activity', array('query' => array('activity_title' => rawurlencode('Activity: ' . check_plain($entity->title)), 'resource_id' => $entity->nid)));
     }
   }
-  return theme('crl_helpers_resource_status_summary', array('data' => $data, 'status_names' => $status_names, 'edit_link' => $edit_link));
+  return theme('crl_helpers_resource_status_summary', array('entity' => $entity, 'edit_link' => $edit_link));
 }
 
 
@@ -95,7 +88,7 @@ function computed_field_field_resource_provider_details_display($field, $entity_
  * field_resource_activity
  */
 function computed_field_field_resource_activity_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
-  $data = crl_helpers_get_backref_summary($entity);
+  $data = $entity->resource_summary;
   if (!empty($data['backref_entities'])) { // Activity data exists
     // Just get the first backref entity in the array (for now there should
     // just be one).
@@ -108,11 +101,7 @@ function computed_field_field_resource_activity_display($field, $entity_field_it
       return drupal_render($activity_entity_build);
     }
     else {
-      $restricted_message = t('The complete offer and activity details for this resource are only available to CRL members.');
-      global $user;
-      if (!$user->uid) {
-        $restricted_message .= '<br/>' . t('Please <a href="!link">login</a> to view more.', array('!link' => url('user')));
-      }
+      $restricted_message = '<strong>' . t('The complete offer and activity details for this resource are only available to CRL members.') . '</strong>';
       return $restricted_message;
     }
   }
@@ -151,7 +140,11 @@ function computed_field_field_resource_glossary_compute(&$entity_field, $entity_
   // Grab first character from the field title_for_sort
   $entity_field[0]['value'] = '';
   if (!empty($entity->field_resource_title_for_sort[$entity->language][0]['value'][0])) {
-    $entity_field[0]['value'] = strtoupper($entity->field_resource_title_for_sort[$entity->language][0]['value'][0]);
+    $string = $entity->field_resource_title_for_sort[$entity->language][0]['value'];
+    // Get first character in a multibyte-safe way.
+    if(mb_strlen($string)){
+      $entity_field[0]['value'] = strtoupper(mb_substr($string, 0, 1));
+    }
   }
 }
 
@@ -167,9 +160,58 @@ function computed_field_field_resource_glossary_display($field, $entity_field_it
 }
 
 
+/**
+ * Custom field to show a CRL source summary.
+ * 
+ * field_resource_source_summary
+ */
+function computed_field_field_resource_source_summary_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
+  if (!empty($entity->resource_summary['source_text'])) {
+    return $entity->resource_summary['source_text'];
+  }
+}
+
+
+/**
+ * Custom field to show a sources legend for resource tablefields.
+ * 
+ * field_resource_table_sources
+ */
 function computed_field_field_resource_table_sources_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
-  $source_status = crl_helpers_get_single_node_field($entity, 'field_resource_source_status');
+  $source_status = crl_resource_get_single_node_field($entity, 'field_resource_source_status');
   if ($source_status == 'crl_review') {
     return '<div style="float: right; margin: 5px 0px 10px 10px;"><img style="vertical-align: middle;" title="Direct from Publisher" src="/' . drupal_get_path('module', 'crl_helpers') . '/images/icon_publisher.png"> - Denotes data sourced directly from publisher.</div>';
+  }
+}
+
+
+/**
+ * Custom field to show source information specific to a CRL review
+ * 
+ * field_resource_review_source
+ */
+function computed_field_field_resource_review_source_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
+  $source_status = crl_resource_get_single_node_field($entity, 'field_resource_source_status');
+  if ($source_status == 'crl_review') {
+    return t('Sources for this review include information publicly posted or obtained directly from the publisher, data collected by CRL staff and specialists at CRL libraries, members, and examination of the digital collection when possible. Other sources are noted where cited. <em>CRL continues to gather additional information on this resource and solicit critical assessment</em>.');
+  }
+}
+
+
+/**
+ * Custom field to show a special message for activity entries that apply to
+ * CRL project groups.
+ * 
+ * field_field_activity_group_notice
+ */
+function computed_field_field_activity_group_notice_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
+  $grouping = crl_resource_get_single_node_field($entity, 'field_activity_grouping');
+  if ($grouping) {
+    $term = taxonomy_term_load($grouping);
+    // @todo: make some of the strings below configurable and maybe even
+    // multilingual friendly.
+    if (!empty($term->name) && $term->name != 'CRL Members') {
+      return '<div class="notice-box">' . t('The CRL activity posted here is on behalf of <strong>@group</strong> for the benefit of its members only. For inquiries about eligibility for participating in the offer, please contact Judy Alspach at jalspach@crl.edu.', array('@group' => $term->name)) . '</div>';
+    }
   }
 }

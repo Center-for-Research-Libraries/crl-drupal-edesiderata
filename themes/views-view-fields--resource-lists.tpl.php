@@ -30,7 +30,16 @@
   // We don't display any fields directly, we just use our custom theme
   // function to build the whole row from scratch based on the nid.
   if (isset($nid)) {
-    print theme('crl_helpers_resource_teaser', array('nid' => $nid));
+    $entities = entity_load('node', array($nid)); // Should alerady be in static cache from view
+    if (!empty($entities[$nid])) {
+      $entity = $entities[$nid];
+      $provider_id = crl_resource_get_single_node_field($entity, 'field_provider');
+      $providers = entity_load('node', array($provider_id));
+      if (!empty($providers[$provider_id])) {
+        $provider = $providers[$provider_id];
+        print theme('crl_helpers_resource_teaser', array('resource_entity' => $entity, 'provider_entity' => $provider));
+      }
+    }
   }
   
   
