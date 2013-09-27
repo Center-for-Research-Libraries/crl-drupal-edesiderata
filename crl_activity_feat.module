@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CRL Activity feature.
+ */
+
+include_once 'crl_activity_feat.features.inc';
