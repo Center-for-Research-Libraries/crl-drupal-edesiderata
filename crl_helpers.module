@@ -289,3 +289,24 @@ function crl_helpers_preprocess_delta_blocks_page_title(&$vars) {
 function crl_helpers_form_comment_form_alter(&$form, &$form_state, $form_id) {
   unset($form['comment_output_below']);
 }
+
+
+/**
+ * Implements hook_wysiwyg_editor_settings_alter().
+ */
+function crl_helpers_settings_wysiwyg_editor_settings_alter(&$settings, $context) {
+  if ($context['profile']->editor == 'ckeditor') {
+    // For some reason some parts of the toolbar do not inherit styles
+    // correctly unless the css file def does not have a starting "/". So strip.
+    if ($settings['contentsCss']) {
+      if (is_array($settings['contentsCss'])) {
+        foreach ($settings['contentsCss'] as $key => $def) {
+          $settings['contentsCss'][$key] = ltrim($settings['contentsCss'][$key], '/');
+        }
+      }
+      else {
+        $settings['contentsCss'] = ltrim($settings['contentsCss']);
+      }
+    }
+  }
+}
