@@ -1,0 +1,557 @@
+<?php
+
+
+/**
+ * Implements hook_field_extra_fields().
+ * 
+ * Define numerous psuedo fields.
+ */
+function crl_resource_field_extra_fields() {
+  $extra['node']['resource'] = array(
+    'display' => array(
+      'pseudo_field_resource_status_summary' => array(
+        'label' => t('Resource Status Summary Table'),
+        'description' => t('A resoruce status summary table.'),
+        'weight' => 900,
+      ),
+      'pseudo_field_resource_all_jisc_details' => array(
+        'label' => t('Resource JISC Details'),
+        'description' => t('All JISC details fields that should be displayed.'),
+        'weight' => 901,
+      ),
+      'pseudo_field_resource_provider_details' => array(
+        'label' => t('Resource Provider Details - Embedded'),
+        'description' => t('An "embedded" display of the providers details that are related to the resource'),
+        'weight' => 902,
+      ),
+      'pseudo_field_resource_activity' => array(
+        'label' => t('Resource Activity - Embedded'),
+        'description' => t('An "embedded" display of the activity details that are related to the resource'),
+        'weight' => 903,
+      ),
+      'pseudo_field_resoruce_coll_content_tax' => array(
+        'label' => t('Resource Collection Content Taxonomy'),
+        'description' => t('Show (or re-display) collection content taxonomy values.'),
+        'weight' => 904,
+      ),
+      'pseudo_field_resource_source_summary' => array(
+        'label' => t('Resource Source Summary'),
+        'description' => t('A brief CRL source summary for a resource based on source status.'),
+        'weight' => 905,
+      ),
+      'pseudo_field_resource_table_sources' => array(
+        'label' => t('Resource Table Source Legend'),
+        'description' => t('A sources legend for resource tablefields.'),
+        'weight' => 906,
+      ),
+      'pseudo_field_resource_review_source' => array(
+        'label' => t('Resource Review Source'),
+        'description' => t('Source information specific to a CRL review.'),
+        'weight' => 907,
+      ),
+    ),
+  );
+  return $extra;
+}
+
+
+/**
+ * Implements hook_node_view().
+ * 
+ * Attach custom display elements to a resource node that's about to be
+ * rendered (custom pseudo fields, etc.).
+ */
+function crl_resource_node_view($node, $view_mode, $langcode) {
+  if ($node->type == 'resource') {
+    require_once dirname(__FILE__) . '/includes/crl_resource_display_elements.class.inc';
+    $display_elements = new CrlResourceDisplayElements($node);
+    $node->content = array_merge($node->content, get_object_vars($display_elements->build()));
+  }
+}
+
+
+/**
+ * Implements hook_node_view_alter().
+ * 
+ * Add custom show/hide display logic on resource nodes. This fires when a node
+ * is built even if its embedded with in another one (or a view). This also
+ * takes place and the END of the rendering flow so this is our last chance to
+ * manipulate things before themeing.
+ */
+function crl_resource_node_view_alter(&$build) {
+  if ($build['#bundle'] == 'resource') {
+    if (empty($build['field_resource_all_jisc_details'][0]['#markup'])) {
+      unset($build['field_resource_all_jisc_details']);
+    }
+  }
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function crl_resource_theme() {
+  $hooks = array(
+    // Theme hook for a generic pseudo field.
+    'crl_resource_pseudo_field' => array(
+      'variables' => array('output' => '', 'label' => ''),
+    ),
+    // Theme hook to generate a resource status summary field (used at top of
+    // the activity tab within a resource).
+    'crl_resource_field_status_summary' => array(
+      'variables' => array('edit_link' => '', 'status' => array(), 'status_options' => array(), 'status_descriptions' => array()),
+    ),
+    // Theme hook to generate a publisher legend field.
+    'crl_resource_publisher_legend' => array(
+      'variables' => array('icon_alt_title' => '', 'icon_text' => ''),
+    ),
+    // Theme hook to generate a full resource summary block.
+    'crl_resource_summary' => array(
+      'variables' => array('status' => array(), 'status_options' => array(), 'comment_count' => 0, 'vote_average' => 0),
+    ),
+    // Theme hook to generate a "back to index" link.
+    'crl_resource_back_to_index' => array(
+      'variables' => array('url' => '', 'browser_back' => FALSE),
+    ),
+    // Theme hook to generate a resource teaser (used in views rows).
+    'crl_resource_teaser' => array(
+      'variables' => array('link' => NULL, 'summary' => '', 'provider' => '', 'updated' => 0, 'added' => 0, 'status' => array(), 'status_options' => array()),
+    ),
+  );
+  foreach ($hooks as &$hook) {
+    $hook['path'] = drupal_get_path('module', 'crl_resource') . '/themes';
+    $hook['file'] = 'crl_resource.theme.inc';
+  }
+  return $hooks;
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function crl_resource_block_info() {
+  // The resource summary is a block at the top of each resoruce.
+  $blocks['crl_resource_summary'] = array(
+    'info' => t('CRL Resource Summary'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // The "back to index" block shows a caclulated back link for navigation.
+  $blocks['crl_resource_back_to_index'] = array(
+    'info' => t('CRL Back to Index'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['crl_resource_common_input'] = array(
+    'info' => t('CRL Common Resource Vote and Rate Input'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function crl_resource_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    // Build the resoruce summary block.
+    case 'crl_resource_summary':
+      $nid = arg(1);
+      $status = array();
+      $status_options = crl_resource_activity_status_property_oplist();
+      $comment_count = 0;
+      $vote_average = 0;
+      $entities = entity_load('node', array($nid));
+      if (!empty($entities[$nid])) {
+        $entity = $entities[$nid];
+        $entity_wrapper = entity_metadata_wrapper('node', $entity);
+        $status = isset($entity_wrapper->crl_resource_status_backref) ? $entity_wrapper->crl_resource_status_backref->value() : array();
+        $vote_average = crl_resource_get_vote_average($entity);
+        if (isset($entity->comment_count)) {
+          $comment_count = $entity->comment_count;
+        }
+      }
+      $block['subject'] = '';
+      $block['content'] = array(
+        'resource_summary' => array(
+          '#theme' => 'crl_resource_summary',
+          '#status' => $status,
+          '#status_options' => $status_options,
+          '#comment_count' => $comment_count,
+          '#vote_average' => $vote_average,
+        ),
+      );
+      break;
+    // Build the back to index block.
+    case 'crl_resource_back_to_index':
+      $browser_back = FALSE;
+      $url = url('resources/main');
+      drupal_add_js(drupal_get_path('module', 'crl_resource') .'/js/crl_resource.js', 'file');
+      $block['subject'] = '';
+      $block['content'] = array(
+        'back_link' => array(
+          '#theme' => 'crl_resource_back_to_index',
+          '#url' => $url,
+          '#browser_back' => $browser_back,
+        ),
+      );
+      break;
+    // Build the common resource input/interest block
+    case 'crl_resource_common_input':
+      global $user;
+      $nid = arg(1);
+      $node = node_load($nid);
+      // Make sure block should be visible
+      if (isset($node->type) && $node->type == 'resource' && $user->uid) {
+        $block['subject'] = t('Interested in this Resource?');
+        $block['content'] = array('#markup' => rate_generate_widget(1, 'node', $nid));
+      }
+      break;
+  }
+  return $block;
+}
+
+
+/**
+ * Implements hook_views_api().
+ */
+function crl_resource_views_api() {
+  $path = drupal_get_path('module', 'crl_resource');
+  return array(
+    'api' => 3.0,
+    'path' => $path,
+    'template path' => $path . '/themes',
+  );
+}
+
+
+/**
+ * Implements hook_entity_property_info_alter().
+ * 
+ * This is where we define our status values through backrefrences (activites
+ * that point to resources).
+ */
+function crl_resource_entity_property_info_alter(&$info) {
+  $properties = &$info['node']['properties'];
+  // Add a new entity property that will be used to fetch the general details
+  // for all entities that point to a resource entity through a
+  // field_resource_reference field.
+  $properties['crl_resource_backref'] = array(
+    'label' => t("CRL Resource Backreference"),
+    'type' => 'list<text>',
+    'description' => t("Gets entities through resource backreference."),
+    'getter callback' => 'crl_resource_backref_properties_get',
+  );
+  // Add a new entity property that will be used to define the formal CRL status
+  // associated with any given resource (based on activity values linked to a
+  // resource entity through a field_resource_reference field.
+  $properties['crl_resource_status_backref'] = array(
+    'label' => t("CRL Resource Status Backreference"),
+    'type' => 'list<text>',
+    'description' => t("Gets CRL resource status through backreference."),
+    'getter callback' => 'crl_resource_backref_properties_get',
+    'options list' => 'crl_resource_activity_status_property_oplist',
+  );
+  // Add a new entity property that captures the glossary value for a resource.
+  $properties['crl_resource_glossary_value'] = array(
+    'label' => t("CRL Resource Glossary Value"),
+    'type' => 'text',
+    'description' => t("Gets CRL resource glossary value based on the first letter of the sort name."),
+    'getter callback' => 'crl_resource_glossary_value_get',
+  );
+}
+
+
+/**
+ * Properties getter callback: calculate backreferenced properties.
+ * 
+ * Note that this getter callback is called from multiple contexts. It is called
+ * upon the display of a resource to dynamically calculate resource data based
+ * on related activity (when loading/display pages). It is also called via the
+ * Search API when content is indexed in order to dynamically calculate resource
+ * status data that will be indexed (and used in facets).
+ * 
+ * @see crl_resource_entity_property_info_alter().
+ */
+function crl_resource_backref_properties_get($entity, array $options, $name, $type, $info) {
+  // The logic below may fail in strange ways if we are not dealing with a node.
+  if (empty($entity->nid)) {
+    return FALSE;
+  }
+  // First calculate the backreferences. We store these in a static cache.
+  static $backrefs = array();
+  if (!isset($backrefs[$entity->nid])) {
+    $backrefs[$entity->nid] = array();
+    // Get the entities that reference this resource through the
+    // field_resource_reference field.
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node', '=')
+          ->entityCondition('bundle', 'activity')
+          ->fieldCondition('field_resource_reference', 'target_id', $entity->nid, '='); 
+    // Force query to run without access checks. If we remove the tag below then
+    // status values will reflect the current user's access permissions (status
+    // values will not appear for activity entries they do not have access to)
+    // which could be a very good thing. However, this will cause problems when
+    // this code is called though cron when resoruce content is being indexed.
+    // This is because cron can only run as one user (anon by default) so the
+    // indexed (facet) data can't be user-specific. For now, we just override
+    // access control for all cases but may need to think more about how to deal
+    // with this.
+    $query->addTag('DANGEROUS_ACCESS_CHECK_OPT_OUT');
+    $result = $query->execute();
+    if (!empty($result['node'])) {
+      $backrefs[$entity->nid] = array_keys($result['node']);
+    }
+  }
+  // Once we have the backreference details we can continue with
+  // property-specific logic that uses this info.
+  switch ($info['name']) {    
+    // A request for the basic crl_resource_backref propery should just return
+    // the raw backrefrenced nids.
+    case 'crl_resource_backref':
+      return $backrefs[$entity->nid];      
+    // A request for the crl_resource_status_backref property requires
+    // additional calculation to get the status specifics (based on the
+    // referencing activity status details). Use static cache here also.
+    case 'crl_resource_status_backref':
+      static $resource_status = array();
+      if (!isset($resource_status[$entity->nid])) {
+        $backref_nodes = node_load_multiple($backrefs[$entity->nid]);
+        $computed_status = array();
+        if (!empty($backref_nodes)) {
+          foreach ($backref_nodes as $nid => $node) {
+            if ($node->type = 'activity')  {
+              // Get the raw status values set on the activity entity and
+              // aggregate them directly into our computed result.
+              $entity_wrapper_activity = entity_metadata_wrapper('node', $node);
+              $statuses = isset($entity_wrapper_activity->field_activity_crl_status) ? $entity_wrapper_activity->field_activity_crl_status->value() : array();
+              if (!empty($statuses)) {
+                foreach ($statuses as $status) {
+                  if (!in_array($status, $computed_status)) {
+                    $computed_status[] = $status;
+                  }
+                }
+              }
+            }
+          }
+        }
+        // Also see if this resource has a source status that indicates it's a
+        // full CRL review (that status value is always calculated dynamically).
+        $entity_wrapper_resource = entity_metadata_wrapper('node', $entity);
+        $source_status = isset($entity_wrapper_resource->field_resource_source_status) ? $entity_wrapper_resource->field_resource_source_status->value() : NULL;
+        if ($source_status == 'crl_review' && !in_array('crl_review_available', $computed_status)) {
+          $computed_status[] = 'crl_review_available';
+        }
+        $resource_status[$entity->nid] = $computed_status;
+      }
+      return $resource_status[$entity->nid];
+  }
+}
+
+
+/**
+ * Properties callback: centrally define the key|value pairs used for the
+ * various CRL status options.
+ * 
+ * @see crl_resource_entity_property_info_alter().
+ */
+function crl_resource_activity_status_property_oplist() {
+  return array(
+    'crl_desiderata' => t('CRL Flagged'),
+    'license_under_consideration' => t('License Under Consideration'),
+    'license_available' => t('License Offer'),
+    'trial_access_available' => t('Trial Access'),
+    'license_renewal_available' => t('Renewal Offer'),
+    'past_license_offer' => t('Expired Offer'),
+    'crl_review_available' => t('Reviewed by CRL'),
+  );
+}
+
+
+/**
+ * Properties callback: Get glossary value.
+ * 
+ * @see crl_resource_entity_property_info_alter().
+ */
+function crl_resource_glossary_value_get($entity, array $options, $name, $type, $info) {
+  $string = '';
+  // See if we have a sorting title to work with.
+  $entity_wrapper = entity_metadata_wrapper('node', $entity);
+  $sort_title = isset($entity_wrapper) ? $entity_wrapper->field_resource_title_for_sort->value() : '';
+  if (!empty($sort_title)) {
+    $string = $sort_title; 
+  }
+  elseif (!empty($entity->title)) {
+    $string = $entity->title;
+  }
+  // Get first character in a multibyte-safe way.
+  if (!empty($string) && mb_strlen($string)) {
+    return strtoupper(mb_substr($string, 0, 1));
+  }
+  return NULL;
+}
+
+
+/**
+ * Implements hook_facetapi_sort_info().
+ */
+function crl_resource_facetapi_sort_info() {
+  $sorts = array();
+  $sorts['crl_status_sort'] = array(
+    'label' => t('Custom CRL Status Sort'),
+    'callback' => 'crl_resource_activity_status_property_sort',
+    'description' => t('Custom sort order that only applies to CRL status values.'),
+    'weight' => -50,
+  );
+  return $sorts;
+}
+
+
+/**
+ * Facet API sort callback: set actual sort order for CRL status facet.
+ * 
+ * @see crl_resource_facetapi_sort_info().
+ */
+function crl_resource_activity_status_property_sort(array $a, array $b) {
+  // The ordering we want should be taken straight from the hard-coded ordering
+  // of the initial CRL status options array.
+  $options = crl_resource_activity_status_property_oplist();
+  $weights = array();
+  $i = 0;
+  foreach ($options as $op_key => $op_value) {
+    $i++;
+    $weights[$op_key] = $i;
+  }
+  $a_weight = 0;
+  if (isset($a['#indexed_value'])) {
+    if (!empty($weights[$a['#indexed_value']])) {
+      $a_weight = $weights[$a['#indexed_value']];
+    }
+  }
+  $b_weight = 0;
+  if (isset($b['#indexed_value'])) {
+    if (!empty($weights[$b['#indexed_value']])) {
+      $b_weight = $weights[$b['#indexed_value']];
+    }
+  }
+  return ($a_weight < $b_weight) ? -1 : 1;
+}
+
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ * 
+ * Add some customizations for the resource node edit form.
+ */
+function crl_resource_form_resource_node_form_alter(&$form, &$form_state, $form_id) {
+  // If we are adding a resource post a popup that reminds editors to create a
+  // provider entry first.
+  if (drupal_match_path(current_path(), 'node/add/resource') && empty($form_state['values'])) {
+    $message = t('REMINDER: Please ensure that the provider for this resource is listed in the provider picklist (the orange box) before entering any data on this form. If it is not yet listed please create a new provider entry in the system before entering any data here.');
+    drupal_add_js('jQuery(document).ready(function () { alert("' . $message . '"); });', 'inline');
+  }
+}
+
+
+/**
+ * Helper to get the vote average of a resource node.
+ */
+function crl_resource_get_vote_average($node) {
+  $vote_average = 0;
+  if (function_exists('fivestar_get_votes')) {
+    $vote_tags = array('platform', 'content', 'cost');
+    $active_tags = $vote_tally = $vote_average = 0;
+    foreach ($vote_tags as $tag) {
+      $vote_data = fivestar_get_votes('node', $node->nid, $tag);
+      if (!empty($vote_data['average']['value'])) {
+        $active_tags++;
+        $vote_tally = $vote_tally + $vote_data['average']['value'];
+      }
+    }
+    if ($active_tags) {
+      $vote_average = number_format(($vote_tally / $active_tags) / 20, 1);
+    }
+  }
+  return $vote_average;
+}
+
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function crl_resource_views_pre_render(&$view) {
+  // Run entity pre-loading for resource list views. Each item shown on the
+  // resource list view depends on data from other related entities, and it 
+  // behooves us to load all those other entities at once (via an array passed
+  // to entity_load) instead of one-by-one (via separate entity_load calls
+  // for each item). Here we calculate which related items to load and get them
+  // into the static cache in bulk before each individual item is rendered
+  // internally by the view. This could also be done via clever tricks on the
+  // view relationship settings, but we just do it here to keep the view itself
+  // simple.
+  $do_rlist_preloading = TRUE;
+  if ($view->name == 'resource_lists' && $do_rlist_preloading) {
+    $result_ids = array();
+    foreach ($view->result as $result) {
+      if (isset($result->entity)) {
+        $result_ids[] = $result->entity;
+      }
+    }
+    if (!empty($result_ids)) {
+      // The view should have already loaded these into the static cache so
+      // so this load should not cost anything.
+      $entities = entity_load('node', $result_ids);
+      // Get the related provider nodes and load them all at once.
+      $provider_ids = array();
+      foreach ($entities as $entity) {
+        $provider_field = field_get_items('node', $entity, 'field_provider');
+        if (isset($provider_field[0]['target_id']) && !in_array($provider_field[0]['target_id'], $provider_ids)) {
+          $provider_ids[] = $provider_field[0]['target_id'];
+        }
+      }
+      if (!empty($provider_ids)) {
+        entity_load('node', $provider_ids);
+      }
+      // Get the related activity entities and load them all at once.
+      $activity_ids = array();
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node', '=')
+            ->entityCondition('bundle', 'activity')
+            ->fieldCondition('field_resource_reference', 'target_id', $result_ids, 'IN');
+      $result = $query->execute();
+      if (!empty($result['node'])) {
+        $activity_ids = array_keys($result['node']);
+        entity_load('node', $activity_ids);
+      }
+    }
+  }
+}
+
+
+/**
+ * Helper to get a single field value from a node entity.
+ * 
+ * This takes care of all the language-specific management, etc. Will not work
+ * well for fields that have multiple values.
+ * 
+ * @param object $entity
+ *   The entity a field belongs to.
+ * @param string $field_name
+ *   The field name to fetch a value from.
+ * @return mixed
+ *   The raw value of the field (or the first field entry for a multi-value
+ *   field).
+ */
+function crl_resource_get_single_node_field($entity, $field_name) {
+  $fields = field_get_items('node', $entity, $field_name);
+  if (isset($fields[0]['value'])) {
+    return $fields[0]['value'];
+  }
+  if (isset($fields[0]['target_id'])) {
+    return $fields[0]['target_id'];
+  }
+  if (isset($fields[0]['tid'])) {
+    return $fields[0]['tid'];
+  }
+  return FALSE;
+}
