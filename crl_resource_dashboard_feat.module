@@ -1,0 +1,108 @@
+<?php
+/**
+ * @file
+ * Code for the CRL Resource Dashboard feature.
+ */
+
+include_once 'crl_resource_dashboard_feat.features.inc';
+
+
+/**
+ * Implementation of hook_views_pre_render().
+ */
+function crl_resource_dashboard_feat_views_pre_render(&$view) {
+  if ($view->name == 'resource_dashboard') {
+    $set = FALSE;
+    $count = $view->total_rows;
+    $url = 'resources/main';
+    switch ($view->current_display) {
+      case 'block_1' :
+        $set = TRUE;
+        $status = 'crl_review_available';
+        $url_options = array('query' => array('f[0]' => 'crl_resource_status_backref:' . $status));
+        $title = t('CRL Reviews');
+        $tagline = t('Resources Analyzed by CRL');
+        $link_text = 'Browse All Reviews';
+        $theme = 'crl_resource_dashboard_feat_view_head';
+        break;
+      case 'block_2' :
+        $set = TRUE;
+        $status = 'license_available';
+        $url_options = array('query' => array('f[0]' => 'crl_resource_status_backref:' . $status));
+        $title = t('Active Offers');
+        $tagline = t('Resources with Active CRL Offers');
+        $link_text = 'Browse All Offers';
+        $theme = 'crl_resource_dashboard_feat_view_head';
+        break;
+      case 'block_3' :
+        $set = TRUE;
+        $status = 'crl_desiderata';
+        $url_options = array('query' => array('f[0]' => 'crl_resource_status_backref:' . $status));
+        $title = t('CRL Pipeline');
+        $tagline = t('Resources Under Consideration');
+        $link_text = 'Browse All Pipeline Items';
+        $theme = 'crl_resource_dashboard_feat_view_head';
+        break;
+      case 'block_4' :
+        $set = TRUE;
+        $status = '';
+        $url_options = array();
+        $title = t('Total Resources');
+        $tagline = t('Browse All (A-Z)');
+        $link_text = t('Browse All (A-Z)');
+        $theme = 'crl_resource_dashboard_feat_view_head_all';
+        break;
+    }
+    if ($set) {
+      $view->attachment_before = theme($theme, array(
+        'count' => $count,
+        'status' => $status,
+        'title' => $title,
+        'tagline' => $tagline,
+        'url' => $url,
+        'url_options' => $url_options)
+      );
+      if ($view->current_display != 'block_4') {
+        $view->attachment_after = l($link_text, $url, $url_options);
+      }
+    }
+    
+  }
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function crl_resource_dashboard_feat_theme() {
+  return array(
+    // Theme hook to generate a resoruce dashboard header.
+    'crl_resource_dashboard_feat_view_head' => array(
+      'variables' => array('count' => 0, 'url' => '', 'url_options' => array(), 'title' => '', 'status' => '', 'tagline' => ''),
+    ),
+    // Theme hook to generate MAIN resoruce dashboard header.
+    'crl_resource_dashboard_feat_view_head_all' => array(
+      'variables' => array('count' => 0, 'url' => '', 'url_options' => array(), 'title' => '', 'status' => '', 'tagline' => ''),
+    ),
+  );
+}
+
+
+function theme_crl_resource_dashboard_feat_view_head($vars) {
+  $markup = '<div class="dashboard-lead">';
+  $markup .= '<h3><a href="' . url($vars['url'], $vars['url_options']) . '"><span class="summary-icon ' . $vars['status'] . '"></span>' . $vars['title'] . '</a></h3>';
+  $markup .= '<span class="super-num"><strong>' . $vars['count'] . '</strong></span>';
+  $markup .= '<p>' . $vars['tagline'] . '</p>';
+  $markup .= '<hr></div>';
+  return $markup;
+}
+
+
+function theme_crl_resource_dashboard_feat_view_head_all($vars) {
+  $markup = '<div class="dashboard-lead-all">';
+  $markup .= '<span class="super-num" style="float: left;"><strong>' . $vars['count'] . '</strong></span>';
+  $markup .= '<h3>' . l($vars['title'], $vars['url'], $vars['url_options']) . '</h3>';
+  $markup .= '<p>' . l($vars['tagline'], $vars['url'], $vars['url_options']) . '</p>';
+  $markup .= '</div>';
+  return $markup;
+}
