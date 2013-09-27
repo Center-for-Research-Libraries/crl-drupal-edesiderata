@@ -40,20 +40,20 @@ function computed_field_field_resource_all_jisc_details_display($field, $entity_
  * field_resource_status_summary
  */
 function computed_field_field_resource_status_summary_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
-  $data = $entity->resource_summary;
   // Calculate editor link.
   $edit_link = '';
-  if (!empty($data['backref_entities'])) { // Activity data exists
+  $backref_entities = entity_metadata_wrapper('node', $entity)->crl_resource_backref->raw();
+  if (!empty($backref_entities)) { // Activity data exists
     // Just get the first backref entity in the array (for now there should
     // just be one).
-    $activity_entity = reset($data['backref_entities']);
+    $activity_entity = node_load(reset($backref_entities));
     if (entity_access('update', 'node', $activity_entity)) {
-      $edit_link = url('node/' . $activity_entity->nid . '/edit', array('query' => array('activity_title' => rawurlencode('Activity: ' . check_plain($entity->title)))));
+      $edit_link = url('node/' . $activity_entity->nid . '/edit', array('query' => array('activity_title' => rawurlencode('CRL Activity: ' . check_plain($entity->title)))));
     }
   }
   else { // No activity data exists
     if (entity_access('create', 'node')) {
-      $edit_link = url('node/add/activity', array('query' => array('activity_title' => rawurlencode('Activity: ' . check_plain($entity->title)), 'resource_id' => $entity->nid)));
+      $edit_link = url('node/add/activity', array('query' => array('activity_title' => rawurlencode('CRL Activity: ' . check_plain($entity->title)), 'resource_id' => $entity->nid)));
     }
   }
   return theme('crl_helpers_resource_status_summary', array('entity' => $entity, 'edit_link' => $edit_link));
@@ -67,9 +67,8 @@ function computed_field_field_resource_status_summary_display($field, $entity_fi
  * field_resource_provider_details
  */
 function computed_field_field_resource_provider_details_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
-  $items = field_get_items('node', $entity, 'field_provider');
-  if (!empty($items[0]['entity']->nid)) {
-    $provider = node_load($items[0]['entity']->nid);
+  $provider = field_get_items('node', $entity, 'field_provider');
+  if (!empty($provider)) {
     // Make sure we can view the provider node.
     if (entity_access('view', 'node', $provider)) {
       $provider_build = node_view($provider, 'embedded');
@@ -88,11 +87,11 @@ function computed_field_field_resource_provider_details_display($field, $entity_
  * field_resource_activity
  */
 function computed_field_field_resource_activity_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
-  $data = $entity->resource_summary;
-  if (!empty($data['backref_entities'])) { // Activity data exists
+  $backref_entities = entity_metadata_wrapper('node', $entity)->crl_resource_backref->raw();
+  if (!empty($backref_entities)) { // Activity data exists
     // Just get the first backref entity in the array (for now there should
     // just be one).
-    $activity_entity = reset($data['backref_entities']);
+    $activity_entity = node_load(reset($backref_entities));
     // Make sure we can view the activity node.
     if (entity_access('view', 'node', $activity_entity)) {
       $activity_entity_build = node_view($activity_entity, 'embedded');
@@ -166,9 +165,7 @@ function computed_field_field_resource_glossary_display($field, $entity_field_it
  * field_resource_source_summary
  */
 function computed_field_field_resource_source_summary_display($field, $entity_field_item, $entity_lang, $langcode, $entity) {
-  if (!empty($entity->resource_summary['source_text'])) {
-    return $entity->resource_summary['source_text'];
-  }
+  return;
 }
 
 

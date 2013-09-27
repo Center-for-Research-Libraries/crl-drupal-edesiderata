@@ -7,12 +7,6 @@
  */
 
 
-// Define some static variables that we won't expose in any admin options.
-define('CRL_HELPERS_INSTITUTION_FIELD', 'institution');
-// Define the fragment (anchor) for a resoruce activity tab
-define('CRL_HELPERS_RESOURCE_ACTIVITY_FRAGMENT', 'node_resource_full_group_crl_details');
-
-
 // Include logic for custom fields.
 require_once dirname(__FILE__) . '/includes/crl_helpers_custom_fields.inc';
 
@@ -36,8 +30,8 @@ function crl_helpers_menu() {
 
 
 /**
-* Implements hook_entity_info_alter().
-*/
+ * Implements hook_entity_info_alter().
+ */
 function crl_helpers_entity_info_alter(&$entity_info) {
   // Add an optional "embedded" view mode to some content types.
   $entity_info['node']['view modes']['embedded'] = array(
@@ -57,42 +51,10 @@ function crl_helpers_cron() {
 
 
 /**
-* Implements hook_views_api().
-*/
-function crl_helpers_views_api() {
-  $path = drupal_get_path('module', 'crl_helpers');
-  return array(
-    'api' => 3.0,
-    'path' => $path,
-    'template path' => $path . '/themes',
-  );
-}
-
-
-/**
  * Implements hook_theme().
  */
 function crl_helpers_theme() {
   return array(
-    // Theme hook to generate a resource teaser (used in views rows).
-    'crl_helpers_resource_teaser' => array(
-      'variables' => array('resource_entity' => NULL, 'provider_entity' => NULL, 'resource_data' => array()),
-      'path' => drupal_get_path('module', 'crl_helpers') . '/themes',
-      'file' => 'crl_helpers.theme.inc',
-    ),
-    // Theme hook to generate a full resource summary (used at top of resource).
-    'crl_helpers_resource_summary' => array(
-      'variables' => array('entity' => NULL),
-      'path' => drupal_get_path('module', 'crl_helpers') . '/themes',
-      'file' => 'crl_helpers.theme.inc',
-    ),
-    // Theme hook to generate a resource status summary (used at top of
-    // the activity tab).
-    'crl_helpers_resource_status_summary' => array(
-      'variables' => array('entity' => NULL, 'edit_link' => ''),
-      'path' => drupal_get_path('module', 'crl_helpers') . '/themes',
-      'file' => 'crl_helpers.theme.inc',
-    ),
     // Theme hook to generate our custom facet breadcrumb.
     'crl_helpers_facet_breadcrumb' => array(
       'variables' => array('breadcrumb' => array()),
@@ -105,12 +67,6 @@ function crl_helpers_theme() {
       'path' => drupal_get_path('module', 'crl_helpers') . '/themes',
       'file' => 'crl_helpers.theme.inc',
     ),
-    // Theme hook to generate a "back to index" link.
-    'crl_helpers_back_to_index' => array(
-      'variables' => array('url' => '', 'browser_back' => FALSE),
-      'path' => drupal_get_path('module', 'crl_helpers') . '/themes',
-      'file' => 'crl_helpers.theme.inc',
-    ),
   );
 }
 
@@ -119,11 +75,6 @@ function crl_helpers_theme() {
  * Implements hook_block_info().
  */
 function crl_helpers_block_info() {
-  // The resource summary is a block at the top of each resoruce.
-  $blocks['crl_helpers_resource_summary'] = array(
-    'info' => t('CRL Resource Summary'), 
-    'cache' => DRUPAL_NO_CACHE,
-  );
   // The facet breadcrumb is a block that can be displayed on the top of a
   // resoruce index.
   $blocks['crl_helpers_facet_breadcrumb'] = array(
@@ -133,11 +84,6 @@ function crl_helpers_block_info() {
   // The editor tools block shows links and info just for editors.
   $blocks['crl_helpers_editor_tools'] = array(
     'info' => t('CRL Editor Tools'), 
-    'cache' => DRUPAL_NO_CACHE,
-  );
-  // The "back to index" block shows a caclulated back link for navigation.
-  $blocks['crl_helpers_back_to_index'] = array(
-    'info' => t('CRL Back to Index'), 
     'cache' => DRUPAL_NO_CACHE,
   );
   return $blocks;
@@ -150,22 +96,6 @@ function crl_helpers_block_info() {
 function crl_helpers_block_view($delta = '') {
   $block = array();
   switch ($delta) {
-    // Render the resoruce summary block.
-    case 'crl_helpers_resource_summary':
-      $nid = arg(1);
-      $entities = entity_load('node', array($nid));
-      if (!empty($entities[$nid])) {
-        $entity = $entities[$nid];
-      }
-      $block['subject'] = '';
-      $output = array(
-        'resource_summary' => array(
-          '#theme' => 'crl_helpers_resource_summary',
-          '#entity' => $entity,
-        ),
-      );
-      $block['content'] = $output;
-      break;
     // Render the facet breadcrumb block.
     case 'crl_helpers_facet_breadcrumb':
       $block['subject'] = '';
@@ -188,249 +118,8 @@ function crl_helpers_block_view($delta = '') {
       );
       $block['content'] = $output;
       break;
-    case 'crl_helpers_back_to_index':
-      global $user;
-      $browser_back = TRUE;
-      $url = '';
-      // If the user is logged-in then page caching is not an issue and we can
-      // try to detect a smart back link based on referrer.
-      if ($user->uid && !empty($_SERVER['HTTP_REFERER'])) {
-        $parsed = parse_url($_SERVER['HTTP_REFERER']);
-        if (isset($parsed['path'])) {
-          $path = trim($parsed['path'], '/');
-          if (!(empty($path) || drupal_match_path($path, 'resources/main'))) {
-            // Not safe to use browser back, so direct to index.
-            $browser_back = FALSE;
-            $url = url('resources/main');
-          }
-        }
-      }
-      $block['subject'] = '';
-      $output = array(
-        'back_link' => array(
-          '#theme' => 'crl_helpers_back_to_index',
-          '#url' => $url,
-          '#browser_back' => $browser_back,
-        ),
-      );
-      $block['content'] = $output;
-      break;
-      
   }
   return $block;
-}
-
-
-/**
- * Implements hook_views_pre_render().
- */
-function crl_helpers_views_pre_render(&$view) {
-  // Run entity pre-loading for resource list views. Each item shown on the
-  // resource list view depends on data from other related entities, and it 
-  // behooves us to load all those other entities at once (via an array passed
-  // to entity_load) instead of one-by-one (via separate entity_load calls
-  // for each item). Here we calculate which related items to load and get them
-  // into the static cache in bulk before each individual item is rendered
-  // internally by the view. This could also be done via clever tricks on the
-  // view relationship settings, but we just do it here to keep the view itself
-  // simple.
-  $do_rlist_preloading = TRUE;
-  if ($view->name == 'resource_lists' && $do_rlist_preloading) {
-    $result_ids = array();
-    foreach ($view->result as $result) {
-      if (isset($result->entity)) {
-        $result_ids[] = $result->entity;
-      }
-    }
-    if (!empty($result_ids)) {
-      // The view should have already loaded these into the static cache so
-      // so this load should not cost anything.
-      $entities = entity_load('node', $result_ids);
-      // Get the related provider nodes and load them all at once.
-      $provider_ids = array();
-      foreach ($entities as $entity) {
-        $provider_id = crl_resource_get_single_node_field($entity, 'field_provider');
-        if (isset($provider_id)) {
-          $provider_ids[] = $provider_id;
-        }
-      }
-      if (!empty($provider_ids)) {
-        entity_load('node', $provider_ids);
-      }
-      // Get the related activity entities and load them all at once.
-      $activity_ids = array();
-      $query = new EntityFieldQuery();
-      $query->entityCondition('entity_type', 'node', '=')
-            ->entityCondition('bundle', 'activity')
-            ->fieldCondition('field_resource_reference', 'target_id', $result_ids, 'IN');
-      $result = $query->execute();
-      if (!empty($result['node'])) {
-        $activity_ids = array_keys($result['node']);
-        entity_load('node', $activity_ids);
-      }
-    }
-  }
-}
-
-
-/**
- * Implements hook_form_BASE_FORM_ID_alter().
- * 
- * Add some customizations and validation rules for the activity node edit form.
- */
-function crl_helpers_form_activity_node_form_alter(&$form, &$form_state, $form_id) {
-  // When updating an activity entity enforce some custom validation rules on
-  // the CRL status settings.
-  $form['#validate'][] = 'crl_helpers_activity_node_form_validate';
-  // Hide the "review available" option as it's purely managed by the system.
-  unset($form['field_activity_crl_status'][$form['field_activity_crl_status']['#language']]['#options']['crl_review_available']);
-  
-  // Auto-fill some values if they are passed via the URL.
-  if (!empty($_GET['resource_id'])) {
-    $form['field_resource_reference'][$form['field_resource_reference']['#language']][0]['target_id']['#default_value'] = 'ref(' . $_GET['resource_id'] . ')';
-  }
-  if (!empty($_GET['activity_title'])) {
-    $form['title']['#default_value'] = rawurldecode($_GET['activity_title']);
-  }
-}
-
-
-/**
- * Implements hook_form_BASE_FORM_ID_alter().
- * 
- * Add some customizations for the resource node edit form.
- */
-function crl_helpers_form_resource_node_form_alter(&$form, &$form_state, $form_id) {
-  // If we are adding a resource post a popup that reminds editors to create a
-  // provider entry first.
-  if (drupal_match_path(current_path(), 'node/add/resource') && empty($form_state['values'])) {
-    $message = t('REMINDER: Please ensure that the provider for this resource is listed in the provider picklist (the orange box) before entering any data on this form. If it is not yet listed please create a new provider entry in the system before entering any data here.');
-    drupal_add_js('jQuery(document).ready(function () { alert("' . $message . '"); });', 'inline');
-  }
-}
-
-
-/**
- * Validation callback for activity_node_form.
- * 
- * @see crl_helpers_form_activity_node_form_alter().
- */
-function crl_helpers_activity_node_form_validate(&$form, &$form_state) {
-  $set_status = array();
-  // Get the master option labels that we will use in error messages.
-  $oplist = crl_resource_activity_status_property_oplist();
-  foreach($oplist as $op_key => $op) {
-    $oplist['@' . $op_key] = $op;
-  }
-  $language = $form['language']['#value'];
-  if (!empty($form_state['values']['field_activity_crl_status'][$language])) {
-    foreach($form_state['values']['field_activity_crl_status'][$language] as $item) {
-      if (!empty($item['value'])) {
-        $set_status[] = $item['value'];
-      }
-    }
-  }
-  // Handle case where an offer is set while another status is set that is
-  // mutually exclusive.
-  $dissallow_with_offer = array_intersect($set_status, array('crl_desiderata', 'license_under_consideration'));
-  if (in_array('license_available', $set_status) && !empty($dissallow_with_offer)) {
-    form_set_error('field_activity_crl_status', t('"@license_available" cannot be set while "@crl_desiderata" or "@license_under_consideration" are also set.', $oplist));
-  }
-  // Handle case where "License renewal available" is set without "License
-  // available"
-  if (in_array('license_renewal_available', $set_status) && !in_array('license_available', $set_status)) {
-    form_set_error('field_activity_crl_status', t('"@license_renewal_available" should only be set if "@license_available" is also set.', $oplist));
-  }
-  // Handle case where "License under consideration" is set without "Flagged"
-  if (in_array('license_under_consideration', $set_status) && !in_array('crl_desiderata', $set_status)) {
-    form_set_error('field_activity_crl_status', t('"@license_under_consideration" should only be set if "@crl_desiderata" is also set.', $oplist));
-  }
-  $now = date('Y-m-d');
-  // If the offer end date is not in the future the offer status should not
-  // be set.
-  if (in_array('license_available', $set_status) && $form_state['values']['field_activity_offer_duration'][$language][0]['value2'] < $now) {
-    form_set_error('field_activity_offer_duration', t('"@license_available" cannot be set while the offer expiration date is either not set or is in the past.', $oplist));
-  }
-  // If the trial end date is not in the future the "Trial Access Available"
-  // status should not be set.
-  if (in_array('trial_access_available', $set_status) && $form_state['values']['field_activity_trial_duration'][$language][0]['value2'] < $now) {
-    form_set_error('field_activity_trial_duration', t('"@trial_access_available" cannot be set while the trial expiration date is either not set or is in the past.', $oplist));
-  }
-}
-
-
-/**
- * Implements hook_node_view_alter().
- * 
- * Add custom show/hide display logic on activity and resource nodes. This fires
- * when a node is built even if its embedded with in another one (or a view).
- */
-function crl_helpers_node_view_alter(&$build) {
-  // Checks for activity nodes.
-  if ($build['#bundle'] == 'activity') {
-    // Unset some fields based on status values.
-    $license_available = FALSE;
-    $trial_access_available = FALSE;
-    $unset_fields = array();
-    $status_array = field_get_items('node', $build['#node'], 'field_activity_crl_status');
-    if (!empty($status_array)) {
-      foreach ($status_array as $status) {
-        if ($status['value'] == 'license_available') {
-          $license_available = TRUE;
-        }
-        if ($status['value'] == 'trial_access_available') {
-          $trial_access_available = TRUE;
-        }
-      }
-    }
-    if (!$license_available) {
-      $unset_fields = array_merge($unset_fields, array('field_activity_offer_duration', 'field_activty_offer_terms', 'field_activity_get_started', 'field_activity_license_doc', 'field_activity_auth_form', 'field_activity_pricing_terms', 'field_activity_offer_notes'));
-    }
-    if (!$trial_access_available) {
-      $unset_fields = array_merge($unset_fields, array('field_activity_trial_duration', 'field_trial_access_info', 'field_access_trial_url', 'field_activity_trial_notes'));
-    }
-    if (!empty($unset_fields)) {
-      foreach($unset_fields as $field) {
-        if (isset($build[$field])) {
-          unset($build[$field]);
-        }
-      }
-    }
-  }
-  
-  if ($build['#bundle'] == 'resource') {
-    if (empty($build['field_resource_all_jisc_details'][0]['#markup'])) {
-      unset($build['field_resource_all_jisc_details']);
-    }
-  }
-}
-
-
-/**
- * Implements hook_page_build().
- * 
- * This only fires for the whole page once (unlike hook_node_view_alter() which
- * can fire multiple times per page).
- */
-function crl_helpers_page_build(&$page) {
-  // See if we are about to display an activity page. If so, redirect to the
-  // related resource page (we only want to see activity in the context of the
-  // resoruce that it's "attached" to).
-  $args = arg();
-  if (drupal_match_path(current_path(), 'node/*') && is_numeric($args[1]) && !isset($args[2])) {
-    $node = node_load($args[1]); // Will be in static cache.
-    if (isset($node->type) && $node->type == 'activity' && isset($node->nid) && $node->nid == $args[1]) {
-      $resource_id = crl_resource_get_single_node_field($node, 'field_resource_reference');
-      if (!empty($resource_id)) {
-        $resource_node = node_load($resource_id);
-        $url = entity_uri('node', $resource_node);
-        if (!empty($url)) {
-          $url['options']['fragment'] = CRL_HELPERS_RESOURCE_ACTIVITY_FRAGMENT;
-          drupal_goto($url['path'], $url['options']);
-        }
-      }
-    }
-  }
 }
 
 
@@ -516,6 +205,8 @@ function crl_helpers_filter_info() {
  */
 function _crl_helpers_content_tokens($text, $filter, $format, $langcode, $cache, $cache_id) {
   $text = str_replace('[provider]', '<img class="from-provider-icon" title="Direct from Publisher" src="/' . drupal_get_path('module', 'crl_helpers') . '/images/icon_publisher.png">', $text);
+  $text = str_replace('[crl_login_url]', url('user', array('query' => array('destination' => current_path()))), $text);
+  $text = str_replace('[crl_signup_url]', url('user/register', array('query' => array('destination' => current_path()))), $text);
   return $text;
 }
 
@@ -543,15 +234,11 @@ function crl_helpers_get_institution($iid = NULL) {
   }
   global $user;
   $account = user_load($user->uid);
-  $field = 'field_' . CRL_HELPERS_INSTITUTION_FIELD;
-  $field_data = field_get_items('user', $account, $field);
-  if (isset($field_data[0]['value'])) {
-    $iid = $field_data[0]['value'];
-    // Also make sure that this iid is still part of our formal institution list
-    if (isset($institutions_array_id[$iid])) {
-      $user_institution_id = $iid;
-      return $iid;
-    }
+  $entity_wrapper = entity_metadata_wrapper('user', $account);
+  $iid = isset($entity_wrapper->field_institution) ? $entity_wrapper->field_institution->value() : NULL;
+  if (!empty($iid) && isset($institutions_array_id[$iid])) {
+    $user_institution_id = $iid;
+    return $iid;
   } 
   return FALSE;  
 }
