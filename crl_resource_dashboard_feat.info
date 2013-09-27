@@ -12,4 +12,4 @@ features[delta][] = resource_dashboard
 features[features_api][] = api:2
 features[views_view][] = resource_dashboard
 features_exclude[dependencies][ctools] = ctools
-project path = sites/all/modules/custom/crl_desiderata_local
+project path = sites/all/modules/custom/crl_local
