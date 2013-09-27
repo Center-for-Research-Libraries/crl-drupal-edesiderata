@@ -174,4 +174,4 @@ features_exclude[dependencies][entity] = entity
 features_exclude[dependencies][entityreference] = entityreference
 features_exclude[dependencies][options] = options
 features_exclude[dependencies][search_api] = search_api
-project path = sites/all/modules/custom/crl_desiderata_local
+project path = sites/all/modules/custom/crl_local
