@@ -4,8 +4,6 @@ description = Provide case-specific functionality
 core = 7.x
 package = CRL
 
-dependencies[] = crl_resource
 dependencies[] = entity
 dependencies[] = entityreference
 dependencies[] = search_api
-dependencies[] = computed_field
