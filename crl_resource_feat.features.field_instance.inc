@@ -61,47 +61,6 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_coll_content_tax'
-  $field_instances['node-resource-field_coll_content_tax'] = array(
-    'bundle' => 'resource',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 5,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_coll_content_tax',
-    'label' => 'Collection Content Taxonomy',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
-      'weight' => 97,
-    ),
-  );
-
   // Exported field_instance: 'node-resource-field_content_scope_and_complete'
   $field_instances['node-resource-field_content_scope_and_complete'] = array(
     'bundle' => 'resource',
@@ -440,88 +399,6 @@ function crl_resource_feat_field_default_field_instances() {
       'settings' => array(),
       'type' => 'options_select',
       'weight' => 2,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_activity'
-  $field_instances['node-resource-field_resource_activity'] = array(
-    'bundle' => 'resource',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 6,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_activity',
-    'label' => 'Activity',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
-      'weight' => 100,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_all_jisc_details'
-  $field_instances['node-resource-field_resource_all_jisc_details'] = array(
-    'bundle' => 'resource',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 8,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_all_jisc_details',
-    'label' => 'Jisc Details',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
-      'weight' => 102,
     ),
   );
 
@@ -905,47 +782,6 @@ function crl_resource_feat_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 84,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_glossary'
-  $field_instances['node-resource-field_resource_glossary'] = array(
-    'bundle' => 'resource',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 16,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_glossary',
-    'label' => 'Resource Glossary',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
-      'weight' => 98,
     ),
   );
 
@@ -1698,47 +1534,6 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_provider_details'
-  $field_instances['node-resource-field_resource_provider_details'] = array(
-    'bundle' => 'resource',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 9,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_provider_details',
-    'label' => 'Provider Details',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
-      'weight' => 96,
-    ),
-  );
-
   // Exported field_instance: 'node-resource-field_resource_provider_notes'
   $field_instances['node-resource-field_resource_provider_notes'] = array(
     'bundle' => 'resource',
@@ -1782,47 +1577,6 @@ function crl_resource_feat_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 127,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_review_source'
-  $field_instances['node-resource-field_resource_review_source'] = array(
-    'bundle' => 'resource',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 2,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_review_source',
-    'label' => 'Review Source',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
-      'weight' => 104,
     ),
   );
 
@@ -1916,47 +1670,6 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_source_summary'
-  $field_instances['node-resource-field_resource_source_summary'] = array(
-    'bundle' => 'resource',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 4,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_source_summary',
-    'label' => 'Source',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
-      'weight' => 103,
-    ),
-  );
-
   // Exported field_instance: 'node-resource-field_resource_sources'
   $field_instances['node-resource-field_resource_sources'] = array(
     'bundle' => 'resource',
@@ -1999,47 +1712,6 @@ function crl_resource_feat_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 83,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_status_summary'
-  $field_instances['node-resource-field_resource_status_summary'] = array(
-    'bundle' => 'resource',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 7,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_status_summary',
-    'label' => 'Status summary',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
-      'weight' => 99,
     ),
   );
 
@@ -2086,47 +1758,6 @@ function crl_resource_feat_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 80,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_table_sources'
-  $field_instances['node-resource-field_resource_table_sources'] = array(
-    'bundle' => 'resource',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 3,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_table_sources',
-    'label' => 'Table Sources',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
-      'weight' => 101,
     ),
   );
 
@@ -2665,13 +2296,11 @@ function crl_resource_feat_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Abstract');
   t('Accessibility');
-  t('Activity');
   t('Additional Reviews in Other Sources');
   t('Appendix Notes');
   t('Attachments');
   t('Authentication');
   t('Collection Content');
-  t('Collection Content Taxonomy');
   t('Content Details');
   t('Content scope and completeness');
   t('Contributors');
@@ -2689,7 +2318,6 @@ function crl_resource_feat_field_default_field_instances() {
   t('JISC GUID');
   t('JISC ID');
   t('JISC Import Batch');
-  t('Jisc Details');
   t('Major Languages');
   t('Marc Records');
   t('Metadata');
@@ -2699,11 +2327,8 @@ function crl_resource_feat_field_default_field_instances() {
   t('Platform and user interface');
   t('Post Search Options');
   t('Provider');
-  t('Provider Details');
   t('Provider Notes');
-  t('Resource Glossary');
   t('Resource Types');
-  t('Review Source');
   t('Reviewers');
   t('Search Options');
   t('See');
@@ -2711,16 +2336,13 @@ function crl_resource_feat_field_default_field_instances() {
   t('Select the option that best represents where this entry was sourced from. This selection may affect the way some fields of data are presented to the user.');
   t('Select the provider that this resource should be associated with.<br/><strong class="important">If the provider value does not yet exist in the system please create it before working with this resource entry</strong>.');
   t('Sorting Title');
-  t('Source');
   t('Source status');
   t('Standards Compliance Notes');
-  t('Status summary');
   t('Strengths and Weaknesses');
   t('Subject Areas');
   t('TEMP - Subjects Covered from Review');
   t('TEMP - Topics from Review');
   t('TEMPORARY Sources - Will be refactored');
-  t('Table Sources');
   t('Technical Platform');
   t('Terms');
   t('This value is used for sorting when multiple resources are listed in indices. Remove any articles (such as "the") from the beginning of the title to craft this sorting title.');

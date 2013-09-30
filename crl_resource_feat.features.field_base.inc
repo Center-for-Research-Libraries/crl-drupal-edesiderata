@@ -39,36 +39,6 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'text_with_summary',
   );
 
-  // Exported field_base: 'field_coll_content_tax'
-  $field_bases['field_coll_content_tax'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_coll_content_tax',
-    'foreign keys' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'computed_field',
-    'settings' => array(
-      'code' => '$entity_field[0][\'value\'] = "";',
-      'database' => array(
-        'data_default' => '',
-        'data_index' => 0,
-        'data_length' => 32,
-        'data_not_NULL' => 0,
-        'data_precision' => 10,
-        'data_scale' => 2,
-        'data_size' => 'normal',
-        'data_type' => 'varchar',
-      ),
-      'display_format' => '$display_output = $entity_field_item[\'value\'];',
-      'store' => 0,
-    ),
-    'translatable' => 0,
-    'type' => 'computed',
-  );
-
   // Exported field_base: 'field_content_scope_and_complete'
   $field_bases['field_content_scope_and_complete'] = array(
     'active' => 1,
@@ -227,66 +197,6 @@ function crl_resource_feat_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'entityreference',
-  );
-
-  // Exported field_base: 'field_resource_activity'
-  $field_bases['field_resource_activity'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_resource_activity',
-    'foreign keys' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'computed_field',
-    'settings' => array(
-      'code' => '$entity_field[0][\'value\'] = "";',
-      'database' => array(
-        'data_default' => '',
-        'data_index' => 0,
-        'data_length' => 32,
-        'data_not_NULL' => 0,
-        'data_precision' => 10,
-        'data_scale' => 2,
-        'data_size' => 'normal',
-        'data_type' => 'varchar',
-      ),
-      'display_format' => '$display_output = $entity_field_item[\'value\'];',
-      'store' => 0,
-    ),
-    'translatable' => 0,
-    'type' => 'computed',
-  );
-
-  // Exported field_base: 'field_resource_all_jisc_details'
-  $field_bases['field_resource_all_jisc_details'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_resource_all_jisc_details',
-    'foreign keys' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'computed_field',
-    'settings' => array(
-      'code' => '$entity_field[0][\'value\'] = "";',
-      'database' => array(
-        'data_default' => '',
-        'data_index' => 0,
-        'data_length' => 32,
-        'data_not_NULL' => 0,
-        'data_precision' => 10,
-        'data_scale' => 2,
-        'data_size' => 'normal',
-        'data_type' => 'varchar',
-      ),
-      'display_format' => '$display_output = $entity_field_item[\'value\'];',
-      'store' => 0,
-    ),
-    'translatable' => 0,
-    'type' => 'computed',
   );
 
   // Exported field_base: 'field_resource_analysis_notes'
@@ -501,37 +411,6 @@ function crl_resource_feat_field_default_field_bases() {
     'settings' => array(),
     'translatable' => 0,
     'type' => 'text_long',
-  );
-
-  // Exported field_base: 'field_resource_glossary'
-  $field_bases['field_resource_glossary'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_resource_glossary',
-    'foreign keys' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'computed_field',
-    'settings' => array(
-      'code' => '// Grab first character from the field title_title_for_sort
-$entity_field[0][\'value\'] = strtoupper($entity->field_resource_title_for_sort[\'und\'][0][\'value\'][0]);',
-      'database' => array(
-        'data_default' => '',
-        'data_index' => 0,
-        'data_length' => 1,
-        'data_not_NULL' => 0,
-        'data_precision' => 10,
-        'data_scale' => 2,
-        'data_size' => 'normal',
-        'data_type' => 'varchar',
-      ),
-      'display_format' => '$display_output = $entity_field_item[\'value\'];',
-      'store' => 1,
-    ),
-    'translatable' => 0,
-    'type' => 'computed',
   );
 
   // Exported field_base: 'field_resource_interf_tools_tb'
@@ -961,36 +840,6 @@ $entity_field[0][\'value\'] = strtoupper($entity->field_resource_title_for_sort[
     'type' => 'tablefield',
   );
 
-  // Exported field_base: 'field_resource_provider_details'
-  $field_bases['field_resource_provider_details'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_resource_provider_details',
-    'foreign keys' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'computed_field',
-    'settings' => array(
-      'code' => '$entity_field[0][\'value\'] = "";',
-      'database' => array(
-        'data_default' => '',
-        'data_index' => 0,
-        'data_length' => 32,
-        'data_not_NULL' => 0,
-        'data_precision' => 10,
-        'data_scale' => 2,
-        'data_size' => 'normal',
-        'data_type' => 'varchar',
-      ),
-      'display_format' => '$display_output = $entity_field_item[\'value\'];',
-      'store' => 0,
-    ),
-    'translatable' => 0,
-    'type' => 'computed',
-  );
-
   // Exported field_base: 'field_resource_provider_notes'
   $field_bases['field_resource_provider_notes'] = array(
     'active' => 1,
@@ -1016,36 +865,6 @@ $entity_field[0][\'value\'] = strtoupper($entity->field_resource_title_for_sort[
     'settings' => array(),
     'translatable' => 0,
     'type' => 'text_long',
-  );
-
-  // Exported field_base: 'field_resource_review_source'
-  $field_bases['field_resource_review_source'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_resource_review_source',
-    'foreign keys' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'computed_field',
-    'settings' => array(
-      'code' => '$entity_field[0][\'value\'] = "";',
-      'database' => array(
-        'data_default' => '',
-        'data_index' => 0,
-        'data_length' => 32,
-        'data_not_NULL' => 0,
-        'data_precision' => 10,
-        'data_scale' => 2,
-        'data_size' => 'normal',
-        'data_type' => 'varchar',
-      ),
-      'display_format' => '$display_output = $entity_field_item[\'value\'];',
-      'store' => 0,
-    ),
-    'translatable' => 0,
-    'type' => 'computed',
   );
 
   // Exported field_base: 'field_resource_reviewers'
@@ -1103,36 +922,6 @@ $entity_field[0][\'value\'] = strtoupper($entity->field_resource_title_for_sort[
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_resource_source_summary'
-  $field_bases['field_resource_source_summary'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_resource_source_summary',
-    'foreign keys' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'computed_field',
-    'settings' => array(
-      'code' => '$entity_field[0][\'value\'] = "";',
-      'database' => array(
-        'data_default' => '',
-        'data_index' => 0,
-        'data_length' => 32,
-        'data_not_NULL' => 0,
-        'data_precision' => 10,
-        'data_scale' => 2,
-        'data_size' => 'normal',
-        'data_type' => 'varchar',
-      ),
-      'display_format' => '$display_output = $entity_field_item[\'value\'];',
-      'store' => 0,
-    ),
-    'translatable' => 0,
-    'type' => 'computed',
-  );
-
   // Exported field_base: 'field_resource_sources'
   $field_bases['field_resource_sources'] = array(
     'active' => 1,
@@ -1160,36 +949,6 @@ $entity_field[0][\'value\'] = strtoupper($entity->field_resource_title_for_sort[
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_resource_status_summary'
-  $field_bases['field_resource_status_summary'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_resource_status_summary',
-    'foreign keys' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'computed_field',
-    'settings' => array(
-      'code' => '$entity_field[0][\'value\'] = "";',
-      'database' => array(
-        'data_default' => '',
-        'data_index' => 0,
-        'data_length' => 32,
-        'data_not_NULL' => 0,
-        'data_precision' => 10,
-        'data_scale' => 2,
-        'data_size' => 'normal',
-        'data_type' => 'varchar',
-      ),
-      'display_format' => '$display_output = $entity_field_item[\'value\'];',
-      'store' => 0,
-    ),
-    'translatable' => 0,
-    'type' => 'computed',
-  );
-
   // Exported field_base: 'field_resource_strength_weak'
   $field_bases['field_resource_strength_weak'] = array(
     'active' => 1,
@@ -1215,36 +974,6 @@ $entity_field[0][\'value\'] = strtoupper($entity->field_resource_title_for_sort[
     'settings' => array(),
     'translatable' => 0,
     'type' => 'text_long',
-  );
-
-  // Exported field_base: 'field_resource_table_sources'
-  $field_bases['field_resource_table_sources'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_resource_table_sources',
-    'foreign keys' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'computed_field',
-    'settings' => array(
-      'code' => '$entity_field[0][\'value\'] = "";',
-      'database' => array(
-        'data_default' => '',
-        'data_index' => 0,
-        'data_length' => 32,
-        'data_not_NULL' => 0,
-        'data_precision' => 10,
-        'data_scale' => 2,
-        'data_size' => 'normal',
-        'data_type' => 'varchar',
-      ),
-      'display_format' => '$display_output = $entity_field_item[\'value\'];',
-      'store' => 0,
-    ),
-    'translatable' => 0,
-    'type' => 'computed',
   );
 
   // Exported field_base: 'field_resource_tech_platform_tb'
