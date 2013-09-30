@@ -292,47 +292,6 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_group_notice'
-  $field_instances['node-activity-field_activity_group_notice'] = array(
-    'bundle' => 'activity',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 10,
-      ),
-      'embedded' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 8,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_activity_group_notice',
-    'label' => 'Group Notice',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
-      'weight' => 10,
-    ),
-  );
-
   // Exported field_instance: 'node-activity-field_activity_grouping'
   $field_instances['node-activity-field_activity_grouping'] = array(
     'bundle' => 'activity',
@@ -818,7 +777,6 @@ function crl_activity_feat_field_default_field_instances() {
   t('Attachments');
   t('CRL Status');
   t('General Activity Notes');
-  t('Group Notice');
   t('Grouping');
   t('How to Get Started');
   t('If this entry has relationships with other entries, add links to those entries here (one or more as needed).');
