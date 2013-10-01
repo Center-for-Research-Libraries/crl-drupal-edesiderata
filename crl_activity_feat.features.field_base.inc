@@ -204,10 +204,11 @@ function crl_activity_feat_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         0 => array(
-          'vocabulary' => 'activity_grouping',
+          'vocabulary' => 'grouping',
           'parent' => 0,
         ),
       ),
+      'options_list_callback' => '_taxonomy_access_term_options',
     ),
     'translatable' => 0,
     'type' => 'taxonomy_term_reference',

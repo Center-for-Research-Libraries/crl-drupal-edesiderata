@@ -301,7 +301,7 @@ function crl_activity_feat_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => 'Select which CRL group(s) this activity/offer applies to.',
+    'description' => 'Select which CRL group this activity/offer applies to.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -791,7 +791,7 @@ function crl_activity_feat_field_default_field_instances() {
   t('See');
   t('See Also');
   t('Select the status values that <em>currently</em> apply. Note that any "Offer Information" or "Trial Information" details entered below will not be displayed to users unless the respective status is enabled here.');
-  t('Select which CRL group(s) this activity/offer applies to.');
+  t('Select which CRL group this activity/offer applies to.');
   t('Trial Duration');
   t('Trial URL');
   t('Typically this value will be auto-filled for you.');
