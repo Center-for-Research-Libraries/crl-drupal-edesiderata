@@ -49,6 +49,16 @@ function crl_resource_field_extra_fields() {
         'description' => t('Source information specific to a CRL review.'),
         'weight' => 907,
       ),
+      'pseudo_field_resource_added' => array(
+        'label' => t('Resource Added Date'),
+        'description' => t('The date the resource was added.'),
+        'weight' => 908,
+      ),
+      'pseudo_field_resource_updated' => array(
+        'label' => t('Resource Updated Date'),
+        'description' => t('The date the resource was updated.'),
+        'weight' => 909,
+      ),
     ),
   );
   return $extra;
@@ -94,7 +104,7 @@ function crl_resource_theme() {
   $hooks = array(
     // Theme hook for a generic pseudo field.
     'crl_resource_pseudo_field' => array(
-      'variables' => array('output' => '', 'label' => ''),
+      'variables' => array('output' => '', 'label' => '', 'inline' => FALSE),
     ),
     // Theme hook to generate a resource status summary field (used at top of
     // the activity tab within a resource).

@@ -17,11 +17,17 @@
  * @ingroup themeable
  */
 function theme_crl_resource_pseudo_field($vars) {
-  $output = '<div class="field field-label-above">';
-  if (!empty($vars['label'])) {
-    $output .= '<div class="field-label">' . $vars['label'] . '</div>';
+  $class = 'field-label-above';
+  $separator = '';
+  if (!empty($vars['inline'])) {
+    $class = 'field-label-inline';
+    $separator = ':&nbsp;';
   }
-  $output .= $vars['output'];
+  $output = '<div class="field ' . $class . '">';
+  if (!empty($vars['label'])) {
+    $output .= '<div class="field-label">' . $vars['label'] . $separator . '</div>';
+  }
+  $output .= '<div class="field-item even">' . $vars['output'] . '</div>';
   $output .= '</div>';
   return $output;
 }
@@ -161,8 +167,8 @@ function theme_crl_resource_teaser(&$vars) {
     $markup .= $vars['summary'];
     $markup .= '<div class="teaser-details">';
     $markup .= t('Provider') . ': ' . check_plain($vars['provider']);
-    $markup .= '<br/>' . t('Updated') . ': ' . $vars['updated'];
     $markup .= '<br/>' . t('Added') . ': ' . $vars['added'];
+    $markup .= '<br/>' . t('Updated') . ': ' . $vars['updated'];
     $markup .= '</div>';    
     if (!empty($vars['status'])) {
       $markup .= '<div class="view-teaser-status-icons">';

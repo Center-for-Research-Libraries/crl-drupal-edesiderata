@@ -23,6 +23,8 @@ class CrlResourceDisplayElements {
   public $pseudo_field_resource_source_summary;
   public $pseudo_field_resource_table_sources;
   public $pseudo_field_resource_review_source;
+  public $pseudo_field_resource_added;
+  public $pseudo_field_resource_updated;
   
   /**
    * Constructor
@@ -149,7 +151,6 @@ class CrlResourceDisplayElements {
       }
       else {
         $restricted_message = t('The complete offer and activity details for this resource are only available to CRL members.');
-        //$built = array('#markup' => $restricted_message);
         $built = array('#theme' => 'crl_resource_pseudo_field', '#output' => $restricted_message);
       }
     }
@@ -202,6 +203,22 @@ class CrlResourceDisplayElements {
       $built = array('#theme' => 'crl_resource_pseudo_field', '#output' => t('Sources for this review include information publicly posted or obtained directly from the publisher, data collected by CRL staff and specialists at CRL libraries, members, and examination of the digital collection when possible. Other sources are noted where cited. <em>CRL continues to gather additional information on this resource and solicit critical assessment</em>.'));
     }
     $this->pseudo_field_resource_review_source = $built;
+  }
+  
+  /**
+   * Build custom field: pseudo_field_resource_added
+   */
+  protected function build_pseudo_field_resource_added() {
+    $built = array('#theme' => 'crl_resource_pseudo_field', '#label' => t('Added'), '#output' => format_date($this->entity_wrapper->created->value(), 'long'), '#inline' => TRUE);
+    $this->pseudo_field_resource_added = $built;
+  }
+  
+  /**
+   * Build custom field: pseudo_field_resource_updated
+   */
+  protected function build_pseudo_field_resource_updated() {
+    $built = array('#theme' => 'crl_resource_pseudo_field', '#label' => t('Updated'), '#output' => format_date($this->entity_wrapper->changed->value(), 'long'), '#inline' => TRUE);
+    $this->pseudo_field_resource_updated = $built;
   }
   
   /**
