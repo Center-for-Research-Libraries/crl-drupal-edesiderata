@@ -197,9 +197,9 @@ function crl_resource_feat_views_default_views() {
   $view = new view();
   $view->name = 'resource_votes_admin';
   $view->description = '';
-  $view->tag = 'default';
+  $view->tag = 'admin';
   $view->base_table = 'node';
-  $view->human_name = 'Resource Votes Admin';
+  $view->human_name = 'Resource Votes Admin (Aggregate)';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -220,7 +220,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '100';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '50';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['quantity'] = '9';
@@ -402,7 +402,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['field_activity_crl_status_value']['relationship'] = 'reverse_field_resource_reference_node';
   $handler->display->display_options['filters']['field_activity_crl_status_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_activity_crl_status_value']['expose']['operator_id'] = 'field_activity_crl_status_value_op';
-  $handler->display->display_options['filters']['field_activity_crl_status_value']['expose']['label'] = 'CRL Status';
+  $handler->display->display_options['filters']['field_activity_crl_status_value']['expose']['label'] = 'Filter by CRL status';
   $handler->display->display_options['filters']['field_activity_crl_status_value']['expose']['operator'] = 'field_activity_crl_status_value_op';
   $handler->display->display_options['filters']['field_activity_crl_status_value']['expose']['identifier'] = 'field_activity_crl_status_value';
   $handler->display->display_options['filters']['field_activity_crl_status_value']['expose']['remember_roles'] = array(
@@ -431,12 +431,15 @@ function crl_resource_feat_views_default_views() {
 
   /* Display: Page - Full */
   $handler = $view->new_display('page', 'Page - Full', 'page');
-  $handler->display->display_options['path'] = 'admin/resource-votes-admin';
-  $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Votes Admin';
+  $handler->display->display_options['path'] = 'admin/votes/aggregate';
+  $handler->display->display_options['menu']['type'] = 'default tab';
+  $handler->display->display_options['menu']['title'] = 'Resource Votes Aggregate';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $handler->display->display_options['tab_options']['type'] = 'normal';
+  $handler->display->display_options['tab_options']['title'] = 'Votes Administration';
+  $handler->display->display_options['tab_options']['weight'] = '0';
 
   /* Display: Block - Summary */
   $handler = $view->new_display('block', 'Block - Summary', 'block_1');
@@ -552,6 +555,343 @@ function crl_resource_feat_views_default_views() {
     'resource' => 'resource',
   );
   $export['resource_votes_admin'] = $view;
+
+  $view = new view();
+  $view->name = 'resource_votes_admin_details_';
+  $view->description = '';
+  $view->tag = 'admin';
+  $view->base_table = 'node';
+  $view->human_name = 'Resource Votes Admin (Details)';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Resource Votes Details';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    3 => '3',
+    12 => '12',
+    11 => '11',
+    4 => '4',
+    5 => '5',
+  );
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '25';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'timestamp' => 'timestamp',
+    'name' => 'name',
+    'field_institution' => 'field_institution',
+    'rid' => 'rid',
+    'title' => 'title',
+    'tag' => 'tag',
+    'value' => 'value',
+    'value_type' => 'value_type',
+  );
+  $handler->display->display_options['style_options']['default'] = 'timestamp';
+  $handler->display->display_options['style_options']['info'] = array(
+    'timestamp' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_institution' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'rid' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'tag' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'value' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'value_type' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  /* Relationship: Content: Votes */
+  $handler->display->display_options['relationships']['votingapi_vote']['id'] = 'votingapi_vote';
+  $handler->display->display_options['relationships']['votingapi_vote']['table'] = 'node';
+  $handler->display->display_options['relationships']['votingapi_vote']['field'] = 'votingapi_vote';
+  $handler->display->display_options['relationships']['votingapi_vote']['votingapi'] = array(
+    'value_type' => '',
+    'tag' => '',
+  );
+  $handler->display->display_options['relationships']['votingapi_vote']['current_user'] = 0;
+  /* Relationship: Votes: User */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'votingapi_vote';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['relationship'] = 'votingapi_vote';
+  /* Field: Votes: Timestamp */
+  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['table'] = 'votingapi_vote';
+  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['relationship'] = 'votingapi_vote';
+  $handler->display->display_options['fields']['timestamp']['label'] = 'Vote Timestamp';
+  $handler->display->display_options['fields']['timestamp']['date_format'] = 'short';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = 'Voter';
+  /* Field: User: Institution */
+  $handler->display->display_options['fields']['field_institution']['id'] = 'field_institution';
+  $handler->display->display_options['fields']['field_institution']['table'] = 'field_data_field_institution';
+  $handler->display->display_options['fields']['field_institution']['field'] = 'field_institution';
+  $handler->display->display_options['fields']['field_institution']['relationship'] = 'uid';
+  /* Field: User: Roles */
+  $handler->display->display_options['fields']['rid']['id'] = 'rid';
+  $handler->display->display_options['fields']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['fields']['rid']['field'] = 'rid';
+  $handler->display->display_options['fields']['rid']['relationship'] = 'uid';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'Resource Voted On';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Votes: Tag */
+  $handler->display->display_options['fields']['tag']['id'] = 'tag';
+  $handler->display->display_options['fields']['tag']['table'] = 'votingapi_vote';
+  $handler->display->display_options['fields']['tag']['field'] = 'tag';
+  $handler->display->display_options['fields']['tag']['relationship'] = 'votingapi_vote';
+  $handler->display->display_options['fields']['tag']['label'] = 'Vote Type';
+  /* Field: Votes: Value type */
+  $handler->display->display_options['fields']['value_type']['id'] = 'value_type';
+  $handler->display->display_options['fields']['value_type']['table'] = 'votingapi_vote';
+  $handler->display->display_options['fields']['value_type']['field'] = 'value_type';
+  $handler->display->display_options['fields']['value_type']['relationship'] = 'votingapi_vote';
+  /* Field: Votes: Value */
+  $handler->display->display_options['fields']['value']['id'] = 'value';
+  $handler->display->display_options['fields']['value']['table'] = 'votingapi_vote';
+  $handler->display->display_options['fields']['value']['field'] = 'value';
+  $handler->display->display_options['fields']['value']['relationship'] = 'votingapi_vote';
+  $handler->display->display_options['fields']['value']['precision'] = '0';
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'resource' => 'resource',
+  );
+  /* Filter criterion: Votes: Tag */
+  $handler->display->display_options['filters']['tag']['id'] = 'tag';
+  $handler->display->display_options['filters']['tag']['table'] = 'votingapi_vote';
+  $handler->display->display_options['filters']['tag']['field'] = 'tag';
+  $handler->display->display_options['filters']['tag']['relationship'] = 'votingapi_vote';
+  $handler->display->display_options['filters']['tag']['operator'] = 'not empty';
+  /* Filter criterion: Votes: Tag */
+  $handler->display->display_options['filters']['tag_1']['id'] = 'tag_1';
+  $handler->display->display_options['filters']['tag_1']['table'] = 'votingapi_vote';
+  $handler->display->display_options['filters']['tag_1']['field'] = 'tag';
+  $handler->display->display_options['filters']['tag_1']['relationship'] = 'votingapi_vote';
+  $handler->display->display_options['filters']['tag_1']['operator'] = 'contains';
+  $handler->display->display_options['filters']['tag_1']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['tag_1']['expose']['operator_id'] = 'tag_1_op';
+  $handler->display->display_options['filters']['tag_1']['expose']['label'] = 'Filter by vote type';
+  $handler->display->display_options['filters']['tag_1']['expose']['operator'] = 'tag_1_op';
+  $handler->display->display_options['filters']['tag_1']['expose']['identifier'] = 'tag_1';
+  $handler->display->display_options['filters']['tag_1']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    5 => 0,
+    6 => 0,
+    7 => 0,
+    8 => 0,
+    9 => 0,
+    10 => 0,
+    11 => 0,
+    12 => 0,
+    13 => 0,
+    14 => 0,
+    15 => 0,
+    16 => 0,
+    17 => 0,
+    18 => 0,
+    19 => 0,
+    20 => 0,
+    21 => 0,
+  );
+
+  /* Display: Page */
+  $handler = $view->new_display('page', 'Page', 'page_1');
+  $handler->display->display_options['path'] = 'admin/votes/details';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Resource Votes Details';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $export['resource_votes_admin_details_'] = $view;
+
+  $view = new view();
+  $view->name = 'reviews_export';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'node';
+  $view->human_name = 'Reviews Export';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['disable_sql_rewrite'] = TRUE;
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid_2']['id'] = 'nid_2';
+  $handler->display->display_options['fields']['nid_2']['table'] = 'node';
+  $handler->display->display_options['fields']['nid_2']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid_2']['label'] = 'guid';
+  $handler->display->display_options['fields']['nid_2']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['nid_2']['alter']['text'] = 'edesiderata-[nid_2]';
+  $handler->display->display_options['fields']['nid_2']['element_label_colon'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'title';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid_1']['id'] = 'nid_1';
+  $handler->display->display_options['fields']['nid_1']['table'] = 'node';
+  $handler->display->display_options['fields']['nid_1']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid_1']['label'] = 'nid';
+  $handler->display->display_options['fields']['nid_1']['element_label_colon'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = 'url';
+  $handler->display->display_options['fields']['nid']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['nid']['alter']['text'] = 'edesiderata-rj.crl.edu/node/[nid]';
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Content: Provider */
+  $handler->display->display_options['fields']['field_provider']['id'] = 'field_provider';
+  $handler->display->display_options['fields']['field_provider']['table'] = 'field_data_field_provider';
+  $handler->display->display_options['fields']['field_provider']['field'] = 'field_provider';
+  $handler->display->display_options['fields']['field_provider']['label'] = 'provider';
+  $handler->display->display_options['fields']['field_provider']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_provider']['settings'] = array(
+    'link' => 0,
+  );
+  /* Field: Content: Post date */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'node';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['label'] = 'post-date';
+  $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['created']['date_format'] = 'custom';
+  $handler->display->display_options['fields']['created']['custom_date_format'] = 'U';
+  /* Field: Content: Published */
+  $handler->display->display_options['fields']['status']['id'] = 'status';
+  $handler->display->display_options['fields']['status']['table'] = 'node';
+  $handler->display->display_options['fields']['status']['field'] = 'status';
+  $handler->display->display_options['fields']['status']['label'] = 'published';
+  $handler->display->display_options['fields']['status']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['status']['type'] = 'boolean';
+  $handler->display->display_options['fields']['status']['not'] = 0;
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'resource' => 'resource',
+  );
+  /* Filter criterion: Content: Source status (field_resource_source_status) */
+  $handler->display->display_options['filters']['field_resource_source_status_value']['id'] = 'field_resource_source_status_value';
+  $handler->display->display_options['filters']['field_resource_source_status_value']['table'] = 'field_data_field_resource_source_status';
+  $handler->display->display_options['filters']['field_resource_source_status_value']['field'] = 'field_resource_source_status_value';
+  $handler->display->display_options['filters']['field_resource_source_status_value']['value'] = array(
+    'crl_review' => 'crl_review',
+  );
+
+  /* Display: Data export */
+  $handler = $view->new_display('views_data_export', 'Data export', 'views_data_export_1');
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'views_data_export_xml';
+  $handler->display->display_options['style_options']['provide_file'] = 0;
+  $handler->display->display_options['style_options']['parent_sort'] = 0;
+  $handler->display->display_options['style_options']['transform'] = 1;
+  $handler->display->display_options['path'] = 'reviews/export';
+  $export['reviews_export'] = $view;
 
   return $export;
 }

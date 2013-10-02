@@ -132,7 +132,7 @@ function crl_resource_feat_strongarm() {
         ),
         'pseudo_field_resource_source_summary' => array(
           'default' => array(
-            'weight' => '12',
+            'weight' => '14',
             'visible' => TRUE,
           ),
         ),
@@ -145,6 +145,18 @@ function crl_resource_feat_strongarm() {
         'pseudo_field_resource_review_source' => array(
           'default' => array(
             'weight' => '93',
+            'visible' => TRUE,
+          ),
+        ),
+        'pseudo_field_resource_added' => array(
+          'default' => array(
+            'weight' => '10',
+            'visible' => TRUE,
+          ),
+        ),
+        'pseudo_field_resource_updated' => array(
+          'default' => array(
+            'weight' => '11',
             'visible' => TRUE,
           ),
         ),

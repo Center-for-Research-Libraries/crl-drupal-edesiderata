@@ -488,6 +488,8 @@ function crl_resource_feat_field_group_info() {
       4 => 'field_see_also',
       5 => 'field_see',
       6 => 'pseudo_field_resource_source_summary',
+      7 => 'pseudo_field_resource_added',
+      8 => 'pseudo_field_resource_updated',
     ),
     'format_type' => 'htab',
     'format_settings' => array(

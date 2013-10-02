@@ -2030,7 +2030,7 @@ function crl_resource_feat_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_plain',
-        'weight' => 11,
+        'weight' => 13,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2075,7 +2075,7 @@ function crl_resource_feat_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 14,
+        'weight' => 15,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2124,7 +2124,7 @@ function crl_resource_feat_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 15,
+        'weight' => 16,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2171,7 +2171,7 @@ function crl_resource_feat_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_plain',
-        'weight' => 10,
+        'weight' => 12,
       ),
       'embedded' => array(
         'label' => 'above',
