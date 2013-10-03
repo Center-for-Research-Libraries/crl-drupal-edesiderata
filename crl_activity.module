@@ -122,9 +122,9 @@ function crl_activity_activity_node_form_validate(&$form, &$form_state) {
   }
   // Handle case where an offer is set while another status is set that is
   // mutually exclusive.
-  $dissallow_with_offer = array_intersect($set_status, array('crl_desiderata', 'license_under_consideration'));
+  $dissallow_with_offer = array_intersect($set_status, array('crl_desiderata', 'license_under_consideration', 'past_license_offer'));
   if (in_array('license_available', $set_status) && !empty($dissallow_with_offer)) {
-    form_set_error('field_activity_crl_status', t('"@license_available" cannot be set while "@crl_desiderata" or "@license_under_consideration" are also set.', $oplist));
+    form_set_error('field_activity_crl_status', t('"@license_available" cannot be set while "@crl_desiderata" or "@license_under_consideration" or "@past_license_offer" are also set.', $oplist));
   }
   // Handle case where "License renewal available" is set without "License
   // available"
