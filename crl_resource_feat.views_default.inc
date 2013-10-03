@@ -206,7 +206,7 @@ function crl_resource_feat_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Resource Votes and Activity Summary';
+  $handler->display->display_options['title'] = 'Resource Votes Summary';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
@@ -284,6 +284,10 @@ function crl_resource_feat_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
   /* Relationship: Entity Reference: Referencing entity */
   $handler->display->display_options['relationships']['reverse_field_resource_reference_node']['id'] = 'reverse_field_resource_reference_node';
   $handler->display->display_options['relationships']['reverse_field_resource_reference_node']['table'] = 'node';
@@ -433,7 +437,7 @@ function crl_resource_feat_views_default_views() {
   $handler = $view->new_display('page', 'Page - Full', 'page');
   $handler->display->display_options['path'] = 'admin/votes/aggregate';
   $handler->display->display_options['menu']['type'] = 'default tab';
-  $handler->display->display_options['menu']['title'] = 'Resource Votes Aggregate';
+  $handler->display->display_options['menu']['title'] = 'Votes Aggregate';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
@@ -444,7 +448,6 @@ function crl_resource_feat_views_default_views() {
   /* Display: Block - Summary */
   $handler = $view->new_display('block', 'Block - Summary', 'block_1');
   $handler->display->display_options['defaults']['use_more'] = FALSE;
-  $handler->display->display_options['use_more'] = TRUE;
   $handler->display->display_options['defaults']['use_more_always'] = FALSE;
   $handler->display->display_options['defaults']['use_more_always'] = FALSE;
   $handler->display->display_options['use_more_always'] = FALSE;
@@ -454,6 +457,13 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '10';
   $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
+  $handler->display->display_options['footer']['area']['content'] = '<p align=right><strong><a href="/admin/votes/aggregate">Votes Aggregate</a>  |  <a href="/admin/votes/details">Votes Details</a></strong></p>';
+  $handler->display->display_options['footer']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Vote results - Interest */
   $handler->display->display_options['relationships']['votingapi_cache']['id'] = 'votingapi_cache';
@@ -777,9 +787,14 @@ function crl_resource_feat_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Result summary */
+  $handler->display->display_options['header']['result']['id'] = 'result';
+  $handler->display->display_options['header']['result']['table'] = 'views';
+  $handler->display->display_options['header']['result']['field'] = 'result';
   $handler->display->display_options['path'] = 'admin/votes/details';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Resource Votes Details';
+  $handler->display->display_options['menu']['title'] = 'Votes Details';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
