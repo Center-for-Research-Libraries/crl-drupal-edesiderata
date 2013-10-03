@@ -145,6 +145,9 @@ class CrlResourceDisplayElements {
       // Make sure we can view the activity node.
       if (entity_access('view', 'node', $activity_entity)) {
         $activity_entity_build = node_view($activity_entity, 'embedded');
+        // We are embedding the whole activity entry as a field, so we should
+        // mark it as "viewed" in the history.
+        node_tag_new($activity_entity);
         // Drop the title from this view.
         $activity_entity_build['#node']->title = '';
         $built = $activity_entity_build;
