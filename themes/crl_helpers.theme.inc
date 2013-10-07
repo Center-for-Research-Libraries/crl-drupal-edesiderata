@@ -67,7 +67,7 @@ function theme_crl_helpers_facet_breadcrumb($variables) {
 */
 function theme_crl_helpers_editor_tools($variables) {
   $output = '';
-  $output .= '<div class="editor-tools"><strong>' . l(t('+ Add Content'), 'node/add') . '<br/>' . l(t('Editor & Admin Dashboard'), 'admin/dashboard') . '</strong></div>';
+  $output .= '<div class="editor-tools"><strong>' . l(t('+ Add Resource'), 'node/add/resource') . '&nbsp;&nbsp;&nbsp;' . l(t('+ Add Provider'), 'node/add/provider') . '<br/>' . l(t('Editor & Admin Dashboard'), 'admin/dashboard') . '</strong></div>';
   $output .= '<p>This page\'s internal path and permalink is:<br /><strong>';
   if (arg(0) == 'node') {
     $output .='<span style="color:green;">/node/' . arg(1) . '</span>'; 
