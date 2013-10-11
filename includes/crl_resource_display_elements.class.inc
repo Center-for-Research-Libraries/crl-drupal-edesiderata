@@ -60,7 +60,7 @@ class CrlResourceDisplayElements {
     if (!empty($backref_entities)) { // Activity data exists
       // Just get the first backref entity in the array (for now there should
       // just be one).
-      $activity_entity = node_load(reset($backref_entities));
+      $activity_entity = reset($backref_entities);
       if (entity_access('update', 'node', $activity_entity)) {
         $edit_link = url('node/' . $activity_entity->nid . '/edit', array('query' => array('activity_title' => rawurlencode('CRL Activity: ' . check_plain($this->entity->title)))));
       }
@@ -141,7 +141,7 @@ class CrlResourceDisplayElements {
     if (!empty($backref_entities)) { // Activity data exists
       // Just get the first backref entity in the array (for now there should
       // just be one).
-      $activity_entity = node_load(reset($backref_entities));
+      $activity_entity = reset($backref_entities);
       // Make sure we can view the activity node.
       if (entity_access('view', 'node', $activity_entity)) {
         $activity_entity_build = node_view($activity_entity, 'embedded');

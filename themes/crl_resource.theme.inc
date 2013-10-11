@@ -113,6 +113,7 @@ function theme_crl_resource_summary($vars) {
     }
     $highlights['two'][] = '<span class="big-num">' . $vars['comment_count'] . '</span> Comments';
     $highlights['two'][] = '<span class="big-num">' . $vars['vote_average'] . '</span> Average Rating';
+    $highlights['two'][] = '<span class="big-num">' . $vars['interest_count'] . '</span> Interest Count';
 
     foreach($highlights as $row_key => $row) {
       if ($row_key == 'one') {

@@ -117,7 +117,7 @@ function crl_resource_theme() {
     ),
     // Theme hook to generate a full resource summary block.
     'crl_resource_summary' => array(
-      'variables' => array('status' => array(), 'status_options' => array(), 'comment_count' => 0, 'vote_average' => 0),
+      'variables' => array('status' => array(), 'status_options' => array(), 'comment_count' => 0, 'vote_average' => 0, 'interest_count' => 0),
     ),
     // Theme hook to generate a "back to index" link.
     'crl_resource_back_to_index' => array(
@@ -137,92 +137,6 @@ function crl_resource_theme() {
 
 
 /**
- * Implements hook_block_info().
- */
-function crl_resource_block_info() {
-  // The resource summary is a block at the top of each resoruce.
-  $blocks['crl_resource_summary'] = array(
-    'info' => t('CRL Resource Summary'), 
-    'cache' => DRUPAL_NO_CACHE,
-  );
-  // The "back to index" block shows a caclulated back link for navigation.
-  $blocks['crl_resource_back_to_index'] = array(
-    'info' => t('CRL Back to Index'), 
-    'cache' => DRUPAL_NO_CACHE,
-  );
-  $blocks['crl_resource_common_input'] = array(
-    'info' => t('CRL Common Resource Vote and Rate Input'), 
-    'cache' => DRUPAL_NO_CACHE,
-  );
-  return $blocks;
-}
-
-
-/**
- * Implements hook_block_view().
- */
-function crl_resource_block_view($delta = '') {
-  $block = array();
-  switch ($delta) {
-    // Build the resoruce summary block.
-    case 'crl_resource_summary':
-      $nid = arg(1);
-      $status = array();
-      $status_options = crl_resource_activity_status_property_oplist();
-      $comment_count = 0;
-      $vote_average = 0;
-      $entities = entity_load('node', array($nid));
-      if (!empty($entities[$nid])) {
-        $entity = $entities[$nid];
-        $entity_wrapper = entity_metadata_wrapper('node', $entity);
-        $status = isset($entity_wrapper->crl_resource_status_backref) ? $entity_wrapper->crl_resource_status_backref->value() : array();
-        $vote_average = crl_resource_get_vote_average($entity);
-        if (isset($entity->comment_count)) {
-          $comment_count = $entity->comment_count;
-        }
-      }
-      $block['subject'] = '';
-      $block['content'] = array(
-        'resource_summary' => array(
-          '#theme' => 'crl_resource_summary',
-          '#status' => $status,
-          '#status_options' => $status_options,
-          '#comment_count' => $comment_count,
-          '#vote_average' => $vote_average,
-        ),
-      );
-      break;
-    // Build the back to index block.
-    case 'crl_resource_back_to_index':
-      $browser_back = FALSE;
-      $url = url('resources/main');
-      drupal_add_js(drupal_get_path('module', 'crl_resource') .'/js/crl_resource.js', 'file');
-      $block['subject'] = '';
-      $block['content'] = array(
-        'back_link' => array(
-          '#theme' => 'crl_resource_back_to_index',
-          '#url' => $url,
-          '#browser_back' => $browser_back,
-        ),
-      );
-      break;
-    // Build the common resource input/interest block
-    case 'crl_resource_common_input':
-      global $user;
-      $nid = arg(1);
-      $node = node_load($nid);
-      // Make sure block should be visible
-      if (isset($node->type) && $node->type == 'resource' && $user->uid) {
-        $block['subject'] = t('Interested in this Resource?');
-        $block['content'] = array('#markup' => rate_generate_widget(1, 'node', $nid));
-      }
-      break;
-  }
-  return $block;
-}
-
-
-/**
  * Implements hook_views_api().
  */
 function crl_resource_views_api() {
@@ -238,57 +152,86 @@ function crl_resource_views_api() {
 /**
  * Implements hook_entity_property_info_alter().
  * 
- * This is where we define our status values through backrefrences (activites
- * that point to resources).
+ * Define some special resource properties (many calculated via backreferences
+ * between activity and resource entries). Note that most of these are just
+ * meant to be used when displaying a single entity or for use in a Search API
+ * index. None of these have a schema so they aren't meant for display with
+ * SQL-based views.
  */
 function crl_resource_entity_property_info_alter(&$info) {
   $properties = &$info['node']['properties'];
-  // Add a new entity property that will be used to fetch the general details
-  // for all entities that point to a resource entity through a
+  // Fetch the ids of all entities that point to a resource through a
   // field_resource_reference field.
   $properties['crl_resource_backref'] = array(
     'label' => t("CRL Resource Backreference"),
-    'type' => 'list<text>',
-    'description' => t("Gets entities through resource backreference."),
-    'getter callback' => 'crl_resource_backref_properties_get',
+    'type' => 'list<node>',
+    'info' => field_info_field('field_resource_reference'),
+    'description' => t("Backward reference to resource via field_resource_reference."),
+    'getter callback' => 'crl_resource_get_backref',
   );
-  // Add a new entity property that will be used to define the formal CRL status
-  // associated with any given resource (based on activity values linked to a
-  // resource entity through a field_resource_reference field.
+  // Define the formal CRL status associated with any given resource based on
+  // the aggregated status of any backreferenced activity.
   $properties['crl_resource_status_backref'] = array(
     'label' => t("CRL Resource Status Backreference"),
     'type' => 'list<text>',
     'description' => t("Gets CRL resource status through backreference."),
-    'getter callback' => 'crl_resource_backref_properties_get',
+    'getter callback' => 'crl_resource_get_status_backref',
     'options list' => 'crl_resource_activity_status_property_oplist',
   );
-  // Add a new entity property that captures the glossary value for a resource.
+  // See if an alert is active on a resource or any of its backreferenced
+  // activity.
+  $properties['crl_resource_alert'] = array(
+    'label' => t("CRL Resource Alert"),
+    'type' => 'boolean',
+    'description' => t("See if a resource has an alert associated with it (through either the resource itself or backreferenced activity)."),
+    'getter callback' => 'crl_resource_get_alert',
+  );
+  // See if an alert is active on a resource or any of its backreferenced
+  // activity.
+  $properties['crl_resource_expiration_countdown'] = array(
+    'label' => t("CRL Resource Expiration Countdown"),
+    'type' => 'integet',
+    'description' => t("Get the offer days remaining for a resource that has backreferenced activity with soon-to-be expiration."),
+    'getter callback' => 'crl_resource_get_expiration_countdown',
+  );
+  // Get the vote average. NOTE: requires extra queries (does not just use
+  // loaded entity data).
+  $properties['crl_resource_vote_average'] = array(
+    'label' => t("CRL Resource Vote Average"),
+    'type' => 'decimal',
+    'description' => t("Get the average of votes across all fivestar dimentions that apply to resoruces."),
+    'getter callback' => 'crl_resource_get_vote_average',
+  );
+  // Get the interest count. NOTE: requires extra queries (does not just use
+  // loaded entity data).
+  $properties['crl_resource_interest_count'] = array(
+    'label' => t("CRL Resource Interest Count"),
+    'type' => 'integer',
+    'description' => t("Get the aggregate interest count for a resoruce."),
+    'getter callback' => 'crl_resource_get_interest_count',
+  );
+  // Captures the glossary value for a resource. This is incldued as a property
+  // so that it can be indexed and used as a facet.
   $properties['crl_resource_glossary_value'] = array(
     'label' => t("CRL Resource Glossary Value"),
     'type' => 'text',
     'description' => t("Gets CRL resource glossary value based on the first letter of the sort name."),
-    'getter callback' => 'crl_resource_glossary_value_get',
+    'getter callback' => 'crl_resource_get_glossary_value',
   );
 }
 
 
 /**
- * Properties getter callback: calculate backreferenced properties.
- * 
- * Note that this getter callback is called from multiple contexts. It is called
- * upon the display of a resource to dynamically calculate resource data based
- * on related activity (when loading/display pages). It is also called via the
- * Search API when content is indexed in order to dynamically calculate resource
- * status data that will be indexed (and used in facets).
+ * Properties getter callback: calculate backreferences.
  * 
  * @see crl_resource_entity_property_info_alter().
  */
-function crl_resource_backref_properties_get($entity, array $options, $name, $type, $info) {
+function crl_resource_get_backref($entity, array $options, $name, $type, $info) {
   // The logic below may fail in strange ways if we are not dealing with a node.
   if (empty($entity->nid)) {
     return FALSE;
   }
-  // First calculate the backreferences. We store these in a static cache.
+  // Calculate the backreferences. We store these in a static cache.
   static $backrefs = array();
   if (!isset($backrefs[$entity->nid])) {
     $backrefs[$entity->nid] = array();
@@ -313,49 +256,202 @@ function crl_resource_backref_properties_get($entity, array $options, $name, $ty
       $backrefs[$entity->nid] = array_keys($result['node']);
     }
   }
-  // Once we have the backreference details we can continue with
-  // property-specific logic that uses this info.
-  switch ($info['name']) {    
-    // A request for the basic crl_resource_backref propery should just return
-    // the raw backrefrenced nids.
-    case 'crl_resource_backref':
-      return $backrefs[$entity->nid];      
-    // A request for the crl_resource_status_backref property requires
-    // additional calculation to get the status specifics (based on the
-    // referencing activity status details). Use static cache here also.
-    case 'crl_resource_status_backref':
-      static $resource_status = array();
-      if (!isset($resource_status[$entity->nid])) {
-        $backref_nodes = node_load_multiple($backrefs[$entity->nid]);
-        $computed_status = array();
-        if (!empty($backref_nodes)) {
-          foreach ($backref_nodes as $nid => $node) {
-            if ($node->type = 'activity')  {
-              // Get the raw status values set on the activity entity and
-              // aggregate them directly into our computed result.
-              $entity_wrapper_activity = entity_metadata_wrapper('node', $node);
-              $statuses = isset($entity_wrapper_activity->field_activity_crl_status) ? $entity_wrapper_activity->field_activity_crl_status->value() : array();
-              if (!empty($statuses)) {
-                foreach ($statuses as $status) {
-                  if (!in_array($status, $computed_status)) {
-                    $computed_status[] = $status;
-                  }
-                }
-              }
-            }
-          }
+  return $backrefs[$entity->nid];
+}
+
+
+/**
+ * Properties getter callback: calculate aggregate backreferenced status.
+ * 
+ * @see crl_resource_entity_property_info_alter().
+ */
+function crl_resource_get_status_backref($entity, array $options, $name, $type, $info) {
+  $wrappers = crl_resource_get_wrappers($entity);
+  $r_entity_wrapper = $wrappers['r_entity_wrapper'];
+  $a_entity_wrappers = $wrappers['a_entity_wrappers'];
+  $computed_status = array();
+  foreach ($a_entity_wrappers as $a_entity_wrapper) {
+    // Get the raw status values set on the activity entity and
+    // aggregate them directly into our computed result.
+    $statuses = isset($a_entity_wrapper->field_activity_crl_status) ? $a_entity_wrapper->field_activity_crl_status->value() : array();
+    if (!empty($statuses)) {
+      foreach ($statuses as $status) {
+        if (!in_array($status, $computed_status)) {
+          $computed_status[] = $status;
         }
-        // Also see if this resource has a source status that indicates it's a
-        // full CRL review (that status value is always calculated dynamically).
-        $entity_wrapper_resource = entity_metadata_wrapper('node', $entity);
-        $source_status = isset($entity_wrapper_resource->field_resource_source_status) ? $entity_wrapper_resource->field_resource_source_status->value() : NULL;
-        if ($source_status == 'crl_review' && !in_array('crl_review_available', $computed_status)) {
-          $computed_status[] = 'crl_review_available';
-        }
-        $resource_status[$entity->nid] = $computed_status;
       }
-      return $resource_status[$entity->nid];
+    }
   }
+  // Also see if this resource has a source status that indicates it's a
+  // full CRL review (that status value is always calculated dynamically).
+  $source_status = isset($r_entity_wrapper->field_resource_source_status) ? $r_entity_wrapper->field_resource_source_status->value() : NULL;
+  if ($source_status == 'crl_review' && !in_array('crl_review_available', $computed_status)) {
+    $computed_status[] = 'crl_review_available';
+  }
+  return $computed_status;
+}
+
+
+/**
+ * Properties getter callback: calculate alerts through backreferences.
+ * 
+ * @see crl_resource_entity_property_info_alter().
+ */
+function crl_resource_get_alert($entity, array $options, $name, $type, $info) {
+  $wrappers = crl_resource_get_wrappers($entity);
+  $wrappers_to_check = array_merge(array($wrappers['r_entity_wrapper']), $wrappers['a_entity_wrappers']);
+  foreach($wrappers_to_check as $wrapper) {
+    $alert = isset($wrapper->field_update_alert) ? $wrapper->field_update_alert->value() : NULL;
+    if ((!empty($alert) && $alert > REQUEST_TIME)) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+
+/**
+ * Properties getter callback: calculate expiration countdown through
+ * backreferences.
+ * 
+ * @see crl_resource_entity_property_info_alter().
+ */
+function crl_resource_get_expiration_countdown($entity, array $options, $name, $type, $info) {
+  $days_left = NULL;
+  $wrappers = crl_resource_get_wrappers($entity);
+  // Get the most recent expiration.
+  foreach ($wrappers['a_entity_wrappers'] as $a_entity_wrapper) {
+    $expire = isset($a_entity_wrapper->field_activity_offer_duration) ? $a_entity_wrapper->field_activity_offer_duration->value() : NULL;
+    if (!empty($expire['value2'])) {
+      $days_left_this = ceil((strtotime($expire['value2']) - time()) / 60 / 60 / 24);
+      if (is_null($days_left) || $days_left_this < $days_left) {
+        $days_left = $days_left_this;
+      }
+    }
+  }
+  return $days_left;
+}
+
+
+/**
+ * Properties getter callback: get resource vote average.
+ * 
+ * NOTE: requires extra queries (does not just use loaded entity data).
+ * 
+ * @see crl_resource_entity_property_info_alter().
+ */
+function crl_resource_get_vote_average($entity, array $options, $name, $type, $info) {
+  $vote_average = 0;
+  if (function_exists('fivestar_get_votes')) {
+    $vote_tags = array('platform', 'content', 'cost');
+    $active_tags = $vote_tally = $vote_average = 0;
+    foreach ($vote_tags as $tag) {
+      $vote_data = fivestar_get_votes('node', $entity->nid, $tag);
+      if (!empty($vote_data['average']['value'])) {
+        $active_tags++;
+        $vote_tally = $vote_tally + $vote_data['average']['value'];
+      }
+    }
+    if ($active_tags) {
+      $vote_average = number_format(($vote_tally / $active_tags) / 20, 1);
+    }
+  }
+  return $vote_average;
+}
+
+
+/**
+ * Properties getter callback: get resource interest count.
+ * 
+ * NOTE: requires extra queries (does not just use loaded entity data).
+ * 
+ * @see crl_resource_entity_property_info_alter().
+ */
+function crl_resource_get_interest_count($entity, array $options, $name, $type, $info) {
+  $count = 0;
+  if (function_exists('votingapi_select_results')) {
+    $criteria['entity_id'] = $entity->nid;
+    $criteria['tag'] = 'resource_interest';
+    $criteria['value_type'] = 'points';
+    $criteria['function'] = 'sum';
+    $results = votingapi_select_results($criteria);
+    if (isset($results[0]['value'])) {
+      $count = (int) $results[0]['value'];
+    }
+  }
+  return $count;
+}
+
+
+/**
+ * Properties callback: get glossary value.
+ * 
+ * @see crl_resource_entity_property_info_alter().
+ */
+function crl_resource_get_glossary_value($entity, array $options, $name, $type, $info) {
+  $string = '';
+  // See if we have a sorting title to work with.
+  $entity_wrapper = entity_metadata_wrapper('node', $entity);
+  $sort_title = isset($entity_wrapper->field_resource_title_for_sort) ? $entity_wrapper->field_resource_title_for_sort->value() : '';
+  if (!empty($sort_title)) {
+    $string = $sort_title; 
+  }
+  elseif (!empty($entity->title)) {
+    $string = $entity->title;
+  }
+  // Get first character in a multibyte-safe way.
+  if (!empty($string) && mb_strlen($string)) {
+    return strtoupper(mb_substr($string, 0, 1));
+  }
+  return NULL;
+}
+
+
+/**
+ * Helper to get wrappers for all entites involved in a resource/activity
+ * relationship.
+ * 
+ * This is a quick way to get useful wrappers for all related entities in a
+ * quick call. It assumes that most of the actual entites involved are already
+ * in the static entity cache.
+ * 
+ * @param object $entity
+ *   Either a resource or activity entity.
+ * @return array
+ *   An associative array containing:
+ *   - r_entity_wrapper: The resource entity wrapper.
+ *   - a_entity_wrappers: An array of all activity entity wrappers that are
+ *     related to the resource.
+ */
+function crl_resource_get_wrappers($entity) {
+  // If we were passed a wrapper, prevent the unneeded re-creation of a new one.
+  if (get_class($entity) == 'EntityDrupalWrapper') {
+    $passed_entity_wrapper = $entity;
+  }
+  else {
+    $passed_entity_wrapper = entity_metadata_wrapper('node', $entity);
+  }
+  $passed_entity_id = $passed_entity_wrapper->getIdentifier();
+  // Get our resource wrapper.
+  if ($passed_entity_wrapper->value()->type == 'activity') {
+    $r_entity = isset($passed_entity_wrapper->field_resource_reference) ? $passed_entity_wrapper->field_resource_reference->value() : NULL;
+    $r_entity_wrapper = entity_metadata_wrapper('node', $r_entity);
+  }
+  else {
+    $r_entity_wrapper = $passed_entity_wrapper;
+  }
+  // Get our activity wrappers.
+  $a_entities = isset($r_entity_wrapper->crl_resource_backref) ? $r_entity_wrapper->crl_resource_backref->value() : array();
+  $a_entity_wrappers = array();
+  foreach ($a_entities as $a_entity) {
+    if ($a_entity->nid == $passed_entity_id) {
+      $a_entity_wrappers[] = $passed_entity_wrapper;
+    }
+    else {
+      $a_entity_wrappers[] = entity_metadata_wrapper('node', $a_entity);
+    }
+  }
+  return array('r_entity_wrapper' => $r_entity_wrapper, 'a_entity_wrappers' => $a_entity_wrappers);
 }
 
 
@@ -375,30 +471,6 @@ function crl_resource_activity_status_property_oplist() {
     'past_license_offer' => t('Expired Offer'),
     'crl_review_available' => t('Reviewed by CRL'),
   );
-}
-
-
-/**
- * Properties callback: Get glossary value.
- * 
- * @see crl_resource_entity_property_info_alter().
- */
-function crl_resource_glossary_value_get($entity, array $options, $name, $type, $info) {
-  $string = '';
-  // See if we have a sorting title to work with.
-  $entity_wrapper = entity_metadata_wrapper('node', $entity);
-  $sort_title = isset($entity_wrapper) ? $entity_wrapper->field_resource_title_for_sort->value() : '';
-  if (!empty($sort_title)) {
-    $string = $sort_title; 
-  }
-  elseif (!empty($entity->title)) {
-    $string = $entity->title;
-  }
-  // Get first character in a multibyte-safe way.
-  if (!empty($string) && mb_strlen($string)) {
-    return strtoupper(mb_substr($string, 0, 1));
-  }
-  return NULL;
 }
 
 
@@ -464,25 +536,90 @@ function crl_resource_form_resource_node_form_alter(&$form, &$form_state, $form_
 
 
 /**
- * Helper to get the vote average of a resource node.
+ * Implements hook_block_info().
  */
-function crl_resource_get_vote_average($node) {
-  $vote_average = 0;
-  if (function_exists('fivestar_get_votes')) {
-    $vote_tags = array('platform', 'content', 'cost');
-    $active_tags = $vote_tally = $vote_average = 0;
-    foreach ($vote_tags as $tag) {
-      $vote_data = fivestar_get_votes('node', $node->nid, $tag);
-      if (!empty($vote_data['average']['value'])) {
-        $active_tags++;
-        $vote_tally = $vote_tally + $vote_data['average']['value'];
+function crl_resource_block_info() {
+  // The resource summary is a block at the top of each resource.
+  $blocks['crl_resource_summary'] = array(
+    'info' => t('CRL Resource Summary'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // The "back to index" block shows a caclulated back link for navigation.
+  $blocks['crl_resource_back_to_index'] = array(
+    'info' => t('CRL Back to Index'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['crl_resource_common_input'] = array(
+    'info' => t('CRL Common Resource Vote and Rate Input'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function crl_resource_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    // Build the resoruce summary block.
+    case 'crl_resource_summary':
+      $nid = arg(1);
+      $status = array();
+      $status_options = crl_resource_activity_status_property_oplist();
+      $comment_count = 0;
+      $vote_average = 0;
+      $entities = entity_load('node', array($nid));
+      if (!empty($entities[$nid])) {
+        $entity = $entities[$nid];
+        $entity_wrapper = entity_metadata_wrapper('node', $entity);
+        $status = isset($entity_wrapper->crl_resource_status_backref) ? $entity_wrapper->crl_resource_status_backref->value() : array();
+        $vote_average = isset($entity_wrapper->crl_resource_vote_average) ? $entity_wrapper->crl_resource_vote_average->value() : 0;
+        $interest_count = isset($entity_wrapper->crl_resource_interest_count) ? $entity_wrapper->crl_resource_interest_count->value() : 0;
+        if (isset($entity->comment_count)) {
+          $comment_count = $entity->comment_count;
+        }
       }
-    }
-    if ($active_tags) {
-      $vote_average = number_format(($vote_tally / $active_tags) / 20, 1);
-    }
+      $block['subject'] = '';
+      $block['content'] = array(
+        'resource_summary' => array(
+          '#theme' => 'crl_resource_summary',
+          '#status' => $status,
+          '#status_options' => $status_options,
+          '#comment_count' => $comment_count,
+          '#vote_average' => $vote_average,
+          '#interest_count' => $interest_count,
+        ),
+      );
+      break;
+    // Build the back to index block.
+    case 'crl_resource_back_to_index':
+      $browser_back = FALSE;
+      $url = url('resources/main');
+      drupal_add_js(drupal_get_path('module', 'crl_resource') .'/js/crl_resource.js', 'file');
+      $block['subject'] = '';
+      $block['content'] = array(
+        'back_link' => array(
+          '#theme' => 'crl_resource_back_to_index',
+          '#url' => $url,
+          '#browser_back' => $browser_back,
+        ),
+      );
+      break;
+    // Build the common resource input/interest block
+    case 'crl_resource_common_input':
+      global $user;
+      $nid = arg(1);
+      $node = node_load($nid);
+      // Make sure block should be visible
+      if (isset($node->type) && $node->type == 'resource' && $user->uid) {
+        $block['subject'] = t('Interested in this Resource?');
+        $block['content'] = array('#markup' => rate_generate_widget(1, 'node', $nid));
+      }
+      break;
   }
-  return $vote_average;
+  return $block;
 }
 
 
@@ -538,30 +675,3 @@ function crl_resource_views_pre_render(&$view) {
 }
 
 
-/**
- * Helper to get a single field value from a node entity.
- * 
- * This takes care of all the language-specific management, etc. Will not work
- * well for fields that have multiple values.
- * 
- * @param object $entity
- *   The entity a field belongs to.
- * @param string $field_name
- *   The field name to fetch a value from.
- * @return mixed
- *   The raw value of the field (or the first field entry for a multi-value
- *   field).
- */
-function crl_resource_get_single_node_field($entity, $field_name) {
-  $fields = field_get_items('node', $entity, $field_name);
-  if (isset($fields[0]['value'])) {
-    return $fields[0]['value'];
-  }
-  if (isset($fields[0]['target_id'])) {
-    return $fields[0]['target_id'];
-  }
-  if (isset($fields[0]['tid'])) {
-    return $fields[0]['tid'];
-  }
-  return FALSE;
-}
