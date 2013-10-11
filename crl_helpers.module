@@ -7,10 +7,6 @@
  */
 
 
-// Include logic for custom fields.
-require_once dirname(__FILE__) . '/includes/crl_helpers_custom_fields.inc';
-
-
 /**
  * Implements hook_menu().
  */
