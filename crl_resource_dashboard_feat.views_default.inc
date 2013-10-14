@@ -76,6 +76,39 @@ function crl_resource_dashboard_feat_views_default_views() {
 
   /* Display: Reviews - Main */
   $handler = $view->new_display('block', 'Reviews - Main', 'block_1');
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Indexed Node: CRL Resource Backreference */
+  $handler->display->display_options['relationships']['crl_resource_backref']['id'] = 'crl_resource_backref';
+  $handler->display->display_options['relationships']['crl_resource_backref']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['relationships']['crl_resource_backref']['field'] = 'crl_resource_backref';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Indexed Node: Content type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['link_to_entity'] = 0;
+  $handler->display->display_options['fields']['type']['format_name'] = 1;
+  /* Field: Indexed Node: Node ID */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = 'Resource Node ID';
+  $handler->display->display_options['fields']['nid']['link_to_entity'] = 0;
+  /* Field: Node: Node ID */
+  $handler->display->display_options['fields']['nid_1']['id'] = 'nid_1';
+  $handler->display->display_options['fields']['nid_1']['table'] = 'entity_node';
+  $handler->display->display_options['fields']['nid_1']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid_1']['relationship'] = 'crl_resource_backref';
+  $handler->display->display_options['fields']['nid_1']['label'] = 'Activity Node ID';
+  $handler->display->display_options['fields']['nid_1']['link_to_entity'] = 0;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Indexed Node: Date created */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Indexed Node: Content type */
@@ -102,16 +135,25 @@ function crl_resource_dashboard_feat_views_default_views() {
 
   /* Display: Offers - Main */
   $handler = $view->new_display('block', 'Offers - Main', 'block_2');
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Indexed Node: Related resource */
+  $handler->display->display_options['relationships']['field_resource_reference']['id'] = 'field_resource_reference';
+  $handler->display->display_options['relationships']['field_resource_reference']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['relationships']['field_resource_reference']['field'] = 'field_resource_reference';
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Indexed Node: Related resource */
-  $handler->display->display_options['fields']['field_resource_reference']['id'] = 'field_resource_reference';
-  $handler->display->display_options['fields']['field_resource_reference']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['fields']['field_resource_reference']['field'] = 'field_resource_reference';
-  $handler->display->display_options['fields']['field_resource_reference']['label'] = '';
-  $handler->display->display_options['fields']['field_resource_reference']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_resource_reference']['link_to_entity'] = 1;
-  $handler->display->display_options['fields']['field_resource_reference']['view_mode'] = 'full';
-  $handler->display->display_options['fields']['field_resource_reference']['bypass_access'] = 0;
+  /* Field: Node: Node ID */
+  $handler->display->display_options['fields']['nid_1']['id'] = 'nid_1';
+  $handler->display->display_options['fields']['nid_1']['table'] = 'entity_node';
+  $handler->display->display_options['fields']['nid_1']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid_1']['relationship'] = 'field_resource_reference';
+  $handler->display->display_options['fields']['nid_1']['label'] = 'Resource Node ID';
+  $handler->display->display_options['fields']['nid_1']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Node ID */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = 'Activity Node ID';
+  $handler->display->display_options['fields']['nid']['link_to_entity'] = 0;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Offer Duration: End date (indexed) */
   $handler->display->display_options['sorts']['field_activity_offer_duration_value2']['id'] = 'field_activity_offer_duration_value2';
@@ -144,22 +186,30 @@ function crl_resource_dashboard_feat_views_default_views() {
   $handler->display->display_options['filters']['field_activity_crl_status']['field'] = 'field_activity_crl_status';
   $handler->display->display_options['filters']['field_activity_crl_status']['value'] = array(
     'license_available' => 'license_available',
-    'trial_access_available' => 'trial_access_available',
     'license_renewal_available' => 'license_renewal_available',
   );
 
   /* Display: Pipeline - Main */
   $handler = $view->new_display('block', 'Pipeline - Main', 'block_3');
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Indexed Node: Related resource */
+  $handler->display->display_options['relationships']['field_resource_reference']['id'] = 'field_resource_reference';
+  $handler->display->display_options['relationships']['field_resource_reference']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['relationships']['field_resource_reference']['field'] = 'field_resource_reference';
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Indexed Node: Related resource */
-  $handler->display->display_options['fields']['field_resource_reference']['id'] = 'field_resource_reference';
-  $handler->display->display_options['fields']['field_resource_reference']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['fields']['field_resource_reference']['field'] = 'field_resource_reference';
-  $handler->display->display_options['fields']['field_resource_reference']['label'] = '';
-  $handler->display->display_options['fields']['field_resource_reference']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_resource_reference']['link_to_entity'] = 1;
-  $handler->display->display_options['fields']['field_resource_reference']['view_mode'] = 'full';
-  $handler->display->display_options['fields']['field_resource_reference']['bypass_access'] = 0;
+  /* Field: Node: Node ID */
+  $handler->display->display_options['fields']['nid_1']['id'] = 'nid_1';
+  $handler->display->display_options['fields']['nid_1']['table'] = 'entity_node';
+  $handler->display->display_options['fields']['nid_1']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid_1']['relationship'] = 'field_resource_reference';
+  $handler->display->display_options['fields']['nid_1']['label'] = 'Resource Node ID';
+  $handler->display->display_options['fields']['nid_1']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Node ID */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = 'Activity Node ID';
+  $handler->display->display_options['fields']['nid']['link_to_entity'] = 0;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Indexed Node: Content type */

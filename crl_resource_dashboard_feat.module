@@ -7,14 +7,48 @@
 include_once 'crl_resource_dashboard_feat.features.inc';
 
 
+
 /**
- * Implementation of hook_views_pre_render().
+ * Implements hook_theme().
+ */
+function crl_resource_dashboard_feat_theme() {
+  $hooks = array(
+    // Theme hook to generate a resoruce dashboard header.
+    'crl_resource_dashboard_feat_view_head' => array(
+      'variables' => array('count' => 0, 'path' => '', 'url' => '', 'title' => '', 'status' => '', 'tagline' => '', 'sort_text' => ''),
+    ),
+    // Theme hook to generate MAIN resoruce dashboard header.
+    'crl_resource_dashboard_feat_view_head_all' => array(
+      'variables' => array('count' => 0, 'path' => '', 'url' => '', 'title' => '', 'status' => '', 'tagline' => '', 'sort_text' => ''),
+    ),
+    // Theme hook for row values of the dashboard blocks. This will
+    // automatically get used by views based on it's name and the standard
+    // template suggestion rules.
+    'views_view_fields__resource_dashboard' => array(
+      'variables' => array(),
+      'template' => 'views-view-fields--resource-dashboard',
+    ),
+  );
+  foreach ($hooks as &$hook) {
+    // Make sure that our actual theme hooks and/or preprocessor logic is
+    // included for each entry.
+    $hook['path'] = drupal_get_path('module', 'crl_resource_dashboard_feat') . '/themes';
+    $hook['file'] = 'crl_resource_dashboard_feat.theme.inc';
+  }
+  return $hooks;
+}
+
+
+/**
+ * Implements hook_views_pre_render().
+ * 
+ * Define attachment before/after values for dashboard blocks.
  */
 function crl_resource_dashboard_feat_views_pre_render(&$view) {
   if ($view->name == 'resource_dashboard') {
     $set = FALSE;
     $count = $view->total_rows;
-    $url = 'resources/main';
+    $path = 'resources/main';
     switch ($view->current_display) {
       case 'block_1' :
         $set = TRUE;
@@ -22,6 +56,7 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
         $url_options = array('query' => array('f[0]' => 'crl_resource_status_backref:' . $status));
         $title = t('CRL Reviews');
         $tagline = t('Resources Analyzed by CRL');
+        $sort_text = t('by date of posting');
         $link_text = 'Browse All Reviews';
         $theme = 'crl_resource_dashboard_feat_view_head';
         break;
@@ -31,6 +66,7 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
         $url_options = array('query' => array('f[0]' => 'crl_resource_status_backref:' . $status));
         $title = t('Active Offers');
         $tagline = t('Resources with Active CRL Offers');
+        $sort_text = t('by date of expiration');
         $link_text = 'Browse All Offers';
         $theme = 'crl_resource_dashboard_feat_view_head';
         break;
@@ -40,6 +76,7 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
         $url_options = array('query' => array('f[0]' => 'crl_resource_status_backref:' . $status));
         $title = t('CRL Pipeline');
         $tagline = t('Resources Under Consideration');
+        $sort_text = t('by date of posting');
         $link_text = 'Browse All Pipeline Items';
         $theme = 'crl_resource_dashboard_feat_view_head';
         break;
@@ -49,6 +86,7 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
         $url_options = array();
         $title = t('Total Resources');
         $tagline = t('Browse All (A-Z)');
+        $sort_text = '';
         $link_text = t('Browse All (A-Z)');
         $theme = 'crl_resource_dashboard_feat_view_head_all';
         break;
@@ -59,50 +97,14 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
         'status' => $status,
         'title' => $title,
         'tagline' => $tagline,
-        'url' => $url,
-        'url_options' => $url_options)
-      );
+        'sort_text' => $sort_text,
+        'path' => $path,
+        'url' => url($path, $url_options),
+      ));
       if ($view->current_display != 'block_4') {
-        $view->attachment_after = l($link_text, $url, $url_options);
+        $view->attachment_after = l($link_text, $path, $url_options);
       }
     }
-    
+
   }
-}
-
-
-/**
- * Implements hook_theme().
- */
-function crl_resource_dashboard_feat_theme() {
-  return array(
-    // Theme hook to generate a resoruce dashboard header.
-    'crl_resource_dashboard_feat_view_head' => array(
-      'variables' => array('count' => 0, 'url' => '', 'url_options' => array(), 'title' => '', 'status' => '', 'tagline' => ''),
-    ),
-    // Theme hook to generate MAIN resoruce dashboard header.
-    'crl_resource_dashboard_feat_view_head_all' => array(
-      'variables' => array('count' => 0, 'url' => '', 'url_options' => array(), 'title' => '', 'status' => '', 'tagline' => ''),
-    ),
-  );
-}
-
-
-function theme_crl_resource_dashboard_feat_view_head($vars) {
-  $markup = '<div class="dashboard-lead">';
-  $markup .= '<h3><a href="' . url($vars['url'], $vars['url_options']) . '"><span class="summary-icon ' . $vars['status'] . '"></span>' . $vars['title'] . '</a></h3>';
-  $markup .= '<span class="super-num"><strong>' . $vars['count'] . '</strong></span>';
-  $markup .= '<p>' . $vars['tagline'] . '</p>';
-  $markup .= '<hr></div>';
-  return $markup;
-}
-
-
-function theme_crl_resource_dashboard_feat_view_head_all($vars) {
-  $markup = '<div class="dashboard-lead-all">';
-  $markup .= '<span class="super-num" style="float: left;"><strong>' . $vars['count'] . '</strong></span>';
-  $markup .= '<h3>' . l($vars['title'], $vars['url'], $vars['url_options']) . '</h3>';
-  $markup .= '<p>' . l($vars['tagline'], $vars['url'], $vars['url_options']) . '</p>';
-  $markup .= '</div>';
-  return $markup;
 }
