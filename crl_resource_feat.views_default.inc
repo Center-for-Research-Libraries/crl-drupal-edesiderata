@@ -192,6 +192,34 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['menu']['name'] = 'main-menu';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
+
+  /* Display: Block - By Provider */
+  $handler = $view->new_display('block', 'Block - By Provider', 'block_1');
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'No resources are currently listed for this provider.';
+  $handler->display->display_options['empty']['area']['format'] = 'full_html';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Indexed Node: Provider */
+  $handler->display->display_options['arguments']['field_provider']['id'] = 'field_provider';
+  $handler->display->display_options['arguments']['field_provider']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['arguments']['field_provider']['field'] = 'field_provider';
+  $handler->display->display_options['arguments']['field_provider']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['field_provider']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_provider']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_provider']['summary_options']['grouping'] = array(
+    0 => array(
+      'field' => 'crl_resource_glossary_value',
+      'rendered' => 1,
+      'rendered_strip' => 1,
+    ),
+  );
+  $handler->display->display_options['arguments']['field_provider']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_provider']['not'] = 0;
   $export['resource_lists'] = $view;
 
   $view = new view();
@@ -364,21 +392,21 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['value_1']['table'] = 'votingapi_cache';
   $handler->display->display_options['fields']['value_1']['field'] = 'value';
   $handler->display->display_options['fields']['value_1']['relationship'] = 'votingapi_cache_1';
-  $handler->display->display_options['fields']['value_1']['label'] = 'Platform Rating';
+  $handler->display->display_options['fields']['value_1']['label'] = 'Platform Rating (0-100)';
   $handler->display->display_options['fields']['value_1']['precision'] = '0';
   /* Field: Vote results: Value */
   $handler->display->display_options['fields']['value_2']['id'] = 'value_2';
   $handler->display->display_options['fields']['value_2']['table'] = 'votingapi_cache';
   $handler->display->display_options['fields']['value_2']['field'] = 'value';
   $handler->display->display_options['fields']['value_2']['relationship'] = 'votingapi_cache_2';
-  $handler->display->display_options['fields']['value_2']['label'] = 'Content Rating';
+  $handler->display->display_options['fields']['value_2']['label'] = 'Content Rating (0-100)';
   $handler->display->display_options['fields']['value_2']['precision'] = '0';
   /* Field: Vote results: Value */
   $handler->display->display_options['fields']['value_3']['id'] = 'value_3';
   $handler->display->display_options['fields']['value_3']['table'] = 'votingapi_cache';
   $handler->display->display_options['fields']['value_3']['field'] = 'value';
   $handler->display->display_options['fields']['value_3']['relationship'] = 'votingapi_cache_3';
-  $handler->display->display_options['fields']['value_3']['label'] = 'Platform Rating';
+  $handler->display->display_options['fields']['value_3']['label'] = 'Cost Rating (0-100)';
   $handler->display->display_options['fields']['value_3']['precision'] = '0';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
@@ -546,7 +574,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['value_3']['table'] = 'votingapi_cache';
   $handler->display->display_options['fields']['value_3']['field'] = 'value';
   $handler->display->display_options['fields']['value_3']['relationship'] = 'votingapi_cache_3';
-  $handler->display->display_options['fields']['value_3']['label'] = 'Platform Rating';
+  $handler->display->display_options['fields']['value_3']['label'] = 'Cost Rating';
   $handler->display->display_options['fields']['value_3']['precision'] = '0';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -670,7 +698,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['relationships']['votingapi_vote']['field'] = 'votingapi_vote';
   $handler->display->display_options['relationships']['votingapi_vote']['votingapi'] = array(
     'value_type' => '',
-    'tag' => '',
+    'tag' => 'resource_interest',
   );
   $handler->display->display_options['relationships']['votingapi_vote']['current_user'] = 0;
   /* Relationship: Votes: User */

@@ -340,7 +340,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Jisc Data',
-    'weight' => '19',
+    'weight' => '13',
     'children' => array(
       0 => 'field_resource_jisc_overview',
       1 => 'field_resource_jisc_description',
@@ -442,7 +442,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = 'group_jisc_data';
   $field_group->data = array(
     'label' => 'Standards Compliance',
-    'weight' => '43',
+    'weight' => '11',
     'children' => array(
       0 => 'field_resource_jisc_federated',
       1 => 'field_resource_jisc_full_text',
@@ -490,6 +490,7 @@ function crl_resource_feat_field_group_info() {
       6 => 'pseudo_field_resource_source_summary',
       7 => 'pseudo_field_resource_added',
       8 => 'pseudo_field_resource_updated',
+      9 => 'pseudo_field_resource_alerts',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -610,20 +611,11 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'System Fields',
-    'weight' => '10',
+    'weight' => '9',
     'children' => array(
       0 => 'field_platform_and_user_interfac',
       1 => 'field_content_scope_and_complete',
       2 => 'field_cost_and_price_structure',
-      3 => 'field_resource_glossary',
-      4 => 'field_resource_all_jisc_details',
-      5 => 'field_resource_provider_details',
-      6 => 'field_resource_activity',
-      7 => 'field_resource_status_summary',
-      8 => 'field_coll_content_tax',
-      9 => 'field_resource_table_sources',
-      10 => 'field_resource_source_summary',
-      11 => 'field_resource_review_source',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -682,7 +674,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Tabbed',
-    'weight' => '5',
+    'weight' => '4',
     'children' => array(
       0 => 'group_overview',
       1 => 'group_details',
@@ -698,6 +690,39 @@ function crl_resource_feat_field_group_info() {
     ),
   );
   $export['group_tabbed|node|title_review|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_update_alerts|node|resource|form';
+  $field_group->group_name = 'group_update_alerts';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'resource';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Update Alert',
+    'weight' => '7',
+    'children' => array(
+      0 => 'field_update_alert_message',
+      1 => 'field_update_alert',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'Update Alert',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'classes' => '',
+        'description' => '',
+        'show_label' => '1',
+        'label_element' => 'h3',
+        'effect' => 'none',
+        'speed' => 'fast',
+      ),
+      'formatter' => 'collapsed',
+    ),
+  );
+  $export['group_update_alerts|node|resource|form'] = $field_group;
 
   return $export;
 }

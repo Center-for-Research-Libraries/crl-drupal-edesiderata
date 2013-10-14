@@ -132,7 +132,7 @@ function crl_resource_feat_strongarm() {
         ),
         'pseudo_field_resource_source_summary' => array(
           'default' => array(
-            'weight' => '14',
+            'weight' => '927',
             'visible' => TRUE,
           ),
         ),
@@ -150,13 +150,19 @@ function crl_resource_feat_strongarm() {
         ),
         'pseudo_field_resource_added' => array(
           'default' => array(
-            'weight' => '10',
+            'weight' => '923',
             'visible' => TRUE,
           ),
         ),
         'pseudo_field_resource_updated' => array(
           'default' => array(
-            'weight' => '11',
+            'weight' => '924',
+            'visible' => TRUE,
+          ),
+        ),
+        'pseudo_field_resource_alerts' => array(
+          'default' => array(
+            'weight' => '920',
             'visible' => TRUE,
           ),
         ),
