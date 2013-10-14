@@ -24,34 +24,27 @@
  * @ingroup views_templates
  */
 ?>
-<?php 
-  // Get the nid of our current row.
-  $nid = $view->result[$view->row_index]->entity;
-  // We don't display any fields directly, we just use our custom theme
-  // function to build the whole row from scratch based on the nid.
-  if (isset($nid)) {
-    $entities = entity_load('node', array($nid)); // Should alerady be in static cache from view
-    if (!empty($entities[$nid])) {
-      $entity = $entities[$nid];
-      $entity_wrapper = entity_metadata_wrapper('node', $entity);
-      // Get link.
-      $url = entity_uri('node', $entity);
-      $link = l($entity_wrapper->title->value(), $url['path'], $url['options']);
-      // Get summary via Entity API.
-      $body = $entity_wrapper->body->value();
-      $summary = $body['value'];
-      // Get provider title.
-      $provider = isset($entity_wrapper->field_provider) ? $entity_wrapper->field_provider->value()->title : '';
-      // Get updated and added dates.
-      // @todo: consider making formats more configurable, or move to theme
-      // hook.
-      $updated = format_date($entity_wrapper->changed->value(), 'custom', 'm-d-Y');
-      $added = format_date($entity_wrapper->created->value(), 'custom', 'm-d-Y');
-      // Get status info
-      $status = isset($entity_wrapper->crl_resource_status_backref) ? $entity_wrapper->crl_resource_status_backref->value() : array();
-      $status_options = crl_resource_activity_status_property_oplist();
-      print theme('crl_resource_teaser', array('link' => $link, 'summary' => $summary, 'provider' => $provider, 'updated' => $updated, 'added' => $added, 'status' => $status, 'status_options' => $status_options));
-    }
+<h2>
+  <?php print '<a href="' . $resource_url . '">' . $resource_title . '</a>';
+  if ($alert_active) {
+    print theme('crl_resource_alert_tag', array('url' => $resource_url));
   }
-  
-  
+  if (!empty($days_left)) {
+    print theme('crl_resource_countdown_alert_tag', array('url' => $resource_url, 'days_left' => $days_left, 'long' => TRUE));
+  } ?>
+</h2>
+<?php print $summary ?>
+<div class="teaser-details">
+<?php print $provider ?>
+<br />
+<?php print $updated ?>
+</div>
+<?php
+  if (!empty($status)) {
+    print '<div class="view-teaser-status-icons">';
+    foreach ($status as $stat) {
+      print '<span class="summary-icon-small ' . $stat . '" title="' . $status_options[$stat] . '"></span>';
+    }
+    print '</div>';
+  } ?>
+<div class="clearfix"></div>

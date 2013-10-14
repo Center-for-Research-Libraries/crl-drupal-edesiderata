@@ -59,6 +59,11 @@ function crl_resource_field_extra_fields() {
         'description' => t('The date the resource was updated.'),
         'weight' => 909,
       ),
+      'pseudo_field_resource_alerts' => array(
+        'label' => t('Resource Alerts'),
+        'description' => t('Show any resource alert details.'),
+        'weight' => 910,
+      ),
     ),
   );
   return $extra;
@@ -123,12 +128,25 @@ function crl_resource_theme() {
     'crl_resource_back_to_index' => array(
       'variables' => array('url' => '', 'browser_back' => FALSE),
     ),
-    // Theme hook to generate a resource teaser (used in views rows).
-    'crl_resource_teaser' => array(
-      'variables' => array('link' => NULL, 'summary' => '', 'provider' => '', 'updated' => 0, 'added' => 0, 'status' => array(), 'status_options' => array()),
+    // Theme hook to generate a resource alert tag.
+    'crl_resource_alert_tag' => array(
+      'variables' => array('url' => ''),
+    ),
+    // Theme hook to generate a countdown alert tag.
+    'crl_resource_countdown_alert_tag' => array(
+      'variables' => array('url' => '', 'days_left' => NULL, 'long' => FALSE),
+    ),
+    // Theme hook to generate a resource teaser (used in views rows). This will
+    // automatically get used by views based on it's name and the standard
+    // template suggestion rules.
+    'views_view_fields__resource_lists' => array(
+      'variables' => array(),
+      'template' => 'views-view-fields--resource-lists',
     ),
   );
   foreach ($hooks as &$hook) {
+    // Make sure that our actual theme hooks and/or preprocessor logic is
+    // included for each entry.
     $hook['path'] = drupal_get_path('module', 'crl_resource') . '/themes';
     $hook['file'] = 'crl_resource.theme.inc';
   }
@@ -144,7 +162,12 @@ function crl_resource_views_api() {
   return array(
     'api' => 3.0,
     'path' => $path,
-    'template path' => $path . '/themes',
+    // We could add a template path here to allow views template suggestions to
+    // be automatically picked-up from a module subdirectory, but that seems
+    // to cause issues with some custom preprocessor hooks that related to these
+    // template suggestions (they don't get called). Instead we manually
+    // declate all templates, and their paths, in hook_theme().
+    // 'template path' => $path . '/themes',
   );
 }
 
@@ -302,7 +325,7 @@ function crl_resource_get_alert($entity, array $options, $name, $type, $info) {
   $wrappers_to_check = array_merge(array($wrappers['r_entity_wrapper']), $wrappers['a_entity_wrappers']);
   foreach($wrappers_to_check as $wrapper) {
     $alert = isset($wrapper->field_update_alert) ? $wrapper->field_update_alert->value() : NULL;
-    if ((!empty($alert) && $alert > REQUEST_TIME)) {
+    if ((!empty($alert) && $alert > time())) {
       return TRUE;
     }
   }
@@ -413,10 +436,10 @@ function crl_resource_get_glossary_value($entity, array $options, $name, $type, 
  * 
  * This is a quick way to get useful wrappers for all related entities in a
  * quick call. It assumes that most of the actual entites involved are already
- * in the static entity cache.
+ * loaded in the static entity cache.
  * 
  * @param object $entity
- *   Either a resource or activity entity.
+ *   Either a resource or activity entity (or related entity wrapper).
  * @return array
  *   An associative array containing:
  *   - r_entity_wrapper: The resource entity wrapper.
@@ -673,5 +696,3 @@ function crl_resource_views_pre_render(&$view) {
     }
   }
 }
-
-

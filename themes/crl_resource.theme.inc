@@ -7,6 +7,56 @@
 
 
 /**
+ * Implements hook_preprocess_views_view_fields__resource_lists().
+ * 
+ * Build custom variables for resource list rows.
+ */
+function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
+  // Initilaize values for theme.
+  $vars['resource_title'] = '';
+  $vars['resource_url'] = '';
+  $vars['alert_active'] = FALSE;
+  $vars['summary'] = '';
+  $vars['provider'] = '';
+  $vars['updated'] = '';
+  $vars['status'] = array();
+  $vars['status_options'] = array();
+  $vars['days_left'] = NULL;
+  // Search API will have bulk-loaded all of our entities already (based on the
+  // main view index and any relationships defined there), so we can work with
+  // entity data directly after loading it from the static cache.
+  $view = $vars['view'];
+  $nid = $view->result[$view->row_index]->entity;
+  if (isset($nid)) {
+    $indexed_entity = node_load($nid);
+    // Get base resource and activity wrappers.
+    $wrappers = crl_resource_get_wrappers($indexed_entity);
+    $r_entity_wrapper = $wrappers['r_entity_wrapper'];
+    $a_entity_wrappers = $wrappers['a_entity_wrappers'];
+    // Check alerts.
+    $vars['alert_active'] = $r_entity_wrapper->value() ? $r_entity_wrapper->crl_resource_alert->value() : FALSE;
+    // Get link.
+    $vars['resource_title'] = $r_entity_wrapper->value() ? $r_entity_wrapper->title->value() : '';
+    $vars['resource_url'] = $r_entity_wrapper->value() ? $r_entity_wrapper->url->value() : ''; 
+    // Get summary.
+    $body = $r_entity_wrapper->body->value();
+    $vars['summary'] = $body['value'];
+    // Get provider title.
+    $provider = isset($r_entity_wrapper->field_provider) ? $r_entity_wrapper->field_provider->value()->title : '';
+    $vars['provider'] = t('Provider') . ': ' . check_plain($provider);
+    // Get updated date.
+    $updated = format_date($r_entity_wrapper->changed->value(), 'custom', 'm-d-Y');
+    $vars['updated'] = t('Updated') . ': ' . $updated;
+    // Get status info
+    $vars['status'] = isset($r_entity_wrapper->crl_resource_status_backref) ? $r_entity_wrapper->crl_resource_status_backref->value() : array();
+    $vars['status_options'] = crl_resource_activity_status_property_oplist();
+    // Check for expiration message, but only on the offer list.
+    $vars['days_left'] = isset($r_entity_wrapper->crl_resource_expiration_countdown) ? $r_entity_wrapper->crl_resource_expiration_countdown->value() : NULL;
+  }
+}
+
+
+/**
  * Returns HTML for a generic pseudo field display. This provides a very quick
  * and dirty way to theme a "field" without constructing lots of theme
  * variables.
@@ -28,7 +78,7 @@ function theme_crl_resource_pseudo_field($vars) {
     $output .= '<div class="field-label">' . $vars['label'] . $separator . '</div>';
   }
   $output .= '<div class="field-item even">' . $vars['output'] . '</div>';
-  $output .= '</div>';
+  $output .= '</div><div class="clearfix"></div>';
   return $output;
 }
 
@@ -124,7 +174,7 @@ function theme_crl_resource_summary($vars) {
       }
       $markup .= '<div class="res-highlight-row ' . $row_key . ' clearfix">';
       $markup .= '<div class="res-highlight-row-label">' . $heading . ':</div>';
-      $markup .= '<div class="res-highlight-row-tems">';
+      $markup .= '<div class="res-highlight-row-items">';
       foreach ($row as $key => $highlight) {
         $markup .= '<div class="res-highlight">' . $highlight . '</div>';
       }
@@ -142,7 +192,7 @@ function theme_crl_resource_summary($vars) {
  *   An associative array containing variables used to render this HTML.
  *
  * @ingroup themeable
-*/
+ */
 function theme_crl_resource_back_to_index(&$vars) {
   $onclick = '';
   if ($vars['browser_back']) {
@@ -159,7 +209,7 @@ function theme_crl_resource_back_to_index(&$vars) {
  *   An associative array containing variables used to render this HTML.
  *
  * @ingroup themeable
-*/
+ */
 function theme_crl_resource_teaser(&$vars) {
   $markup = '';
   if (!empty($vars)) {
@@ -179,6 +229,55 @@ function theme_crl_resource_teaser(&$vars) {
       $markup .= '</div>';
     }
     $markup .= '<div class="clearfix"></div>';
+  }
+  return $markup;
+}
+
+
+/**
+ * Returns HTML for a resource alert "tag".
+ *
+ * @param array $variables
+ *   An associative array containing variables used to render this HTML.
+ *
+ * @ingroup themeable
+ */
+function theme_crl_resource_alert_tag(&$vars) {
+  return '<a class="no-link-style" href="' . $vars['url'] . '"><span class="crl-tag alert">alert</span></a>';
+}
+
+
+/**
+ * Returns HTML for a resource countdown alert "tag".
+ *
+ * @param array $variables
+ *   An associative array containing variables used to render this HTML.
+ *
+ * @ingroup themeable
+ */
+function theme_crl_resource_countdown_alert_tag(&$vars) {
+  $markup = '';
+  $expiration_alert = FALSE;
+  $days_left = $vars['days_left'];
+  if (!is_null($days_left) && $days_left >= 0 && $days_left <= 30) {
+    if ($days_left == 0) {
+      $expiration_message = t('expiring now');
+    }
+    elseif ($days_left == 1) {
+      $expiration_message = t('expires in 1 day');
+    }
+    else {
+      $expiration_message = t('expires in @days days', array('@days' => $days_left));
+    }
+    if (!empty($vars['long'])) {
+      $expiration_message = t('offer') . ' ' . $expiration_message;
+    }
+    if ($days_left < 7) {
+      $expiration_alert = TRUE;
+    }
+    $class = 'crl-tag expiration';
+    $class .= $expiration_alert ? ' urgent' : '';
+    $markup .= '<a class="no-link-style" href="' . $vars['url'] . '"><span class="' . $class . '">' . $expiration_message . '</span></a>';
   }
   return $markup;
 }

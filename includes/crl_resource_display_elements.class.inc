@@ -25,6 +25,7 @@ class CrlResourceDisplayElements {
   public $pseudo_field_resource_review_source;
   public $pseudo_field_resource_added;
   public $pseudo_field_resource_updated;
+  public $pseudo_field_resource_alerts;
   
   /**
    * Constructor
@@ -222,6 +223,32 @@ class CrlResourceDisplayElements {
   protected function build_pseudo_field_resource_updated() {
     $built = array('#theme' => 'crl_resource_pseudo_field', '#label' => t('Updated'), '#output' => format_date($this->entity_wrapper->changed->value(), 'long'), '#inline' => TRUE);
     $this->pseudo_field_resource_updated = $built;
+  }
+  
+  /**
+   * Build custom field: pseudo_field_resource_alerts
+   */
+  protected function build_pseudo_field_resource_alerts() {
+    $built = NULL;
+    $wrappers = crl_resource_get_wrappers($this->entity_wrapper);
+    $wrappers_to_check = array_merge(array($wrappers['r_entity_wrapper']), $wrappers['a_entity_wrappers']);
+    foreach($wrappers_to_check as $wrapper) {
+      $alert = isset($wrapper->field_update_alert) ? $wrapper->field_update_alert->value() : NULL;
+      if ((!empty($alert) && $alert > time())) {
+        $alert_message = isset($wrapper->field_update_alert_message) ? $wrapper->field_update_alert_message->value() : NULL;
+        $markup = theme('crl_resource_alert_tag', array('url' => '#'));
+        if (!empty($alert_message['value'])) {
+          if (entity_access('view', 'node', $wrapper->value())) {
+            $markup .= $alert_message['value'];
+          }
+          else {
+            $markup .= t('The full details of this alert are only available to CRL members.');
+          }
+        }
+        $built[] = array('#theme' => 'crl_resource_pseudo_field', '#output' => $markup);
+      }
+    }
+    $this->pseudo_field_resource_alerts = $built;
   }
   
   /**
