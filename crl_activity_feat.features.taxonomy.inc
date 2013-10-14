@@ -15,7 +15,7 @@ function crl_activity_feat_taxonomy_default_vocabularies() {
       'description' => 'Assign view rights to a CRL group.',
       'hierarchy' => 0,
       'module' => 'taxonomy',
-      'weight' => 0,
+      'weight' => -10,
       'rdf_mapping' => array(
         'rdftype' => array(
           0 => 'skos:ConceptScheme',
