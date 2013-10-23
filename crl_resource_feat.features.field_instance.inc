@@ -10,6 +10,40 @@
 function crl_resource_feat_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance: 'comment-comment_node_resource-comment_body'
+  $field_instances['comment-comment_node_resource-comment_body'] = array(
+    'bundle' => 'comment_node_resource',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'comment_body',
+    'label' => 'Comment',
+    'required' => 1,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 3,
+    ),
+  );
+
   // Exported field_instance: 'node-resource-body'
   $field_instances['node-resource-body'] = array(
     'bundle' => 'resource',
@@ -655,7 +689,8 @@ function crl_resource_feat_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => '',
+    'description' => 'The first row will appear as the table header. Leave the first row blank if you do not need a header.<br />
+You may append the token <strong>[provider]</strong> after any line of text to add a "Direct from publisher" icon to that cell.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -852,7 +887,8 @@ function crl_resource_feat_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => '',
+    'description' => 'The first row will appear as the table header. Leave the first row blank if you do not need a header.<br />
+You may append the token <strong>[provider]</strong> after any line of text to add a "Direct from publisher" icon to that cell.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1542,7 +1578,8 @@ function crl_resource_feat_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => '',
+    'description' => 'The first row will appear as the table header. Leave the first row blank if you do not need a header.<br />
+You may append the token <strong>[provider]</strong> after any line of text to add a "Direct from publisher" icon to that cell.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1828,7 +1865,8 @@ function crl_resource_feat_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => '',
+    'description' => 'The first row will appear as the table header. Leave the first row blank if you do not need a header.<br />
+You may append the token <strong>[provider]</strong> after any line of text to add a "Direct from publisher" icon to that cell.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1933,7 +1971,8 @@ function crl_resource_feat_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => '',
+    'description' => 'The first row will appear as the table header. Leave the first row blank if you do not need a header.<br />
+You may append the token <strong>[provider]</strong> after any line of text to add a "Direct from publisher" icon to that cell.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -2446,6 +2485,7 @@ function crl_resource_feat_field_default_field_instances() {
   t('Attachments');
   t('Authentication');
   t('Collection Content');
+  t('Comment');
   t('Content Details');
   t('Content scope and completeness');
   t('Contributors');
@@ -2492,6 +2532,8 @@ function crl_resource_feat_field_default_field_instances() {
   t('TEMPORARY Sources - Will be refactored');
   t('Technical Platform');
   t('Terms');
+  t('The first row will appear as the table header. Leave the first row blank if you do not need a header.<br />
+You may append the token <strong>[provider]</strong> after any line of text to add a "Direct from publisher" icon to that cell.');
   t('The message to display along with the "update alert" when a user views the related resource.');
   t('This information is for internal use only and is not displayed to any site users.');
   t('This value is used for sorting when multiple resources are listed in indices. Remove any articles (such as "the") from the beginning of the title to craft this sorting title.');

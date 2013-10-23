@@ -872,14 +872,12 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['nid_1']['field'] = 'nid';
   $handler->display->display_options['fields']['nid_1']['label'] = 'nid';
   $handler->display->display_options['fields']['nid_1']['element_label_colon'] = FALSE;
-  /* Field: Content: Nid */
-  $handler->display->display_options['fields']['nid']['id'] = 'nid';
-  $handler->display->display_options['fields']['nid']['table'] = 'node';
-  $handler->display->display_options['fields']['nid']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid']['label'] = 'url';
-  $handler->display->display_options['fields']['nid']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['nid']['alter']['text'] = 'edesiderata-rj.crl.edu/node/[nid]';
-  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Content: Path */
+  $handler->display->display_options['fields']['path_1']['id'] = 'path_1';
+  $handler->display->display_options['fields']['path_1']['table'] = 'node';
+  $handler->display->display_options['fields']['path_1']['field'] = 'path';
+  $handler->display->display_options['fields']['path_1']['label'] = 'url';
+  $handler->display->display_options['fields']['path_1']['absolute'] = TRUE;
   /* Field: Content: Provider */
   $handler->display->display_options['fields']['field_provider']['id'] = 'field_provider';
   $handler->display->display_options['fields']['field_provider']['table'] = 'field_data_field_provider';
