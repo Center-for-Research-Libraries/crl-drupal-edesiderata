@@ -32,7 +32,6 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
     // Get base resource and activity wrappers.
     $wrappers = crl_resource_get_wrappers($indexed_entity);
     $r_entity_wrapper = $wrappers['r_entity_wrapper'];
-    $a_entity_wrappers = $wrappers['a_entity_wrappers'];
     // Check alerts.
     $vars['alert_active'] = $r_entity_wrapper->value() ? $r_entity_wrapper->crl_resource_alert->value() : FALSE;
     // Get link.
@@ -164,7 +163,6 @@ function theme_crl_resource_summary($vars) {
     $highlights['two'][] = '<span class="big-num">' . $vars['comment_count'] . '</span> Comments';
     $highlights['two'][] = '<span class="big-num">' . $vars['vote_average'] . '</span> Average Rating';
     $highlights['two'][] = '<span class="big-num">' . $vars['interest_count'] . '</span> Interest Count';
-
     foreach($highlights as $row_key => $row) {
       if ($row_key == 'one') {
         $heading = t('CRL Status');
