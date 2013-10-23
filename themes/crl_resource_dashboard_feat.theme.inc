@@ -29,7 +29,6 @@ function crl_resource_dashboard_feat_preprocess_views_view_fields__resource_dash
     // may be either a resoruce or activity.
     $wrappers = crl_resource_get_wrappers($indexed_entity);
     $r_entity_wrapper = $wrappers['r_entity_wrapper'];
-    $a_entity_wrappers = $wrappers['a_entity_wrappers'];
     // Check alerts.
     $vars['alert_active'] = $r_entity_wrapper->value() ? $r_entity_wrapper->crl_resource_alert->value() : FALSE;
     // Get link.
