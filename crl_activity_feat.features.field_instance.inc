@@ -815,105 +815,6 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_update_alert'
-  $field_instances['node-activity-field_update_alert'] = array(
-    'bundle' => 'activity',
-    'deleted' => 0,
-    'description' => 'Flag this item with an "update alert" until this date.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 11,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_update_alert',
-    'label' => 'Update Alert Expiration',
-    'required' => 0,
-    'settings' => array(
-      'default_value' => 'now',
-      'default_value2' => 'same',
-      'default_value_code' => '',
-      'default_value_code2' => '',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'date',
-      'settings' => array(
-        'display_all_day' => 0,
-        'increment' => 15,
-        'input_format' => 'm/d/Y - H:i:s',
-        'input_format_custom' => '',
-        'label_position' => 'above',
-        'text_parts' => array(),
-        'year_range' => '-3:+3',
-      ),
-      'type' => 'date_popup',
-      'weight' => 16,
-    ),
-  );
-
-  // Exported field_instance: 'node-activity-field_update_alert_message'
-  $field_instances['node-activity-field_update_alert_message'] = array(
-    'bundle' => 'activity',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'The message to display along with the "update alert" when a user views the related resource.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 12,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_update_alert_message',
-    'label' => 'Update Alert Message',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-      'wysiwyg_unload' => 0,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 17,
-    ),
-  );
-
   // Translatables
   // Included for use with string extractors like potx.
   t('<strong>This field will be visible to member users.</strong> It can be used to show general notes about CRL activity that are not specifically linked to an offer or trial. The content entered here will always display no matter what status values are set above.');
@@ -922,7 +823,6 @@ function crl_activity_feat_field_default_field_instances() {
   t('Additional Notes');
   t('Attachments');
   t('CRL Status');
-  t('Flag this item with an "update alert" until this date.');
   t('General Activity Notes');
   t('Grouping');
   t('How to Get Started');
@@ -940,13 +840,10 @@ function crl_activity_feat_field_default_field_instances() {
   t('See Also');
   t('Select the status values that <em>currently</em> apply. Note that any "Offer Information" or "Trial Information" details entered below will not be displayed to users unless the respective status is enabled here.');
   t('Select which CRL group this activity/offer applies to.');
-  t('The message to display along with the "update alert" when a user views the related resource.');
   t('This information is for internal use only and is not displayed to any site users.');
   t('Trial Duration');
   t('Trial URL');
   t('Typically this value will be auto-filled for you.');
-  t('Update Alert Expiration');
-  t('Update Alert Message');
   t('Use this space to add any general notes that are not specific to the offer or trial information above, and should be shown at the end of the page.');
 
   return $field_instances;
