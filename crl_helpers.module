@@ -201,8 +201,8 @@ function crl_helpers_filter_info() {
  */
 function _crl_helpers_content_tokens($text, $filter, $format, $langcode, $cache, $cache_id) {
   $text = str_replace('[provider]', '<img class="from-provider-icon" title="Direct from Publisher" src="/' . drupal_get_path('module', 'crl_helpers') . '/images/icon_publisher.png">', $text);
-  $text = str_replace('[crl_login_url]', url('user', array('query' => array('destination' => current_path()))), $text);
-  $text = str_replace('[crl_signup_url]', url('user/register', array('query' => array('destination' => current_path()))), $text);
+  $text = str_replace('[crl_login_url]', url('user', array('query' => array('destination' => request_path()))), $text);
+  $text = str_replace('[crl_signup_url]', url('user/register', array('query' => array('destination' => request_path()))), $text);
   return $text;
 }
 
@@ -303,6 +303,49 @@ function crl_helpers_wysiwyg_editor_settings_alter(&$settings, $context) {
       else {
         $settings['contentsCss'] = ltrim($settings['contentsCss']);
       }
+    }
+  }
+}
+
+
+/**
+ * Implements hook_preprocess_comment().
+ * 
+ * Alter some comment variables before they are themed. Used primarily to
+ * implement some ad hoc "private comments" features.
+ */
+function crl_helpers_preprocess_comment(&$vars) {
+  // Hide the title/subject line.
+  $vars['title'] = NULL;
+  // See if any "privacy" details are set via a special "comment_privacy" field.
+  $wrapper = entity_metadata_wrapper('comment', $vars['comment']);
+  $privacy = isset($wrapper->field_comment_privacy) ? $wrapper->field_comment_privacy->value() : NULL;
+  // Toggle the removal/addition of text based on any privacy settings and user
+  // rights.
+  if ($privacy == 'anon') { // Hide submitter name.
+    // Don't hide anything from admins, but show a notice.
+    if (user_access('administer comments')) {
+      $vars['content']['privacy_note'] = array('#markup' => t('<strong>Privacy note:</strong> The submitter has chosen to hide thier name from everyone except CRL staff.'));
+    }
+    else {
+      $vars['author'] = t('(name hidden)');
+      $vars['submitted'] = t('Submission details hidden');
+    }
+  }
+  elseif ($privacy == 'private') { // Hide entire comment.
+    global $user;
+    // Remove "reply" option.
+    if (isset($vars['content']['links']['comment']['#links']['comment-reply'])) {
+      unset($vars['content']['links']['comment']['#links']['comment-reply']);
+    }
+    // Don't hide anything from admins or author, but show a notice.
+    if (user_access('administer comments') || $vars['comment']->uid == $user->uid) {
+      $vars['content']['privacy_note'] = array('#markup' => t('<strong>Privacy note:</strong> This comment has been hidden from all users except CRL staff and the original author.'));
+    }
+    else {
+      $vars['author'] = t('(name hidden)');
+      $vars['submitted'] = t('Submission details hidden');
+      $vars['content']['comment_body'] = array('#markup' => t('Comment hidden - this is a private comment to CRL.'));
     }
   }
 }
