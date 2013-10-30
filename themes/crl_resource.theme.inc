@@ -196,7 +196,7 @@ function theme_crl_resource_back_to_index(&$vars) {
   if ($vars['browser_back']) {
     $onclick = 'onclick="window.history.go(-1);return false;"';
   }
-  return '<p><strong>&larr;&nbsp;<a id="back-to-index" href="' . $vars['url'] . '" ' . $onclick . '>' . t('Back to Index') . '</a></strong></p>';
+  return '<p><strong>&larr;&nbsp;<a id="back-to-index" href="' . $vars['url'] . '" ' . $onclick . '>' . $vars['back_text'] . '</a></strong></p>';
 }
 
 

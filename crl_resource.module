@@ -126,7 +126,7 @@ function crl_resource_theme() {
     ),
     // Theme hook to generate a "back to index" link.
     'crl_resource_back_to_index' => array(
-      'variables' => array('url' => '', 'browser_back' => FALSE),
+      'variables' => array('url' => '', 'back_text' => t('Back to index'), 'browser_back' => FALSE),
     ),
     // Theme hook to generate a resource alert tag.
     'crl_resource_alert_tag' => array(
@@ -626,6 +626,7 @@ function crl_resource_block_view($delta = '') {
         'back_link' => array(
           '#theme' => 'crl_resource_back_to_index',
           '#url' => $url,
+          '#back_text' => t('Back to index'),
           '#browser_back' => $browser_back,
         ),
       );
