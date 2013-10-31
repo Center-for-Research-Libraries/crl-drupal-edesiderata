@@ -346,7 +346,7 @@ function crl_resource_get_expiration_countdown($entity, array $options, $name, $
   foreach ($wrappers['a_entity_wrappers'] as $a_entity_wrapper) {
     $expire = isset($a_entity_wrapper->field_activity_offer_duration) ? $a_entity_wrapper->field_activity_offer_duration->value() : NULL;
     if (!empty($expire['value2'])) {
-      $days_left_this = ceil((strtotime($expire['value2']) - time()) / 60 / 60 / 24);
+      $days_left_this = floor((strtotime($expire['value2']) + 86400 - time()) / 60 / 60 / 24);
       if (is_null($days_left) || $days_left_this < $days_left) {
         $days_left = $days_left_this;
       }
