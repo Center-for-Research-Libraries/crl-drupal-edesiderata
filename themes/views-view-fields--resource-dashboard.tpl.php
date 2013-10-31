@@ -29,7 +29,7 @@
   if ($alert_active) {
     print theme('crl_resource_alert_tag', array('url' => $resource_url));
   }
-  if (!empty($days_left)) {
+  if (isset($days_left)) {
     print theme('crl_resource_countdown_alert_tag', array('url' => $resource_url, 'days_left' => $days_left, 'long' => FALSE));
   }
 
