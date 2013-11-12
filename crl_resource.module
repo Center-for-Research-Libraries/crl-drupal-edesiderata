@@ -166,7 +166,7 @@ function crl_resource_views_api() {
     // be automatically picked-up from a module subdirectory, but that seems
     // to cause issues with some custom preprocessor hooks that related to these
     // template suggestions (they don't get called). Instead we manually
-    // declate all templates, and their paths, in hook_theme().
+    // declare all templates, and their paths, in hook_theme().
     // 'template path' => $path . '/themes',
   );
 }
@@ -487,11 +487,12 @@ function crl_resource_get_wrappers($entity) {
 function crl_resource_activity_status_property_oplist() {
   return array(
     'crl_desiderata' => t('CRL Flagged'),
-    'license_under_consideration' => t('License Under Consideration'),
-    'license_available' => t('License Offer'),
+    'license_under_consideration' => t('Offer Pending'),
+    'license_available' => t('Active Offer'),
     'trial_access_available' => t('Trial Access'),
     'license_renewal_available' => t('Renewal Offer'),
     'past_license_offer' => t('Expired Offer'),
+    'inactive_declined' => t('Inactive / Declined'),
     'crl_review_available' => t('Reviewed by CRL'),
   );
 }
@@ -648,52 +649,57 @@ function crl_resource_block_view($delta = '') {
 
 
 /**
- * Implements hook_views_pre_render().
+ * Helper to an edit link for an activity based on related resource info.
+ * 
+ * @param object $entity
+ *   A resource entity (or related entity wrapper).
+ * @return array
+ *   An associative array describing the link including:
+ *   - path: The path to edit the activity.
+ *   - options: A set of link options as used in l().
  */
-function crl_resource_views_pre_render(&$view) {
-  // Run entity pre-loading for resource list views. Each item shown on the
-  // resource list view depends on data from other related entities, and it 
-  // behooves us to load all those other entities at once (via an array passed
-  // to entity_load) instead of one-by-one (via separate entity_load calls
-  // for each item). Here we calculate which related items to load and get them
-  // into the static cache in bulk before each individual item is rendered
-  // internally by the view. This could also be done via clever tricks on the
-  // view relationship settings, but we just do it here to keep the view itself
-  // simple.
-  $do_rlist_preloading = TRUE;
-  if ($view->name == 'resource_lists' && $do_rlist_preloading) {
-    $result_ids = array();
-    foreach ($view->result as $result) {
-      if (isset($result->entity)) {
-        $result_ids[] = $result->entity;
-      }
+function crl_resource_activity_edit_link($entity) {
+  $edit_link = array();
+  $wrappers = crl_resource_get_wrappers($entity);
+  $r_wrapper = $wrappers['r_entity_wrapper'];
+  if (!empty($wrappers['a_entity_wrappers'])) {
+    // Activity already exists. Grab the first activty entry if the current
+    // user has edit access to it.
+    $a_wrapper = reset($wrappers['a_entity_wrappers']);
+    if (entity_access('update', 'node', $a_wrapper->value())) {
+      $edit_link = array('path' => 'node/' . $a_wrapper->value()->nid . '/edit', 'options' => array('query' => array('activity_title' => rawurlencode('CRL Activity: ' . check_plain($r_wrapper->value()->title)))));
     }
-    if (!empty($result_ids)) {
-      // The view should have already loaded these into the static cache so
-      // so this load should not cost anything.
-      $entities = entity_load('node', $result_ids);
-      // Get the related provider nodes and load them all at once.
-      $provider_ids = array();
-      foreach ($entities as $entity) {
-        $provider_field = field_get_items('node', $entity, 'field_provider');
-        if (isset($provider_field[0]['target_id']) && !in_array($provider_field[0]['target_id'], $provider_ids)) {
-          $provider_ids[] = $provider_field[0]['target_id'];
-        }
-      }
-      if (!empty($provider_ids)) {
-        entity_load('node', $provider_ids);
-      }
-      // Get the related activity entities and load them all at once.
-      $activity_ids = array();
-      $query = new EntityFieldQuery();
-      $query->entityCondition('entity_type', 'node', '=')
-            ->entityCondition('bundle', 'activity')
-            ->fieldCondition('field_resource_reference', 'target_id', $result_ids, 'IN');
-      $result = $query->execute();
-      if (!empty($result['node'])) {
-        $activity_ids = array_keys($result['node']);
-        entity_load('node', $activity_ids);
-      }
+  }
+  elseif (entity_access('create', 'node')) {
+    // If no activity data exists, but the user has rights to create some, we
+    // build an appropriate add content link.
+    $edit_link = array('path' => 'node/add/activity', 'options' => array('query' => array('activity_title' => rawurlencode('CRL Activity: ' . check_plain($r_wrapper->value()->title)), 'resource_id' => $r_wrapper->value()->nid)));
+  }
+  return $edit_link;
+
+}
+
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ * 
+ * Manually adjust some tabs and action links on resources.
+ */
+function crl_resource_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  if (!empty($router_item['map'][1]->type) && $router_item['map'][1]->type == 'resource') {
+    $resource_entity = $router_item['map'][1];
+    $edit_link = crl_resource_activity_edit_link($resource_entity);
+    if ($edit_link) {
+      // Add an edit action link to jump to edit mode for the related activity.
+      $data['actions']['output'][] = array(
+        '#theme' => 'menu_local_task',
+        '#link' => array(
+          'title' => t('Edit activity details for this resource'),
+          'href' => $edit_link['path'],
+          'localized_options' => $edit_link['options'],
+        ),
+      );
+      $data['actions']['count'] = $data['actions']['count'] + 1;
     }
   }
 }

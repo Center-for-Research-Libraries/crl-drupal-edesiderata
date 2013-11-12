@@ -54,23 +54,9 @@ class CrlResourceDisplayElements {
    */
   protected function build_pseudo_field_resource_status_summary() {
     $built = NULL;
-    // Calculate editor link.
-    $edit_link = '';
-    $backref_entities = isset($this->entity_wrapper->crl_resource_backref) ? $this->entity_wrapper->crl_resource_backref->value() : array();
+    // Calculate editor link and backref status details.
+    $edit_link = crl_resource_activity_edit_link($this->entity_wrapper);
     $backref_status = isset($this->entity_wrapper->crl_resource_status_backref) ? $this->entity_wrapper->crl_resource_status_backref->value() : array();
-    if (!empty($backref_entities)) { // Activity data exists
-      // Just get the first backref entity in the array (for now there should
-      // just be one).
-      $activity_entity = reset($backref_entities);
-      if (entity_access('update', 'node', $activity_entity)) {
-        $edit_link = url('node/' . $activity_entity->nid . '/edit', array('query' => array('activity_title' => rawurlencode('CRL Activity: ' . check_plain($this->entity->title)))));
-      }
-    }
-    else { // No activity data exists.
-      if (entity_access('create', 'node')) {
-        $edit_link = url('node/add/activity', array('query' => array('activity_title' => rawurlencode('CRL Activity: ' . check_plain($this->entity->title)), 'resource_id' => $this->entity->nid)));
-      }
-    }
     // If we have anything to output, create render array.
     if (!empty($edit_link) || !empty($backref_status)) {
       $built = array(
@@ -263,6 +249,7 @@ class CrlResourceDisplayElements {
       'license_renewal_available' => t('Currently offered for renewal'),
       'trial_access_available' => t('Available for trial'),
       'past_license_offer' => t('Past offers'),
+      'inactive_declined' => t('License not taken up by CRL'),
       'crl_review_available' => t('Evaluation available by CRL and community'),
     );
   }

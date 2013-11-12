@@ -94,7 +94,7 @@ function theme_crl_resource_field_status_summary($vars) {
   $output = '';
   // Add editor link.
   if (!empty($vars['edit_link'])) {
-    $output .= '<p style="text-align: right;"><strong><a href="' . $vars['edit_link'] . '">' . t('Edit activity details') . '</a></strong></p>';
+    $output .= '<p style="text-align: right;"><strong>' . l(t('Edit activity details'), $vars['edit_link']['path'], $vars['edit_link']['options']) . '</a></strong></p>';
   }
   // Build the status display.
   if (!empty($vars['status'])) {
