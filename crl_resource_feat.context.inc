@@ -31,7 +31,7 @@ function crl_resource_feat_context_default_contexts() {
           'module' => 'facetapi',
           'delta' => 'v0ZXacr7r2i0X35y7qOaIDpzVcJx1uzG',
           'region' => 'content',
-          'weight' => '-41',
+          'weight' => '-46',
         ),
         'views--exp-resource_lists-page' => array(
           'module' => 'views',
@@ -63,15 +63,15 @@ function crl_resource_feat_context_default_contexts() {
           'region' => 'sidebar_first',
           'weight' => '-6',
         ),
-        'crl_helpers-crl_helpers_facet_breadcrumb' => array(
-          'module' => 'crl_helpers',
-          'delta' => 'crl_helpers_facet_breadcrumb',
-          'region' => 'preface_first',
-          'weight' => '-41',
-        ),
         'delta_blocks-tabs' => array(
           'module' => 'delta_blocks',
           'delta' => 'tabs',
+          'region' => 'preface_first',
+          'weight' => '-41',
+        ),
+        'crl_helpers-crl_helpers_facet_breadcrumb' => array(
+          'module' => 'crl_helpers',
+          'delta' => 'crl_helpers_facet_breadcrumb',
           'region' => 'preface_first',
           'weight' => '-41',
         ),

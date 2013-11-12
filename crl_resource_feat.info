@@ -183,4 +183,5 @@ features_exclude[dependencies][entityreference] = entityreference
 features_exclude[dependencies][options] = options
 features_exclude[dependencies][search_api] = search_api
 features_exclude[dependencies][crl_pp_resource_feat] = crl_pp_resource_feat
+features_exclude[field_base][comment_body] = comment_body
 project path = sites/all/modules/custom/crl_local
