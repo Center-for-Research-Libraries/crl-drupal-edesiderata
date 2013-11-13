@@ -35,7 +35,7 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'CRL Review',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-analysis field-group-htab',
         'description' => '',
       ),
       'formatter' => 'closed',
@@ -71,7 +71,7 @@ function crl_resource_feat_field_group_info() {
       'label' => 'CRL Review',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => '',
+        'classes' => ' group-analysis field-group-htab',
         'description' => '',
       ),
       'formatter' => 'closed',
@@ -101,7 +101,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'closed',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-appendix field-group-htab',
       ),
     ),
   );
@@ -129,7 +129,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'closed',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-appendix field-group-htab',
         'required_fields' => 1,
       ),
     ),
@@ -156,7 +156,7 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'CRL Offers & Activity',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-crl-details field-group-htab',
         'description' => '',
       ),
       'formatter' => 'closed',
@@ -186,7 +186,7 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Collection Content',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-details-collection-content field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h2',
@@ -219,7 +219,7 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Provider and Terms',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-details-provider-terms field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h2',
@@ -253,7 +253,7 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Specifications',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-details-specs field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h2',
@@ -286,7 +286,7 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Details',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-details field-group-htab',
         'description' => '',
       ),
       'formatter' => 'closed',
@@ -322,7 +322,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'closed',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-details field-group-htab',
         'required_fields' => 1,
       ),
     ),
@@ -351,7 +351,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'closed',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-jisc-data field-group-hidden',
       ),
     ),
   );
@@ -382,7 +382,7 @@ function crl_resource_feat_field_group_info() {
       'label' => 'Jisc Data',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => '',
+        'classes' => ' group-jisc-data field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h3',
@@ -423,7 +423,7 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Standards Compliance',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-jisc-standards-compliance field-group-hidden',
         'description' => '',
       ),
       'formatter' => 'collapsible',
@@ -461,7 +461,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-jisc-standards-compliance field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -497,7 +497,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'closed',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-overview field-group-htab',
       ),
     ),
   );
@@ -527,7 +527,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'closed',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-overview field-group-htab',
         'required_fields' => 1,
       ),
     ),
@@ -555,7 +555,7 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Community Ratings',
       'instance_settings' => array(
-        'classes' => 'rating-wrapper',
+        'classes' => 'rating-wrapper group-ratings field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h2',
@@ -588,7 +588,7 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Sources',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-sources field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h2',
@@ -622,7 +622,7 @@ function crl_resource_feat_field_group_info() {
       'label' => 'System Fields',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => '',
+        'classes' => ' group-system-fields field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h3',
@@ -657,7 +657,7 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'formatter' => '',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-tabbed field-group-htabs',
       ),
     ),
   );
@@ -685,7 +685,7 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'formatter' => '',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-tabbed field-group-htabs',
       ),
     ),
   );
@@ -712,7 +712,7 @@ function crl_resource_feat_field_group_info() {
       'label' => 'Update Alert',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => '',
+        'classes' => ' group-update-alerts field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h3',
