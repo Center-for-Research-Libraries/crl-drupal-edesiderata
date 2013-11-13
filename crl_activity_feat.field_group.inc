@@ -32,7 +32,7 @@ function crl_activity_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Offer Information',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-activity-offer field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h2',
@@ -66,7 +66,7 @@ function crl_activity_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Offer Information',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-activity-offer field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h2',
@@ -101,7 +101,7 @@ function crl_activity_feat_field_group_info() {
       'label' => 'Offer Information',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => '',
+        'classes' => ' group-activity-offer field-group-fieldset',
         'description' => '',
       ),
       'formatter' => 'collapsible',
@@ -130,7 +130,7 @@ function crl_activity_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Trial Information',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-activity-trial field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h2',
@@ -163,7 +163,7 @@ function crl_activity_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Trial Information',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-activity-trial field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h2',
@@ -197,7 +197,7 @@ function crl_activity_feat_field_group_info() {
       'label' => 'Trial Information',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => '',
+        'classes' => ' group-activity-trial field-group-fieldset',
         'description' => '',
       ),
       'formatter' => 'collapsible',
@@ -223,7 +223,7 @@ function crl_activity_feat_field_group_info() {
       'label' => 'System Fields',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => '',
+        'classes' => ' group-system-fields field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h3',
@@ -256,7 +256,7 @@ function crl_activity_feat_field_group_info() {
       'label' => 'Update Alert',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => '',
+        'classes' => ' group-update-alerts field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h3',
