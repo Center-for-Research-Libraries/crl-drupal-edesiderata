@@ -126,6 +126,12 @@ function crl_activity_activity_node_form_validate(&$form, &$form_state) {
   if (in_array('license_available', $set_status) && !empty($dissallow_with_offer)) {
     form_set_error('field_activity_crl_status', t('"@license_available" cannot be set while "@crl_desiderata" or "@license_under_consideration" or "@past_license_offer" are also set.', $oplist));
   }
+  // Handle case where an offer is passed-up while another status is set that is
+  // mutually exclusive.
+  $dissallow_with_passed = array_intersect($set_status, array('crl_desiderata', 'license_under_consideration', 'license_available'));
+  if (in_array('inactive_declined', $set_status) && !empty($dissallow_with_passed)) {
+    form_set_error('field_activity_crl_status', t('"inactive_declined" cannot be set while "@crl_desiderata" or "@license_under_consideration" or "@license_available" are also set.', $oplist));
+  }
   // Handle case where "License renewal available" is set without "License
   // available"
   if (in_array('license_renewal_available', $set_status) && !in_array('license_available', $set_status)) {
