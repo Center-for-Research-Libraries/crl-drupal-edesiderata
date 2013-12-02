@@ -331,7 +331,7 @@ function crl_helpers_preprocess_comment(&$vars) {
   if ($privacy == 'anon') { // Hide submitter name.
     // Don't hide anything from admins, but show a notice.
     if (user_access('administer comments')) {
-      $vars['content']['privacy_note'] = array('#markup' => t('<strong>Privacy note:</strong> The submitter has chosen to hide thier name from everyone except CRL staff.'));
+      $vars['content']['privacy_note'] = array('#markup' => t('<strong>Privacy note:</strong> The submitter has chosen to hide their name from everyone except CRL staff.'));
     }
     else {
       $vars['author'] = t('(name hidden)');
