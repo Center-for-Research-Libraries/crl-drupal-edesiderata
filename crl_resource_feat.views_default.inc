@@ -257,10 +257,11 @@ function crl_resource_feat_views_default_views() {
     'title' => 'title',
     'field_activity_crl_status' => 'field_activity_crl_status',
     'value' => 'value',
+    'value_4' => 'value_4',
+    'comment_count' => 'comment_count',
     'value_1' => 'value_1',
     'value_2' => 'value_2',
     'value_3' => 'value_3',
-    'comment_count' => 'comment_count',
   );
   $handler->display->display_options['style_options']['default'] = 'value';
   $handler->display->display_options['style_options']['info'] = array(
@@ -277,6 +278,20 @@ function crl_resource_feat_views_default_views() {
       'empty_column' => 0,
     ),
     'value' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'value_4' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'comment_count' => array(
       'sortable' => 1,
       'default_sort_order' => 'desc',
       'align' => '',
@@ -304,13 +319,6 @@ function crl_resource_feat_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'comment_count' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'desc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
   );
   /* Footer: Global: Text area */
   $handler->display->display_options['footer']['area']['id'] = 'area';
@@ -320,16 +328,27 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['relationships']['reverse_field_resource_reference_node']['id'] = 'reverse_field_resource_reference_node';
   $handler->display->display_options['relationships']['reverse_field_resource_reference_node']['table'] = 'node';
   $handler->display->display_options['relationships']['reverse_field_resource_reference_node']['field'] = 'reverse_field_resource_reference_node';
-  /* Relationship: Vote results - Interest */
+  /* Relationship: Vote results - Interest - Yes */
   $handler->display->display_options['relationships']['votingapi_cache']['id'] = 'votingapi_cache';
   $handler->display->display_options['relationships']['votingapi_cache']['table'] = 'node';
   $handler->display->display_options['relationships']['votingapi_cache']['field'] = 'votingapi_cache';
-  $handler->display->display_options['relationships']['votingapi_cache']['ui_name'] = 'Vote results - Interest';
-  $handler->display->display_options['relationships']['votingapi_cache']['label'] = 'Vote results - Interest';
+  $handler->display->display_options['relationships']['votingapi_cache']['ui_name'] = 'Vote results - Interest - Yes';
+  $handler->display->display_options['relationships']['votingapi_cache']['label'] = 'Vote results - Interest - Yes';
   $handler->display->display_options['relationships']['votingapi_cache']['votingapi'] = array(
-    'value_type' => 'points',
+    'value_type' => 'option',
     'tag' => 'resource_interest',
-    'function' => 'sum',
+    'function' => 'option-1',
+  );
+  /* Relationship: Vote results - Interest - No */
+  $handler->display->display_options['relationships']['votingapi_cache_4']['id'] = 'votingapi_cache_4';
+  $handler->display->display_options['relationships']['votingapi_cache_4']['table'] = 'node';
+  $handler->display->display_options['relationships']['votingapi_cache_4']['field'] = 'votingapi_cache';
+  $handler->display->display_options['relationships']['votingapi_cache_4']['ui_name'] = 'Vote results - Interest - No';
+  $handler->display->display_options['relationships']['votingapi_cache_4']['label'] = 'Vote results - Interest - No';
+  $handler->display->display_options['relationships']['votingapi_cache_4']['votingapi'] = array(
+    'value_type' => 'option',
+    'tag' => 'resource_interest',
+    'function' => 'option--1',
   );
   /* Relationship: Vote results - Platform */
   $handler->display->display_options['relationships']['votingapi_cache_1']['id'] = 'votingapi_cache_1';
@@ -381,8 +400,15 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['value']['table'] = 'votingapi_cache';
   $handler->display->display_options['fields']['value']['field'] = 'value';
   $handler->display->display_options['fields']['value']['relationship'] = 'votingapi_cache';
-  $handler->display->display_options['fields']['value']['label'] = 'Interest Count';
+  $handler->display->display_options['fields']['value']['label'] = 'Interest Count - Yes';
   $handler->display->display_options['fields']['value']['precision'] = '0';
+  /* Field: Vote results: Value */
+  $handler->display->display_options['fields']['value_4']['id'] = 'value_4';
+  $handler->display->display_options['fields']['value_4']['table'] = 'votingapi_cache';
+  $handler->display->display_options['fields']['value_4']['field'] = 'value';
+  $handler->display->display_options['fields']['value_4']['relationship'] = 'votingapi_cache_4';
+  $handler->display->display_options['fields']['value_4']['label'] = 'Interest Count - No';
+  $handler->display->display_options['fields']['value_4']['precision'] = '0';
   /* Field: Content: Comment count */
   $handler->display->display_options['fields']['comment_count']['id'] = 'comment_count';
   $handler->display->display_options['fields']['comment_count']['table'] = 'node_comment_statistics';
@@ -500,9 +526,9 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['relationships']['votingapi_cache']['ui_name'] = 'Vote results - Interest';
   $handler->display->display_options['relationships']['votingapi_cache']['label'] = 'Vote results - Interest';
   $handler->display->display_options['relationships']['votingapi_cache']['votingapi'] = array(
-    'value_type' => 'points',
+    'value_type' => 'option',
     'tag' => 'resource_interest',
-    'function' => 'sum',
+    'function' => 'option-1',
   );
   /* Relationship: Vote results - Platform */
   $handler->display->display_options['relationships']['votingapi_cache_1']['id'] = 'votingapi_cache_1';
