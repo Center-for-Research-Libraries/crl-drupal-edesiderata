@@ -122,7 +122,7 @@ function crl_resource_theme() {
     ),
     // Theme hook to generate a full resource summary block.
     'crl_resource_summary' => array(
-      'variables' => array('status' => array(), 'status_options' => array(), 'comment_count' => 0, 'vote_average' => 0, 'interest_count' => 0),
+      'variables' => array('status' => array(), 'status_options' => array(), 'comment_count' => 0, 'vote_average' => 0, 'interest_count_up' => 0, 'interest_count_down' => 0),
     ),
     // Theme hook to generate a "back to index" link.
     'crl_resource_back_to_index' => array(
@@ -137,11 +137,18 @@ function crl_resource_theme() {
       'variables' => array('url' => '', 'days_left' => NULL, 'long' => FALSE),
     ),
     // Theme hook to generate a resource teaser (used in views rows). This will
-    // automatically get used by views based on it's name and the standard
+    // automatically get used by views based on its name and the standard
     // template suggestion rules.
     'views_view_fields__resource_lists' => array(
       'variables' => array(),
       'template' => 'views-view-fields--resource-lists',
+    ),
+    // Theme hook to generate a resource interest voting widget (used by rate).
+    // This will automatically get used by rate based on its name and the
+    // standard template suggestion rules.
+    'rate_widget__resource_interest' => array(
+      'variables' => array(),
+      'template' => 'rate-widget--resource-interest',
     ),
   );
   foreach ($hooks as &$hook) {
@@ -226,13 +233,21 @@ function crl_resource_entity_property_info_alter(&$info) {
     'description' => t("Get the average of votes across all fivestar dimentions that apply to resoruces."),
     'getter callback' => 'crl_resource_get_vote_average',
   );
-  // Get the interest count. NOTE: requires extra queries (does not just use
-  // loaded entity data).
-  $properties['crl_resource_interest_count'] = array(
+  // Get the interest count (positive). NOTE: requires extra queries (does not
+  // just use loaded entity data).
+  $properties['crl_resource_interest_count_up'] = array(
     'label' => t("CRL Resource Interest Count"),
     'type' => 'integer',
-    'description' => t("Get the aggregate interest count for a resoruce."),
-    'getter callback' => 'crl_resource_get_interest_count',
+    'description' => t("Get the aggregate positive interest count for a resoruce."),
+    'getter callback' => 'crl_resource_get_interest_count_up',
+  );
+  // Get the interest count (negative). NOTE: requires extra queries (does not
+  // just use loaded entity data).
+  $properties['crl_resource_interest_count_down'] = array(
+    'label' => t("CRL Resource Interest Count"),
+    'type' => 'integer',
+    'description' => t("Get the aggregate negative interest count for a resoruce."),
+    'getter callback' => 'crl_resource_get_interest_count_down',
   );
   // Captures the glossary value for a resource. This is incldued as a property
   // so that it can be indexed and used as a facet.
@@ -391,26 +406,50 @@ function crl_resource_get_vote_average($entity, array $options, $name, $type, $i
 
 
 /**
- * Properties getter callback: get resource interest count.
+ * Properties getter callback: get resource interest count positive.
  * 
  * NOTE: requires extra queries (does not just use loaded entity data). So it's
  * probably not a good idea to fetch this property over and over on one page.
  * 
  * @see crl_resource_entity_property_info_alter().
  */
-function crl_resource_get_interest_count($entity, array $options, $name, $type, $info) {
-  $count = 0;
-  if (function_exists('votingapi_select_results')) {
+function crl_resource_get_interest_count_up($entity, array $options, $name, $type, $info) {
+  return crl_resource_get_interest_count($entity, '1');
+}
+
+
+/**
+ * Properties getter callback: get resource interest count negative.
+ * 
+ * NOTE: requires extra queries (does not just use loaded entity data). So it's
+ * probably not a good idea to fetch this property over and over on one page.
+ * 
+ * @see crl_resource_entity_property_info_alter().
+ */
+function crl_resource_get_interest_count_down($entity, array $options, $name, $type, $info) {
+  return crl_resource_get_interest_count($entity, '-1');
+}
+
+
+/**
+ * Helper to get a resource interest count based on an option key.
+ */
+function crl_resource_get_interest_count($entity, $option) {
+  // Get the vote data for the interest widget. We use a static cache as this
+  // query really only needs to happen once per entity.
+  static $results = array();
+  if (function_exists('votingapi_select_results') && empty($results[$entity->nid])) {
     $criteria['entity_id'] = $entity->nid;
     $criteria['tag'] = 'resource_interest';
-    $criteria['value_type'] = 'points';
-    $criteria['function'] = 'sum';
-    $results = votingapi_select_results($criteria);
-    if (isset($results[0]['value'])) {
-      $count = (int) $results[0]['value'];
+    $criteria['value_type'] = 'option';
+    $results[$entity->nid] = votingapi_select_results($criteria);
+  }
+  foreach ($results[$entity->nid] as $result) {
+    if (!empty($result['function']) && $result['function'] == 'option-' . $option && !empty($result['value'])) {
+      return (int)$result['value'];
     }
   }
-  return $count;
+  return 0;
 }
 
 
@@ -608,7 +647,8 @@ function crl_resource_block_view($delta = '') {
         $entity_wrapper = entity_metadata_wrapper('node', $entity);
         $status = isset($entity_wrapper->crl_resource_status_backref) ? $entity_wrapper->crl_resource_status_backref->value() : array();
         $vote_average = isset($entity_wrapper->crl_resource_vote_average) ? $entity_wrapper->crl_resource_vote_average->value() : 0;
-        $interest_count = isset($entity_wrapper->crl_resource_interest_count) ? $entity_wrapper->crl_resource_interest_count->value() : 0;
+        $interest_count_up = isset($entity_wrapper->crl_resource_interest_count_up) ? $entity_wrapper->crl_resource_interest_count_up->value() : 0;
+        $interest_count_down = isset($entity_wrapper->crl_resource_interest_count_down) ? $entity_wrapper->crl_resource_interest_count_down->value() : 0;
         if (isset($entity->comment_count)) {
           $comment_count = $entity->comment_count;
         }
@@ -621,7 +661,8 @@ function crl_resource_block_view($delta = '') {
           '#status_options' => $status_options,
           '#comment_count' => $comment_count,
           '#vote_average' => $vote_average,
-          '#interest_count' => $interest_count,
+          '#interest_count_up' => $interest_count_up,
+          '#interest_count_down' => $interest_count_down,
         ),
       );
       break;

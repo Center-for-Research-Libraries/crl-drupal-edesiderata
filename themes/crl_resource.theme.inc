@@ -56,6 +56,26 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
 
 
 /**
+ * Implements hook_preprocess_rate_widget__resource_interest().
+ * 
+ * Build custom variables for the resource interest widget.
+ */
+function crl_resource_preprocess_rate_widget__resource_interest(&$variables) {
+  extract($variables);
+  $info = array();
+  if ($mode == RATE_CLOSED) {
+    $info[] = t('Voting is closed.');
+  }
+  if ($mode != RATE_COMPACT && $mode != RATE_COMPACT_DISABLED) {
+    if (isset($results['user_vote'])) {
+      $info[] = t('You voted \'@option\'.', array('@option' => t($results['user_vote'])));
+    }
+  }
+  $variables['info'] = implode(' ', $info);
+}
+
+
+/**
  * Returns HTML for a generic pseudo field display. This provides a very quick
  * and dirty way to theme a "field" without constructing lots of theme
  * variables.
@@ -153,6 +173,7 @@ function theme_crl_resource_publisher_legend($vars) {
 function theme_crl_resource_summary($vars) {
   $markup = '';
   if (!empty($vars)) {
+    // Get status row.
     $status_options = $vars['status_options'];
     $highlights = array();
     if (!empty($vars['status'])) {
@@ -160,9 +181,19 @@ function theme_crl_resource_summary($vars) {
         $highlights['one'][] = '<span class="summary-icon ' . $status . '"></span>' . $status_options[$status];
       }
     }
-    $highlights['two'][] = '<span class="big-num">' . $vars['comment_count'] . '</span> Comments';
-    $highlights['two'][] = '<span class="big-num">' . $vars['vote_average'] . '</span> Average Rating';
-    $highlights['two'][] = '<span class="big-num">' . $vars['interest_count'] . '</span> Interest Count';
+    // Get feedback row.
+    if (!empty($vars['comment_count'])) {
+      $highlights['two'][] = '<span class="big-num">' . $vars['comment_count'] . '</span> ' . t('User comments');
+    }
+    if (!empty($vars['vote_average'])) {
+      $highlights['two'][] = '<span class="big-num">' . $vars['vote_average'] . '</span> ' . t('Average Rating');
+    }
+    if (!empty($vars['interest_count_up'])) {
+      $highlights['two'][] = '<span class="big-num">' . $vars['interest_count_up'] . '</span><span title="Thumbs Up" alt="Thumbs Up" class="crl-icon-small thumbsup-icon-dark"></span>';
+    }
+    if (!empty($vars['interest_count_down'])) {
+      $highlights['two'][] = '<span class="big-num">' . $vars['interest_count_down'] . '</span><span title="Thumbs Down" alt="Thumbs Down" class="crl-icon-small thumbsdown-icon-dark"></span>';
+    }
     foreach($highlights as $row_key => $row) {
       if ($row_key == 'one') {
         $heading = t('CRL Status');
