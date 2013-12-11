@@ -19,7 +19,7 @@ function crl_resource_dashboard_feat_context_default_contexts() {
   $context->conditions = array(
     'path' => array(
       'values' => array(
-        'node/326' => 'node/326',
+        '<front>' => '<front>',
       ),
     ),
   );
