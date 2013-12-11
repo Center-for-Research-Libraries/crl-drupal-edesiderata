@@ -249,7 +249,7 @@ class CrlResourceDisplayElements {
       'license_renewal_available' => t('Currently offered for renewal'),
       'trial_access_available' => t('Available for trial'),
       'past_license_offer' => t('Past offers'),
-      'inactive_declined' => t('License not taken up by CRL'),
+      'inactive_declined' => t('No longer under consideration by CRL'),
       'crl_review_available' => t('Evaluation available by CRL and community'),
     );
   }
