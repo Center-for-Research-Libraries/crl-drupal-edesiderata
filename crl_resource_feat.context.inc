@@ -243,6 +243,12 @@ function crl_resource_feat_context_default_contexts() {
           'region' => 'sidebar_second',
           'weight' => '-9',
         ),
+        'crl_mydes_feat-crl_mydes_feat_flag' => array(
+          'module' => 'crl_mydes_feat',
+          'delta' => 'crl_mydes_feat_flag',
+          'region' => 'sidebar_second',
+          'weight' => '-8',
+        ),
       ),
     ),
   );

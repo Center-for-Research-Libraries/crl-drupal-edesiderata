@@ -125,16 +125,26 @@ function crl_resource_feat_views_default_views() {
   $handler = $view->new_display('page', 'Page - All Resources', 'page');
   $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['path'] = 'resources/main';
-  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'All Resources';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'main-menu';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
   $handler->display->display_options['tab_options']['type'] = 'normal';
-  $handler->display->display_options['tab_options']['title'] = 'Resources';
+  $handler->display->display_options['tab_options']['title'] = 'Resources A-Z';
   $handler->display->display_options['tab_options']['weight'] = '0';
   $handler->display->display_options['tab_options']['name'] = 'main-menu';
+
+  /* Display: Page - All Resources (date sort) */
+  $handler = $view->new_display('page', 'Page - All Resources (date sort)', 'page_2');
+  $handler->display->display_options['path'] = 'resources/main-date';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Date sort';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'main-menu';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
 
   /* Display: Page - CRL Resources */
   $handler = $view->new_display('page', 'Page - CRL Resources', 'page_1');
