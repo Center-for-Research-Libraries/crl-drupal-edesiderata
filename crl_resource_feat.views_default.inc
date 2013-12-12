@@ -43,6 +43,15 @@ function crl_resource_feat_views_default_views() {
     ),
   );
   $handler->display->display_options['row_plugin'] = 'fields';
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = '<p><strong>No results found. Please consider refining your search and filter criteria.</strong></p>
+
+<p>If your permissions allow, you may also <a href="/node/42">suggest a new resource</a> for inclusion in the resource lists.</p>';
+  $handler->display->display_options['empty']['area']['format'] = 'full_html';
   /* Field: Indexed Node: CRL Resource Glossary Value */
   $handler->display->display_options['fields']['crl_resource_glossary_value']['id'] = 'crl_resource_glossary_value';
   $handler->display->display_options['fields']['crl_resource_glossary_value']['table'] = 'search_api_index_title_search_index';
