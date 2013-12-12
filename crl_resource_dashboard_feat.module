@@ -85,9 +85,9 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
         $status = '';
         $url_options = array();
         $title = t('Total Resources');
-        $tagline = t('Browse All (A-Z)');
+        $tagline = t('Browse and Search All (A-Z)');
         $sort_text = '';
-        $link_text = t('Browse All (A-Z)');
+        $link_text = t('Browse and Search All (A-Z)');
         $theme = 'crl_resource_dashboard_feat_view_head_all';
         break;
     }
