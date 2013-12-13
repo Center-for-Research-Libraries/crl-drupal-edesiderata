@@ -38,6 +38,17 @@ function crl_resource_dashboard_feat_theme() {
   return $hooks;
 }
 
+/**
+ * Implements hook_views_pre_execute().
+ * 
+ */
+function crl_resource_dashboard_feat_views_pre_execute($view) {
+  if ($view->name == 'resource_dashboard') {
+    // Tell views to caclculate the total results count no matter what the
+    // pager settings are.
+    $view->get_total_rows = TRUE;
+  }
+}
 
 /**
  * Implements hook_views_pre_render().
@@ -47,7 +58,7 @@ function crl_resource_dashboard_feat_theme() {
 function crl_resource_dashboard_feat_views_pre_render(&$view) {
   if ($view->name == 'resource_dashboard') {
     $set = FALSE;
-    $count = $view->total_rows;
+    $count = !empty($view->total_rows) ? $view->total_rows : '';
     $path = 'resources/main';
     switch ($view->current_display) {
       case 'block_1' :
