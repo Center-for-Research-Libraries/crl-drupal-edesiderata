@@ -725,7 +725,6 @@ function crl_resource_activity_edit_link($entity) {
     $edit_link = array('path' => 'node/add/activity', 'options' => array('query' => array('activity_title' => rawurlencode('CRL Activity: ' . check_plain($r_wrapper->value()->title)), 'resource_id' => $r_wrapper->value()->nid)));
   }
   return $edit_link;
-
 }
 
 

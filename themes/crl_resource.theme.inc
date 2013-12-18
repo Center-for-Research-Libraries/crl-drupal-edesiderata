@@ -51,6 +51,12 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
     $vars['status_options'] = crl_resource_activity_status_property_oplist();
     // Check for expiration message, but only on the offer list.
     $vars['days_left'] = isset($r_entity_wrapper->crl_resource_expiration_countdown) ? $r_entity_wrapper->crl_resource_expiration_countdown->value() : NULL;
+    $vars['extra'] = '';
+    // Integration with crl_mydes_feat to add a watch flag link to each item
+    // in the index.
+    if (module_exists('crl_mydes_feat')) {
+      $vars['extra'] = flag_create_link('mydes', $indexed_entity->nid);
+    }
   }
 }
 

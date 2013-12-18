@@ -46,5 +46,7 @@
       print '<span class="summary-icon-small ' . $stat . '" title="' . $status_options[$stat] . '"></span>';
     }
     print '</div>';
-  } ?>
+  } 
+  print $extra;
+  ?>
 <div class="clearfix"></div>
