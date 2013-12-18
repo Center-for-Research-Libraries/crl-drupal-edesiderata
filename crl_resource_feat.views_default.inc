@@ -52,6 +52,14 @@ function crl_resource_feat_views_default_views() {
 
 <p>If your permissions allow, you may also <a href="/node/42">suggest a new resource</a> for inclusion in the resource lists.</p>';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
+  /* Relationship: Indexed Node: Provider */
+  $handler->display->display_options['relationships']['field_provider']['id'] = 'field_provider';
+  $handler->display->display_options['relationships']['field_provider']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['relationships']['field_provider']['field'] = 'field_provider';
+  /* Relationship: Indexed Node: CRL Resource Backreference */
+  $handler->display->display_options['relationships']['crl_resource_backref']['id'] = 'crl_resource_backref';
+  $handler->display->display_options['relationships']['crl_resource_backref']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['relationships']['crl_resource_backref']['field'] = 'crl_resource_backref';
   /* Field: Indexed Node: CRL Resource Glossary Value */
   $handler->display->display_options['fields']['crl_resource_glossary_value']['id'] = 'crl_resource_glossary_value';
   $handler->display->display_options['fields']['crl_resource_glossary_value']['table'] = 'search_api_index_title_search_index';
@@ -65,8 +73,20 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['label'] = '';
-  $handler->display->display_options['fields']['nothing']['alter']['text'] = 'This is a placeholder field. The real content should be rendered through the theme_crl_resource_teaser() theme hook.';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = 'This is a placeholder field. The real content should be rendered through the appropriate theme hooks and preprocessors.';
   $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  /* Field: Node: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'entity_node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['relationship'] = 'field_provider';
+  $handler->display->display_options['fields']['title']['link_to_entity'] = 0;
+  /* Field: Node: Title */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'entity_node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['relationship'] = 'crl_resource_backref';
+  $handler->display->display_options['fields']['title_1']['link_to_entity'] = 0;
   /* Sort criterion: Indexed Node: Sorting Title */
   $handler->display->display_options['sorts']['field_resource_title_for_sort']['id'] = 'field_resource_title_for_sort';
   $handler->display->display_options['sorts']['field_resource_title_for_sort']['table'] = 'search_api_index_title_search_index';
@@ -125,8 +145,8 @@ function crl_resource_feat_views_default_views() {
   $handler = $view->new_display('page', 'Page - All Resources', 'page');
   $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['path'] = 'resources/main';
-  $handler->display->display_options['menu']['type'] = 'default tab';
-  $handler->display->display_options['menu']['title'] = 'All Resources';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Resources A-Z';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'main-menu';
   $handler->display->display_options['menu']['context'] = 0;
@@ -138,76 +158,23 @@ function crl_resource_feat_views_default_views() {
 
   /* Display: Page - All Resources (date sort) */
   $handler = $view->new_display('page', 'Page - All Resources (date sort)', 'page_2');
-  $handler->display->display_options['path'] = 'resources/main-date';
-  $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Date sort';
-  $handler->display->display_options['menu']['weight'] = '0';
-  $handler->display->display_options['menu']['name'] = 'main-menu';
-  $handler->display->display_options['menu']['context'] = 0;
-  $handler->display->display_options['menu']['context_only_inline'] = 0;
-
-  /* Display: Page - CRL Resources */
-  $handler = $view->new_display('page', 'Page - CRL Resources', 'page_1');
-  $handler->display->display_options['defaults']['pager'] = FALSE;
-  $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
-  $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '0';
-  $handler->display->display_options['pager']['options']['quantity'] = '9';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['exposed_block'] = TRUE;
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Indexed Node: Content type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'resource' => 'resource',
-  );
-  $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Indexed Node: CRL Resource Status Backreference */
-  $handler->display->display_options['filters']['crl_resource_status_backref']['id'] = 'crl_resource_status_backref';
-  $handler->display->display_options['filters']['crl_resource_status_backref']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['filters']['crl_resource_status_backref']['field'] = 'crl_resource_status_backref';
-  $handler->display->display_options['filters']['crl_resource_status_backref']['value'] = array(
-    'crl_desiderata' => 'crl_desiderata',
-    'license_under_consideration' => 'license_under_consideration',
-    'license_available' => 'license_available',
-    'license_renewal_available' => 'license_renewal_available',
-    'trial_access_available' => 'trial_access_available',
-    'past_license_offer' => 'past_license_offer',
-    'crl_review_available' => 'crl_review_available',
-  );
-  $handler->display->display_options['filters']['crl_resource_status_backref']['group'] = 1;
-  /* Filter criterion: Search: Fulltext search */
-  $handler->display->display_options['filters']['search_api_views_fulltext']['id'] = 'search_api_views_fulltext';
-  $handler->display->display_options['filters']['search_api_views_fulltext']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['filters']['search_api_views_fulltext']['field'] = 'search_api_views_fulltext';
-  $handler->display->display_options['filters']['search_api_views_fulltext']['operator'] = '=';
-  $handler->display->display_options['filters']['search_api_views_fulltext']['group'] = 1;
-  $handler->display->display_options['filters']['search_api_views_fulltext']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator_id'] = 'search_api_views_fulltext_op';
-  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['label'] = 'Search';
-  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator'] = 'search_api_views_fulltext_op';
-  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['identifier'] = 'search_api_views_fulltext';
-  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    4 => 0,
-    5 => 0,
-  );
-  $handler->display->display_options['filters']['search_api_views_fulltext']['group_info']['label'] = 'Fulltext search';
-  $handler->display->display_options['filters']['search_api_views_fulltext']['group_info']['identifier'] = 'search_api_views_fulltext';
-  $handler->display->display_options['filters']['search_api_views_fulltext']['group_info']['remember'] = FALSE;
-  $handler->display->display_options['filters']['search_api_views_fulltext']['group_info']['group_items'] = array(
-    1 => array(),
-    2 => array(),
-    3 => array(),
-  );
-  $handler->display->display_options['path'] = 'resources/crl';
-  $handler->display->display_options['menu']['title'] = 'Only Active Resources';
-  $handler->display->display_options['menu']['weight'] = '5';
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Indexed Node: Date changed */
+  $handler->display->display_options['sorts']['changed']['id'] = 'changed';
+  $handler->display->display_options['sorts']['changed']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['sorts']['changed']['field'] = 'changed';
+  $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
+  $handler->display->display_options['sorts']['changed']['expose']['label'] = 'Date updated';
+  $handler->display->display_options['path'] = 'resources/main-date';
+  $handler->display->display_options['menu']['title'] = 'Date List';
+  $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'main-menu';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;

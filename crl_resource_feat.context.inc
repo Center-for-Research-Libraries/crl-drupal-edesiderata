@@ -21,6 +21,7 @@ function crl_resource_feat_context_default_contexts() {
       'values' => array(
         'resource_lists:page' => 'resource_lists:page',
         'resource_lists:page_1' => 'resource_lists:page_1',
+        'resource_lists:page_2' => 'resource_lists:page_2',
       ),
     ),
   );
@@ -63,17 +64,17 @@ function crl_resource_feat_context_default_contexts() {
           'region' => 'sidebar_first',
           'weight' => '-6',
         ),
-        'delta_blocks-tabs' => array(
-          'module' => 'delta_blocks',
-          'delta' => 'tabs',
-          'region' => 'preface_first',
-          'weight' => '-41',
-        ),
         'crl_helpers-crl_helpers_facet_breadcrumb' => array(
           'module' => 'crl_helpers',
           'delta' => 'crl_helpers_facet_breadcrumb',
           'region' => 'preface_first',
-          'weight' => '-41',
+          'weight' => '-50',
+        ),
+        'delta_blocks-tabs' => array(
+          'module' => 'delta_blocks',
+          'delta' => 'tabs',
+          'region' => 'preface_first',
+          'weight' => '-40',
         ),
       ),
     ),
@@ -242,12 +243,6 @@ function crl_resource_feat_context_default_contexts() {
           'delta' => 'crl_resource_common_input',
           'region' => 'sidebar_second',
           'weight' => '-9',
-        ),
-        'crl_mydes_feat-crl_mydes_feat_flag' => array(
-          'module' => 'crl_mydes_feat',
-          'delta' => 'crl_mydes_feat_flag',
-          'region' => 'sidebar_second',
-          'weight' => '-8',
         ),
       ),
     ),
