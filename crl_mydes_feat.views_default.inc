@@ -22,7 +22,7 @@ function crl_mydes_feat_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'My eDesiderata';
+  $handler->display->display_options['title'] = 'My Watched Items';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -30,15 +30,23 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'crl_resource_alert' => 'crl_resource_alert',
     'title' => 'title',
     'timestamp' => 'timestamp',
     'timestamp_1' => 'timestamp_1',
-    'nid' => 'nid',
+    'title_1' => 'title_1',
+    'field_provider' => 'field_provider',
+    'field_activity_crl_status' => 'field_activity_crl_status',
+    'timestamp_2' => 'timestamp_2',
+    'ops' => 'ops',
+    'nid_1' => 'nid_1',
   );
-  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['default'] = 'timestamp_2';
   $handler->display->display_options['style_options']['info'] = array(
     'crl_resource_alert' => array(
       'align' => '',
@@ -62,7 +70,38 @@ function crl_mydes_feat_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'nid' => array(
+    'title_1' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_provider' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_activity_crl_status' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'timestamp_2' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'ops' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'nid_1' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -70,6 +109,20 @@ function crl_mydes_feat_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = '<p>You watched items are appear below. The activity related to these items will be aggregated into your personal activity feed.</p><p>To add a new item to your watch list simply click the "Watch" option that appears next to each item while browsing the resource listings.</p>';
+  $handler->display->display_options['header']['area']['format'] = 'full_html';
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = '<p><strong>No watched items found.</strong></p>';
+  $handler->display->display_options['empty']['area']['format'] = 'full_html';
   /* Relationship: Flags: mydes */
   $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
   $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'node';
@@ -94,21 +147,36 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['text'] = '[title] [crl_resource_alert]';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  /* Field: Title display (rewrite) */
-  $handler->display->display_options['fields']['nid']['id'] = 'nid';
-  $handler->display->display_options['fields']['nid']['table'] = 'node';
-  $handler->display->display_options['fields']['nid']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid']['ui_name'] = 'Title display (rewrite)';
-  $handler->display->display_options['fields']['nid']['label'] = 'Resource';
-  $handler->display->display_options['fields']['nid']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['nid']['alter']['text'] = '[title] [crl_resource_alert]';
-  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Content: Has new content */
+  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['table'] = 'history';
+  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['label'] = '';
+  $handler->display->display_options['fields']['timestamp']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['timestamp']['alter']['text'] = '[timestamp]';
+  $handler->display->display_options['fields']['timestamp']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['timestamp']['hide_alter_empty'] = FALSE;
+  /* Field: Content: Has new content */
+  $handler->display->display_options['fields']['timestamp_1']['id'] = 'timestamp_1';
+  $handler->display->display_options['fields']['timestamp_1']['table'] = 'history';
+  $handler->display->display_options['fields']['timestamp_1']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp_1']['relationship'] = 'reverse_field_resource_reference_node';
+  $handler->display->display_options['fields']['timestamp_1']['label'] = '';
+  $handler->display->display_options['fields']['timestamp_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['timestamp_1']['alter']['text'] = '[timestamp_1] (activity)';
+  $handler->display->display_options['fields']['timestamp_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['timestamp_1']['hide_alter_empty'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title_1']['alter']['text'] = '[title] [crl_resource_alert]&nbsp;&nbsp;[timestamp]&nbsp;&nbsp;[timestamp_1]';
+  $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
   /* Field: Content: Provider */
   $handler->display->display_options['fields']['field_provider']['id'] = 'field_provider';
   $handler->display->display_options['fields']['field_provider']['table'] = 'field_data_field_provider';
@@ -122,42 +190,31 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['field_activity_crl_status']['field'] = 'field_activity_crl_status';
   $handler->display->display_options['fields']['field_activity_crl_status']['relationship'] = 'reverse_field_resource_reference_node';
   $handler->display->display_options['fields']['field_activity_crl_status']['delta_offset'] = '0';
-  /* Field: Content: Has new content */
-  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['table'] = 'history';
-  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['label'] = 'Updated since last view';
-  $handler->display->display_options['fields']['timestamp']['alter']['text'] = '[timestamp]';
-  $handler->display->display_options['fields']['timestamp']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['timestamp']['empty'] = 'no';
-  $handler->display->display_options['fields']['timestamp']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Has new content */
-  $handler->display->display_options['fields']['timestamp_1']['id'] = 'timestamp_1';
-  $handler->display->display_options['fields']['timestamp_1']['table'] = 'history';
-  $handler->display->display_options['fields']['timestamp_1']['field'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp_1']['relationship'] = 'reverse_field_resource_reference_node';
-  $handler->display->display_options['fields']['timestamp_1']['label'] = 'Offer updated since last view';
-  $handler->display->display_options['fields']['timestamp_1']['alter']['text'] = '[timestamp_1] (activity)';
-  $handler->display->display_options['fields']['timestamp_1']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['timestamp_1']['empty'] = 'no';
-  $handler->display->display_options['fields']['timestamp_1']['hide_alter_empty'] = FALSE;
-  /* Field: Print Link */
-  $handler->display->display_options['fields']['nid_1']['id'] = 'nid_1';
-  $handler->display->display_options['fields']['nid_1']['table'] = 'node';
-  $handler->display->display_options['fields']['nid_1']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid_1']['ui_name'] = 'Print Link';
-  $handler->display->display_options['fields']['nid_1']['label'] = '';
-  $handler->display->display_options['fields']['nid_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['nid_1']['alter']['text'] = '<a href="/print/[nid_1]">Print</a>';
-  $handler->display->display_options['fields']['nid_1']['element_label_colon'] = FALSE;
+  /* Field: Flags: Flagged time */
+  $handler->display->display_options['fields']['timestamp_2']['id'] = 'timestamp_2';
+  $handler->display->display_options['fields']['timestamp_2']['table'] = 'flagging';
+  $handler->display->display_options['fields']['timestamp_2']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp_2']['relationship'] = 'flag_content_rel';
+  $handler->display->display_options['fields']['timestamp_2']['label'] = 'Watched since';
+  $handler->display->display_options['fields']['timestamp_2']['date_format'] = 'medium_no_time';
   /* Field: Flags: Flag link */
   $handler->display->display_options['fields']['ops']['id'] = 'ops';
   $handler->display->display_options['fields']['ops']['table'] = 'flagging';
   $handler->display->display_options['fields']['ops']['field'] = 'ops';
   $handler->display->display_options['fields']['ops']['relationship'] = 'flag_content_rel';
   $handler->display->display_options['fields']['ops']['label'] = '';
+  $handler->display->display_options['fields']['ops']['exclude'] = TRUE;
   $handler->display->display_options['fields']['ops']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['ops']['link_type'] = 'normal';
+  /* Field: Print Link */
+  $handler->display->display_options['fields']['nid_1']['id'] = 'nid_1';
+  $handler->display->display_options['fields']['nid_1']['table'] = 'node';
+  $handler->display->display_options['fields']['nid_1']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid_1']['ui_name'] = 'Print Link';
+  $handler->display->display_options['fields']['nid_1']['label'] = 'Operations';
+  $handler->display->display_options['fields']['nid_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['nid_1']['alter']['text'] = '<a href="/print/[nid_1]">Print</a>&nbsp;&nbsp;[ops]';
+  $handler->display->display_options['fields']['nid_1']['element_label_colon'] = FALSE;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -177,12 +234,6 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'resource' => 'resource',
   );
-  /* Filter criterion: Flags: Flagged */
-  $handler->display->display_options['filters']['flagged']['id'] = 'flagged';
-  $handler->display->display_options['filters']['flagged']['table'] = 'flagging';
-  $handler->display->display_options['filters']['flagged']['field'] = 'flagged';
-  $handler->display->display_options['filters']['flagged']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['filters']['flagged']['value'] = '1';
   /* Filter criterion: Content: CRL Status (field_activity_crl_status) */
   $handler->display->display_options['filters']['field_activity_crl_status_value']['id'] = 'field_activity_crl_status_value';
   $handler->display->display_options['filters']['field_activity_crl_status_value']['table'] = 'field_data_field_activity_crl_status';
@@ -230,9 +281,10 @@ function crl_mydes_feat_views_default_views() {
   );
   $handler->display->display_options['filters']['field_activity_crl_status_value']['expose']['reduce'] = TRUE;
 
-  /* Display: List */
-  $handler = $view->new_display('page', 'List', 'page');
-  $handler->display->display_options['path'] = 'my';
+  /* Display: Block */
+  $handler = $view->new_display('block', 'Block', 'block_1');
+  $handler->display->display_options['defaults']['use_ajax'] = FALSE;
+  $handler->display->display_options['use_ajax'] = TRUE;
   $export['mydes_lists'] = $view;
 
   return $export;
