@@ -106,6 +106,7 @@ features[field_group][] = group_tabbed|node|title_review|default
 features[field_group][] = group_tabbed|node|title_review|form
 features[field_group][] = group_update_alerts|node|resource|form
 features[field_instance][] = comment-comment_node_resource-comment_body
+features[field_instance][] = comment-comment_node_resource-field_comment_privacy
 features[field_instance][] = node-resource-body
 features[field_instance][] = node-resource-field_content_scope_and_complete
 features[field_instance][] = node-resource-field_cost_and_price_structure

@@ -22,7 +22,7 @@ function crl_resource_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 1,
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'comment',
@@ -41,6 +41,42 @@ function crl_resource_feat_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance: 'comment-comment_node_resource-field_comment_privacy'
+  $field_instances['comment-comment_node_resource-field_comment_privacy'] = array(
+    'bundle' => 'comment_node_resource',
+    'default_value' => array(
+      0 => array(
+        'value' => 'normal',
+      ),
+    ),
+    'default_value_function' => '',
+    'default_value_php' => '',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'field_comment_privacy',
+    'label' => 'Comment Privacy Setting',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 5,
     ),
   );
 
@@ -2486,6 +2522,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('Authentication');
   t('Collection Content');
   t('Comment');
+  t('Comment Privacy Setting');
   t('Content Details');
   t('Content scope and completeness');
   t('Contributors');
