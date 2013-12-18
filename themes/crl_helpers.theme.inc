@@ -17,42 +17,25 @@
 function theme_crl_helpers_facet_breadcrumb($variables) {
   $output = '';
   $glue = "»";
-
-  // Get the most recent breadcrumb and strip the first 2 items off (for
-  // this case we assume these are "home" and "section")
-  $variables['breadcrumb'] = drupal_get_breadcrumb();
-  // Drop the "home" value for the breadcrumb
-  array_shift($variables['breadcrumb']);
-
-  if (!empty($variables['breadcrumb'])) {
-    $base_path = '/';
-    if ($base_url = parse_url($_SERVER['REQUEST_URI'])) {
-      $base_path = $base_url['path']; 
+  $reset_markup = '<span class="facet-breadcrumb-reset"><a href="' . $variables['base_path'] . '"><span class="facet-breadcrumb-reset-icon"></span><span class="facet-breadcrumb-label">' . t('Reset') . '</span></a></span>';
+  $output .= '<div id="facet-breadcrumb" class="clearfix"><ul class="breadcrumb"><li><span class="facet-breadcrumb-label">' . t('Active Filters') . ': </span></li>';
+  $switch = array('odd' => 'even', 'even' => 'odd');
+  $zebra = 'even';
+  $last = count($variables['breadcrumb']) - 1;    
+  foreach ($variables['breadcrumb'] as $key => $item) {
+    $zebra = $switch[$zebra];
+    $attributes['class'] = array('depth-' . ($key + 1), $zebra);
+    if ($key == 0) {
+      $attributes['class'][] = 'first';
     }
-    $reset_markup = '<span class="facet-breadcrumb-reset"><a href="' . $base_path . '"><span class="facet-breadcrumb-reset-icon"></span><span class="facet-breadcrumb-label">' . t('Reset') . '</span></a></span>';
-    $output .= '<div id="facet-breadcrumb" class="clearfix"><ul class="breadcrumb"><li><span class="facet-breadcrumb-label">' . t('Active Filters') . ': </span></li>';
-    $switch = array('odd' => 'even', 'even' => 'odd');
-    $zebra = 'even';
-    $last = count($variables['breadcrumb']) - 1;    
-
-    foreach ($variables['breadcrumb'] as $key => $item) {
-      $zebra = $switch[$zebra];
-      $attributes['class'] = array('depth-' . ($key + 1), $zebra);
-
-      if ($key == 0) {
-        $attributes['class'][] = 'first';
-      }
-
-      if ($key == $last) {
-        $attributes['class'][] = 'last';
-        $glue = '';
-      }
-
-      $output .= '<li' . drupal_attributes($attributes) . '>' . $item . ' ' . $glue . '</li>';
+    if ($key == $last) {
+      $attributes['class'][] = 'last';
+      $glue = '';
     }
-
-    $output .= '</ul>' . $reset_markup . '</div>';
+    $output .= '<li' . drupal_attributes($attributes) . '>' . $item . ' ' . $glue . '</li>';
   }
+  $output .= '</ul>' . $reset_markup . '</div>';
+  $output .= $variables['extra'];
   return $output;
 }
 

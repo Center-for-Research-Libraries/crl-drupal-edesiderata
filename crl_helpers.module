@@ -53,7 +53,7 @@ function crl_helpers_theme() {
   return array(
     // Theme hook to generate our custom facet breadcrumb.
     'crl_helpers_facet_breadcrumb' => array(
-      'variables' => array('breadcrumb' => array()),
+      'variables' => array('breadcrumb' => array(), 'base_path' => '', 'extra' => ''),
       'path' => drupal_get_path('module', 'crl_helpers') . '/themes',
       'file' => 'crl_helpers.theme.inc',
     ),
@@ -96,9 +96,28 @@ function crl_helpers_block_view($delta = '') {
     case 'crl_helpers_facet_breadcrumb':
       $block['subject'] = '';
       $output = '';
-      if (isset($_GET['f']) || isset($_GET['search_api_views_fulltext'])) {
+      if (isset($_GET['f']) || !empty($_GET['search_api_views_fulltext'])) { 
+        // Get the most recent breadcrumb.
+        $breadcrumb = drupal_get_breadcrumb();
+        // Drop the "home" value for the breadcrumb.
+        array_shift($breadcrumb);
+        if (!empty($breadcrumb)) {
+          $base_path = '/';
+          if ($base_url = parse_url($_SERVER['REQUEST_URI'])) {
+            $base_path = $base_url['path']; 
+          }  
+        }
+        $extra = '';
+        // Integration with the crl_mydes_feat module to inject a save this
+        // search option into the breadcrumb block.
+        if (module_exists('crl_mydes_feat')) {
+          $extra = crl_mydes_feat_build_saved_search_form();
+        }
         $output = array(
           'facet_breadcrumb' => array(
+            '#breadcrumb' => $breadcrumb,
+            '#base_path' => $base_path,
+            '#extra' => $extra,
             '#theme' => 'crl_helpers_facet_breadcrumb',
           ),
         );
