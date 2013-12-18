@@ -1,0 +1,94 @@
+<?php
+/**
+ * @file
+ * Code for the My eDesiderata feature.
+ */
+
+include_once 'crl_mydes_feat.features.inc';
+
+
+/**
+ * Implements hook_theme().
+ */
+function crl_mydes_feat_theme() {
+  return array(
+    // Theme hook to generate a collapsable saved search box.
+    'crl_mydes_feat_save_search_form' => array(
+      'variables' => array('block' => array()),
+      'path' => drupal_get_path('module', 'crl_mydes_feat') . '/themes',
+      'file' => 'crl_mydes_feat.theme.inc',
+    ),
+  );
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function crl_mydes_feat_block_info() {
+  $blocks['crl_mydes_feat_flag'] = array(
+    'info' => t('Watch Resource via My eDesiderata'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function crl_mydes_feat_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'crl_mydes_feat_flag':
+      global $user;
+      $nid = arg(1);
+      $node = node_load($nid);
+      // Make sure block should be visible
+      if (isset($node->type) && $node->type == 'resource' && $user->uid) {
+        $block['subject'] = t('Watch this Resource');
+        $block['content'] = array('#markup' => crl_mydes_feat_generate_widget($node));
+      }
+      break;
+  }
+  return $block;
+}
+
+
+function crl_mydes_feat_generate_widget($node) {
+  $output = '<p>' . t('By watching this resource you can monitor its activity in !link.', array('!link' => l(t('My eDesiderata'), 'my'))) . '</p>';
+  $flag_link = flag_create_link('mydes', $node->nid);
+  return $output . $flag_link;
+}
+
+
+function crl_mydes_feat_build_saved_search_form() {
+  $output = '';
+  // Quick prototype addition to demonstrate adding the saved search block
+  $saved_searches = search_api_saved_searches_settings_load_multiple(FALSE, array('enabled' => TRUE));
+  if (!empty($saved_searches)) {
+    $saved_search = reset($saved_searches);
+    $block = module_invoke('search_api_saved_searches', 'block_view', $saved_search->delta);
+    drupal_add_js(drupal_get_path('module', 'crl_mydes_feat') .'/js/crl_mydes_feat.js', 'file');
+    $output .= theme('crl_mydes_feat_save_search_form', array('block' => $block));
+  }
+  return $output;
+}
+
+
+function crl_mydes_feat_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'search_api_saved_searches_save_form' || $form_id == 'search_api_saved_searches_search_edit_form') {
+    $form['top_note'] = array(
+      '#markup' => '<hr/><p>' . t('Saving this search will make future results accessible within My eDesiderata. You can also be notifed via email when new resources are added that match this search criteria.') . '</p>',
+      '#weight' => -10,
+    );
+    $form['name']['#description'] = t('Give this saved search a name by which it can be later accessed within My eDesiderata');
+    $args = arg();
+    if ($args[0] !== 'search-api') {
+      $form['notify_interval']['#type'] = 'hidden';
+      $form['notify_interval']['#value'] = -1;
+    }
+    else {
+      $form['notify_interval']['#description'] = t('Select how frequently you would like to be notifed via email when resources are <em>added</em> that match this filter criteria');
+    }
+  }
+}

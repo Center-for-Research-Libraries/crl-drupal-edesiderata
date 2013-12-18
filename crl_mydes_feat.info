@@ -1,0 +1,11 @@
+name = My eDesiderata
+core = 7.x
+package = CRL
+dependencies[] = flag
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[flag][] = mydes
+features[views_view][] = mydes_lists
+features_exclude[dependencies][ctools] = ctools
+project path = sites/all/modules/custom/crl_local
