@@ -1,4 +1,4 @@
-name = My eDesiderata
+name = CRL My eDesiderata Feature
 core = 7.x
 package = CRL
 dependencies[] = block
