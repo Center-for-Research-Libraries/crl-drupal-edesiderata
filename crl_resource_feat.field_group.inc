@@ -588,7 +588,7 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Sources',
       'instance_settings' => array(
-        'classes' => ' group-sources field-group-div',
+        'classes' => 'group-sources field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h2',

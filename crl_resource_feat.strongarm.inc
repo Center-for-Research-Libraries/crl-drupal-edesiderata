@@ -89,6 +89,9 @@ function crl_resource_feat_strongarm() {
       'embedded' => array(
         'custom_settings' => TRUE,
       ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(

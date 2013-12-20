@@ -375,7 +375,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: CRL Status */
+  /* Field: Field: CRL Status */
   $handler->display->display_options['fields']['field_activity_crl_status']['id'] = 'field_activity_crl_status';
   $handler->display->display_options['fields']['field_activity_crl_status']['table'] = 'field_data_field_activity_crl_status';
   $handler->display->display_options['fields']['field_activity_crl_status']['field'] = 'field_activity_crl_status';
@@ -439,7 +439,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'resource' => 'resource',
   );
-  /* Filter criterion: Content: CRL Status (field_activity_crl_status) */
+  /* Filter criterion: Field: CRL Status (field_activity_crl_status) */
   $handler->display->display_options['filters']['field_activity_crl_status_value']['id'] = 'field_activity_crl_status_value';
   $handler->display->display_options['filters']['field_activity_crl_status_value']['table'] = 'field_data_field_activity_crl_status';
   $handler->display->display_options['filters']['field_activity_crl_status_value']['field'] = 'field_activity_crl_status_value';
@@ -949,6 +949,8 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['style_options']['provide_file'] = 0;
   $handler->display->display_options['style_options']['parent_sort'] = 0;
   $handler->display->display_options['style_options']['transform'] = 1;
+  $handler->display->display_options['style_options']['root_node'] = 'nodes';
+  $handler->display->display_options['style_options']['item_node'] = 'node';
   $handler->display->display_options['path'] = 'reviews/export';
   $export['reviews_export'] = $view;
 
