@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CRL Message Feature feature.
+ */
+
+include_once 'crl_message_feat.features.inc';
