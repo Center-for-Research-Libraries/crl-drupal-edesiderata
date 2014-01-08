@@ -9,11 +9,11 @@
  */
 function crl_message_feat_default_rules_configuration() {
   $items = array();
-  $items['rules_alert_created'] = entity_import('rules_config', '{ "rules_alert_created" : {
-      "LABEL" : "Alert Created",
+  $items['rules_message_resource_alert_created'] = entity_import('rules_config', '{ "rules_message_resource_alert_created" : {
+      "LABEL" : "Message resource alert created",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "activity" ],
+      "TAGS" : [ "Messages" ],
       "REQUIRES" : [ "rules" ],
       "ON" : { "node_update--resource" : { "bundle" : "resource" } },
       "IF" : [
@@ -39,147 +39,210 @@ function crl_message_feat_default_rules_configuration() {
         { "entity_create" : {
             "USING" : {
               "type" : "message",
-              "param_type" : "log_new_alert",
-              "param_user" : [ "node:author" ]
+              "param_type" : "resource_new_alert",
+              "param_user" : [ "site:current-user" ]
             },
-            "PROVIDE" : { "entity_created" : { "entity_created" : "Created entity" } }
+            "PROVIDE" : { "entity_created" : { "entity_created_resource_alert_created" : "Created entity resource alert created" } }
           }
         },
         { "data_set" : {
-            "data" : [ "entity-created:field-message-content" ],
+            "data" : [ "entity-created-resource-alert-created:field-resource-reference" ],
             "value" : [ "node" ]
           }
         }
       ]
     }
   }');
-  $items['rules_alert_extended'] = entity_import('rules_config', '{ "rules_alert_extended" : {
-      "LABEL" : "Alert Extended",
+  $items['rules_message_resource_new'] = entity_import('rules_config', '{ "rules_message_resource_new" : {
+      "LABEL" : "Message resource new",
       "PLUGIN" : "reaction rule",
+      "WEIGHT" : "10",
       "OWNER" : "rules",
-      "TAGS" : [ "activity" ],
+      "TAGS" : [ "Messages" ],
       "REQUIRES" : [ "rules" ],
-      "ON" : { "node_update--resource" : { "bundle" : "resource" } },
-      "IF" : [
-        { "data_is" : {
-            "data" : [ "node:field-update-alert-message" ],
-            "value" : [ "node-unchanged:field-update-alert-message" ]
-          }
-        },
-        { "data_is" : {
-            "data" : [ "node:field-update-alert" ],
-            "op" : "\\u003E",
-            "value" : [ "site:current-date" ]
-          }
-        },
-        { "data_is" : {
-            "data" : [ "node:field-update-alert" ],
-            "op" : "\\u003E",
-            "value" : [ "node-unchanged:field-update-alert" ]
-          }
-        }
-      ],
+      "ON" : { "node_insert--resource" : { "bundle" : "resource" } },
+      "IF" : [ { "data_is" : { "data" : [ "node:status" ], "value" : "1" } } ],
       "DO" : [
         { "entity_create" : {
             "USING" : {
               "type" : "message",
-              "param_type" : "alert_extended",
-              "param_user" : [ "node:author" ]
+              "param_type" : "resource_new",
+              "param_user" : [ "site:current-user" ]
             },
-            "PROVIDE" : { "entity_created" : { "entity_created" : "Created entity" } }
+            "PROVIDE" : { "entity_created" : { "entity_created_resource_new" : "Created entity resource new" } }
           }
         },
         { "data_set" : {
-            "data" : [ "entity-created:field-message-content" ],
+            "data" : [ "entity-created-resource-new:field-resource-reference" ],
             "value" : [ "node" ]
           }
         }
       ]
     }
   }');
-  $items['rules_log_new_comment'] = entity_import('rules_config', '{ "rules_log_new_comment" : {
-      "LABEL" : "Log new Comment",
+  $items['rules_message_resource_new_activity'] = entity_import('rules_config', '{ "rules_message_resource_new_activity" : {
+      "LABEL" : "Message resource new activity",
+      "PLUGIN" : "reaction rule",
+      "WEIGHT" : "10",
+      "OWNER" : "rules",
+      "TAGS" : [ "Messages" ],
+      "REQUIRES" : [ "rules" ],
+      "ON" : { "node_insert--activity" : { "bundle" : "activity" } },
+      "IF" : [ { "data_is" : { "data" : [ "node:status" ], "value" : "1" } } ],
+      "DO" : [
+        { "entity_create" : {
+            "USING" : {
+              "type" : "message",
+              "param_type" : "resource_update_activity",
+              "param_user" : [ "site:current-user" ]
+            },
+            "PROVIDE" : { "entity_created" : { "entity_created_resource_activity_new" : "Created entity resource activity new" } }
+          }
+        },
+        { "data_set" : {
+            "data" : [ "entity-created-resource-activity-new:field-resource-reference" ],
+            "value" : [ "node:field-resource-reference" ]
+          }
+        }
+      ]
+    }
+  }');
+  $items['rules_message_resource_new_comment'] = entity_import('rules_config', '{ "rules_message_resource_new_comment" : {
+      "LABEL" : "Message resource new comment",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
+      "TAGS" : [ "Messages" ],
       "REQUIRES" : [ "rules", "comment" ],
       "ON" : { "comment_insert--comment_node_resource" : { "bundle" : "comment_node_resource" } },
       "DO" : [
         { "entity_create" : {
             "USING" : {
               "type" : "message",
-              "param_type" : "log_new_comment",
-              "param_user" : [ "comment:author" ]
+              "param_type" : "resource_new_comment",
+              "param_user" : [ "site:current-user" ]
             },
-            "PROVIDE" : { "entity_created" : { "entity_created" : "Created entity" } }
+            "PROVIDE" : { "entity_created" : { "entity_created_resource_comment" : "Created entity resource comment" } }
           }
         },
         { "data_set" : {
-            "data" : [ "entity-created:field-message-comment" ],
-            "value" : [ "comment" ]
-          }
-        },
-        { "data_set" : {
-            "data" : [ "entity-created:field-message-content" ],
+            "data" : [ "entity-created-resource-comment:field-resource-reference" ],
             "value" : [ "comment:node" ]
           }
         }
       ]
     }
   }');
-  $items['rules_log_new_content'] = entity_import('rules_config', '{ "rules_log_new_content" : {
-      "LABEL" : "Log new Content",
+  $items['rules_message_resource_new_vote'] = entity_import('rules_config', '{ "rules_message_resource_new_vote" : {
+      "LABEL" : "Message resource new vote",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "REQUIRES" : [ "rules" ],
-      "ON" : { "node_insert--resource" : { "bundle" : "resource" } },
-      "IF" : [ { "node_is_published" : { "node" : [ "node" ] } } ],
-      "DO" : [
-        { "entity_create" : {
-            "USING" : {
-              "type" : "message",
-              "param_type" : "log_new_resource",
-              "param_user" : [ "node:author" ]
-            },
-            "PROVIDE" : { "entity_created" : { "entity_created" : "Created entity" } }
-          }
-        },
-        { "data_set" : {
-            "data" : [ "entity-created:field-message-content" ],
-            "value" : [ "node" ]
-          }
-        }
-      ]
-    }
-  }');
-  $items['rules_log_new_vote'] = entity_import('rules_config', '{ "rules_log_new_vote" : {
-      "LABEL" : "Log new Vote",
-      "PLUGIN" : "reaction rule",
-      "OWNER" : "rules",
+      "TAGS" : [ "Messages" ],
       "REQUIRES" : [ "rules", "voting_rules" ],
       "ON" : { "voting_rules_insert_node" : [] },
       "DO" : [
         { "entity_create" : {
             "USING" : {
               "type" : "message",
-              "param_type" : "log_new_vote",
-              "param_user" : [ "vote:user" ]
+              "param_type" : "resource_new_vote",
+              "param_user" : [ "site:current-user" ]
             },
-            "PROVIDE" : { "entity_created" : { "entity_created" : "Created entity" } }
+            "PROVIDE" : { "entity_created" : { "entity_created_resource_vote" : "Created entity resource vote" } }
           }
         },
         { "data_set" : {
-            "data" : [ "entity-created:field-message-content" ],
+            "data" : [ "entity-created-resource-vote:field-resource-reference" ],
             "value" : [ "node" ]
           }
         }
       ]
     }
   }');
-  $items['rules_log_status_update'] = entity_import('rules_config', '{ "rules_log_status_update" : {
-      "LABEL" : "Log Status Update",
+  $items['rules_message_resource_update'] = entity_import('rules_config', '{ "rules_message_resource_update" : {
+      "LABEL" : "Message resource update",
       "PLUGIN" : "reaction rule",
+      "WEIGHT" : "10",
       "OWNER" : "rules",
-      "TAGS" : [ "activity" ],
+      "TAGS" : [ "Messages" ],
+      "REQUIRES" : [ "rules" ],
+      "ON" : { "node_update--resource" : { "bundle" : "resource" } },
+      "IF" : [
+        { "data_is" : { "data" : [ "node:status" ], "value" : "1" } },
+        { "data_is" : {
+            "data" : [ "node-unchanged:changed" ],
+            "op" : "\\u003C",
+            "value" : { "select" : "node:changed", "date_offset" : { "value" : -43200 } }
+          }
+        },
+        { "OR" : [
+            { "NOT data_is" : { "data" : [ "node:vid" ], "value" : [ "node-unchanged:vid" ] } },
+            { "data_is" : { "data" : [ "node-unchanged:status" ], "value" : "0" } }
+          ]
+        }
+      ],
+      "DO" : [
+        { "entity_create" : {
+            "USING" : {
+              "type" : "message",
+              "param_type" : "resource_update",
+              "param_user" : [ "site:current-user" ]
+            },
+            "PROVIDE" : { "entity_created" : { "entity_created_resource_updated" : "Created entity resource updated" } }
+          }
+        },
+        { "data_set" : {
+            "data" : [ "entity-created-resource-updated:field-resource-reference" ],
+            "value" : [ "node" ]
+          }
+        }
+      ]
+    }
+  }');
+  $items['rules_message_resource_update_activity'] = entity_import('rules_config', '{ "rules_message_resource_update_activity" : {
+      "LABEL" : "Message resource update activity",
+      "PLUGIN" : "reaction rule",
+      "WEIGHT" : "10",
+      "OWNER" : "rules",
+      "TAGS" : [ "Messages" ],
+      "REQUIRES" : [ "rules" ],
+      "ON" : { "node_update--activity" : { "bundle" : "activity" } },
+      "IF" : [
+        { "data_is" : { "data" : [ "node:status" ], "value" : "1" } },
+        { "data_is" : {
+            "data" : [ "node-unchanged:changed" ],
+            "op" : "\\u003C",
+            "value" : { "select" : "node:changed", "date_offset" : { "value" : -43200 } }
+          }
+        },
+        { "OR" : [
+            { "NOT data_is" : { "data" : [ "node:vid" ], "value" : [ "node-unchanged:vid" ] } },
+            { "data_is" : { "data" : [ "node-unchanged:status" ], "value" : "0" } }
+          ]
+        }
+      ],
+      "DO" : [
+        { "entity_create" : {
+            "USING" : {
+              "type" : "message",
+              "param_type" : "resource_update_activity",
+              "param_user" : [ "site:current-user" ]
+            },
+            "PROVIDE" : { "entity_created" : { "entity_created_resource_activity_updated" : "Created entity resource activity updated" } }
+          }
+        },
+        { "data_set" : {
+            "data" : [ "entity-created-resource-activity-updated:field-resource-reference" ],
+            "value" : [ "node:field-resource-reference" ]
+          }
+        }
+      ]
+    }
+  }');
+  $items['rules_message_status_update'] = entity_import('rules_config', '{ "rules_message_status_update" : {
+      "LABEL" : "Message Status Update",
+      "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
+      "OWNER" : "rules",
+      "TAGS" : [ "Messages" ],
       "REQUIRES" : [ "rules" ],
       "ON" : { "node_update--activity" : { "bundle" : "activity" } },
       "IF" : [
@@ -187,101 +250,27 @@ function crl_message_feat_default_rules_configuration() {
             "data" : [ "node:field-activity-crl-status" ],
             "value" : [ "node-unchanged:field-activity-crl-status" ]
           }
-        }
+        },
+        { "NOT data_is_empty" : { "data" : [ "node:field-activity-crl-status" ] } }
       ],
       "DO" : [
         { "entity_create" : {
             "USING" : {
               "type" : "message",
-              "param_type" : "log_status_update",
-              "param_user" : [ "node:author" ]
+              "param_type" : "resource_status_update",
+              "param_user" : [ "site:current-user" ]
             },
-            "PROVIDE" : { "entity_created" : { "entity_created" : "Created entity" } }
+            "PROVIDE" : { "entity_created" : { "entity_created_status_update" : "Created entity status update" } }
           }
         },
         { "data_set" : {
-            "data" : [ "entity-created:field-message-content" ],
+            "data" : [ "entity-created-status-update:field-activity-crl-status" ],
+            "value" : [ "node:field-activity-crl-status" ]
+          }
+        },
+        { "data_set" : {
+            "data" : [ "entity-created-status-update:field-resource-reference" ],
             "value" : [ "node:field-resource-reference" ]
-          }
-        },
-        { "data_set" : {
-            "data" : [ "entity-created:field-activity-crl-status" ],
-            "value" : [ "node-unchanged:field-activity-crl-status" ]
-          }
-        },
-        { "data_set" : {
-            "data" : [ "entity-created:field-message-activity" ],
-            "value" : [ "node" ]
-          }
-        }
-      ]
-    }
-  }');
-  $items['rules_log_update_activity'] = entity_import('rules_config', '{ "rules_log_update_activity" : {
-      "LABEL" : "Log update Activity",
-      "PLUGIN" : "reaction rule",
-      "OWNER" : "rules",
-      "TAGS" : [ "activity" ],
-      "REQUIRES" : [ "rules" ],
-      "ON" : { "node_update--activity" : { "bundle" : "activity" } },
-      "IF" : [
-        { "data_is" : {
-            "data" : [ "node-unchanged:changed" ],
-            "op" : "\\u003C",
-            "value" : { "select" : "node:changed", "date_offset" : { "value" : -3600 } }
-          }
-        }
-      ],
-      "DO" : [
-        { "entity_create" : {
-            "USING" : {
-              "type" : "message",
-              "param_type" : "log_activity_update",
-              "param_user" : [ "node:author" ]
-            },
-            "PROVIDE" : { "entity_created" : { "entity_created" : "Created entity" } }
-          }
-        },
-        { "data_set" : {
-            "data" : [ "entity-created:field-message-content" ],
-            "value" : [ "node:field-resource-reference" ]
-          }
-        },
-        { "data_set" : {
-            "data" : [ "entity-created:field-message-activity" ],
-            "value" : [ "node" ]
-          }
-        }
-      ]
-    }
-  }');
-  $items['rules_log_update_content'] = entity_import('rules_config', '{ "rules_log_update_content" : {
-      "LABEL" : "Log update Content",
-      "PLUGIN" : "reaction rule",
-      "OWNER" : "rules",
-      "REQUIRES" : [ "rules" ],
-      "ON" : { "node_update--resource" : { "bundle" : "resource" } },
-      "IF" : [
-        { "data_is" : {
-            "data" : [ "node-unchanged:changed" ],
-            "op" : "\\u003C",
-            "value" : { "select" : "node:changed", "date_offset" : { "value" : -3600 } }
-          }
-        }
-      ],
-      "DO" : [
-        { "entity_create" : {
-            "USING" : {
-              "type" : "message",
-              "param_type" : "log_resource_update",
-              "param_user" : [ "node:author" ]
-            },
-            "PROVIDE" : { "entity_created" : { "entity_created" : "Created entity" } }
-          }
-        },
-        { "data_set" : {
-            "data" : [ "entity-created:field-message-content" ],
-            "value" : [ "node" ]
           }
         }
       ]

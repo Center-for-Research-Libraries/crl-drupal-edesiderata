@@ -13,7 +13,7 @@ function crl_message_feat_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'field_bundle_settings_message__alert_extended';
+  $strongarm->name = 'field_bundle_settings_message__resource_new';
   $strongarm->value = array(
     'view_modes' => array(),
     'extra_fields' => array(
@@ -21,85 +21,33 @@ function crl_message_feat_strongarm() {
       'display' => array(
         'message__message_text__0' => array(
           'message_notify_email_subject' => array(
-            'weight' => '1',
-            'visible' => FALSE,
+            'visible' => TRUE,
+            'weight' => 0,
           ),
           'message_notify_email_body' => array(
-            'weight' => '3',
             'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '0',
-            'visible' => TRUE,
+            'weight' => 0,
           ),
         ),
         'message__message_text__1' => array(
           'message_notify_email_subject' => array(
-            'weight' => '3',
             'visible' => FALSE,
+            'weight' => 0,
           ),
           'message_notify_email_body' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__2' => array(
-          'message_notify_weekly_digest' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_subject' => array(
-            'weight' => '0',
             'visible' => TRUE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__3' => array(
-          'message_notify_weekly_digest' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_subject' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '0',
-            'visible' => TRUE,
+            'weight' => 0,
           ),
         ),
       ),
     ),
   );
-  $export['field_bundle_settings_message__alert_extended'] = $strongarm;
+  $export['field_bundle_settings_message__resource_new'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'field_bundle_settings_message__log_activity_update';
+  $strongarm->name = 'field_bundle_settings_message__resource_new_alert';
   $strongarm->value = array(
     'view_modes' => array(),
     'extra_fields' => array(
@@ -107,85 +55,33 @@ function crl_message_feat_strongarm() {
       'display' => array(
         'message__message_text__0' => array(
           'message_notify_email_subject' => array(
-            'weight' => '1',
-            'visible' => FALSE,
+            'visible' => TRUE,
+            'weight' => 0,
           ),
           'message_notify_email_body' => array(
-            'weight' => '2',
             'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '0',
-            'visible' => TRUE,
+            'weight' => 0,
           ),
         ),
         'message__message_text__1' => array(
           'message_notify_email_subject' => array(
-            'weight' => '2',
             'visible' => FALSE,
+            'weight' => 0,
           ),
           'message_notify_email_body' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '5',
-            'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '5',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__2' => array(
-          'message_notify_daily_digest' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_subject' => array(
-            'weight' => '0',
             'visible' => TRUE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '5',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__3' => array(
-          'message_notify_weekly_digest' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_subject' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '0',
-            'visible' => TRUE,
+            'weight' => 0,
           ),
         ),
       ),
     ),
   );
-  $export['field_bundle_settings_message__log_activity_update'] = $strongarm;
+  $export['field_bundle_settings_message__resource_new_alert'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'field_bundle_settings_message__log_new_alert';
+  $strongarm->name = 'field_bundle_settings_message__resource_new_comment';
   $strongarm->value = array(
     'view_modes' => array(),
     'extra_fields' => array(
@@ -193,325 +89,33 @@ function crl_message_feat_strongarm() {
       'display' => array(
         'message__message_text__0' => array(
           'message_notify_email_subject' => array(
-            'weight' => '1',
-            'visible' => FALSE,
+            'visible' => TRUE,
+            'weight' => 0,
           ),
           'message_notify_email_body' => array(
-            'weight' => '3',
             'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '0',
-            'visible' => TRUE,
+            'weight' => 0,
           ),
         ),
         'message__message_text__1' => array(
           'message_notify_email_subject' => array(
-            'weight' => '4',
             'visible' => FALSE,
+            'weight' => 0,
           ),
           'message_notify_email_body' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '4',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '4',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__2' => array(
-          'message_notify_weekly_digest' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_subject' => array(
-            'weight' => '0',
             'visible' => TRUE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '4',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__3' => array(
-          'message_notify_weekly_digest' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_subject' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '0',
-            'visible' => TRUE,
+            'weight' => 0,
           ),
         ),
       ),
     ),
   );
-  $export['field_bundle_settings_message__log_new_alert'] = $strongarm;
+  $export['field_bundle_settings_message__resource_new_comment'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'field_bundle_settings_message__log_new_comment';
-  $strongarm->value = array(
-    'view_modes' => array(
-      'message_notify_weekly_digest' => array(
-        'custom_settings' => TRUE,
-      ),
-      'message_notify_daily_digest' => array(
-        'custom_settings' => TRUE,
-      ),
-      'message_notify_email_subject' => array(
-        'custom_settings' => TRUE,
-      ),
-      'message_notify_email_body' => array(
-        'custom_settings' => TRUE,
-      ),
-      'full' => array(
-        'custom_settings' => FALSE,
-      ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
-      ),
-      'token' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(),
-      'display' => array(
-        'message__message_text__0' => array(
-          'message_notify_email_subject' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'default' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-        ),
-        'message__message_text__1' => array(
-          'message_notify_email_subject' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'default' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '5',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__2' => array(
-          'message_notify_weekly_digest' => array(
-            'weight' => '4',
-            'visible' => FALSE,
-          ),
-          'default' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_subject' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '4',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__3' => array(
-          'message_notify_weekly_digest' => array(
-            'weight' => '5',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_subject' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-        ),
-      ),
-    ),
-  );
-  $export['field_bundle_settings_message__log_new_comment'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'field_bundle_settings_message__log_new_resource';
-  $strongarm->value = array(
-    'view_modes' => array(
-      'message_notify_weekly_digest' => array(
-        'custom_settings' => TRUE,
-      ),
-      'message_notify_daily_digest' => array(
-        'custom_settings' => TRUE,
-      ),
-      'message_notify_email_subject' => array(
-        'custom_settings' => TRUE,
-      ),
-      'message_notify_email_body' => array(
-        'custom_settings' => TRUE,
-      ),
-      'full' => array(
-        'custom_settings' => FALSE,
-      ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
-      ),
-      'token' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(),
-      'display' => array(
-        'message__message_text__0' => array(
-          'message_notify_email_subject' => array(
-            'weight' => '0',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '0',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'default' => array(
-            'weight' => '0',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__1' => array(
-          'message_notify_email_subject' => array(
-            'weight' => '0',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '0',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-          'default' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__2' => array(
-          'message_notify_email_subject' => array(
-            'weight' => '2',
-            'visible' => TRUE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'default' => array(
-            'weight' => '2',
-            'visible' => TRUE,
-          ),
-        ),
-        'message__message_text__3' => array(
-          'message_notify_weekly_digest' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_subject' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '3',
-            'visible' => TRUE,
-          ),
-        ),
-      ),
-    ),
-  );
-  $export['field_bundle_settings_message__log_new_resource'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'field_bundle_settings_message__log_new_vote';
+  $strongarm->name = 'field_bundle_settings_message__resource_new_vote';
   $strongarm->value = array(
     'view_modes' => array(),
     'extra_fields' => array(
@@ -519,205 +123,33 @@ function crl_message_feat_strongarm() {
       'display' => array(
         'message__message_text__0' => array(
           'message_notify_email_subject' => array(
-            'weight' => '3',
-            'visible' => FALSE,
+            'visible' => TRUE,
+            'weight' => 0,
           ),
           'message_notify_email_body' => array(
-            'weight' => '2',
             'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '0',
-            'visible' => TRUE,
+            'weight' => 0,
           ),
         ),
         'message__message_text__1' => array(
           'message_notify_email_subject' => array(
-            'weight' => '1',
             'visible' => FALSE,
+            'weight' => 0,
           ),
           'message_notify_email_body' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '4',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__2' => array(
-          'message_notify_weekly_digest' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '4',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_subject' => array(
-            'weight' => '0',
             'visible' => TRUE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '4',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__3' => array(
-          'message_notify_weekly_digest' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_subject' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '0',
-            'visible' => TRUE,
+            'weight' => 0,
           ),
         ),
       ),
     ),
   );
-  $export['field_bundle_settings_message__log_new_vote'] = $strongarm;
+  $export['field_bundle_settings_message__resource_new_vote'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'field_bundle_settings_message__log_resource_update';
-  $strongarm->value = array(
-    'view_modes' => array(
-      'message_notify_weekly_digest' => array(
-        'custom_settings' => TRUE,
-      ),
-      'message_notify_daily_digest' => array(
-        'custom_settings' => TRUE,
-      ),
-      'message_notify_email_subject' => array(
-        'custom_settings' => TRUE,
-      ),
-      'message_notify_email_body' => array(
-        'custom_settings' => TRUE,
-      ),
-      'full' => array(
-        'custom_settings' => FALSE,
-      ),
-      'diff_standard' => array(
-        'custom_settings' => FALSE,
-      ),
-      'token' => array(
-        'custom_settings' => FALSE,
-      ),
-    ),
-    'extra_fields' => array(
-      'form' => array(),
-      'display' => array(
-        'message__message_text__0' => array(
-          'message_notify_email_subject' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'default' => array(
-            'weight' => '0',
-            'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-        ),
-        'message__message_text__1' => array(
-          'message_notify_email_subject' => array(
-            'weight' => '4',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-          'default' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '4',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '4',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__2' => array(
-          'default' => array(
-            'weight' => '2',
-            'visible' => TRUE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_subject' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '4',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__3' => array(
-          'message_notify_weekly_digest' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_subject' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-        ),
-      ),
-    ),
-  );
-  $export['field_bundle_settings_message__log_resource_update'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'field_bundle_settings_message__log_status_update';
+  $strongarm->name = 'field_bundle_settings_message__resource_status_update';
   $strongarm->value = array(
     'view_modes' => array(),
     'extra_fields' => array(
@@ -725,85 +157,33 @@ function crl_message_feat_strongarm() {
       'display' => array(
         'message__message_text__0' => array(
           'message_notify_email_subject' => array(
-            'weight' => '3',
-            'visible' => FALSE,
+            'visible' => TRUE,
+            'weight' => 0,
           ),
           'message_notify_email_body' => array(
-            'weight' => '3',
             'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '0',
-            'visible' => TRUE,
+            'weight' => 0,
           ),
         ),
         'message__message_text__1' => array(
           'message_notify_email_subject' => array(
-            'weight' => '1',
             'visible' => FALSE,
+            'weight' => 0,
           ),
           'message_notify_email_body' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '4',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__2' => array(
-          'message_notify_weekly_digest' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_subject' => array(
-            'weight' => '0',
             'visible' => TRUE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__3' => array(
-          'message_notify_weekly_digest' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_subject' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '0',
-            'visible' => TRUE,
+            'weight' => 0,
           ),
         ),
       ),
     ),
   );
-  $export['field_bundle_settings_message__log_status_update'] = $strongarm;
+  $export['field_bundle_settings_message__resource_status_update'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'field_bundle_settings_message__offer_expiration';
+  $strongarm->name = 'field_bundle_settings_message__resource_update';
   $strongarm->value = array(
     'view_modes' => array(),
     'extra_fields' => array(
@@ -811,62 +191,62 @@ function crl_message_feat_strongarm() {
       'display' => array(
         'message__message_text__0' => array(
           'message_notify_email_subject' => array(
-            'weight' => '0',
             'visible' => TRUE,
+            'weight' => 0,
           ),
           'message_notify_email_body' => array(
-            'weight' => '0',
             'visible' => FALSE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '0',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '0',
-            'visible' => FALSE,
+            'weight' => 0,
           ),
         ),
         'message__message_text__1' => array(
           'message_notify_email_subject' => array(
-            'weight' => '0',
             'visible' => FALSE,
+            'weight' => 0,
           ),
           'message_notify_email_body' => array(
-            'weight' => '0',
             'visible' => TRUE,
-          ),
-          'message_notify_weekly_digest' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '1',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__2' => array(
-          'message_notify_weekly_digest' => array(
-            'weight' => '2',
-            'visible' => TRUE,
-          ),
-          'message_notify_daily_digest' => array(
-            'weight' => '2',
-            'visible' => TRUE,
-          ),
-          'message_notify_email_subject' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '2',
-            'visible' => FALSE,
+            'weight' => 0,
           ),
         ),
       ),
     ),
   );
-  $export['field_bundle_settings_message__offer_expiration'] = $strongarm;
+  $export['field_bundle_settings_message__resource_update'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'field_bundle_settings_message__resource_update_activity';
+  $strongarm->value = array(
+    'view_modes' => array(),
+    'extra_fields' => array(
+      'form' => array(),
+      'display' => array(
+        'message__message_text__0' => array(
+          'message_notify_email_subject' => array(
+            'visible' => TRUE,
+            'weight' => 0,
+          ),
+          'message_notify_email_body' => array(
+            'visible' => FALSE,
+            'weight' => 0,
+          ),
+        ),
+        'message__message_text__1' => array(
+          'message_notify_email_subject' => array(
+            'visible' => FALSE,
+            'weight' => 0,
+          ),
+          'message_notify_email_body' => array(
+            'visible' => TRUE,
+            'weight' => 0,
+          ),
+        ),
+      ),
+    ),
+  );
+  $export['field_bundle_settings_message__resource_update_activity'] = $strongarm;
 
   return $export;
 }
