@@ -49,6 +49,11 @@ function crl_message_feat_default_rules_configuration() {
             "data" : [ "entity-created-resource-alert-created:field-resource-reference" ],
             "value" : [ "node" ]
           }
+        },
+        { "data_set" : {
+            "data" : [ "entity-created-resource-alert-created:field-message-cat" ],
+            "value" : "major"
+          }
         }
       ]
     }
@@ -75,6 +80,11 @@ function crl_message_feat_default_rules_configuration() {
         { "data_set" : {
             "data" : [ "entity-created-resource-new:field-resource-reference" ],
             "value" : [ "node" ]
+          }
+        },
+        { "data_set" : {
+            "data" : [ "entity-created-resource-new:field-message-cat" ],
+            "value" : "major"
           }
         }
       ]
@@ -103,6 +113,11 @@ function crl_message_feat_default_rules_configuration() {
             "data" : [ "entity-created-resource-activity-new:field-resource-reference" ],
             "value" : [ "node:field-resource-reference" ]
           }
+        },
+        { "data_set" : {
+            "data" : [ "entity-created-resource-activity-new:field-message-cat" ],
+            "value" : "major"
+          }
         }
       ]
     }
@@ -128,6 +143,11 @@ function crl_message_feat_default_rules_configuration() {
             "data" : [ "entity-created-resource-comment:field-resource-reference" ],
             "value" : [ "comment:node" ]
           }
+        },
+        { "data_set" : {
+            "data" : [ "entity-created-resource-comment:field-message-cat" ],
+            "value" : "minor"
+          }
         }
       ]
     }
@@ -152,6 +172,11 @@ function crl_message_feat_default_rules_configuration() {
         { "data_set" : {
             "data" : [ "entity-created-resource-vote:field-resource-reference" ],
             "value" : [ "node" ]
+          }
+        },
+        { "data_set" : {
+            "data" : [ "entity-created-resource-vote:field-message-cat" ],
+            "value" : "minor"
           }
         }
       ]
@@ -198,6 +223,11 @@ function crl_message_feat_default_rules_configuration() {
             "data" : [ "entity-created-status-update:field-resource-reference" ],
             "value" : [ "node:field-resource-reference" ]
           }
+        },
+        { "data_set" : {
+            "data" : [ "entity-created-status-update:field-message-cat" ],
+            "value" : "major"
+          }
         }
       ]
     }
@@ -238,6 +268,11 @@ function crl_message_feat_default_rules_configuration() {
             "data" : [ "entity-created-resource-updated:field-resource-reference" ],
             "value" : [ "node" ]
           }
+        },
+        { "data_set" : {
+            "data" : [ "entity-created-resource-updated:field-message-cat" ],
+            "value" : "major"
+          }
         }
       ]
     }
@@ -277,6 +312,11 @@ function crl_message_feat_default_rules_configuration() {
         { "data_set" : {
             "data" : [ "entity-created-resource-activity-updated:field-resource-reference" ],
             "value" : [ "node:field-resource-reference" ]
+          }
+        },
+        { "data_set" : {
+            "data" : [ "entity-created-resource-activity-updated:field-message-cat" ],
+            "value" : "major"
           }
         }
       ]

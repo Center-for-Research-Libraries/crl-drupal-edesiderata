@@ -10,35 +10,34 @@
 function crl_message_feat_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'message_text'
-  $field_bases['message_text'] = array(
+  // Exported field_base: 'field_message_cat'
+  $field_bases['field_message_cat'] = array(
     'active' => 1,
-    'cardinality' => -1,
+    'cardinality' => 1,
     'deleted' => 0,
-    'entity_types' => array(
-      0 => 'message_type',
+    'entity_types' => array(),
+    'field_name' => 'field_message_cat',
+    'field_permissions' => array(
+      'type' => 0,
     ),
-    'field_name' => 'message_text',
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
+    'foreign keys' => array(),
     'indexes' => array(
-      'format' => array(
-        0 => 'format',
+      'value' => array(
+        0 => 'value',
       ),
     ),
-    'locked' => 1,
-    'module' => 'text',
+    'locked' => 0,
+    'module' => 'list',
     'settings' => array(
-      'message_text' => TRUE,
+      'allowed_values' => array(
+        'major' => 'Major',
+        'minor' => 'Minor',
+      ),
+      'allowed_values_function' => '',
+      'allowed_values_php' => '',
     ),
-    'translatable' => 1,
-    'type' => 'text_long',
+    'translatable' => 0,
+    'type' => 'list_text',
   );
 
   return $field_bases;

@@ -11,11 +11,11 @@ function crl_message_feat_views_default_views() {
   $export = array();
 
   $view = new view();
-  $view->name = 'activity_messages';
+  $view->name = 'crl_messages';
   $view->description = '';
   $view->tag = 'default';
   $view->base_table = 'message';
-  $view->human_name = 'Activity messages';
+  $view->human_name = 'CRL messages';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -94,6 +94,40 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['sorts']['timestamp']['table'] = 'message';
   $handler->display->display_options['sorts']['timestamp']['field'] = 'timestamp';
   $handler->display->display_options['sorts']['timestamp']['order'] = 'DESC';
+  /* Filter criterion: Message: Message Catagory (field_message_cat) */
+  $handler->display->display_options['filters']['field_message_cat_value']['id'] = 'field_message_cat_value';
+  $handler->display->display_options['filters']['field_message_cat_value']['table'] = 'field_data_field_message_cat';
+  $handler->display->display_options['filters']['field_message_cat_value']['field'] = 'field_message_cat_value';
+  $handler->display->display_options['filters']['field_message_cat_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_message_cat_value']['expose']['operator_id'] = 'field_message_cat_value_op';
+  $handler->display->display_options['filters']['field_message_cat_value']['expose']['label'] = 'Filter by type';
+  $handler->display->display_options['filters']['field_message_cat_value']['expose']['operator'] = 'field_message_cat_value_op';
+  $handler->display->display_options['filters']['field_message_cat_value']['expose']['identifier'] = 'field_message_cat_value';
+  $handler->display->display_options['filters']['field_message_cat_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    5 => 0,
+    6 => 0,
+    7 => 0,
+    8 => 0,
+    9 => 0,
+    10 => 0,
+    11 => 0,
+    12 => 0,
+    13 => 0,
+    14 => 0,
+    15 => 0,
+    16 => 0,
+    17 => 0,
+    18 => 0,
+    19 => 0,
+    20 => 0,
+    21 => 0,
+    22 => 0,
+    23 => 0,
+  );
 
   /* Display: Page - Title Grouped */
   $handler = $view->new_display('page', 'Page - Title Grouped', 'page');
@@ -221,7 +255,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['menu']['weight'] = '30';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
-  $export['activity_messages'] = $view;
+  $export['crl_messages'] = $view;
 
   return $export;
 }
