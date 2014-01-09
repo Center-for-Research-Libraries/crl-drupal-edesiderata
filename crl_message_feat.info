@@ -8,6 +8,7 @@ dependencies[] = entityreference
 dependencies[] = features
 dependencies[] = list
 dependencies[] = message
+dependencies[] = message_notify
 dependencies[] = options
 dependencies[] = rules
 dependencies[] = strongarm
