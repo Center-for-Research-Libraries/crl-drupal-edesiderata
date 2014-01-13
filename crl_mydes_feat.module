@@ -7,6 +7,8 @@
 include_once 'crl_mydes_feat.features.inc';
 
 
+define('CRL_WATCH_FLAG', 'base_node_watch');
+
 /**
  * Implements hook_theme().
  */
@@ -56,7 +58,7 @@ function crl_mydes_feat_block_view($delta = '') {
 
 function crl_mydes_feat_generate_widget($node) {
   $output = '<p>' . t('By watching this resource you can monitor its activity in !link.', array('!link' => l(t('My eDesiderata'), 'my'))) . '</p>';
-  $flag_link = flag_create_link('mydes', $node->nid);
+  $flag_link = flag_create_link(CRL_WATCH_FLAG, $node->nid);
   return $output . $flag_link;
 }
 

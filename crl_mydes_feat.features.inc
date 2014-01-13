@@ -26,7 +26,7 @@ function crl_mydes_feat_views_api($module = NULL, $api = NULL) {
 function crl_mydes_feat_flag_default_flags() {
   $flags = array();
   // Exported flag: "My eDesiderata Watch".
-  $flags['mydes'] = array(
+  $flags['base_node_watch'] = array(
     'entity_type' => 'node',
     'title' => 'My eDesiderata Watch',
     'global' => 0,
@@ -58,11 +58,11 @@ function crl_mydes_feat_flag_default_flags() {
     'access_author' => '',
     'show_contextual_link' => 0,
     'i18n' => 0,
+    'api_version' => 3,
     'module' => 'crl_mydes_feat',
     'locked' => array(
       0 => 'name',
     ),
-    'api_version' => 3,
   );
   return $flags;
 
@@ -78,14 +78,14 @@ function crl_mydes_feat_default_search_api_saved_searches_settings() {
     "index_id" : "title_search_index",
     "enabled" : "1",
     "options" : {
-      "date_field" : "changed",
+      "date_field" : "",
       "description" : "",
+      "default_true" : "1",
+      "ids_list" : [],
       "registered_choose_mail" : 0,
       "choose_name" : 1,
       "registered_user_delete_key" : 0,
       "show_empty_list" : 1,
-      "default_true" : true,
-      "ids_list" : [],
       "user_select_interval" : 1,
       "interval_options" : { "-1" : "Never", "86400" : "Daily", "604800" : "Weekly" },
       "set_interval" : "86400",
