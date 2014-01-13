@@ -21,6 +21,54 @@ function crl_message_feat_views_api($module = NULL, $api = NULL) {
 }
 
 /**
+ * Implements hook_flag_default_flags().
+ */
+function crl_message_feat_flag_default_flags() {
+  $flags = array();
+  // Exported flag: "Email watch".
+  $flags['email_node_watch'] = array(
+    'entity_type' => 'node',
+    'title' => 'Email watch',
+    'global' => 0,
+    'types' => array(
+      0 => 'resource',
+    ),
+    'flag_short' => 'Send Email',
+    'flag_long' => '',
+    'flag_message' => '',
+    'unflag_short' => 'Don\'t send Email',
+    'unflag_long' => '',
+    'unflag_message' => '',
+    'unflag_denied_text' => '',
+    'link_type' => 'toggle',
+    'weight' => 0,
+    'show_in_links' => array(
+      'full' => 0,
+      'teaser' => 0,
+      'rss' => 0,
+      'search_index' => 0,
+      'search_result' => 0,
+      'embedded' => 0,
+      'diff_standard' => 0,
+      'print' => 0,
+      'token' => 0,
+    ),
+    'show_as_field' => 0,
+    'show_on_form' => 0,
+    'access_author' => '',
+    'show_contextual_link' => 0,
+    'i18n' => 0,
+    'module' => 'crl_message_feat',
+    'locked' => array(
+      0 => 'name',
+    ),
+    'api_version' => 3,
+  );
+  return $flags;
+
+}
+
+/**
  * Implements hook_default_message_type().
  */
 function crl_message_feat_default_message_type() {

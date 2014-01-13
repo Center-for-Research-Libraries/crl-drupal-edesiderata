@@ -9,6 +9,28 @@
  */
 function crl_message_feat_default_rules_configuration() {
   $items = array();
+  $items['rules_message_email_notification'] = entity_import('rules_config', '{ "rules_message_email_notification" : {
+      "LABEL" : "Message Email Notification",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "REQUIRES" : [ "rules", "crl_message_feat", "message" ],
+      "ON" : { "message_insert" : [] },
+      "IF" : [
+        { "entity_has_field" : { "entity" : [ "message" ], "field" : "field_resource_reference" } },
+        { "entity_is_of_bundle" : {
+            "entity" : [ "message:field-resource-reference" ],
+            "type" : "node",
+            "bundle" : { "value" : { "resource" : "resource" } }
+          }
+        },
+        { "OR" : [
+            { "NOT data_is" : { "data" : [ "message:type" ], "value" : "resource_new_vote" } }
+          ]
+        }
+      ],
+      "DO" : [ { "crl_message_feat_process" : { "message" : [ "message" ] } } ]
+    }
+  }');
   $items['rules_message_resource_alert_created'] = entity_import('rules_config', '{ "rules_message_resource_alert_created" : {
       "LABEL" : "Message resource alert created",
       "PLUGIN" : "reaction rule",

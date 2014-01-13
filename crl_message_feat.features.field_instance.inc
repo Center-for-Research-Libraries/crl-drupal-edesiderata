@@ -26,6 +26,12 @@ function crl_message_feat_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 1,
       ),
+      'message_notify_daily_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'message_notify_email_body' => array(
         'label' => 'above',
         'settings' => array(),
@@ -33,6 +39,12 @@ function crl_message_feat_field_default_field_instances() {
         'weight' => 0,
       ),
       'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_weekly_digest' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -71,6 +83,12 @@ function crl_message_feat_field_default_field_instances() {
         'type' => 'entityreference_label',
         'weight' => 0,
       ),
+      'message_notify_daily_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'message_notify_email_body' => array(
         'label' => 'above',
         'settings' => array(),
@@ -78,6 +96,12 @@ function crl_message_feat_field_default_field_instances() {
         'weight' => 0,
       ),
       'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_weekly_digest' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -120,6 +144,12 @@ function crl_message_feat_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 1,
       ),
+      'message_notify_daily_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'message_notify_email_body' => array(
         'label' => 'above',
         'settings' => array(),
@@ -127,6 +157,12 @@ function crl_message_feat_field_default_field_instances() {
         'weight' => 0,
       ),
       'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_weekly_digest' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -165,6 +201,12 @@ function crl_message_feat_field_default_field_instances() {
         'type' => 'entityreference_label',
         'weight' => 0,
       ),
+      'message_notify_daily_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'message_notify_email_body' => array(
         'label' => 'above',
         'settings' => array(),
@@ -172,6 +214,12 @@ function crl_message_feat_field_default_field_instances() {
         'weight' => 0,
       ),
       'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_weekly_digest' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -214,6 +262,12 @@ function crl_message_feat_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 1,
       ),
+      'message_notify_daily_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
       'message_notify_email_body' => array(
         'label' => 'above',
         'settings' => array(),
@@ -221,6 +275,12 @@ function crl_message_feat_field_default_field_instances() {
         'weight' => 0,
       ),
       'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_weekly_digest' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -259,6 +319,12 @@ function crl_message_feat_field_default_field_instances() {
         'type' => 'entityreference_label',
         'weight' => 0,
       ),
+      'message_notify_daily_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
       'message_notify_email_body' => array(
         'label' => 'above',
         'settings' => array(),
@@ -266,6 +332,12 @@ function crl_message_feat_field_default_field_instances() {
         'weight' => 0,
       ),
       'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_weekly_digest' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -308,6 +380,12 @@ function crl_message_feat_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 1,
       ),
+      'message_notify_daily_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'message_notify_email_body' => array(
         'label' => 'above',
         'settings' => array(),
@@ -315,6 +393,12 @@ function crl_message_feat_field_default_field_instances() {
         'weight' => 0,
       ),
       'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_weekly_digest' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -353,6 +437,12 @@ function crl_message_feat_field_default_field_instances() {
         'type' => 'entityreference_label',
         'weight' => 0,
       ),
+      'message_notify_daily_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'message_notify_email_body' => array(
         'label' => 'above',
         'settings' => array(),
@@ -360,6 +450,12 @@ function crl_message_feat_field_default_field_instances() {
         'weight' => 0,
       ),
       'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_weekly_digest' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -465,6 +561,12 @@ function crl_message_feat_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 6,
       ),
+      'message_notify_daily_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'message_notify_email_body' => array(
         'label' => 'above',
         'settings' => array(),
@@ -472,6 +574,12 @@ function crl_message_feat_field_default_field_instances() {
         'weight' => 0,
       ),
       'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_weekly_digest' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -510,6 +618,12 @@ function crl_message_feat_field_default_field_instances() {
         'type' => 'entityreference_label',
         'weight' => 5,
       ),
+      'message_notify_daily_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'message_notify_email_body' => array(
         'label' => 'above',
         'settings' => array(),
@@ -517,6 +631,12 @@ function crl_message_feat_field_default_field_instances() {
         'weight' => 0,
       ),
       'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_weekly_digest' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -559,6 +679,12 @@ function crl_message_feat_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 1,
       ),
+      'message_notify_daily_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'message_notify_email_body' => array(
         'label' => 'above',
         'settings' => array(),
@@ -566,6 +692,12 @@ function crl_message_feat_field_default_field_instances() {
         'weight' => 0,
       ),
       'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_weekly_digest' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -604,6 +736,12 @@ function crl_message_feat_field_default_field_instances() {
         'type' => 'entityreference_label',
         'weight' => 0,
       ),
+      'message_notify_daily_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'message_notify_email_body' => array(
         'label' => 'above',
         'settings' => array(),
@@ -611,6 +749,12 @@ function crl_message_feat_field_default_field_instances() {
         'weight' => 0,
       ),
       'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_weekly_digest' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -653,6 +797,12 @@ function crl_message_feat_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 1,
       ),
+      'message_notify_daily_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'message_notify_email_body' => array(
         'label' => 'above',
         'settings' => array(),
@@ -660,6 +810,12 @@ function crl_message_feat_field_default_field_instances() {
         'weight' => 0,
       ),
       'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_weekly_digest' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -698,6 +854,12 @@ function crl_message_feat_field_default_field_instances() {
         'type' => 'entityreference_label',
         'weight' => 0,
       ),
+      'message_notify_daily_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'message_notify_email_body' => array(
         'label' => 'above',
         'settings' => array(),
@@ -705,6 +867,12 @@ function crl_message_feat_field_default_field_instances() {
         'weight' => 0,
       ),
       'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_weekly_digest' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
@@ -731,9 +899,85 @@ function crl_message_feat_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'user-user-message_subscribe_email'
+  $field_instances['user-user-message_subscribe_email'] = array(
+    'bundle' => 'user',
+    'default_value' => array(
+      0 => array(
+        'value' => 1,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Email option will be checked automatically when subscribing to something.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 7,
+      ),
+    ),
+    'display_label' => 1,
+    'entity_type' => 'user',
+    'field_name' => 'message_subscribe_email',
+    'label' => 'Email subscriptions',
+    'required' => FALSE,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 0,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 0,
+    ),
+  );
+
+  // Exported field_instance: 'user-user-message_subscribe_email_freq'
+  $field_instances['user-user-message_subscribe_email_freq'] = array(
+    'bundle' => 'user',
+    'default_value' => array(
+      0 => array(
+        'value' => 'email',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Control how often you are notified by email of new content and activity you are subscribed to.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 8,
+      ),
+    ),
+    'display_label' => 1,
+    'entity_type' => 'user',
+    'field_name' => 'message_subscribe_email_freq',
+    'label' => 'How often would you like to receive email notifications?',
+    'required' => FALSE,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 0,
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('CRL Status');
+  t('Control how often you are notified by email of new content and activity you are subscribed to.');
+  t('Email option will be checked automatically when subscribing to something.');
+  t('Email subscriptions');
+  t('How often would you like to receive email notifications?');
   t('Message Catagory');
   t('Related resource');
 
