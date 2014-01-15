@@ -136,6 +136,11 @@ function crl_resource_theme() {
     'crl_resource_countdown_alert_tag' => array(
       'variables' => array('url' => '', 'days_left' => NULL, 'long' => FALSE),
     ),
+    // Theme hook to generate the alpha facet and sort switch to be displayed
+    // at the top of a resource index..
+    'crl_resource_alpha_facet_sort' => array(
+      'variables' => array('alpha_block' => '', 'form_options' => array()),
+    ),
     // Theme hook to generate a resource teaser (used in views rows). This will
     // automatically get used by views based on its name and the standard
     // template suggestion rules.
@@ -221,7 +226,8 @@ function crl_resource_entity_property_info_alter(&$info) {
   // activity with soon-to-be expiration.
   $properties['crl_resource_expiration_countdown'] = array(
     'label' => t("CRL Resource Expiration Countdown"),
-    'type' => 'integet',
+    'type' => 'integer',
+    'entity views field' => TRUE,
     'description' => t("Get the offer days remaining for a resource that has backreferenced activity with soon-to-be expiration."),
     'getter callback' => 'crl_resource_get_expiration_countdown',
   );
@@ -356,7 +362,10 @@ function crl_resource_get_alert($entity, array $options, $name, $type, $info) {
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_get_expiration_countdown($entity, array $options, $name, $type, $info) {
-  $days_left = NULL;
+  // Initialize with a very high number in case we want to use this value in
+  // a sort (e.g. ensure NULL/empty values are listed last). This feels like a
+  // hack and there may be better options for this.
+  $days_left = 9999999999;
   $wrappers = crl_resource_get_wrappers($entity);
   // Get the most recent expiration.
   foreach ($wrappers['a_entity_wrappers'] as $a_entity_wrapper) {
@@ -620,8 +629,14 @@ function crl_resource_block_info() {
     'info' => t('CRL Back to Index'), 
     'cache' => DRUPAL_NO_CACHE,
   );
+  // The common input block shows thumbs up/down vote options.
   $blocks['crl_resource_common_input'] = array(
     'info' => t('CRL Common Resource Vote and Rate Input'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // The common input block shows thumbs up/down vote options.
+  $blocks['crl_resource_alpha_facet_sort'] = array(
+    'info' => t('CRL Resource Index Alpha Facet and Sort Options'), 
     'cache' => DRUPAL_NO_CACHE,
   );
   return $blocks;
@@ -630,13 +645,15 @@ function crl_resource_block_info() {
 
 /**
  * Implements hook_block_view().
+ * 
+ * @todo Break-out into indivdual functions.
  */
 function crl_resource_block_view($delta = '') {
   $block = array();
   switch ($delta) {
     // Build the resoruce summary block.
     case 'crl_resource_summary':
-      $nid = arg(1);
+      $nid = arg(1); // Assumes block is placed only one node page.
       $status = array();
       $status_options = crl_resource_activity_status_property_oplist();
       $comment_count = 0;
@@ -691,6 +708,37 @@ function crl_resource_block_view($delta = '') {
         $block['subject'] = t('Interested in this Resource?');
         $block['content'] = array('#markup' => rate_generate_widget(1, 'node', $nid));
       }
+      break;
+    // Build the alpha facet and sort options for the top of the resource
+    // indicies.
+    case 'crl_resource_alpha_facet_sort':
+      $alpha_block = array('content' => '');
+      // We may want to programatically decide when to include the alpha facets
+      // but for now we always include them.
+      if (TRUE) {
+        // Lookup the delta for our glossary value facet block.
+        foreach (facetapi_get_delta_map() as $delta => $map) {
+          if (strpos($map, 'crl_resource_glossary_value') !== FALSE) {
+            $alpha_block = module_invoke('facetapi', 'block_view', $delta);
+            break;
+          }
+        }
+      }
+      $query = drupal_get_query_parameters();
+      // Structure the pulldown options as path => name pairs and then convert
+      // to detailed multi-dimension array.
+      $form_options = array();
+      $form_options = array('resources/main' => t('Alphabetical'), 'resources/expiring' => t('Expiring first'), 'resources/updated' => t('Updated first'), 'resources/newest' => t('Newest first'));
+      foreach ($form_options as $path => &$option) {
+        $text = $option;
+        $option = array(
+          'text' => $text,
+          'url' => url($path, array('query' => $query)),
+          'selected' => drupal_match_path(current_path(), $path),
+        );
+      }
+      $block['subject'] = '';
+      $block['content'] = array('#theme' => 'crl_resource_alpha_facet_sort', '#alpha_block' => $alpha_block, '#form_options' => $form_options);
       break;
   }
   return $block;

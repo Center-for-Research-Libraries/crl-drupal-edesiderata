@@ -55,7 +55,7 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
     // Integration with crl_mydes_feat to add a watch flag link to each item
     // in the index.
     if (module_exists('crl_mydes_feat')) {
-      $vars['extra'] = flag_create_link('mydes', $indexed_entity->nid);
+      $vars['extra'] = flag_create_link(CRL_WATCH_FLAG, $indexed_entity->nid);
     }
   }
 }
@@ -233,7 +233,7 @@ function theme_crl_resource_back_to_index(&$vars) {
   if ($vars['browser_back']) {
     $onclick = 'onclick="window.history.go(-1);return false;"';
   }
-  return '<p><strong>&larr;&nbsp;<a id="back-to-index" href="' . $vars['url'] . '" ' . $onclick . '>' . $vars['back_text'] . '</a></strong></p>';
+  return '<strong>&larr;&nbsp;<a id="back-to-index" href="' . $vars['url'] . '" ' . $onclick . '>' . $vars['back_text'] . '</a></strong>';
 }
 
 
@@ -315,4 +315,46 @@ function theme_crl_resource_countdown_alert_tag(&$vars) {
     $markup .= '<a class="no-link-style" href="' . $vars['url'] . '"><span class="' . $class . '">' . $expiration_message . '</span></a>';
   }
   return $markup;
+}
+
+
+/**
+ * Returns HTML for the alpha facet and sort swither block.
+ *
+ * @param array $variables
+ *   An associative array containing variables used to render this HTML.
+ *
+ * @ingroup themeable
+ */
+function theme_crl_resource_alpha_facet_sort(&$vars) {
+  // Add the javascript that will trigger the path change on the selection of
+  // a new sort option.
+  drupal_add_js('jQuery("select#resource_sort_opts").change(function() { window.location = jQuery(this).val(); });', array('type' => 'inline', 'scope' => 'footer'));
+  drupal_add_js('jQuery("div#resource_sort_opts_links").toggle(); jQuery("select#resource_sort_opts").toggle();', array('type' => 'inline', 'scope' => 'footer'));
+  // Build the sort pulldown. We don't use the Drupal FAPI for this as it's
+  // just a simple select list (no real form). Note however that this approach
+  // has no "action" logic to process the selected values which means things
+  // won't work for users without javascript enabled.
+  $output = '';
+  if (!empty($vars['form_options'])) {
+    $output .= '<select id="resource_sort_opts">';
+    foreach ($vars['form_options'] as $path => $details) {
+      $output .= '<option ' . ($details['selected'] ? 'selected="selected" ' : '') . 'value="' . $details['url'] . '" title="' . $details['text'] . '">' . $details['text'] . '</option>';
+    }
+    $output .= '</select>';
+    // Also add a pure html version of the toggle for non javascript devices.
+    $output .= '<div id="resource_sort_opts_links">';
+    foreach ($vars['form_options'] as $path => $details) {
+      if ($details['selected']) {
+        $output .= '<strong>' . $details['text'] . '</strong><br/>';
+      }
+      else {
+        $output .= l($details['text'], $path) . '<br/>';
+      }
+    }
+    $output .= '</div>';
+  }
+  // Add the alpha facets block.
+  $output .= render($vars['alpha_block']['content']);
+  return $output;
 }
