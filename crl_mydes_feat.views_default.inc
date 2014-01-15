@@ -22,9 +22,12 @@ function crl_mydes_feat_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'My Watched Items';
+  $handler->display->display_options['title'] = 'My Watchlist';
   $handler->display->display_options['use_more_always'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    2 => '2',
+  );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
@@ -114,7 +117,8 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<p>To add a new item to your watch list click the "Watch" option that appears next to each item while browsing the resource listings.</p>';
+  $handler->display->display_options['header']['area']['content'] = '<p>To add a new item to your watch list click the "Watch" option that appears next to each item while browsing the resource listings.</p>
+<p><a class="button" href="/my/messages"><span class="crl-icon-small pulse-icon"></span>Activity</a>&nbsp;&nbsp;<a class="button" href="/my/watchlist/download"><span class="crl-icon-small download-icon"></span>Download</a></p>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
@@ -123,11 +127,11 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = '<p><strong>No watched items found.</strong></p>';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
-  /* Relationship: Flags: base_watch_node */
+  /* Relationship: Flags: base_node_watch */
   $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
   $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['flag_content_rel']['field'] = 'flag_content_rel';
-  $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'base_watch_node';
+  $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'base_node_watch';
   /* Relationship: Entity Reference: Referencing entity */
   $handler->display->display_options['relationships']['reverse_field_resource_reference_node']['id'] = 'reverse_field_resource_reference_node';
   $handler->display->display_options['relationships']['reverse_field_resource_reference_node']['table'] = 'node';
@@ -246,6 +250,42 @@ function crl_mydes_feat_views_default_views() {
   $handler = $view->new_display('block', 'Block', 'block_1');
   $handler->display->display_options['defaults']['use_ajax'] = FALSE;
   $handler->display->display_options['use_ajax'] = TRUE;
+
+  /* Display: Data export */
+  $handler = $view->new_display('views_data_export', 'Data export', 'views_data_export_1');
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['style_plugin'] = 'views_data_export_xls';
+  $handler->display->display_options['style_options']['provide_file'] = 1;
+  $handler->display->display_options['style_options']['filename'] = 'my_edesiderata_watchlist_%timestamp-full.xls';
+  $handler->display->display_options['style_options']['parent_sort'] = 0;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['alter']['text'] = '[title] [crl_resource_alert]&nbsp;&nbsp;[timestamp]&nbsp;&nbsp;[timestamp_1]';
+  $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
+  /* Field: Content: Provider */
+  $handler->display->display_options['fields']['field_provider']['id'] = 'field_provider';
+  $handler->display->display_options['fields']['field_provider']['table'] = 'field_data_field_provider';
+  $handler->display->display_options['fields']['field_provider']['field'] = 'field_provider';
+  $handler->display->display_options['fields']['field_provider']['settings'] = array(
+    'link' => 0,
+  );
+  /* Field: Field: CRL Status */
+  $handler->display->display_options['fields']['field_activity_crl_status']['id'] = 'field_activity_crl_status';
+  $handler->display->display_options['fields']['field_activity_crl_status']['table'] = 'field_data_field_activity_crl_status';
+  $handler->display->display_options['fields']['field_activity_crl_status']['field'] = 'field_activity_crl_status';
+  $handler->display->display_options['fields']['field_activity_crl_status']['relationship'] = 'reverse_field_resource_reference_node';
+  $handler->display->display_options['fields']['field_activity_crl_status']['delta_offset'] = '0';
+  /* Field: Flags: Flagged time */
+  $handler->display->display_options['fields']['timestamp_2']['id'] = 'timestamp_2';
+  $handler->display->display_options['fields']['timestamp_2']['table'] = 'flagging';
+  $handler->display->display_options['fields']['timestamp_2']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp_2']['relationship'] = 'flag_content_rel';
+  $handler->display->display_options['fields']['timestamp_2']['label'] = 'Watched since';
+  $handler->display->display_options['fields']['timestamp_2']['date_format'] = 'medium_no_time';
+  $handler->display->display_options['path'] = 'my/watchlist/download';
   $export['mydes_lists'] = $view;
 
   return $export;
