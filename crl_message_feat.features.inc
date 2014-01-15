@@ -87,24 +87,24 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E has been added.",
+          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was added.",
           "format" : "literal",
-          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E has been added."
+          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was added."
         },
         {
-          "value" : "Resource has been added.\\r\\n",
+          "value" : "Resource was added.\\r\\n",
           "format" : "literal",
-          "safe_value" : "Resource has been added.\\n"
+          "safe_value" : "Resource was added.\\n"
         },
         {
-          "value" : "eDesiderata: New Resource has been added\\r\\n",
+          "value" : "eDesiderata: New Resource was added\\r\\n",
           "format" : "literal",
-          "safe_value" : "eDesiderata: New Resource has been added\\n"
+          "safe_value" : "eDesiderata: New Resource was added\\n"
         },
         {
-          "value" : "Dear [current-user:name],\\r\\n\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E has been added.\\r\\n\\r\\n-eDesiderata Team\\r\\n",
+          "value" : "Dear [current-user:name],\\r\\n\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was added.\\r\\n\\r\\n-eDesiderata Team\\r\\n",
           "format" : "literal",
-          "safe_value" : "Dear [current-user:name],\\n\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E has been added.\\n\\n-eDesiderata Team\\n"
+          "safe_value" : "Dear [current-user:name],\\n\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was added.\\n\\n-eDesiderata Team\\n"
         }
       ]
     },
@@ -161,24 +161,24 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "A new comment has been added to \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E",
+          "value" : "A new comment was added to \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E",
           "format" : "literal",
-          "safe_value" : "A new comment has been added to \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E"
+          "safe_value" : "A new comment was added to \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E"
         },
         {
-          "value" : "New comment added.\\r\\n",
+          "value" : "New comment was added.\\r\\n",
           "format" : "literal",
-          "safe_value" : "New comment added.\\n"
+          "safe_value" : "New comment was added.\\n"
         },
         {
-          "value" : "eDesiderata: New Comment has been added\\r\\n",
+          "value" : "eDesiderata: New Comment was added\\r\\n",
           "format" : "literal",
-          "safe_value" : "eDesiderata: New Comment has been added\\n"
+          "safe_value" : "eDesiderata: New Comment was added\\n"
         },
         {
-          "value" : "Dear [current-user:name],\\r\\nA new comment has been added in \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\r\\n\\r\\n- eDesiderata Team",
+          "value" : "Dear [current-user:name],\\r\\nA new comment was added in \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\r\\n\\r\\n- eDesiderata Team",
           "format" : "literal",
-          "safe_value" : "Dear [current-user:name],\\nA new comment has been added in \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\n\\n- eDesiderata Team"
+          "safe_value" : "Dear [current-user:name],\\nA new comment was added in \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\n\\n- eDesiderata Team"
         }
       ]
     },
@@ -235,14 +235,14 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "CRL Status for \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E has been updated to [message:field-activity-crl-status]",
+          "value" : "CRL Status for \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated to \\u003Cem\\u003E[message:field-activity-crl-status]\\u003C\\/em\\u003E.",
           "format" : "literal",
-          "safe_value" : "CRL Status for \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E has been updated to [message:field-activity-crl-status]"
+          "safe_value" : "CRL Status for \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated to \\u003Cem\\u003E[message:field-activity-crl-status]\\u003C\\/em\\u003E."
         },
         {
-          "value" : "CRL Status updated to [message:field-activity-crl-status].\\r\\n",
+          "value" : "CRL Status was updated to \\u003Cem\\u003E[message:field-activity-crl-status]\\u003C\\/em\\u003E.\\r\\n",
           "format" : "literal",
-          "safe_value" : "CRL Status updated to [message:field-activity-crl-status].\\n"
+          "safe_value" : "CRL Status was updated to \\u003Cem\\u003E[message:field-activity-crl-status]\\u003C\\/em\\u003E.\\n"
         },
         {
           "value" : "eDesiderata: CRL Status Update\\r\\n",
@@ -250,9 +250,9 @@ function crl_message_feat_default_message_type() {
           "safe_value" : "eDesiderata: CRL Status Update\\n"
         },
         {
-          "value" : "Dear [current-user:name],\\r\\nCRL Status for \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E has been updated to [message:field-activity-crl-status]\\r\\n\\r\\n- eDesiderata Team",
+          "value" : "Dear [current-user:name],\\r\\nCRL Status for \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated to [message:field-activity-crl-status].\\r\\n\\r\\n- eDesiderata Team",
           "format" : "literal",
-          "safe_value" : "Dear [current-user:name],\\nCRL Status for \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E has been updated to [message:field-activity-crl-status]\\n\\n- eDesiderata Team"
+          "safe_value" : "Dear [current-user:name],\\nCRL Status for \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated to [message:field-activity-crl-status].\\n\\n- eDesiderata Team"
         }
       ]
     },
@@ -272,14 +272,14 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E has been updated.",
+          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated.",
           "format" : "literal",
-          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E has been updated."
+          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated."
         },
         {
-          "value" : "Resource has been updated.\\r\\n",
+          "value" : "Resource was updated.\\r\\n",
           "format" : "literal",
-          "safe_value" : "Resource has been updated.\\n"
+          "safe_value" : "Resource was updated.\\n"
         },
         {
           "value" : "eDesiderata: Resource Update\\r\\n",
@@ -287,9 +287,9 @@ function crl_message_feat_default_message_type() {
           "safe_value" : "eDesiderata: Resource Update\\n"
         },
         {
-          "value" : "Dear [current-user:name],\\r\\n\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E has been updated.\\r\\n\\r\\n- eDesiderata Team",
+          "value" : "Dear [current-user:name],\\r\\n\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated.\\r\\n\\r\\n- eDesiderata Team",
           "format" : "literal",
-          "safe_value" : "Dear [current-user:name],\\n\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E has been updated.\\n\\n- eDesiderata Team"
+          "safe_value" : "Dear [current-user:name],\\n\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated.\\n\\n- eDesiderata Team"
         }
       ]
     },
@@ -309,14 +309,14 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E has been updated (CRL Activity).",
+          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated (CRL Activity).",
           "format" : "literal",
-          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E has been updated (CRL Activity)."
+          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated (CRL Activity)."
         },
         {
-          "value" : "Resource has been updated (CRL Activity).\\r\\n",
+          "value" : "Resource was updated (CRL Activity).\\r\\n",
           "format" : "literal",
-          "safe_value" : "Resource has been updated (CRL Activity).\\n"
+          "safe_value" : "Resource was updated (CRL Activity).\\n"
         },
         {
           "value" : "eDesiderata: Resource Update\\r\\n",
@@ -324,9 +324,9 @@ function crl_message_feat_default_message_type() {
           "safe_value" : "eDesiderata: Resource Update\\n"
         },
         {
-          "value" : "Dear [current-user:name],\\r\\n\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E has been updated (CRL Activity).\\r\\n\\r\\n- eDesiderata Team",
+          "value" : "Dear [current-user:name],\\r\\n\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated (CRL Activity).\\r\\n\\r\\n- eDesiderata Team",
           "format" : "literal",
-          "safe_value" : "Dear [current-user:name],\\n\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E has been updated (CRL Activity).\\n\\n- eDesiderata Team"
+          "safe_value" : "Dear [current-user:name],\\n\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated (CRL Activity).\\n\\n- eDesiderata Team"
         }
       ]
     },
