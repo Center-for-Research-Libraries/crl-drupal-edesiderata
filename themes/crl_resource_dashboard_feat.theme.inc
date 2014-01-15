@@ -47,7 +47,7 @@ function theme_crl_resource_dashboard_feat_view_head($vars) {
   $markup .= '<h3><a href="' . $vars['url'] . '"><span class="summary-icon ' . $vars['status'] . '"></span>' . $vars['title'] . '</a></h3>';
   $markup .= '<a href="' . $vars['url'] . '" class="no-link-style"><span class="super-num"><strong>' . $vars['count'] . '</strong></span></a>';
   $markup .= '<p>' . $vars['tagline'];
-  $markup .= '<br /><sup>(' . $vars['sort_text'] . ')</sup></p>  </div>';
+  $markup .= '<br /><sup>(' . $vars['aux_text'] . ')</sup></p>  </div>';
   $markup .= '<hr>';
   return $markup;
 }
@@ -55,9 +55,10 @@ function theme_crl_resource_dashboard_feat_view_head($vars) {
 
 function theme_crl_resource_dashboard_feat_view_head_all($vars) {
   $markup = '<div class="dashboard-lead-all">';
-  $markup .= '<a href="' . $vars['url'] . '" class="no-link-style"><span class="super-num" style="float: left;"><strong>' . $vars['count'] . '</strong></span></a>';
+  $markup .= '<div style="float: left;"><a href="' . $vars['url'] . '" class="no-link-style"><span class="super-num"><strong>' . $vars['count'] . '</strong></div></a>';
   $markup .= '<h3>' . l($vars['title'], $vars['path']) . '</h3>';
-  $markup .= '<p>' . l($vars['tagline'], $vars['path']) . '</p>';
+  $markup .= '<p>' . $vars['aux_text'] . '<br/>';
+  $markup .= l($vars['tagline'], $vars['path']) . '</p>';
   $markup .= '</div>';
   return $markup;
 }

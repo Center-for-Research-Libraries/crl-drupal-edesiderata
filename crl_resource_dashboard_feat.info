@@ -3,6 +3,7 @@ core = 7.x
 package = CRL
 dependencies[] = context
 dependencies[] = crl_activity
+dependencies[] = crl_message_feat
 dependencies[] = crl_resource
 dependencies[] = delta
 dependencies[] = views

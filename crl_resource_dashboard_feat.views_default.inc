@@ -32,13 +32,23 @@ function crl_resource_dashboard_feat_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'list';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Field: Indexed Node: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
+  /* Relationship: Indexed Node: CRL Resource Backreference */
+  $handler->display->display_options['relationships']['crl_resource_backref']['id'] = 'crl_resource_backref';
+  $handler->display->display_options['relationships']['crl_resource_backref']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['relationships']['crl_resource_backref']['field'] = 'crl_resource_backref';
+  /* Field: Indexed Node: Node ID */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = 'Resource Node ID';
+  $handler->display->display_options['fields']['nid']['link_to_entity'] = 0;
+  /* Field: Node: Node ID */
+  $handler->display->display_options['fields']['nid_1']['id'] = 'nid_1';
+  $handler->display->display_options['fields']['nid_1']['table'] = 'entity_node';
+  $handler->display->display_options['fields']['nid_1']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid_1']['relationship'] = 'crl_resource_backref';
+  $handler->display->display_options['fields']['nid_1']['label'] = 'Activity Node ID';
+  $handler->display->display_options['fields']['nid_1']['link_to_entity'] = 0;
   /* Sort criterion: Indexed Node: Date created */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'search_api_index_title_search_index';
@@ -73,42 +83,106 @@ function crl_resource_dashboard_feat_views_default_views() {
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = ' ';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
-
-  /* Display: Reviews - Main */
-  $handler = $view->new_display('block', 'Reviews - Main', 'block_1');
-  $handler->display->display_options['defaults']['header'] = FALSE;
-  $handler->display->display_options['defaults']['footer'] = FALSE;
-  $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Relationship: Indexed Node: CRL Resource Backreference */
-  $handler->display->display_options['relationships']['crl_resource_backref']['id'] = 'crl_resource_backref';
-  $handler->display->display_options['relationships']['crl_resource_backref']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['relationships']['crl_resource_backref']['field'] = 'crl_resource_backref';
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Indexed Node: Content type */
-  $handler->display->display_options['fields']['type']['id'] = 'type';
-  $handler->display->display_options['fields']['type']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['fields']['type']['field'] = 'type';
-  $handler->display->display_options['fields']['type']['link_to_entity'] = 0;
-  $handler->display->display_options['fields']['type']['format_name'] = 1;
-  /* Field: Indexed Node: Node ID */
-  $handler->display->display_options['fields']['nid']['id'] = 'nid';
-  $handler->display->display_options['fields']['nid']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['fields']['nid']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid']['label'] = 'Resource Node ID';
-  $handler->display->display_options['fields']['nid']['link_to_entity'] = 0;
-  /* Field: Node: Node ID */
-  $handler->display->display_options['fields']['nid_1']['id'] = 'nid_1';
-  $handler->display->display_options['fields']['nid_1']['table'] = 'entity_node';
-  $handler->display->display_options['fields']['nid_1']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid_1']['relationship'] = 'crl_resource_backref';
-  $handler->display->display_options['fields']['nid_1']['label'] = 'Activity Node ID';
-  $handler->display->display_options['fields']['nid_1']['link_to_entity'] = 0;
+  /* Field: Indexed Node: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Indexed Node: Date created */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'search_api_index_title_search_index';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Indexed Node: Content type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'resource' => 'resource',
+  );
+  /* Filter criterion: Indexed Node: Status */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = array(
+    1 => '1',
+  );
+
+  /* Display: A-Z - Updated */
+  $handler = $view->new_display('block', 'A-Z - Updated', 'block_5');
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '0';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = ' ';
+  $handler->display->display_options['empty']['area']['format'] = 'full_html';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Indexed Node: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Indexed Node: Date created */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'OR',
+  );
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Indexed Node: Content type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'resource' => 'resource',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Indexed Node: Status */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = array(
+    1 => '1',
+  );
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  /* Filter criterion: CRL Resource Backreference: Date changed (indexed) */
+  $handler->display->display_options['filters']['crl_resource_backref_changed']['id'] = 'crl_resource_backref_changed';
+  $handler->display->display_options['filters']['crl_resource_backref_changed']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['filters']['crl_resource_backref_changed']['field'] = 'crl_resource_backref_changed';
+  $handler->display->display_options['filters']['crl_resource_backref_changed']['operator'] = '>';
+  $handler->display->display_options['filters']['crl_resource_backref_changed']['value'] = 'now - 30 days';
+  $handler->display->display_options['filters']['crl_resource_backref_changed']['group'] = 2;
+  /* Filter criterion: Indexed Node: Date changed */
+  $handler->display->display_options['filters']['changed']['id'] = 'changed';
+  $handler->display->display_options['filters']['changed']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['filters']['changed']['field'] = 'changed';
+  $handler->display->display_options['filters']['changed']['operator'] = '>';
+  $handler->display->display_options['filters']['changed']['value'] = 'now - 30 days';
+  $handler->display->display_options['filters']['changed']['group'] = 2;
+
+  /* Display: Reviews - Main */
+  $handler = $view->new_display('block', 'Reviews - Main', 'block_1');
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['footer'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Indexed Node: Content type */
@@ -135,30 +209,11 @@ function crl_resource_dashboard_feat_views_default_views() {
 
   /* Display: Offers - Main */
   $handler = $view->new_display('block', 'Offers - Main', 'block_2');
-  $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Relationship: Indexed Node: Related resource */
-  $handler->display->display_options['relationships']['field_resource_reference']['id'] = 'field_resource_reference';
-  $handler->display->display_options['relationships']['field_resource_reference']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['relationships']['field_resource_reference']['field'] = 'field_resource_reference';
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Node: Node ID */
-  $handler->display->display_options['fields']['nid_1']['id'] = 'nid_1';
-  $handler->display->display_options['fields']['nid_1']['table'] = 'entity_node';
-  $handler->display->display_options['fields']['nid_1']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid_1']['relationship'] = 'field_resource_reference';
-  $handler->display->display_options['fields']['nid_1']['label'] = 'Resource Node ID';
-  $handler->display->display_options['fields']['nid_1']['link_to_entity'] = 0;
-  /* Field: Indexed Node: Node ID */
-  $handler->display->display_options['fields']['nid']['id'] = 'nid';
-  $handler->display->display_options['fields']['nid']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['fields']['nid']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid']['label'] = 'Activity Node ID';
-  $handler->display->display_options['fields']['nid']['link_to_entity'] = 0;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Offer Duration: End date (indexed) */
-  $handler->display->display_options['sorts']['field_activity_offer_duration_value2']['id'] = 'field_activity_offer_duration_value2';
-  $handler->display->display_options['sorts']['field_activity_offer_duration_value2']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['sorts']['field_activity_offer_duration_value2']['field'] = 'field_activity_offer_duration_value2';
+  /* Sort criterion: Indexed Node: CRL Resource Expiration Countdown */
+  $handler->display->display_options['sorts']['crl_resource_expiration_countdown']['id'] = 'crl_resource_expiration_countdown';
+  $handler->display->display_options['sorts']['crl_resource_expiration_countdown']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['sorts']['crl_resource_expiration_countdown']['field'] = 'crl_resource_expiration_countdown';
   /* Sort criterion: Indexed Node: Date created */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'search_api_index_title_search_index';
@@ -171,7 +226,7 @@ function crl_resource_dashboard_feat_views_default_views() {
   $handler->display->display_options['filters']['type']['table'] = 'search_api_index_title_search_index';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
-    'activity' => 'activity',
+    'resource' => 'resource',
   );
   /* Filter criterion: Indexed Node: Status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -180,36 +235,17 @@ function crl_resource_dashboard_feat_views_default_views() {
   $handler->display->display_options['filters']['status']['value'] = array(
     1 => '1',
   );
-  /* Filter criterion: Indexed Node: CRL Status */
-  $handler->display->display_options['filters']['field_activity_crl_status']['id'] = 'field_activity_crl_status';
-  $handler->display->display_options['filters']['field_activity_crl_status']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['filters']['field_activity_crl_status']['field'] = 'field_activity_crl_status';
-  $handler->display->display_options['filters']['field_activity_crl_status']['value'] = array(
+  /* Filter criterion: Indexed Node: CRL Resource Status Backreference */
+  $handler->display->display_options['filters']['crl_resource_status_backref']['id'] = 'crl_resource_status_backref';
+  $handler->display->display_options['filters']['crl_resource_status_backref']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['filters']['crl_resource_status_backref']['field'] = 'crl_resource_status_backref';
+  $handler->display->display_options['filters']['crl_resource_status_backref']['value'] = array(
     'license_available' => 'license_available',
     'license_renewal_available' => 'license_renewal_available',
   );
 
   /* Display: Pipeline - Main */
   $handler = $view->new_display('block', 'Pipeline - Main', 'block_3');
-  $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Relationship: Indexed Node: Related resource */
-  $handler->display->display_options['relationships']['field_resource_reference']['id'] = 'field_resource_reference';
-  $handler->display->display_options['relationships']['field_resource_reference']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['relationships']['field_resource_reference']['field'] = 'field_resource_reference';
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Node: Node ID */
-  $handler->display->display_options['fields']['nid_1']['id'] = 'nid_1';
-  $handler->display->display_options['fields']['nid_1']['table'] = 'entity_node';
-  $handler->display->display_options['fields']['nid_1']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid_1']['relationship'] = 'field_resource_reference';
-  $handler->display->display_options['fields']['nid_1']['label'] = 'Resource Node ID';
-  $handler->display->display_options['fields']['nid_1']['link_to_entity'] = 0;
-  /* Field: Indexed Node: Node ID */
-  $handler->display->display_options['fields']['nid']['id'] = 'nid';
-  $handler->display->display_options['fields']['nid']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['fields']['nid']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid']['label'] = 'Activity Node ID';
-  $handler->display->display_options['fields']['nid']['link_to_entity'] = 0;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Indexed Node: Content type */
@@ -217,7 +253,7 @@ function crl_resource_dashboard_feat_views_default_views() {
   $handler->display->display_options['filters']['type']['table'] = 'search_api_index_title_search_index';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
-    'activity' => 'activity',
+    'resource' => 'resource',
   );
   /* Filter criterion: Indexed Node: Status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -226,11 +262,11 @@ function crl_resource_dashboard_feat_views_default_views() {
   $handler->display->display_options['filters']['status']['value'] = array(
     1 => '1',
   );
-  /* Filter criterion: Indexed Node: CRL Status */
-  $handler->display->display_options['filters']['field_activity_crl_status']['id'] = 'field_activity_crl_status';
-  $handler->display->display_options['filters']['field_activity_crl_status']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['filters']['field_activity_crl_status']['field'] = 'field_activity_crl_status';
-  $handler->display->display_options['filters']['field_activity_crl_status']['value'] = array(
+  /* Filter criterion: Indexed Node: CRL Resource Status Backreference */
+  $handler->display->display_options['filters']['crl_resource_status_backref']['id'] = 'crl_resource_status_backref';
+  $handler->display->display_options['filters']['crl_resource_status_backref']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['filters']['crl_resource_status_backref']['field'] = 'crl_resource_status_backref';
+  $handler->display->display_options['filters']['crl_resource_status_backref']['value'] = array(
     'crl_desiderata' => 'crl_desiderata',
     'license_under_consideration' => 'license_under_consideration',
   );

@@ -26,11 +26,23 @@ function crl_resource_dashboard_feat_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
+        'views-crl_messages-block_1' => array(
+          'module' => 'views',
+          'delta' => 'crl_messages-block_1',
+          'region' => 'user_first',
+          'weight' => '-10',
+        ),
         'views-resource_dashboard-block_4' => array(
           'module' => 'views',
           'delta' => 'resource_dashboard-block_4',
           'region' => 'preface_first',
           'weight' => '-8',
+        ),
+        'views-resource_dashboard-block_5' => array(
+          'module' => 'views',
+          'delta' => 'resource_dashboard-block_5',
+          'region' => 'preface_second',
+          'weight' => '-10',
         ),
         'views-resource_dashboard-block_1' => array(
           'module' => 'views',
