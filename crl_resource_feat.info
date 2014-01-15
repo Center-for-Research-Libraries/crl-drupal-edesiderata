@@ -5,6 +5,7 @@ dependencies[] = block
 dependencies[] = context
 dependencies[] = crl_activity_feat
 dependencies[] = crl_helpers
+dependencies[] = crl_mydes_feat
 dependencies[] = crl_resource
 dependencies[] = ctools
 dependencies[] = date

@@ -19,20 +19,18 @@ function crl_resource_feat_context_default_contexts() {
   $context->conditions = array(
     'views' => array(
       'values' => array(
-        'resource_lists:page' => 'resource_lists:page',
-        'resource_lists:page_1' => 'resource_lists:page_1',
-        'resource_lists:page_2' => 'resource_lists:page_2',
+        'resource_lists' => 'resource_lists',
       ),
     ),
   );
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'facetapi-v0ZXacr7r2i0X35y7qOaIDpzVcJx1uzG' => array(
-          'module' => 'facetapi',
-          'delta' => 'v0ZXacr7r2i0X35y7qOaIDpzVcJx1uzG',
+        'crl_resource-crl_resource_alpha_facet_sort' => array(
+          'module' => 'crl_resource',
+          'delta' => 'crl_resource_alpha_facet_sort',
           'region' => 'content',
-          'weight' => '-46',
+          'weight' => '-49',
         ),
         'views--exp-resource_lists-page' => array(
           'module' => 'views',
@@ -243,6 +241,12 @@ function crl_resource_feat_context_default_contexts() {
           'delta' => 'crl_resource_common_input',
           'region' => 'sidebar_second',
           'weight' => '-9',
+        ),
+        'crl_mydes_feat-crl_mydes_feat_flag' => array(
+          'module' => 'crl_mydes_feat',
+          'delta' => 'crl_mydes_feat_flag',
+          'region' => 'sidebar_second',
+          'weight' => '-8',
         ),
       ),
     ),

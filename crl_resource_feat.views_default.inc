@@ -141,8 +141,8 @@ function crl_resource_feat_views_default_views() {
     3 => array(),
   );
 
-  /* Display: Page - All Resources */
-  $handler = $view->new_display('page', 'Page - All Resources', 'page');
+  /* Display: Page - All (alpha) */
+  $handler = $view->new_display('page', 'Page - All (alpha)', 'page');
   $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['path'] = 'resources/main';
   $handler->display->display_options['menu']['type'] = 'normal';
@@ -156,8 +156,8 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['tab_options']['weight'] = '0';
   $handler->display->display_options['tab_options']['name'] = 'main-menu';
 
-  /* Display: Page - All Resources (date sort) */
-  $handler = $view->new_display('page', 'Page - All Resources (date sort)', 'page_2');
+  /* Display: Page - All (updated sort) */
+  $handler = $view->new_display('page', 'Page - All (updated sort)', 'page_2');
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
@@ -172,7 +172,55 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['sorts']['changed']['field'] = 'changed';
   $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
   $handler->display->display_options['sorts']['changed']['expose']['label'] = 'Date updated';
-  $handler->display->display_options['path'] = 'resources/main-date';
+  $handler->display->display_options['path'] = 'resources/updated';
+  $handler->display->display_options['menu']['title'] = 'Date List';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'main-menu';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+
+  /* Display: Page - All (created sort) */
+  $handler = $view->new_display('page', 'Page - All (created sort)', 'page_1');
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['exposed_block'] = TRUE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Indexed Node: Date created */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  $handler->display->display_options['path'] = 'resources/newest';
+  $handler->display->display_options['menu']['title'] = 'Date List';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'main-menu';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+
+  /* Display: Page - All (expiring sort) */
+  $handler = $view->new_display('page', 'Page - All (expiring sort)', 'page_3');
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['exposed_block'] = TRUE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Indexed Node: CRL Resource Expiration Countdown */
+  $handler->display->display_options['sorts']['crl_resource_expiration_countdown']['id'] = 'crl_resource_expiration_countdown';
+  $handler->display->display_options['sorts']['crl_resource_expiration_countdown']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['sorts']['crl_resource_expiration_countdown']['field'] = 'crl_resource_expiration_countdown';
+  /* Sort criterion: Indexed Node: Date changed */
+  $handler->display->display_options['sorts']['changed']['id'] = 'changed';
+  $handler->display->display_options['sorts']['changed']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['sorts']['changed']['field'] = 'changed';
+  $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
+  $handler->display->display_options['path'] = 'resources/expiring';
   $handler->display->display_options['menu']['title'] = 'Date List';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'main-menu';
