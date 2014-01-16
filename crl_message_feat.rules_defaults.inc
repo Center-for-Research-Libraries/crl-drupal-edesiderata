@@ -315,6 +315,11 @@ function crl_message_feat_default_rules_configuration() {
             "value" : { "select" : "node:changed", "date_offset" : { "value" : -43200 } }
           }
         },
+        { "data_is" : {
+            "data" : [ "node:field-activity-crl-status" ],
+            "value" : [ "node-unchanged:field-activity-crl-status" ]
+          }
+        },
         { "OR" : [
             { "NOT data_is" : { "data" : [ "node:vid" ], "value" : [ "node-unchanged:vid" ] } },
             { "data_is" : { "data" : [ "node-unchanged:status" ], "value" : "0" } }

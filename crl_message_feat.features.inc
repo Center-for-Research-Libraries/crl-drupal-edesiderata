@@ -235,14 +235,14 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "CRL Status for \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated to \\u003Cem\\u003E[message:field-activity-crl-status]\\u003C\\/em\\u003E.",
+          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated and CRL Status changed to \\u003Cem\\u003E[message:field-activity-crl-status]\\u003C\\/em\\u003E.",
           "format" : "literal",
-          "safe_value" : "CRL Status for \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated to \\u003Cem\\u003E[message:field-activity-crl-status]\\u003C\\/em\\u003E."
+          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated and CRL Status changed to \\u003Cem\\u003E[message:field-activity-crl-status]\\u003C\\/em\\u003E."
         },
         {
-          "value" : "CRL Status was updated to \\u003Cem\\u003E[message:field-activity-crl-status]\\u003C\\/em\\u003E.\\r\\n",
+          "value" : "Resource was updated and CRL Status changed to \\u003Cem\\u003E[message:field-activity-crl-status]\\u003C\\/em\\u003E.\\r\\n",
           "format" : "literal",
-          "safe_value" : "CRL Status was updated to \\u003Cem\\u003E[message:field-activity-crl-status]\\u003C\\/em\\u003E.\\n"
+          "safe_value" : "Resource was updated and CRL Status changed to \\u003Cem\\u003E[message:field-activity-crl-status]\\u003C\\/em\\u003E.\\n"
         },
         {
           "value" : "eDesiderata: CRL Status Update\\r\\n",
@@ -250,9 +250,9 @@ function crl_message_feat_default_message_type() {
           "safe_value" : "eDesiderata: CRL Status Update\\n"
         },
         {
-          "value" : "Dear [current-user:name],\\r\\nCRL Status for \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated to [message:field-activity-crl-status].\\r\\n\\r\\n- eDesiderata Team",
+          "value" : "Dear [current-user:name],\\r\\n\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated and CRL Status changed to [message:field-activity-crl-status].\\r\\n\\r\\n- eDesiderata Team",
           "format" : "literal",
-          "safe_value" : "Dear [current-user:name],\\nCRL Status for \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated to [message:field-activity-crl-status].\\n\\n- eDesiderata Team"
+          "safe_value" : "Dear [current-user:name],\\n\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E was updated and CRL Status changed to [message:field-activity-crl-status].\\n\\n- eDesiderata Team"
         }
       ]
     },
