@@ -15,5 +15,6 @@ features[features_api][] = api:2
 features[flag][] = base_node_watch
 features[search_api_saved_searches_settings][] = title_search_index
 features[views_view][] = mydes_lists
+features[views_view][] = mydes_saved_searches
 features_exclude[dependencies][ctools] = ctools
 project path = sites/all/modules/custom/crl_local

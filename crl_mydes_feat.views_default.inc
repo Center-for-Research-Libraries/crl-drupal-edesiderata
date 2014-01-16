@@ -288,5 +288,175 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['path'] = 'my/watchlist/download';
   $export['mydes_lists'] = $view;
 
+  $view = new view();
+  $view->name = 'mydes_saved_searches';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'search_api_saved_search';
+  $view->human_name = 'My Saved Searches';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'My Saved Searches';
+  $handler->display->display_options['use_ajax'] = TRUE;
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    2 => '2',
+  );
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'id' => 'id',
+    'uid' => 'uid',
+    'delete_link' => 'delete_link',
+    'name' => 'name',
+    'notify_interval' => 'notify_interval',
+    'created' => 'created',
+    'edit_link' => 'edit_link',
+  );
+  $handler->display->display_options['style_options']['default'] = 'created';
+  $handler->display->display_options['style_options']['info'] = array(
+    'id' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'uid' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'delete_link' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'notify_interval' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'created' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'edit_link' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = '<p>To access the current results of any saved search click on its name below.</p><p>You can create a new saved search by imputing any personalized filter criteria within the <a href="/resources/main">A-Z index</a> and then clicking the "Save this Search" option at the top of the page.</p>';
+  $handler->display->display_options['header']['area']['format'] = 'full_html';
+  $handler->display->display_options['header']['area']['tokenize'] = TRUE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = '<p><strong>No saved searches found.</strong></p>';
+  $handler->display->display_options['empty']['area']['format'] = 'full_html';
+  /* Relationship: Saved search: User */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'search_api_saved_search';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Field: Saved search: Saved search ID */
+  $handler->display->display_options['fields']['id']['id'] = 'id';
+  $handler->display->display_options['fields']['id']['table'] = 'search_api_saved_search';
+  $handler->display->display_options['fields']['id']['field'] = 'id';
+  $handler->display->display_options['fields']['id']['label'] = '';
+  $handler->display->display_options['fields']['id']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['id']['element_label_colon'] = FALSE;
+  /* Field: Saved search: Uid */
+  $handler->display->display_options['fields']['uid']['id'] = 'uid';
+  $handler->display->display_options['fields']['uid']['table'] = 'search_api_saved_search';
+  $handler->display->display_options['fields']['uid']['field'] = 'uid';
+  $handler->display->display_options['fields']['uid']['label'] = '';
+  $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
+  /* Field: Saved search: Delete link */
+  $handler->display->display_options['fields']['delete_link']['id'] = 'delete_link';
+  $handler->display->display_options['fields']['delete_link']['table'] = 'search_api_saved_search';
+  $handler->display->display_options['fields']['delete_link']['field'] = 'delete_link';
+  $handler->display->display_options['fields']['delete_link']['label'] = '';
+  $handler->display->display_options['fields']['delete_link']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['delete_link']['element_label_colon'] = FALSE;
+  /* Field: Saved search: Notify_interval */
+  $handler->display->display_options['fields']['notify_interval']['id'] = 'notify_interval';
+  $handler->display->display_options['fields']['notify_interval']['table'] = 'search_api_saved_search';
+  $handler->display->display_options['fields']['notify_interval']['field'] = 'notify_interval';
+  $handler->display->display_options['fields']['notify_interval']['label'] = 'Notify interval';
+  $handler->display->display_options['fields']['notify_interval']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['notify_interval']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['notify_interval']['alter']['text'] = '[notify_interval]&nbsp;&nbsp;<a href="/search-api/saved-search/[id]/edit?destination=my">change</a>';
+  $handler->display->display_options['fields']['notify_interval']['granularity'] = '2';
+  $handler->display->display_options['fields']['notify_interval']['custom_labels'] = 0;
+  /* Field: Saved search: Label */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'search_api_saved_search';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['label'] = 'Name';
+  $handler->display->display_options['fields']['name']['link_to_page'] = 1;
+  /* Field: Saved search: Results */
+  $handler->display->display_options['fields']['results']['id'] = 'results';
+  $handler->display->display_options['fields']['results']['table'] = 'search_api_saved_search';
+  $handler->display->display_options['fields']['results']['field'] = 'results';
+  $handler->display->display_options['fields']['results']['label'] = 'Resource count';
+  $handler->display->display_options['fields']['results']['list']['mode'] = 'count';
+  $handler->display->display_options['fields']['results']['link_to_entity'] = 0;
+  /* Field: Saved search: Created */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'search_api_saved_search';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['label'] = 'Search Created';
+  $handler->display->display_options['fields']['created']['date_format'] = 'time ago';
+  /* Field: Saved search: Edit link */
+  $handler->display->display_options['fields']['edit_link']['id'] = 'edit_link';
+  $handler->display->display_options['fields']['edit_link']['table'] = 'search_api_saved_search';
+  $handler->display->display_options['fields']['edit_link']['field'] = 'edit_link';
+  $handler->display->display_options['fields']['edit_link']['label'] = '';
+  $handler->display->display_options['fields']['edit_link']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['edit_link']['alter']['text'] = '<a href="/search-api/saved-search/[id]/delete?destination=my">Delete</a>';
+  $handler->display->display_options['fields']['edit_link']['element_label_colon'] = FALSE;
+  /* Filter criterion: User: Current */
+  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
+  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid_current']['value'] = '1';
+
+  /* Display: Block */
+  $handler = $view->new_display('block', 'Block', 'block');
+  $export['mydes_saved_searches'] = $view;
+
   return $export;
 }
