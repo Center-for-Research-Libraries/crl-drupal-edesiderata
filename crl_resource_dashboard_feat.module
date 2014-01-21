@@ -98,7 +98,7 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
         $set = TRUE;
         $status = '';
         $url_options = array();
-        $title = t('Totel Entries');
+        $title = t('Total Entries');
         $tagline = t('Browse and Search All (A-Z)');
         $aux_text = t('Resources entered and classified');
         $link_text = '';
