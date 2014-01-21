@@ -35,14 +35,14 @@ function crl_mydes_feat_context_default_contexts() {
         'views-mydes_saved_searches-block' => array(
           'module' => 'views',
           'delta' => 'mydes_saved_searches-block',
-          'region' => 'preface_second',
-          'weight' => '-10',
+          'region' => 'preface_first',
+          'weight' => '-9',
         ),
         'block-12' => array(
           'module' => 'block',
           'delta' => '12',
-          'region' => 'preface_second',
-          'weight' => '-9',
+          'region' => 'preface_first',
+          'weight' => '-8',
         ),
       ),
     ),
