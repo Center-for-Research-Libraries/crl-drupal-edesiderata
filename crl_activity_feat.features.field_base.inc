@@ -102,6 +102,9 @@ function crl_activity_feat_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_activity_crl_status',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
     'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
@@ -132,6 +135,9 @@ function crl_activity_feat_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_activity_gen_notes',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
     'foreign keys' => array(
       'format' => array(
         'columns' => array(
@@ -425,6 +431,9 @@ function crl_activity_feat_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_resource_reference',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
     'foreign keys' => array(
       'node' => array(
         'columns' => array(

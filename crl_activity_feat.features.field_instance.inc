@@ -204,7 +204,7 @@ function crl_activity_feat_field_default_field_instances() {
     'bundle' => 'activity',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '<strong>This field will be visible to member users.</strong> It can be used to show general notes about CRL activity that are not specifically linked to an offer or trial. The content entered here will always display no matter what status values are set above.',
+    'description' => '<strong>This field will be visible to member users.</strong> It can be used to show general notes about CRL work that are not specifically linked to an offer or trial. The content entered here will always display no matter what status values are set above.',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -229,11 +229,12 @@ function crl_activity_feat_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_activity_gen_notes',
-    'label' => 'General Activity Notes',
+    'label' => 'General Offer and Status Notes',
     'required' => 0,
     'settings' => array(
       'text_processing' => 1,
       'user_register_form' => FALSE,
+      'wysiwyg_unload' => 0,
     ),
     'widget' => array(
       'active' => 1,
@@ -817,13 +818,13 @@ function crl_activity_feat_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('<strong>This field will be visible to member users.</strong> It can be used to show general notes about CRL activity that are not specifically linked to an offer or trial. The content entered here will always display no matter what status values are set above.');
+  t('<strong>This field will be visible to member users.</strong> It can be used to show general notes about CRL work that are not specifically linked to an offer or trial. The content entered here will always display no matter what status values are set above.');
   t('Access Information');
   t('Add any general attachments that will only be visible to members, and will be shown independent of the CRL status.');
   t('Additional Notes');
   t('Attachments');
   t('CRL Status');
-  t('General Activity Notes');
+  t('General Offer and Status Notes');
   t('Grouping');
   t('How to Get Started');
   t('If this entry has relationships with other entries, add links to those entries here (one or more as needed).');
