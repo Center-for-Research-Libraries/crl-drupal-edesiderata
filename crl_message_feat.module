@@ -5,3 +5,141 @@
  */
 
 include_once 'crl_message_feat.features.inc';
+
+define('CRL_MESSAGE_UPDATE_DELAY', 60*60*12);
+
+/**
+ * Implements hook_node_insert().
+ */
+function crl_message_feat_node_insert($node) {
+  // Only act on resource and activity entities that are publised.
+  if (($node->type == 'resource' || $node->type == 'activity') && $node->status) {
+    $messages = array();
+    // Get wrappers to work with.
+    $entity_wrapper = entity_metadata_wrapper('node', $node);
+    $wrappers = crl_resource_get_wrappers($entity_wrapper);
+    $r_entity_wrapper = $wrappers['r_entity_wrapper'];
+    switch ($node->type) {
+      case 'activity':
+        // New activity entries are treated as updates to the related resouce.
+        if (crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_update')) {
+          $messages['resource_update'] = array('field_resource_reference' => $r_entity_wrapper->value());
+        }
+        break;
+      case 'resource':
+        // New resource message. If the item is immediatly classified as a
+        // review it gets a special message.
+        if ($entity_wrapper->field_resource_source_status->value() == 'crl_review') {
+          $messages['resource_new_review'] = array('field_resource_reference' => $r_entity_wrapper->value());
+        }
+        else {
+          $messages['resource_new'] = array('field_resource_reference' => $r_entity_wrapper->value());
+        }
+    }
+    crl_message_feat_process_messages($messages);
+  }
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function crl_message_feat_node_update($node) {
+  // Only act on resource and activity entity updates that are published.
+  if (($node->type == 'resource' || $node->type == 'activity') && $node->status) {
+    // See if this is a "minor" update, and if so cancel any update messages.
+    if ($node->original->vid == $node->vid) {
+      return;
+    }
+    $messages = array();
+    // Get wrappers to work with.
+    $entity_wrapper = entity_metadata_wrapper('node', $node);
+    $wrappers = crl_resource_get_wrappers($entity_wrapper);
+    $r_entity_wrapper = $wrappers['r_entity_wrapper'];
+    $update_set = FALSE;
+    $entity_wrapper_orig = entity_metadata_wrapper('node', $node->original);
+    // Deal with special-case update handeling.
+    switch ($node->type) {
+      case 'activity':
+        // Check if the CRL status has changed.
+        if ($entity_wrapper->field_activity_crl_status->value() != $entity_wrapper_orig->field_activity_crl_status->value()) {
+          $messages['resource_status_update'] = array(
+            'field_resource_reference' => $r_entity_wrapper->value(),
+            'field_activity_crl_status' => $entity_wrapper->field_activity_crl_status->value(),
+          );
+          $update_set = TRUE;
+        }
+        // Add other special-case activity update messages here (e.g., change
+        // to offer expiration).
+        break;
+      case  'resource':
+        // Check if the CRL source status has changed and is now a review.
+        if ($entity_wrapper->field_resource_source_status->value() == 'crl_review' && $entity_wrapper_orig->field_resource_source_status->value() != 'crl_review') {
+          $messages['resource_new_review'] = array('field_resource_reference' => $r_entity_wrapper->value());
+          $update_set = TRUE;
+        }
+        // Add other special-case resource update messages here.
+        break;
+    }
+    // Check if an alert has been issued.
+    if (isset($entity_wrapper->field_update_alert) && 
+        $entity_wrapper->field_update_alert->value() != $entity_wrapper_orig->field_update_alert->value() &&
+        $entity_wrapper->field_update_alert->value() > REQUEST_TIME) {
+      $messages['resource_new_alert'] = array('field_resource_reference' => $r_entity_wrapper->value());
+      $update_set = TRUE;
+    }
+    // If we get here and no "special" update message(s) are set, default to
+    // the generic update message.
+    if (!$update_set && crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_update')) {
+      $messages['resource_update'] = array('field_resource_reference' => $r_entity_wrapper->value());
+    }
+    crl_message_feat_process_messages($messages);
+  }
+}
+
+
+/**
+ * Process an array of messages.
+ * 
+ * @param array $messages
+ *   A associative multidimentional array of message info, keyed by message
+ *   type. Each entry will contain an associative array of descriptive field
+ *   data to set on the message.
+ */
+function crl_message_feat_process_messages($messages) {
+  foreach($messages as $type => $fields) {
+    // Create the message.
+    $message_wrapper = entity_metadata_wrapper('message', message_create($type));
+    // Set fields.
+    foreach ($fields as $field_name => $value) {
+      $message_wrapper->{$field_name}->set($value);
+    }
+    $message_wrapper->save();
+  }
+}
+
+
+/**
+ * Helper to see if sufficient time has passed since a message of a certain
+ * type was issued on a certain resource.
+ * 
+ * @param EntityMetadataWrapper $r_entity_wrapper
+ *   A wrapped resource entity that the message relates to.
+ * @param string $type
+ *   The message type to check the recent history for.
+ * @return boolean
+ *   Returns TRUE if no messages of this type have been issued for this resource
+ *   in a reasonable amount of time, FALSE otherwsie.
+ */
+function crl_message_feat_resource_message_lull($r_entity_wrapper, $type) {
+  $query = new EntityFieldQuery();
+  $result = $query
+    ->entityCondition('entity_type', 'message')
+    ->propertyCondition('type', $type, '=')
+    ->propertyCondition('timestamp', REQUEST_TIME - CRL_MESSAGE_UPDATE_DELAY, '>')
+    ->fieldCondition('field_resource_reference', 'target_id',  $r_entity_wrapper->getIdentifier(), '=')
+    ->execute();
+  if (empty($result)) {
+    return TRUE;
+  }
+  return FALSE;
+}

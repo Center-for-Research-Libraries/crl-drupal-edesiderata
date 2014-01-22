@@ -24,7 +24,13 @@ function crl_message_feat_views_default_views() {
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Activity';
   $handler->display->display_options['use_more_always'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    3 => '3',
+    21 => '21',
+    4 => '4',
+    5 => '5',
+  );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
@@ -175,7 +181,8 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['fields']['timestamp_1']['exclude'] = TRUE;
   $handler->display->display_options['fields']['timestamp_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['timestamp_1']['date_format'] = 'custom';
-  $handler->display->display_options['fields']['timestamp_1']['custom_date_format'] = 'g:i a';
+  $handler->display->display_options['fields']['timestamp_1']['custom_date_format'] = 'g:i a T';
+  $handler->display->display_options['fields']['timestamp_1']['timezone'] = 'America/Chicago';
   /* Field: Long Message */
   $handler->display->display_options['fields']['message_render_1']['id'] = 'message_render_1';
   $handler->display->display_options['fields']['message_render_1']['table'] = 'message';

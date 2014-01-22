@@ -184,9 +184,9 @@ function crl_message_feat_default_message_type() {
     },
     "rdf_mapping" : []
   }');
-  $items['resource_new_vote'] = entity_import('message_type', '{
-    "name" : "resource_new_vote",
-    "description" : "Resource new vote",
+  $items['resource_new_review'] = entity_import('message_type', '{
+    "name" : "resource_new_review",
+    "description" : "Resource new review",
     "argument_keys" : [],
     "argument" : [],
     "category" : "message_type",
@@ -198,24 +198,14 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E received a vote.\\r\\n",
+          "value" : "CRL staff issued a new review for \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E.",
           "format" : "literal",
-          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E received a vote.\\n"
+          "safe_value" : "CRL staff issued a new review for \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E."
         },
         {
-          "value" : "Received a vote.\\r\\n",
+          "value" : "New review issued by CRL staff.",
           "format" : "literal",
-          "safe_value" : "Received a vote.\\n"
-        },
-        {
-          "value" : "eDesiderata: New vote \\r\\n",
-          "format" : "literal",
-          "safe_value" : "eDesiderata: New vote \\n"
-        },
-        {
-          "value" : "Dear,\\r\\n[message:user:name] has voted on \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\r\\n\\r\\n- eDesiderata Team",
-          "format" : "literal",
-          "safe_value" : "Dear,\\n[message:user:name] has voted on \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\n\\n- eDesiderata Team"
+          "safe_value" : "New review issued by CRL staff."
         }
       ]
     },
