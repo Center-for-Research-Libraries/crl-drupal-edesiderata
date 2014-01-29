@@ -146,7 +146,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->mode = 'default';
   $field_group->parent_name = 'group_tabbed';
   $field_group->data = array(
-    'label' => 'CRL Offers & Activity',
+    'label' => 'CRL Offers & Status',
     'weight' => '15',
     'children' => array(
       0 => 'pseudo_field_resource_status_summary',
@@ -154,8 +154,9 @@ function crl_resource_feat_field_group_info() {
     ),
     'format_type' => 'htab',
     'format_settings' => array(
-      'label' => 'CRL Offers & Activity',
+      'label' => 'CRL Offers & Status',
       'instance_settings' => array(
+        'id' => '',
         'classes' => ' group-crl-details field-group-htab',
         'description' => '',
       ),

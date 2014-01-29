@@ -166,12 +166,11 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Indexed Node: Date changed */
-  $handler->display->display_options['sorts']['changed']['id'] = 'changed';
-  $handler->display->display_options['sorts']['changed']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['sorts']['changed']['field'] = 'changed';
-  $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
-  $handler->display->display_options['sorts']['changed']['expose']['label'] = 'Date updated';
+  /* Sort criterion: Indexed Node: CRL Resource Master Update Timestamp */
+  $handler->display->display_options['sorts']['crl_resource_master_update_timestamp']['id'] = 'crl_resource_master_update_timestamp';
+  $handler->display->display_options['sorts']['crl_resource_master_update_timestamp']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['sorts']['crl_resource_master_update_timestamp']['field'] = 'crl_resource_master_update_timestamp';
+  $handler->display->display_options['sorts']['crl_resource_master_update_timestamp']['order'] = 'DESC';
   $handler->display->display_options['path'] = 'resources/updated';
   $handler->display->display_options['menu']['title'] = 'Date List';
   $handler->display->display_options['menu']['weight'] = '0';
@@ -692,8 +691,8 @@ function crl_resource_feat_views_default_views() {
     'rid' => 'rid',
     'title' => 'title',
     'tag' => 'tag',
-    'value' => 'value',
     'value_type' => 'value_type',
+    'value' => 'value',
   );
   $handler->display->display_options['style_options']['default'] = 'timestamp';
   $handler->display->display_options['style_options']['info'] = array(
@@ -705,14 +704,14 @@ function crl_resource_feat_views_default_views() {
       'empty_column' => 0,
     ),
     'name' => array(
-      'sortable' => 0,
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'field_institution' => array(
-      'sortable' => 0,
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
@@ -724,7 +723,7 @@ function crl_resource_feat_views_default_views() {
       'empty_column' => 0,
     ),
     'title' => array(
-      'sortable' => 0,
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
@@ -737,14 +736,14 @@ function crl_resource_feat_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'value' => array(
+    'value_type' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'value_type' => array(
+    'value' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
