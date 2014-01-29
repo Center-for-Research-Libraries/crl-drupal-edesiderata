@@ -112,21 +112,17 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['sorts']['timestamp']['table'] = 'message';
   $handler->display->display_options['sorts']['timestamp']['field'] = 'timestamp';
   $handler->display->display_options['sorts']['timestamp']['order'] = 'DESC';
-
-  /* Display: Page - Title Grouped */
-  $handler = $view->new_display('page', 'Page - Title Grouped', 'page');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Site Activity by Title';
-  $handler->display->display_options['path'] = 'messages/group';
-  $handler->display->display_options['menu']['type'] = 'default tab';
-  $handler->display->display_options['menu']['title'] = 'By title';
-  $handler->display->display_options['menu']['weight'] = '0';
-  $handler->display->display_options['menu']['context'] = 0;
-  $handler->display->display_options['menu']['context_only_inline'] = 0;
-  $handler->display->display_options['tab_options']['type'] = 'normal';
-  $handler->display->display_options['tab_options']['title'] = 'Messages';
-  $handler->display->display_options['tab_options']['weight'] = '0';
-  $handler->display->display_options['tab_options']['name'] = 'main-menu';
+  /* Filter criterion: Message: Timestamp */
+  $handler->display->display_options['filters']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['filters']['timestamp']['table'] = 'message';
+  $handler->display->display_options['filters']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['filters']['timestamp']['operator'] = '>';
+  $handler->display->display_options['filters']['timestamp']['value']['value'] = '-30 days';
+  $handler->display->display_options['filters']['timestamp']['value']['type'] = 'offset';
+  $handler->display->display_options['filters']['timestamp']['expose']['operator_id'] = 'timestamp_op';
+  $handler->display->display_options['filters']['timestamp']['expose']['label'] = 'Timestamp';
+  $handler->display->display_options['filters']['timestamp']['expose']['operator'] = 'timestamp_op';
+  $handler->display->display_options['filters']['timestamp']['expose']['identifier'] = 'timestamp';
 
   /* Display: Page - Date Grouped */
   $handler = $view->new_display('page', 'Page - Date Grouped', 'page_2');
@@ -194,15 +190,32 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['fields']['message_render_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['message_render_1']['partials'] = 1;
   $handler->display->display_options['fields']['message_render_1']['partials_delta'] = '0';
-  $handler->display->display_options['path'] = 'messages/date-group';
-  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  $handler->display->display_options['path'] = 'activity/date';
+  $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'By date';
+  $handler->display->display_options['menu']['weight'] = '10';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $handler->display->display_options['tab_options']['type'] = 'normal';
+  $handler->display->display_options['tab_options']['title'] = 'Site Activity';
+  $handler->display->display_options['tab_options']['weight'] = '0';
+
+  /* Display: Page - Title Grouped */
+  $handler = $view->new_display('page', 'Page - Title Grouped', 'page');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Site Activity by Title (Last 30 days)';
+  $handler->display->display_options['path'] = 'activity/title';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'By title';
   $handler->display->display_options['menu']['weight'] = '20';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
   $handler->display->display_options['tab_options']['type'] = 'normal';
   $handler->display->display_options['tab_options']['title'] = 'Messages';
   $handler->display->display_options['tab_options']['weight'] = '0';
+  $handler->display->display_options['tab_options']['name'] = 'main-menu';
 
   /* Display: Block - Summary list */
   $handler = $view->new_display('block', 'Block - Summary list', 'block_1');
@@ -219,7 +232,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['use_more_text'] = 'More site activity';
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'some';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '6';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '8';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['footer'] = FALSE;
@@ -258,7 +271,7 @@ function crl_message_feat_views_default_views() {
   /* Display: Page - Watched */
   $handler = $view->new_display('page', 'Page - Watched', 'page_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'My Watchlist Activity';
+  $handler->display->display_options['title'] = 'My Watchlist Activity (Last 30 days)';
   $handler->display->display_options['defaults']['header'] = FALSE;
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
@@ -278,7 +291,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['relationships']['flag_content_rel']['field'] = 'flag_content_rel';
   $handler->display->display_options['relationships']['flag_content_rel']['relationship'] = 'field_resource_reference_target_id';
   $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'base_node_watch';
-  $handler->display->display_options['path'] = 'my/messages';
+  $handler->display->display_options['path'] = 'my/activity';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'My Watched Activity';
   $handler->display->display_options['menu']['weight'] = '0';

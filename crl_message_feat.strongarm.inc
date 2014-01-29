@@ -168,6 +168,14 @@ function crl_message_feat_strongarm() {
             'visible' => FALSE,
             'weight' => 0,
           ),
+          'message_notify_weekly_digest' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+          'message_notify_daily_digest' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
         ),
         'message__message_text__1' => array(
           'message_notify_email_subject' => array(
@@ -177,6 +185,14 @@ function crl_message_feat_strongarm() {
           'message_notify_email_body' => array(
             'visible' => TRUE,
             'weight' => 0,
+          ),
+          'message_notify_weekly_digest' => array(
+            'weight' => '1',
+            'visible' => FALSE,
+          ),
+          'message_notify_daily_digest' => array(
+            'weight' => '1',
+            'visible' => FALSE,
           ),
         ),
         'message__message_text__2' => array(
@@ -189,7 +205,11 @@ function crl_message_feat_strongarm() {
             'visible' => FALSE,
           ),
           'message_notify_daily_digest' => array(
-            'weight' => '5',
+            'weight' => '4',
+            'visible' => FALSE,
+          ),
+          'message_notify_weekly_digest' => array(
+            'weight' => '2',
             'visible' => FALSE,
           ),
         ),
@@ -203,7 +223,11 @@ function crl_message_feat_strongarm() {
             'visible' => TRUE,
           ),
           'message_notify_daily_digest' => array(
-            'weight' => '6',
+            'weight' => '5',
+            'visible' => FALSE,
+          ),
+          'message_notify_weekly_digest' => array(
+            'weight' => '3',
             'visible' => FALSE,
           ),
         ),
@@ -245,60 +269,6 @@ function crl_message_feat_strongarm() {
     ),
   );
   $export['field_bundle_settings_message__resource_new_review'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'field_bundle_settings_message__resource_new_vote';
-  $strongarm->value = array(
-    'view_modes' => array(),
-    'extra_fields' => array(
-      'form' => array(),
-      'display' => array(
-        'message__message_text__0' => array(
-          'message_notify_email_subject' => array(
-            'weight' => '0',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '0',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__1' => array(
-          'message_notify_email_subject' => array(
-            'weight' => '0',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '0',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__2' => array(
-          'message_notify_email_subject' => array(
-            'weight' => '2',
-            'visible' => TRUE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '2',
-            'visible' => FALSE,
-          ),
-        ),
-        'message__message_text__3' => array(
-          'message_notify_email_subject' => array(
-            'weight' => '3',
-            'visible' => FALSE,
-          ),
-          'message_notify_email_body' => array(
-            'weight' => '3',
-            'visible' => TRUE,
-          ),
-        ),
-      ),
-    ),
-  );
-  $export['field_bundle_settings_message__resource_new_vote'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */

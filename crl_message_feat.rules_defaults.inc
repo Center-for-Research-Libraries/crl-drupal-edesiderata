@@ -12,8 +12,9 @@ function crl_message_feat_default_rules_configuration() {
   $items['rules_message_email_notification'] = entity_import('rules_config', '{ "rules_message_email_notification" : {
       "LABEL" : "Message Email Notification",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
-      "REQUIRES" : [ "rules", "crl_message_feat", "message" ],
+      "REQUIRES" : [ "rules", "message" ],
       "ON" : { "message_insert" : [] },
       "IF" : [
         { "entity_has_field" : { "entity" : [ "message" ], "field" : "field_resource_reference" } },
@@ -28,12 +29,13 @@ function crl_message_feat_default_rules_configuration() {
           ]
         }
       ],
-      "DO" : [ { "crl_message_feat_process" : { "message" : [ "message" ] } } ]
+      "DO" : [ { "crl_message_feat_process" : [] } ]
     }
   }');
   $items['rules_message_resource_new_comment'] = entity_import('rules_config', '{ "rules_message_resource_new_comment" : {
       "LABEL" : "Message resource new comment",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "Messages" ],
       "REQUIRES" : [ "rules", "comment" ],
