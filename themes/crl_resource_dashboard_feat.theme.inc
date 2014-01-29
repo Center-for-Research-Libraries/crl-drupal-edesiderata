@@ -57,8 +57,8 @@ function theme_crl_resource_dashboard_feat_view_head_all($vars) {
   $markup = '<div class="dashboard-lead-all">';
   $markup .= '<div style="float: left;"><a href="' . $vars['url'] . '" class="no-link-style"><span class="super-num"><strong>' . $vars['count'] . '</strong></div></a>';
   $markup .= '<h3>' . l($vars['title'], $vars['path']) . '</h3>';
-  $markup .= '<p>' . $vars['aux_text'] . '<br/>';
-  $markup .= l($vars['tagline'], $vars['path']) . '</p>';
+  $aux_text = !empty($vars['aux_text']) ? ($vars['aux_text'] . '<br/>') : '';
+  $markup .= '<p>' . $aux_text . l($vars['tagline'], $vars['path']) . '</p>';
   $markup .= '</div>';
   return $markup;
 }

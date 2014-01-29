@@ -98,9 +98,10 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
         $set = TRUE;
         $status = '';
         $url_options = array();
-        $title = t('Total Entries');
+        $title = t('Total Resources');
         $tagline = t('Browse and Search All (A-Z)');
-        $aux_text = t('Resources entered and classified');
+        $aux_text = '';
+        //$aux_text = t('Resources entered and classified');
         $link_text = '';
         $theme = 'crl_resource_dashboard_feat_view_head_all';
         $path = 'resources/main';
