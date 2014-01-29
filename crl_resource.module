@@ -143,14 +143,16 @@ function crl_resource_theme() {
     ),
     // Theme hook to generate a resource teaser (used in views rows). This will
     // automatically get used by views based on its name and the standard
-    // template suggestion rules.
+    // template suggestion rules. We must formally declare it to ensure our
+    // custom preprocess functions get used, etc.
     'views_view_fields__resource_lists' => array(
       'variables' => array(),
       'template' => 'views-view-fields--resource-lists',
     ),
     // Theme hook to generate a resource interest voting widget (used by rate).
     // This will automatically get used by rate based on its name and the
-    // standard template suggestion rules.
+    // standard template suggestion rules. We must formally declare it to ensure
+    // our custom preprocess functions get used, etc.
     'rate_widget__resource_interest' => array(
       'variables' => array(),
       'template' => 'rate-widget--resource-interest',
@@ -194,6 +196,9 @@ function crl_resource_views_api() {
  * SQL-based views.
  */
 function crl_resource_entity_property_info_alter(&$info) {
+  // These all apply specifically to resources, so we could add them to a
+  // $info['node']['resource']['properties'] group, but then they might not
+  // be indexable on a generic node index (via search API).
   $properties = &$info['node']['properties'];
   // Fetch the ids of all entities that point to a resource through a
   // field_resource_reference field.
@@ -212,6 +217,15 @@ function crl_resource_entity_property_info_alter(&$info) {
     'description' => t("Gets CRL resource status through backreference."),
     'getter callback' => 'crl_resource_get_status_backref',
     'options list' => 'crl_resource_activity_status_property_oplist',
+  );
+  // Get the "master" update timestamp (the most recent timestamp between a
+  // resource and all its activity).
+  $properties['crl_resource_master_update_timestamp'] = array(
+    'label' => t("CRL Resource Master Update Timestamp"),
+    'type' => 'date',
+    'entity views field' => TRUE,
+    'description' => t("Get the master update timestamp (the most recent timestamp between a resource and all its activity)"),
+    'getter callback' => 'crl_resource_get_master_update_timestamp',
   );
   // See if an alert is active on a resource or any of its backreferenced
   // activity.
@@ -272,9 +286,10 @@ function crl_resource_entity_property_info_alter(&$info) {
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_get_backref($entity, array $options, $name, $type, $info) {
-  // The logic below may fail in strange ways if we are not dealing with a node.
-  if (empty($entity->nid)) {
-    return FALSE;
+  // If we are not working with a resoruce (e.g., building a generic node search
+  // index), we can just return a generic value.
+  if (empty($entity->type) || $entity->type != 'resource') {
+    return array();
   }
   // Calculate the backreferences. We store these in a static cache.
   static $backrefs = array();
@@ -311,6 +326,11 @@ function crl_resource_get_backref($entity, array $options, $name, $type, $info) 
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_get_status_backref($entity, array $options, $name, $type, $info) {
+  // If we are not working with a resoruce (e.g., building a generic node search
+  // index), we can just return a generic value.
+  if (empty($entity->type) || $entity->type != 'resource') {
+    return array();
+  }
   $wrappers = crl_resource_get_wrappers($entity);
   $r_entity_wrapper = $wrappers['r_entity_wrapper'];
   $a_entity_wrappers = $wrappers['a_entity_wrappers'];
@@ -338,14 +358,44 @@ function crl_resource_get_status_backref($entity, array $options, $name, $type, 
 
 
 /**
+ * Properties getter callback: get the "master" update timestamp (the most
+ * recent timestamp between a resource and all its activity).
+ * 
+ * @see crl_resource_entity_property_info_alter().
+ */
+function crl_resource_get_master_update_timestamp($entity, array $options, $name, $type, $info) {
+  $updated = isset($entity->changed) ? $entity->changed : 0;
+  // If we are not working with a resoruce (e.g., building a generic node search
+  // index), we can just return a generic value.
+  if (empty($entity->type) || $entity->type != 'resource') {
+    return $updated;
+  }
+  $wrappers = crl_resource_get_wrappers($entity);
+  $wrappers_to_check = array_merge(array($wrappers['r_entity_wrapper']), $wrappers['a_entity_wrappers']);
+  foreach ($wrappers_to_check as $wrapper) {
+    $timestamp = $wrapper->changed->value();
+    if ($timestamp > $updated) {
+      $updated = $timestamp;
+    }
+  }
+  return $updated;
+}
+
+
+/**
  * Properties getter callback: calculate alerts through backreferences.
  * 
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_get_alert($entity, array $options, $name, $type, $info) {
+  // If we are not working with a resoruce (e.g., building a generic node search
+  // index), we can just return a generic value.
+  if (empty($entity->type) || $entity->type != 'resource') {
+    return FALSE;
+  }
   $wrappers = crl_resource_get_wrappers($entity);
   $wrappers_to_check = array_merge(array($wrappers['r_entity_wrapper']), $wrappers['a_entity_wrappers']);
-  foreach($wrappers_to_check as $wrapper) {
+  foreach ($wrappers_to_check as $wrapper) {
     $alert = isset($wrapper->field_update_alert) ? $wrapper->field_update_alert->value() : NULL;
     if ((!empty($alert) && $alert > time())) {
       return TRUE;
@@ -362,6 +412,11 @@ function crl_resource_get_alert($entity, array $options, $name, $type, $info) {
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_get_expiration_countdown($entity, array $options, $name, $type, $info) {
+  // If we are not working with a resoruce (e.g., building a generic node search
+  // index), we can just return a NULL value.
+  if (empty($entity->type) || $entity->type != 'resource') {
+    return;
+  }
   // Initialize with a very high number in case we want to use this value in
   // a sort (e.g. ensure NULL/empty values are listed last). This feels like a
   // hack and there may be better options for this.
@@ -395,6 +450,11 @@ function crl_resource_get_expiration_countdown($entity, array $options, $name, $
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_get_vote_average($entity, array $options, $name, $type, $info) {
+  // If we are not working with a resoruce (e.g., building a generic node search
+  // index), we can just return a NULL value.
+  if (empty($entity->type) || $entity->type != 'resource') {
+    return;
+  }
   $vote_average = 0;
   if (function_exists('fivestar_get_votes')) {
     $vote_tags = array('platform', 'content', 'cost');
@@ -444,6 +504,11 @@ function crl_resource_get_interest_count_down($entity, array $options, $name, $t
  * Helper to get a resource interest count based on an option key.
  */
 function crl_resource_get_interest_count($entity, $option) {
+  // If we are not working with a resource (e.g., building a generic node search
+  // index), we can just return a NULL value.
+  if (empty($entity->type) || $entity->type != 'resource') {
+    return;
+  }
   // Get the vote data for the interest widget. We use a static cache as this
   // query really only needs to happen once per entity.
   static $results = array();
@@ -468,6 +533,11 @@ function crl_resource_get_interest_count($entity, $option) {
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_get_glossary_value($entity, array $options, $name, $type, $info) {
+  // If we are not working with a resoruce (e.g., building a generic node search
+  // index), we can just return a NULL value.
+  if (empty($entity->type) || $entity->type != 'resource') {
+    return;
+  }
   $string = '';
   // See if we have a sorting title to work with.
   $entity_wrapper = entity_metadata_wrapper('node', $entity);
@@ -503,18 +573,30 @@ function crl_resource_get_glossary_value($entity, array $options, $name, $type, 
  *     related to the resource.
  */
 function crl_resource_get_wrappers($entity) {
-  // If we were passed a wrapper, prevent the unneeded re-creation of a new one.
+  $passed_type = '';
+  // Initalize the passed data into a wrapper and detect the type.
   if (get_class($entity) == 'EntityDrupalWrapper') {
+    $passed_type = $entity->value()->type;
     $passed_entity_wrapper = $entity;
   }
-  else {
+  elseif (isset($entity->type)) {
+    $passed_type = $entity->type;
     $passed_entity_wrapper = entity_metadata_wrapper('node', $entity);
+  }
+  // If $passed_type is not set correctly it means that something has gone wrong
+  // and/or the passed data is not supported.
+  if ($passed_type != 'resource' && $passed_type != 'activity') {
+    throw new Exception(t('Only entities of type resource or activity can be wrapped. Type @type passed.', array('@type' => $passed_type)));
   }
   $passed_entity_id = $passed_entity_wrapper->getIdentifier();
   // Get our resource wrapper.
-  if ($passed_entity_wrapper->value()->type == 'activity') {
-    $r_entity = isset($passed_entity_wrapper->field_resource_reference) ? $passed_entity_wrapper->field_resource_reference->value() : NULL;
-    $r_entity_wrapper = entity_metadata_wrapper('node', $r_entity);
+  if ($passed_type == 'activity') {
+    if (isset($passed_entity_wrapper->field_resource_reference) && $passed_entity_wrapper->field_resource_reference->value()->type == 'resource') {
+      $r_entity_wrapper = entity_metadata_wrapper('node', $passed_entity_wrapper->field_resource_reference->value());
+    }
+    else {
+      throw new Exception(t('The passed activity entity does not appear to be associated with a resource.'));
+    }
   }
   else {
     $r_entity_wrapper = $passed_entity_wrapper;
@@ -756,6 +838,11 @@ function crl_resource_block_view($delta = '') {
  *   - options: A set of link options as used in l().
  */
 function crl_resource_activity_edit_link($entity) {
+  // The logic below may fail in strange ways if we are not dealing with a
+  // resource node.
+  if (empty($entity->type) || $entity->type != 'resource') {
+    return array();
+  }
   $edit_link = array();
   $wrappers = crl_resource_get_wrappers($entity);
   $r_wrapper = $wrappers['r_entity_wrapper'];
@@ -790,7 +877,7 @@ function crl_resource_menu_local_tasks_alter(&$data, $router_item, $root_path) {
       $data['actions']['output'][] = array(
         '#theme' => 'menu_local_task',
         '#link' => array(
-          'title' => t('Edit activity details for this resource'),
+          'title' => t('Edit CRL Offers & Status details for this resource'),
           'href' => $edit_link['path'],
           'localized_options' => $edit_link['options'],
         ),

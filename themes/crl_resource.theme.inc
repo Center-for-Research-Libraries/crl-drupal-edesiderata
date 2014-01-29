@@ -28,23 +28,24 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
   $view = $vars['view'];
   $nid = $view->result[$view->row_index]->entity;
   if (isset($nid)) {
-    $indexed_entity = node_load($nid);
+    $indexed_entity = node_load($nid); // From static cache
     // Get base resource and activity wrappers.
     $wrappers = crl_resource_get_wrappers($indexed_entity);
     $r_entity_wrapper = $wrappers['r_entity_wrapper'];
     // Check alerts.
-    $vars['alert_active'] = $r_entity_wrapper->value() ? $r_entity_wrapper->crl_resource_alert->value() : FALSE;
+    $vars['alert_active'] = isset($r_entity_wrapper->crl_resource_alert) ? $r_entity_wrapper->crl_resource_alert->value() : FALSE;
     // Get link.
-    $vars['resource_title'] = $r_entity_wrapper->value() ? $r_entity_wrapper->title->value() : '';
-    $vars['resource_url'] = $r_entity_wrapper->value() ? $r_entity_wrapper->url->value() : ''; 
+    $vars['resource_title'] = isset($r_entity_wrapper->title) ? $r_entity_wrapper->title->value() : '';
+    $vars['resource_url'] = isset($r_entity_wrapper->url) ? $r_entity_wrapper->url->value() : ''; 
     // Get summary.
-    $body = $r_entity_wrapper->body->value();
+    $body = isset($r_entity_wrapper->url) ? $r_entity_wrapper->body->value() : '';
     $vars['summary'] = $body['value'];
     // Get provider title.
     $provider = isset($r_entity_wrapper->field_provider) ? $r_entity_wrapper->field_provider->value()->title : '';
     $vars['provider'] = t('Provider') . ': ' . check_plain($provider);
     // Get updated date.
-    $updated = format_date($r_entity_wrapper->changed->value(), 'custom', 'm-d-Y');
+    $updated_stamp = isset($r_entity_wrapper->crl_resource_master_update_timestamp) ? $r_entity_wrapper->crl_resource_master_update_timestamp->value() : 0;
+    $updated = format_date($updated_stamp, 'custom', 'm-d-Y');
     $vars['updated'] = t('Updated') . ': ' . $updated;
     // Get status info
     $vars['status'] = isset($r_entity_wrapper->crl_resource_status_backref) ? $r_entity_wrapper->crl_resource_status_backref->value() : array();
@@ -54,7 +55,7 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
     $vars['extra'] = '';
     // Integration with crl_mydes_feat to add a watch flag link to each item
     // in the index.
-    if (module_exists('crl_mydes_feat')) {
+    if (module_exists('crl_mydes_feat') && crl_mydes_feat_mydes_access()) {
       $vars['extra'] = flag_create_link(CRL_WATCH_FLAG, $indexed_entity->nid);
     }
   }
@@ -75,6 +76,14 @@ function crl_resource_preprocess_rate_widget__resource_interest(&$variables) {
   if ($mode != RATE_COMPACT && $mode != RATE_COMPACT_DISABLED) {
     if (isset($results['user_vote'])) {
       $info[] = t('You voted \'@option\'.', array('@option' => t($results['user_vote'])));
+      // We also want any status messages set to trickle through as part of an
+      // AHAH update.
+      if ($just_voted) {
+        $messages = drupal_get_messages('status');
+        foreach ($messages as $message) {
+          $info[] = $message[0];
+        }
+      }
     }
   }
   $variables['info'] = implode(' ', $info);
@@ -120,7 +129,7 @@ function theme_crl_resource_field_status_summary($vars) {
   $output = '';
   // Add editor link.
   if (!empty($vars['edit_link'])) {
-    $output .= '<p style="text-align: right;"><strong>' . l(t('Edit activity details'), $vars['edit_link']['path'], $vars['edit_link']['options']) . '</a></strong></p>';
+    $output .= '<p style="text-align: right;"><strong>' . l(t('Edit CRL Offers & Status'), $vars['edit_link']['path'], $vars['edit_link']['options']) . '</a></strong></p>';
   }
   // Build the status display.
   if (!empty($vars['status'])) {
