@@ -27,8 +27,14 @@ function crl_mydes_feat_theme() {
  * Implements hook_block_info().
  */
 function crl_mydes_feat_block_info() {
+  // Block for use on resources pages to flag/watch a resource.
   $blocks['crl_mydes_feat_flag'] = array(
     'info' => t('Watch Resource via My eDesiderata'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // Block for My eDes page to allow users to control their mail settings.
+  $blocks['crl_mydes_email_settings'] = array(
+    'info' => t('Manage My eDesiderata mail settings'), 
     'cache' => DRUPAL_NO_CACHE,
   );
   return $blocks;
@@ -46,16 +52,50 @@ function crl_mydes_feat_block_view($delta = '') {
       $nid = arg(1);
       $node = node_load($nid);
       // Make sure block should be visible
-      if (isset($node->type) && $node->type == 'resource' && $user->uid) {
+      if (isset($node->type) && $node->type == 'resource' && $user->uid && crl_mydes_feat_mydes_access()) {
         $block['subject'] = t('Watch this Resource');
         $block['content'] = array('#markup' => crl_mydes_feat_generate_widget($node));
       }
       break;
+    case 'crl_mydes_email_settings':
+      $block['subject'] = '';
+      $block['content'] = array('#markup' => 'This is a placeholder space that will contain exposed configuration options for email settings.');
   }
   return $block;
 }
 
 
+/**
+ * Check if the current user has access to My eDesiderate features.
+ * 
+ * @param object $user
+ *   The user account to check. If this is not set the current user will be
+ *   checked.
+ * @return boolean
+ *   Returns true if the user should have access to My eDesiderata features and
+ *   FALSE otherwise.
+ */
+function crl_mydes_feat_mydes_access($account = NULL) {
+  if (!isset($user)) {
+    global $user;
+    $account = $user;
+  }
+  if (array_intersect($account->roles, array('editor basic', 'editor power', 'administrator'))) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+
+/**
+ * Utility to generate a "watch resource" form option (usually to be shown in
+ * a block).
+ * 
+ * @param object $node
+ *   The resource node that can be watched.
+ * @return string
+ *   Returns markup for the watch resource form.
+ */
 function crl_mydes_feat_generate_widget($node) {
   $output = '<p>' . t('By watching this resource you can monitor its activity in !link.', array('!link' => l(t('My eDesiderata'), 'my'))) . '</p>';
   $flag_link = flag_create_link(CRL_WATCH_FLAG, $node->nid);
@@ -63,21 +103,34 @@ function crl_mydes_feat_generate_widget($node) {
 }
 
 
+/**
+ * Utility to generate a collapsible "save search" form (wrapping the existing
+ * "save search" block) that can be added to a filtered resource index.
+ * 
+ * @return string
+ *   Returns markup for the collapsible form.
+ */
 function crl_mydes_feat_build_saved_search_form() {
   $output = '';
-  // Quick prototype addition to demonstrate adding the saved search block
-  $saved_searches = search_api_saved_searches_settings_load_multiple(FALSE, array('enabled' => TRUE));
-  if (!empty($saved_searches)) {
-    $saved_search = reset($saved_searches);
-    $block = module_invoke('search_api_saved_searches', 'block_view', $saved_search->delta);
-    drupal_add_js(drupal_get_path('module', 'crl_mydes_feat') .'/js/crl_mydes_feat.js', 'file');
-    $output .= theme('crl_mydes_feat_save_search_form', array('block' => $block));
+  if (crl_mydes_feat_mydes_access()) {
+    // Add the saved search block.
+    $saved_searches = search_api_saved_searches_settings_load_multiple(FALSE, array('enabled' => TRUE));
+    if (!empty($saved_searches)) {
+      $saved_search = reset($saved_searches);
+      $block = module_invoke('search_api_saved_searches', 'block_view', $saved_search->delta);
+      drupal_add_js(drupal_get_path('module', 'crl_mydes_feat') .'/js/crl_mydes_feat.js', 'file');
+      $output .= theme('crl_mydes_feat_save_search_form', array('block' => $block));
+    }
   }
   return $output;
 }
 
 
+/**
+ * Implements hook_form_alter().
+ */
 function crl_mydes_feat_form_alter(&$form, &$form_state, $form_id) {
+  // Make some alterations to the "save search" form.
   if ($form_id == 'search_api_saved_searches_save_form' || $form_id == 'search_api_saved_searches_search_edit_form') {
     $form['top_note'] = array(
       '#markup' => '<hr/><p>' . t('Saving this search will make future results accessible within My eDesiderata. You can also be notifed via email when new resources are added that match this search criteria.') . '</p>',
@@ -87,7 +140,7 @@ function crl_mydes_feat_form_alter(&$form, &$form_state, $form_id) {
     $args = arg();
     if ($args[0] !== 'search-api') {
       $form['notify_interval']['#type'] = 'hidden';
-      $form['notify_interval']['#value'] = -1;
+      $form['notify_interval']['#value'] = 86400;
     }
     else {
       $form['notify_interval']['#description'] = t('Select how frequently you would like to be notifed via email when resources are <em>added</em> that match this filter criteria');
