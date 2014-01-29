@@ -8,35 +8,78 @@ include_once 'crl_message_feat.features.inc';
 
 define('CRL_MESSAGE_UPDATE_DELAY', 60*60*12);
 
+
+/**
+ * Implements hook_theme_registry_alter.
+ * 
+ * Override some existing theme hooks via this module directly. Because these
+ * hooks are already declared, we use hook_theme_registry_alter().
+ */
+function crl_message_feat_theme_registry_alter(&$theme_registry) {
+  $theme_path = drupal_get_path('module', 'crl_message_feat') . '/themes';
+  $hooks_with_new_path = array();
+  // Override the function for the message digest row theme.
+  if (isset($theme_registry['message_digest_row'])) {
+    $theme_registry['message_digest_row']['function'] = 'crl_message_feat_message_digest_row';
+    // Make sure the file with the function is included. We could use the 'file'
+    // and 'path' options here, but that may need to be untouched to ensure
+    // other (pre)process functions get included.
+    $theme_registry['message_digest_row']['includes'][] = $theme_path . '/crl_message_feat.theme.inc';
+  }
+  // Override the function for the message digest mail.
+   if (isset($theme_registry['message_digest']) ) {
+    $theme_registry['message_digest']['function'] = 'crl_message_feat_message_digest';
+    // Make sure the file with the function is included.
+    $theme_registry['message_digest']['includes'][] = $theme_path . '/crl_message_feat.theme.inc';
+  }
+  // Override the template for a mimemail message.
+  if (isset($theme_registry['mimemail_message']) ) {
+    // Becuase this is a template, we need to explicitly change the path.
+    $theme_registry['mimemail_message']['path'] = $theme_path;
+    // Also declare a new preprocess function.
+    $theme_registry['mimemail_message']['includes'][] = $theme_path . '/crl_message_feat.theme.inc';
+    $theme_registry['mimemail_message']['preprocess functions'][] = 'crl_message_feat_preprocess_mimemail_message';
+  }
+}
+
+
 /**
  * Implements hook_node_insert().
  */
 function crl_message_feat_node_insert($node) {
-  // Only act on resource and activity entities that are publised.
+  // Only act on resource and activity entities that are published.
   if (($node->type == 'resource' || $node->type == 'activity') && $node->status) {
-    $messages = array();
-    // Get wrappers to work with.
-    $entity_wrapper = entity_metadata_wrapper('node', $node);
-    $wrappers = crl_resource_get_wrappers($entity_wrapper);
-    $r_entity_wrapper = $wrappers['r_entity_wrapper'];
-    switch ($node->type) {
-      case 'activity':
-        // New activity entries are treated as updates to the related resouce.
-        if (crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_update')) {
-          $messages['resource_update'] = array('field_resource_reference' => $r_entity_wrapper->value());
-        }
-        break;
-      case 'resource':
-        // New resource message. If the item is immediatly classified as a
-        // review it gets a special message.
-        if ($entity_wrapper->field_resource_source_status->value() == 'crl_review') {
-          $messages['resource_new_review'] = array('field_resource_reference' => $r_entity_wrapper->value());
-        }
-        else {
-          $messages['resource_new'] = array('field_resource_reference' => $r_entity_wrapper->value());
-        }
+    // Let's be very careful about catching errors here. If something goes
+    // wrong we certainly don't want it to prevent an edit from saving.
+    try {
+      $messages = array();
+      // Get wrappers to work with.
+      $entity_wrapper = entity_metadata_wrapper('node', $node);
+      $wrappers = crl_resource_get_wrappers($entity_wrapper);
+      $r_entity_wrapper = $wrappers['r_entity_wrapper'];
+      switch ($node->type) {
+        case 'activity':
+          // New activity entries are treated as updates to the related resouce.
+          if (crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_update')) {
+            $messages['resource_update'] = array('field_resource_reference' => $r_entity_wrapper->value());
+          }
+          break;
+        case 'resource':
+          // New resource message. If the item is immediatly classified as a
+          // review it gets a special message.
+          if ($entity_wrapper->field_resource_source_status->value() == 'crl_review') {
+            $messages['resource_new_review'] = array('field_resource_reference' => $r_entity_wrapper->value());
+          }
+          else {
+            $messages['resource_new'] = array('field_resource_reference' => $r_entity_wrapper->value());
+          }
+      }
+      crl_message_feat_process_messages($messages);
     }
-    crl_message_feat_process_messages($messages);
+    catch (Exception $e) {
+      $message = 'Exception processing messages on node insert: !message in %function (line %line of %file).';
+      watchdog_exception('crl_message_feat', $e, $message);
+    }
   }
 }
 
@@ -45,54 +88,81 @@ function crl_message_feat_node_insert($node) {
  */
 function crl_message_feat_node_update($node) {
   // Only act on resource and activity entity updates that are published.
-  if (($node->type == 'resource' || $node->type == 'activity') && $node->status) {
+if (($node->type == 'resource' || $node->type == 'activity') && $node->status) {
     // See if this is a "minor" update, and if so cancel any update messages.
     if ($node->original->vid == $node->vid) {
       return;
     }
-    $messages = array();
-    // Get wrappers to work with.
-    $entity_wrapper = entity_metadata_wrapper('node', $node);
-    $wrappers = crl_resource_get_wrappers($entity_wrapper);
-    $r_entity_wrapper = $wrappers['r_entity_wrapper'];
-    $update_set = FALSE;
-    $entity_wrapper_orig = entity_metadata_wrapper('node', $node->original);
-    // Deal with special-case update handeling.
-    switch ($node->type) {
-      case 'activity':
-        // Check if the CRL status has changed.
-        if ($entity_wrapper->field_activity_crl_status->value() != $entity_wrapper_orig->field_activity_crl_status->value()) {
-          $messages['resource_status_update'] = array(
-            'field_resource_reference' => $r_entity_wrapper->value(),
-            'field_activity_crl_status' => $entity_wrapper->field_activity_crl_status->value(),
-          );
-          $update_set = TRUE;
-        }
-        // Add other special-case activity update messages here (e.g., change
-        // to offer expiration).
-        break;
-      case  'resource':
-        // Check if the CRL source status has changed and is now a review.
-        if ($entity_wrapper->field_resource_source_status->value() == 'crl_review' && $entity_wrapper_orig->field_resource_source_status->value() != 'crl_review') {
-          $messages['resource_new_review'] = array('field_resource_reference' => $r_entity_wrapper->value());
-          $update_set = TRUE;
-        }
-        // Add other special-case resource update messages here.
-        break;
+    // Let's be very careful about catching errors here. If something goes
+    // wrong we certainly don't want it to prevent an edit from saving.
+    try {
+      $messages = array();
+      // Get wrappers to work with.
+      $entity_wrapper = entity_metadata_wrapper('node', $node);
+      $wrappers = crl_resource_get_wrappers($entity_wrapper);
+      $r_entity_wrapper = $wrappers['r_entity_wrapper'];
+      $update_set = FALSE;
+      $entity_wrapper_orig = entity_metadata_wrapper('node', $node->original);
+      // Deal with special-case update handeling.
+      switch ($node->type) {
+        case 'activity':
+          // Check if the CRL status has changed.
+          if ($entity_wrapper->field_activity_crl_status->value() != $entity_wrapper_orig->field_activity_crl_status->value()) {
+            $messages['resource_status_update'] = array(
+              'field_resource_reference' => $r_entity_wrapper->value(),
+              'field_activity_crl_status' => $entity_wrapper->field_activity_crl_status->value(),
+            );
+            $update_set = TRUE;
+          }
+          // Add other special-case activity update messages here (e.g., change
+          // to offer expiration).
+          break;
+        case  'resource':
+          // Check if the CRL source status has changed and is now a review.
+          if ($entity_wrapper->field_resource_source_status->value() == 'crl_review' && $entity_wrapper_orig->field_resource_source_status->value() != 'crl_review') {
+            $messages['resource_new_review'] = array('field_resource_reference' => $r_entity_wrapper->value());
+            $update_set = TRUE;
+          }
+          // Add other special-case resource update messages here.
+          break;
+      }
+      // Check if an alert has been issued.
+      if (isset($entity_wrapper->field_update_alert) && 
+          $entity_wrapper->field_update_alert->value() != $entity_wrapper_orig->field_update_alert->value() &&
+          $entity_wrapper->field_update_alert->value() > REQUEST_TIME) {
+        $messages['resource_new_alert'] = array('field_resource_reference' => $r_entity_wrapper->value());
+        $update_set = TRUE;
+      }
+      // If we get here and no "special" update message(s) are set, default to
+      // the generic update message.
+      if (!$update_set && crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_update')) {
+        $messages['resource_update'] = array('field_resource_reference' => $r_entity_wrapper->value());
+      }
+      crl_message_feat_process_messages($messages);
     }
-    // Check if an alert has been issued.
-    if (isset($entity_wrapper->field_update_alert) && 
-        $entity_wrapper->field_update_alert->value() != $entity_wrapper_orig->field_update_alert->value() &&
-        $entity_wrapper->field_update_alert->value() > REQUEST_TIME) {
-      $messages['resource_new_alert'] = array('field_resource_reference' => $r_entity_wrapper->value());
-      $update_set = TRUE;
+    catch (Exception $e) {
+      $message = 'Exception processing messages on node update: !message in %function (line %line of %file).';
+      watchdog_exception('crl_message_feat', $e, $message);
     }
-    // If we get here and no "special" update message(s) are set, default to
-    // the generic update message.
-    if (!$update_set && crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_update')) {
-      $messages['resource_update'] = array('field_resource_reference' => $r_entity_wrapper->value());
-    }
+  }
+}
+
+
+/**
+ * Implements hook_comment_insert().
+ */
+function crl_message_feat_comment_insert($comment) {
+  // Let's be very careful about catching errors here. If something goes wrong
+  // we certainly don't want it to prevent a comment from saving.
+  try {
+    // Trigger comment related messages.
+    $node = node_load($comment->nid);
+    $messages['resource_new_comment'] = array('field_resource_reference' => $node);
     crl_message_feat_process_messages($messages);
+  }
+  catch (Exception $e) {
+    $message = 'Exception processing messages on comment insert: !message in %function (line %line of %file).';
+    watchdog_exception('crl_message_feat', $e, $message);
   }
 }
 
@@ -114,6 +184,13 @@ function crl_message_feat_process_messages($messages) {
       $message_wrapper->{$field_name}->set($value);
     }
     $message_wrapper->save();
+    // Also trigger any subscription mails that may be related to this message.
+    if (module_exists('message_subscribe') && array_key_exists('field_resource_reference', $fields)) {
+      // The resource entity is that one that has a flag to test for the
+      // subscription.
+      $r_entity = $fields['field_resource_reference'];
+      message_subscribe_send_message('node', $r_entity, $message_wrapper->value());
+    }
   }
 }
 
@@ -122,7 +199,7 @@ function crl_message_feat_process_messages($messages) {
  * Helper to see if sufficient time has passed since a message of a certain
  * type was issued on a certain resource.
  * 
- * @param EntityMetadataWrapper $r_entity_wrapper
+ * @param EntityDrupalWrapper $r_entity_wrapper
  *   A wrapped resource entity that the message relates to.
  * @param string $type
  *   The message type to check the recent history for.
