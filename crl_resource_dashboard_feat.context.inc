@@ -68,7 +68,7 @@ function crl_resource_dashboard_feat_context_default_contexts() {
       'delta_template' => 'resource_dashboard',
     ),
     'theme_html' => array(
-      'class' => 'resources-dashboard',
+      'class' => 'resources-dashboard dashboard',
     ),
   );
   $context->condition_mode = 0;

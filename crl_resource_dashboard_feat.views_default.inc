@@ -164,20 +164,12 @@ function crl_resource_dashboard_feat_views_default_views() {
     1 => '1',
   );
   $handler->display->display_options['filters']['status']['group'] = 1;
-  /* Filter criterion: CRL Resource Backreference: Date changed (indexed) */
-  $handler->display->display_options['filters']['crl_resource_backref_changed']['id'] = 'crl_resource_backref_changed';
-  $handler->display->display_options['filters']['crl_resource_backref_changed']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['filters']['crl_resource_backref_changed']['field'] = 'crl_resource_backref_changed';
-  $handler->display->display_options['filters']['crl_resource_backref_changed']['operator'] = '>';
-  $handler->display->display_options['filters']['crl_resource_backref_changed']['value'] = 'now - 30 days';
-  $handler->display->display_options['filters']['crl_resource_backref_changed']['group'] = 2;
-  /* Filter criterion: Indexed Node: Date changed */
-  $handler->display->display_options['filters']['changed']['id'] = 'changed';
-  $handler->display->display_options['filters']['changed']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['filters']['changed']['field'] = 'changed';
-  $handler->display->display_options['filters']['changed']['operator'] = '>';
-  $handler->display->display_options['filters']['changed']['value'] = 'now - 30 days';
-  $handler->display->display_options['filters']['changed']['group'] = 2;
+  /* Filter criterion: Indexed Node: CRL Resource Master Update Timestamp */
+  $handler->display->display_options['filters']['crl_resource_master_update_timestamp']['id'] = 'crl_resource_master_update_timestamp';
+  $handler->display->display_options['filters']['crl_resource_master_update_timestamp']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['filters']['crl_resource_master_update_timestamp']['field'] = 'crl_resource_master_update_timestamp';
+  $handler->display->display_options['filters']['crl_resource_master_update_timestamp']['operator'] = '>=';
+  $handler->display->display_options['filters']['crl_resource_master_update_timestamp']['value'] = 'now - 30 days';
 
   /* Display: Reviews - Main */
   $handler = $view->new_display('block', 'Reviews - Main', 'block_1');
