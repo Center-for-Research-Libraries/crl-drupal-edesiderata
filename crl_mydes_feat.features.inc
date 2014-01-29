@@ -11,6 +11,9 @@ function crl_mydes_feat_ctools_plugin_api($module = NULL, $api = NULL) {
   if ($module == "context" && $api == "context") {
     return array("version" => "3");
   }
+  if ($module == "delta" && $api == "delta") {
+    return array("version" => "3");
+  }
 }
 
 /**
@@ -97,9 +100,9 @@ function crl_mydes_feat_default_search_api_saved_searches_settings() {
         },
         "notify" : {
           "title" : "New results for your saved search at [site:name]",
-          "body" : "[user:name],\\r\\n\\r\\nThere are new results for your saved search on [site:name]:\\r\\n\\r\\n[search-api-saved-searches:results]\\r\\n\\r\\nYou can configure your saved searches at the following address:\\r\\n[user:search-api-saved-searches-url]\\r\\n\\r\\n--  [site:name] team",
-          "results" : "New results for search \\u0022[search-api-saved-search:name]\\u0022:\\r\\n[search-api-saved-search:items]\\r\\n[search-api-saved-search:results-capped]",
-          "result" : "[search-api-saved-search-result:label] ([search-api-saved-search-result:url])",
+          "body" : "\\u003Cp\\u003E[user:name],\\u003C\\/p\\u003E\\r\\n\\r\\n\\u003Cp\\u003EThere are new results for your saved search on [site:name]:\\u003C\\/p\\u003E\\r\\n\\r\\n[search-api-saved-searches:results]",
+          "results" : "\\u003Cp\\u003ENew results for search \\u0022[search-api-saved-search:name]\\u0022:\\u003C\\/p\\u003E\\r\\n\\u003Cul\\u003E[search-api-saved-search:items]\\u003C\\/ul\\u003E\\r\\n[search-api-saved-search:results-capped]",
+          "result" : "\\u003Cli\\u003E[search-api-saved-search-result:label] ([search-api-saved-search-result:url])\\u003C\\/li\\u003E",
           "max_results" : "0",
           "results_capped" : "\\u2026\\r\\nView all results: [search-api-saved-search:view-url]"
         }

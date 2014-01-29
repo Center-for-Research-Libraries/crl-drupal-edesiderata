@@ -26,31 +26,37 @@ function crl_mydes_feat_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
+        'crl_mydes_feat-crl_mydes_email_settings' => array(
+          'module' => 'crl_mydes_feat',
+          'delta' => 'crl_mydes_email_settings',
+          'region' => 'preface_first',
+          'weight' => '-10',
+        ),
         'views-mydes_lists-block_1' => array(
           'module' => 'views',
           'delta' => 'mydes_lists-block_1',
-          'region' => 'preface_first',
+          'region' => 'postscript_first',
           'weight' => '-10',
         ),
         'views-mydes_saved_searches-block' => array(
           'module' => 'views',
           'delta' => 'mydes_saved_searches-block',
-          'region' => 'preface_first',
-          'weight' => '-9',
+          'region' => 'postscript_second',
+          'weight' => '-10',
         ),
         'block-12' => array(
           'module' => 'block',
           'delta' => '12',
-          'region' => 'preface_first',
-          'weight' => '-8',
+          'region' => 'postscript_second',
+          'weight' => '-9',
         ),
       ),
     ),
     'delta' => array(
-      'delta_template' => 'resource_dashboard',
+      'delta_template' => 'mydes_dashboard',
     ),
     'theme_html' => array(
-      'class' => 'resources-dashboard',
+      'class' => 'dashboard',
     ),
   );
   $context->condition_mode = 0;

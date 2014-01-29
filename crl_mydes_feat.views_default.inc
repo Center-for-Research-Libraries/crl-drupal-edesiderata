@@ -118,7 +118,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
   $handler->display->display_options['header']['area']['content'] = '<p>To add a new item to your watch list click the "Watch" option that appears next to each item while browsing the resource listings.</p>
-<p><a class="button" href="/my/messages"><span class="crl-icon-small pulse-icon"></span>Activity</a>&nbsp;&nbsp;<a class="button" href="/my/watchlist/download"><span class="crl-icon-small download-icon"></span>Download</a></p>';
+<p><a class="button" href="/my/activity"><span class="crl-icon-small pulse-icon"></span>See Activity</a>&nbsp;&nbsp;<a class="button" href="/my/watchlist/download"><span class="crl-icon-small download-icon"></span>Download</a></p>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
@@ -258,6 +258,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['style_options']['provide_file'] = 1;
   $handler->display->display_options['style_options']['filename'] = 'my_edesiderata_watchlist_%timestamp-full.xls';
   $handler->display->display_options['style_options']['parent_sort'] = 0;
+  $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
