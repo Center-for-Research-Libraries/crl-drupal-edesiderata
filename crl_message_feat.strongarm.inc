@@ -533,7 +533,7 @@ function crl_message_feat_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'message_purge_days';
-  $strongarm->value = '';
+  $strongarm->value = '365';
   $export['message_purge_days'] = $strongarm;
 
   $strongarm = new stdClass();

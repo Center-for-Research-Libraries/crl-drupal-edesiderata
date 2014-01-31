@@ -376,7 +376,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['alter']['text'] = 'CRL staff';
-  $handler->display->display_options['path'] = 'messages/rss';
+  $handler->display->display_options['path'] = 'activity/rss';
   $handler->display->display_options['displays'] = array(
     'default' => 0,
     'page' => 0,
