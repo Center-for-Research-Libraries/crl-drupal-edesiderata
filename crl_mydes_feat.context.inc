@@ -29,8 +29,14 @@ function crl_mydes_feat_context_default_contexts() {
         'crl_mydes_feat-crl_mydes_email_settings' => array(
           'module' => 'crl_mydes_feat',
           'delta' => 'crl_mydes_email_settings',
-          'region' => 'preface_first',
+          'region' => 'user_first',
           'weight' => '-10',
+        ),
+        'block-12' => array(
+          'module' => 'block',
+          'delta' => '12',
+          'region' => 'user_first',
+          'weight' => '-9',
         ),
         'views-mydes_lists-block_1' => array(
           'module' => 'views',
@@ -44,19 +50,13 @@ function crl_mydes_feat_context_default_contexts() {
           'region' => 'postscript_second',
           'weight' => '-10',
         ),
-        'block-12' => array(
-          'module' => 'block',
-          'delta' => '12',
-          'region' => 'postscript_second',
-          'weight' => '-9',
-        ),
       ),
     ),
     'delta' => array(
       'delta_template' => 'mydes_dashboard',
     ),
     'theme_html' => array(
-      'class' => 'dashboard',
+      'class' => 'dashboard equal-postscript',
     ),
   );
   $context->condition_mode = 0;

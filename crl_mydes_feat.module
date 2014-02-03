@@ -58,7 +58,7 @@ function crl_mydes_feat_block_view($delta = '') {
       }
       break;
     case 'crl_mydes_email_settings':
-      $block['subject'] = '';
+      $block['subject'] = t('My Email Subscription Settings');
       $block['content'] = array('#markup' => 'This is a placeholder space that will contain exposed configuration options for email settings.');
   }
   return $block;
