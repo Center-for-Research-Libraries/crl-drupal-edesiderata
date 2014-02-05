@@ -30,10 +30,10 @@
         if ($module && $key): print 'class="' . $module . '-' . $key . '"';
         endif;
         ?> style="text-align: center; padding: 0px;">
-        <table cellpadding="5" cellspacing="5" style="width: 700px; border: 1px solid #ccc; margin: auto;">
+        <table cellpadding="5" cellspacing="5" style="border: 1px solid #d7d4e3; margin: auto; width: 90%">
             <tr>
-                <td style="background: #474b6f; width: 100%;" height="141" align="center" valign="middle">
-                    <img src="sites/default/files/edesiderata-mail.png" alt="eDesiderata -Informed Investment in Electronic Resources">
+                <td style="background: #fff; width: 100%; border-bottom: 1px solid #d7d4e3;" align="left" valign="middle">
+                    <a href="#"><img src="sites/default/files/mail-head.png" height="150" alt="eDesiderata -Informed Investment in Electronic Resources"></a>
                 </td>
             </tr>
 
@@ -45,9 +45,8 @@
                 </td>
             </tr>  
             <tr>
-                <td style="background: #2B2A45; width: 100%; text-align:r ight; color: #D1CFBD;" height="100">
-                    <p style="padding: 20px;">6050 S. Kenwood Avenue | Chicago, IL 60637-2804 USA<br>
-                        Phone: (800) 621-6044 or (773) 955-4545 | Fax: (773) 955-4339</p>
+                <td style="background: #fff; width: 100%;border-top:1px solid #d7d4e3;" height="100">
+                    <a href="#"><img src="sites/default/files/mail-foot.png" alt="Center for Research Libraries"></a>                                     
 
                 </td>
             </tr>

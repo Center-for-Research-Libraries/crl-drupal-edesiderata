@@ -524,8 +524,11 @@ function crl_message_feat_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'mail_system';
   $strongarm->value = array(
-    'default-system' => 'MimeMailSystem',
+    'default-system' => 'DefaultMailSystem',
     'mimemail' => 'MimeMailSystem',
+    'search_api_saved_searches' => 'MimeMailSystem',
+    'message_notify' => 'MimeMailSystem',
+    'message_digest' => 'MimeMailSystem',
   );
   $export['mail_system'] = $strongarm;
 

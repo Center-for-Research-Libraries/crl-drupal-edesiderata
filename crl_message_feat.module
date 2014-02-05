@@ -7,6 +7,7 @@
 include_once 'crl_message_feat.features.inc';
 
 define('CRL_MESSAGE_UPDATE_DELAY', 60*60*12);
+define('CRL_MESSAGE_OFFER_EXPIRE_NOTICE', 60*60*24*13);
 
 
 /**
@@ -45,6 +46,8 @@ function crl_message_feat_theme_registry_alter(&$theme_registry) {
 
 /**
  * Implements hook_node_insert().
+ * 
+ * This triggers messages when content is created.
  */
 function crl_message_feat_node_insert($node) {
   // Only act on resource and activity entities that are published.
@@ -61,19 +64,20 @@ function crl_message_feat_node_insert($node) {
         case 'activity':
           // New activity entries are treated as updates to the related resouce.
           if (crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_update')) {
-            $messages['resource_update'] = array('field_resource_reference' => $r_entity_wrapper->value());
+            $messages[] = array('type' => 'resource_update', 'fields' => array('field_resource_reference' => $r_entity_wrapper->value()));
           }
           break;
         case 'resource':
           // New resource message. If the item is immediatly classified as a
           // review it gets a special message.
           if ($entity_wrapper->field_resource_source_status->value() == 'crl_review') {
-            $messages['resource_new_review'] = array('field_resource_reference' => $r_entity_wrapper->value());
+            $messages[] = array('type' => 'resource_new_review', 'fields' => array('field_resource_reference' => $r_entity_wrapper->value()));
           }
           else {
-            $messages['resource_new'] = array('field_resource_reference' => $r_entity_wrapper->value());
+            $messages[] = array('type' => 'resource_new', 'fields' => array('field_resource_reference' => $r_entity_wrapper->value()));
           }
       }
+      // Create messages.
       crl_message_feat_process_messages($messages);
     }
     catch (Exception $e) {
@@ -85,6 +89,8 @@ function crl_message_feat_node_insert($node) {
 
 /**
  * Implements hook_node_update().
+ * 
+ * This triggers messages when content is updated.
  */
 function crl_message_feat_node_update($node) {
   // Only act on resource and activity entity updates that are published.
@@ -108,10 +114,10 @@ if (($node->type == 'resource' || $node->type == 'activity') && $node->status) {
         case 'activity':
           // Check if the CRL status has changed.
           if ($entity_wrapper->field_activity_crl_status->value() != $entity_wrapper_orig->field_activity_crl_status->value()) {
-            $messages['resource_status_update'] = array(
+            $messages[] = array('type' => 'resource_status_update', 'fields' => array(
               'field_resource_reference' => $r_entity_wrapper->value(),
               'field_activity_crl_status' => $entity_wrapper->field_activity_crl_status->value(),
-            );
+            ));
             $update_set = TRUE;
           }
           // Add other special-case activity update messages here (e.g., change
@@ -120,7 +126,7 @@ if (($node->type == 'resource' || $node->type == 'activity') && $node->status) {
         case  'resource':
           // Check if the CRL source status has changed and is now a review.
           if ($entity_wrapper->field_resource_source_status->value() == 'crl_review' && $entity_wrapper_orig->field_resource_source_status->value() != 'crl_review') {
-            $messages['resource_new_review'] = array('field_resource_reference' => $r_entity_wrapper->value());
+            $messages[] = array('type' => 'resource_new_review', 'fields' => array('field_resource_reference' => $r_entity_wrapper->value()));
             $update_set = TRUE;
           }
           // Add other special-case resource update messages here.
@@ -130,14 +136,15 @@ if (($node->type == 'resource' || $node->type == 'activity') && $node->status) {
       if (isset($entity_wrapper->field_update_alert) && 
           $entity_wrapper->field_update_alert->value() != $entity_wrapper_orig->field_update_alert->value() &&
           $entity_wrapper->field_update_alert->value() > REQUEST_TIME) {
-        $messages['resource_new_alert'] = array('field_resource_reference' => $r_entity_wrapper->value());
+        $messages[] = array('type' => 'resource_new_alert', 'fields' => array('field_resource_reference' => $r_entity_wrapper->value()));
         $update_set = TRUE;
       }
-      // If we get here and no "special" update message(s) are set, default to
-      // the generic update message.
+      // If we get here and no "special" update message(s) are set above,
+      // default to the generic update message.
       if (!$update_set && crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_update')) {
-        $messages['resource_update'] = array('field_resource_reference' => $r_entity_wrapper->value());
+        $messages[] = array('type' => 'resource_update', 'fields' => array('field_resource_reference' => $r_entity_wrapper->value()));
       }
+      // Create messages.
       crl_message_feat_process_messages($messages);
     }
     catch (Exception $e) {
@@ -150,14 +157,18 @@ if (($node->type == 'resource' || $node->type == 'activity') && $node->status) {
 
 /**
  * Implements hook_comment_insert().
+ * 
+ * This triggers messages when users comment.
  */
 function crl_message_feat_comment_insert($comment) {
   // Let's be very careful about catching errors here. If something goes wrong
   // we certainly don't want it to prevent a comment from saving.
   try {
+    $messages = array();
     // Trigger comment related messages.
     $node = node_load($comment->nid);
-    $messages['resource_new_comment'] = array('field_resource_reference' => $node);
+    $messages[] = array('type' => 'resource_new_comment', 'fields' => array('field_resource_reference' => $node));
+    // Create messages.
     crl_message_feat_process_messages($messages);
   }
   catch (Exception $e) {
@@ -168,27 +179,88 @@ function crl_message_feat_comment_insert($comment) {
 
 
 /**
- * Process an array of messages.
+ * Implements hook_cron().
+ * 
+ * This triggers "about to expire" messages. Note that we use a lot of EFQ logic
+ * here, which may look rather complicated. Though it might be possible to do
+ * all this with some simpler direct SQL queries, that approach could cause
+ * problems if schema's change in the future. 
+ */
+function crl_message_feat_cron() {
+  // Get a list of "about to expire" messages that were recently sent already.
+  $query_messages_sent = new EntityFieldQuery();
+  $sent_messages = $query_messages_sent
+    ->entityCondition('entity_type', 'message')
+    ->propertyCondition('type', 'resource_expires_soon', '=')
+    ->propertyCondition('timestamp', REQUEST_TIME - CRL_MESSAGE_OFFER_EXPIRE_NOTICE, '>')
+    ->execute();
+  // Load those messages so we can get their related resource entity details.
+  $sent_messages_ids = !empty($sent_messages['message']) ? array_keys($sent_messages['message']) : array();
+  $sent_messages_entitites = entity_load('message', $sent_messages_ids);
+  $sent_messages_resource_ids = array();
+  foreach ($sent_messages_entitites as $id => $message) {
+    $message_wrapper = entity_metadata_wrapper('message', $message);
+    $sent_messages_resource_ids[] = isset($message_wrapper->field_resource_reference) ? $message_wrapper->field_resource_reference->getIdentifier() : NULL;
+  }
+  // Get a list of activity entries that are set to expire soon but that DO NOT
+  // reference resources from the list of messages already sent (as calculated
+  // above).
+  $query_expiring = new EntityFieldQuery();
+  $query_expiring
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'activity')
+    ->propertyCondition('status', 1)
+    ->fieldCondition('field_activity_offer_duration', 'value2', date('Y-m-d', REQUEST_TIME + CRL_MESSAGE_OFFER_EXPIRE_NOTICE - 86400), '>')
+    ->fieldCondition('field_activity_offer_duration', 'value2', date('Y-m-d', REQUEST_TIME + CRL_MESSAGE_OFFER_EXPIRE_NOTICE), '<=')
+    // Force query to run without access checks. This is safe as this is
+    // just maintenance logic that's only called via cron.
+    ->addTag('DANGEROUS_ACCESS_CHECK_OPT_OUT');
+  // Restrict cases where a message was already sent.
+  if (!empty($sent_messages_resource_ids)) {
+    $query_expiring->fieldCondition('field_resource_reference', 'target_id', $sent_messages_resource_ids, 'NOT IN');
+  }    
+  $expiring = $query_expiring->execute();
+  // Load the activity so we can get the related resource entity details.
+  $expiring_activity_ids = !empty($expiring['node']) ? array_keys($expiring['node']) : array();
+  $expiring_activity_entitites = entity_load('node', $expiring_activity_ids);
+  // Generate a list of messages based on our results.
+  $messages = array();
+  $marked = array();
+  foreach ($expiring_activity_entitites as $activity_entity) {
+    $wrappers = crl_resource_get_wrappers($activity_entity);
+    $r_id = $wrappers['r_entity_wrapper']->getIdentifier();
+    if (!in_array($r_id, $marked)) {
+      $marked[] = $r_id;
+      $messages[] = array('type' => 'resource_expires_soon', 'fields' => array('field_resource_reference' => $wrappers['r_entity_wrapper']->value()));
+    }
+  }
+  // Send the messages.
+  crl_message_feat_process_messages($messages);
+}
+
+
+/**
+ * Helper to process an array of messages.
  * 
  * @param array $messages
- *   A associative multidimentional array of message info, keyed by message
- *   type. Each entry will contain an associative array of descriptive field
- *   data to set on the message.
+ *   A multidimentional array of message info. Each entry will contain an
+ *   associative array with keys for the message type along with descriptive
+ *   field data to set on the message.
  */
 function crl_message_feat_process_messages($messages) {
-  foreach($messages as $type => $fields) {
+  foreach ($messages as $message) {
     // Create the message.
-    $message_wrapper = entity_metadata_wrapper('message', message_create($type));
+    $message_wrapper = entity_metadata_wrapper('message', message_create($message['type']));
     // Set fields.
-    foreach ($fields as $field_name => $value) {
+    foreach ($message['fields'] as $field_name => $value) {
       $message_wrapper->{$field_name}->set($value);
     }
     $message_wrapper->save();
     // Also trigger any subscription mails that may be related to this message.
-    if (module_exists('message_subscribe') && array_key_exists('field_resource_reference', $fields)) {
+    if (module_exists('message_subscribe') && array_key_exists('field_resource_reference', $message['fields'])) {
       // The resource entity is that one that has a flag to test for the
       // subscription.
-      $r_entity = $fields['field_resource_reference'];
+      $r_entity = $message['fields']['field_resource_reference'];
       message_subscribe_send_message('node', $r_entity, $message_wrapper->value());
     }
   }
@@ -219,4 +291,17 @@ function crl_message_feat_resource_message_lull($r_entity_wrapper, $type) {
     return TRUE;
   }
   return FALSE;
+}
+
+
+/**
+ * Implements hook_user_view_alter().
+ */
+function crl_message_feat_user_view_alter(&$build) {
+  // Remove the mimemail "fields" that get added to the profile page. These are
+  // not treated as fields in any useful way in the system, so we have not other
+  // way of hiding them.
+  if (isset($build['mimemail'])) {
+    unset($build['mimemail']);
+  }
 }
