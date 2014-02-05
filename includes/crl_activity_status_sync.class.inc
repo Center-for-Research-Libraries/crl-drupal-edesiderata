@@ -9,12 +9,6 @@
 
 
 class CrlActivityStatusSync {
-  // Define Drupal object and field machine names centrally.
-  public $a_node_type = 'activity';
-  public $a_field_offer_duration = 'field_activity_offer_duration';
-  public $a_field_trial_duration = 'field_activity_trial_duration';
-  public $a_field_status = 'field_activity_crl_status';
-  public $r_node_type = 'resource'; 
   // Dynamic variables set by object methods.
   public $lite = FALSE;
   public $status_changes = array();
@@ -33,8 +27,8 @@ class CrlActivityStatusSync {
   public function calculate_sync() {
     // See what activity entities are marked as "licesne available" and compare
     // to which ones have an offer expiration date that's still in the future.
-    $license_available_marked = $this->get_resources_by_active_status($this->a_node_type, $this->a_field_status, 'license_available');
-    $license_available_not_expired = $this->get_resources_by_t_range($this->a_node_type, $this->a_field_offer_duration, date('Y-m-d'));
+    $license_available_marked = $this->get_resources_by_active_status('activity', 'field_activity_crl_status', 'license_available');
+    $license_available_not_expired = $this->get_resources_by_t_range('activity', 'field_activity_offer_duration', date('Y-m-d'));
     foreach (array_diff($license_available_marked, $license_available_not_expired) as $nid) {
       $this->status_changes[$nid]['remove'][] = 'license_available';
       $this->status_changes[$nid]['remove'][] = 'license_renewal_available';
@@ -43,8 +37,8 @@ class CrlActivityStatusSync {
     // See what activity entities are marked as "trial access available" and
     // compare to which ones have an offer expiration date that's still in the
     // future.
-    $trial_available_marked = $this->get_resources_by_active_status($this->a_node_type, $this->a_field_status, 'trial_access_available');
-    $trial_available_not_expired = $this->get_resources_by_t_range($this->a_node_type, $this->a_field_trial_duration, date('Y-m-d'));
+    $trial_available_marked = $this->get_resources_by_active_status('activity', 'field_activity_crl_status', 'trial_access_available');
+    $trial_available_not_expired = $this->get_resources_by_t_range('activity', 'field_activity_trial_duration', date('Y-m-d'));
     foreach (array_diff($trial_available_marked, $trial_available_not_expired) as $nid) {
       $this->status_changes[$nid]['remove'][] = 'trial_access_available';
     }
@@ -69,16 +63,16 @@ class CrlActivityStatusSync {
           // time this is run... which would be bad as it would lead to
           // accumulating corrupt status values.
           $entity_wrapper = entity_metadata_wrapper('node', $node);
-          $statuses_active = isset($entity_wrapper->{$this->a_field_status}) ? $entity_wrapper->{$this->a_field_status}->value() : array();
+          $statuses_active = isset($entity_wrapper->field_activity_crl_status) ? $entity_wrapper->field_activity_crl_status->value() : array();
           if (!empty($statuses_active)) {
             foreach ($statuses_active as $key => $status_active) {
               if ($status_active == $status) {
-                unset($node->{$this->a_field_status}[$node->language][$key]);
+                unset($node->field_activity_crl_status[$node->language][$key]);
               }
             }
           }
           if ($type_key == 'add') {
-            $node->{$this->a_field_status}[$node->language][] = array('value' => $status);
+            $node->field_activity_crl_status[$node->language][] = array('value' => $status);
           }
         }
       }
