@@ -838,11 +838,6 @@ function crl_resource_block_view($delta = '') {
  *   - options: A set of link options as used in l().
  */
 function crl_resource_activity_edit_link($entity) {
-  // The logic below may fail in strange ways if we are not dealing with a
-  // resource node.
-  if (empty($entity->type) || $entity->type != 'resource') {
-    return array();
-  }
   $edit_link = array();
   $wrappers = crl_resource_get_wrappers($entity);
   $r_wrapper = $wrappers['r_entity_wrapper'];
