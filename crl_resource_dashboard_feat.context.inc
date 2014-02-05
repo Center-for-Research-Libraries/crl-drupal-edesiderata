@@ -68,7 +68,7 @@ function crl_resource_dashboard_feat_context_default_contexts() {
       'delta_template' => 'resource_dashboard',
     ),
     'theme_html' => array(
-      'class' => 'resources-dashboard dashboard',
+      'class' => 'dashboard resources-dashboard equal-postscript',
     ),
   );
   $context->condition_mode = 0;
