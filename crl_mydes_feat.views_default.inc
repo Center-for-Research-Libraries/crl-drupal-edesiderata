@@ -40,8 +40,6 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['style_options']['columns'] = array(
     'crl_resource_alert' => 'crl_resource_alert',
     'title' => 'title',
-    'timestamp' => 'timestamp',
-    'timestamp_1' => 'timestamp_1',
     'title_1' => 'title_1',
     'field_provider' => 'field_provider',
     'field_activity_crl_status' => 'field_activity_crl_status',
@@ -49,7 +47,7 @@ function crl_mydes_feat_views_default_views() {
     'ops' => 'ops',
     'nid_1' => 'nid_1',
   );
-  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['default'] = 'timestamp_2';
   $handler->display->display_options['style_options']['info'] = array(
     'crl_resource_alert' => array(
       'align' => '',
@@ -59,16 +57,6 @@ function crl_mydes_feat_views_default_views() {
     'title' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'timestamp' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'timestamp_1' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -93,7 +81,7 @@ function crl_mydes_feat_views_default_views() {
       'empty_column' => 0,
     ),
     'timestamp_2' => array(
-      'sortable' => 0,
+      'sortable' => 1,
       'default_sort_order' => 'desc',
       'align' => '',
       'separator' => '',
@@ -117,9 +105,9 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<p>To add a new item to your watch list click the "Watch" option that appears next to each item while browsing the resource listings.</p>
-<p><a class="button" href="/my/activity"><span class="crl-icon-small pulse-icon"></span>See Activity</a>&nbsp;&nbsp;<a class="button" href="/my/watchlist/download"><span class="crl-icon-small download-icon"></span>Download List</a></p>';
-  $handler->display->display_options['header']['area']['format'] = 'full_html';
+  $handler->display->display_options['header']['area']['content'] = '<p>To access the current details of any watched resource, click on it\'s name below.</p>
+<p><a class="button" href="/resources/main" onclick="return window.confirm(\'The A-Z listing will appear in a moment. To add a new item to your watch list, simply click the \\\'Watch\\\' option that appears next to the resource while browsing.\');"></span><b>+</b>&nbsp;&nbsp;Watch New Resource</a>&nbsp;&nbsp;<a class="button" href="/my/activity"><span class="crl-icon-small pulse-icon"></span>Watchlist Activity</a>&nbsp;&nbsp;<a class="button" href="/my/watchlist/download"><span class="crl-icon-small download-icon"></span>Download List</a></p>';
+  $handler->display->display_options['header']['area']['format'] = 'literal';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -231,6 +219,79 @@ function crl_mydes_feat_views_default_views() {
   $handler = $view->new_display('block', 'Block', 'block_1');
   $handler->display->display_options['defaults']['use_ajax'] = FALSE;
   $handler->display->display_options['use_ajax'] = TRUE;
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
+  $handler->display->display_options['footer']['area']['content'] = '<p>Want to watch a resource that\'s not yet listed in the <a href-"/resources/main">A-Z index</a>? Please <a href="/submit-suggested-resources"><strong>submit a suggestion</strong></a> so we can consider it for inclusion in our listings.</p>';
+  $handler->display->display_options['footer']['area']['format'] = 'literal';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: CRL Resource Alert */
+  $handler->display->display_options['fields']['crl_resource_alert']['id'] = 'crl_resource_alert';
+  $handler->display->display_options['fields']['crl_resource_alert']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['crl_resource_alert']['field'] = 'crl_resource_alert';
+  $handler->display->display_options['fields']['crl_resource_alert']['label'] = '';
+  $handler->display->display_options['fields']['crl_resource_alert']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['crl_resource_alert']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['crl_resource_alert']['type'] = 'custom';
+  $handler->display->display_options['fields']['crl_resource_alert']['type_custom_true'] = '<span class="crl-tag alert">alert</span>';
+  $handler->display->display_options['fields']['crl_resource_alert']['not'] = 0;
+  $handler->display->display_options['fields']['crl_resource_alert']['link_to_entity'] = 0;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title_1']['alter']['text'] = '[title] [crl_resource_alert]';
+  $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
+  /* Field: Content: Provider */
+  $handler->display->display_options['fields']['field_provider']['id'] = 'field_provider';
+  $handler->display->display_options['fields']['field_provider']['table'] = 'field_data_field_provider';
+  $handler->display->display_options['fields']['field_provider']['field'] = 'field_provider';
+  $handler->display->display_options['fields']['field_provider']['settings'] = array(
+    'link' => 0,
+  );
+  /* Field: Field: CRL Status */
+  $handler->display->display_options['fields']['field_activity_crl_status']['id'] = 'field_activity_crl_status';
+  $handler->display->display_options['fields']['field_activity_crl_status']['table'] = 'field_data_field_activity_crl_status';
+  $handler->display->display_options['fields']['field_activity_crl_status']['field'] = 'field_activity_crl_status';
+  $handler->display->display_options['fields']['field_activity_crl_status']['relationship'] = 'reverse_field_resource_reference_node';
+  $handler->display->display_options['fields']['field_activity_crl_status']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['field_activity_crl_status']['delta_offset'] = '0';
+  /* Field: Flags: Flagged time */
+  $handler->display->display_options['fields']['timestamp_2']['id'] = 'timestamp_2';
+  $handler->display->display_options['fields']['timestamp_2']['table'] = 'flagging';
+  $handler->display->display_options['fields']['timestamp_2']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp_2']['relationship'] = 'flag_content_rel';
+  $handler->display->display_options['fields']['timestamp_2']['label'] = 'Watched since';
+  $handler->display->display_options['fields']['timestamp_2']['date_format'] = 'time ago';
+  /* Field: Flags: Flag link */
+  $handler->display->display_options['fields']['ops']['id'] = 'ops';
+  $handler->display->display_options['fields']['ops']['table'] = 'flagging';
+  $handler->display->display_options['fields']['ops']['field'] = 'ops';
+  $handler->display->display_options['fields']['ops']['relationship'] = 'flag_content_rel';
+  $handler->display->display_options['fields']['ops']['label'] = '';
+  $handler->display->display_options['fields']['ops']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['ops']['link_type'] = 'normal';
+  /* Field: Print Link */
+  $handler->display->display_options['fields']['nid_1']['id'] = 'nid_1';
+  $handler->display->display_options['fields']['nid_1']['table'] = 'node';
+  $handler->display->display_options['fields']['nid_1']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid_1']['ui_name'] = 'Print Link';
+  $handler->display->display_options['fields']['nid_1']['label'] = 'Operations';
+  $handler->display->display_options['fields']['nid_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['nid_1']['alter']['text'] = '<a href="/print/[nid_1]">Print</a>&nbsp;&nbsp;[ops]';
+  $handler->display->display_options['fields']['nid_1']['element_label_colon'] = FALSE;
 
   /* Display: Data export */
   $handler = $view->new_display('views_data_export', 'Data export', 'views_data_export_1');
@@ -357,7 +418,8 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<p>To access the current results of any saved search click on its name below.</p><p>You can create a new saved search by imputing any personalized filter criteria within the <a href="/resources/main">A-Z index</a> and then clicking the "Save this Search" option at the top of the page.</p>';
+  $handler->display->display_options['header']['area']['content'] = '<p>To access the current results of any saved search click on its name below.</p>
+<p><a class="button" href="/resources/main" onclick="return window.confirm(\'The A-Z listing will appear in a moment. To create a new saved search, first input some personalized filter criteria and then click the \\\'Save this Search\\\' option that appears at the top of the page.\');"></span><b>+</b>&nbsp;&nbsp;Create Saved Search</a>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['header']['area']['tokenize'] = TRUE;
   /* No results behavior: Global: Text area */

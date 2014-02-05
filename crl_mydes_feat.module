@@ -58,8 +58,8 @@ function crl_mydes_feat_block_view($delta = '') {
       }
       break;
     case 'crl_mydes_email_settings':
-      $block['subject'] = t('My Email Subscription Settings');
-      $block['content'] = array('#markup' => 'This is a placeholder space that will contain exposed configuration options for email settings.');
+      $block['subject'] = t('My eDesiderata Subscription Settings');
+      $block['content'] = array('#markup' => '<p>Any updates to resources in your My eDesiderata watchlist, or changes to the results of a saved search, can be delivered to you automatically via email. The setting below applies only to My eDesiderata emails (watchlist and saved search activity).</p><p>[Placeholder for picklist option]</p>');
   }
   return $block;
 }
@@ -80,7 +80,7 @@ function crl_mydes_feat_mydes_access($account = NULL) {
     global $user;
     $account = $user;
   }
-  if (array_intersect($account->roles, array('editor basic', 'editor power', 'administrator'))) {
+  if (array_intersect($account->roles, array('editor basic', 'editor power', 'administrator', 'crl-staff'))) {
     return TRUE;
   }
   return FALSE;
