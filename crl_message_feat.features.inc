@@ -73,6 +73,33 @@ function crl_message_feat_flag_default_flags() {
  */
 function crl_message_feat_default_message_type() {
   $items = array();
+  $items['resource_expires_soon'] = entity_import('message_type', '{
+    "name" : "resource_expires_soon",
+    "description" : "Resource expires soon",
+    "argument_keys" : [],
+    "argument" : [],
+    "category" : "message_type",
+    "data" : {
+      "token options" : { "clear" : 0 },
+      "purge" : { "override" : 0, "enabled" : 0, "quota" : "", "days" : "" }
+    },
+    "language" : "",
+    "arguments" : null,
+    "message_text" : { "und" : [
+        {
+          "value" : "An offer associated with \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E is scheduled to expire in less than 2 weeks.",
+          "format" : "literal",
+          "safe_value" : "An offer associated with \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E is scheduled to expire in less than 2 weeks."
+        },
+        {
+          "value" : "An offer associated with the resource is scheduled to expire in less than 2 weeks.",
+          "format" : "literal",
+          "safe_value" : "An offer associated with the resource is scheduled to expire in less than 2 weeks."
+        }
+      ]
+    },
+    "rdf_mapping" : []
+  }');
   $items['resource_new'] = entity_import('message_type', '{
     "name" : "resource_new",
     "description" : "Resource new",

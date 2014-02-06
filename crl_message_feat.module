@@ -305,3 +305,8 @@ function crl_message_feat_user_view_alter(&$build) {
     unset($build['mimemail']);
   }
 }
+
+
+function crl_message_feat_mail_alter(&$message) {
+  dpm($message, 'message');
+}
