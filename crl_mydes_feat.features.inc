@@ -99,7 +99,7 @@ function crl_mydes_feat_default_search_api_saved_searches_settings() {
           "body" : "A saved search on [site:name] with this e-mail address was created.\\r\\nTo activate this saved search, click the following link:\\r\\n\\r\\n[search-api-saved-search:activate-url]\\r\\n\\r\\nIf you didn\\u0027t create this saved search, just ignore this mail and it will be deleted.\\r\\n\\r\\n--  [site:name] team"
         },
         "notify" : {
-          "title" : "New results for your saved search at [site:name]",
+          "title" : "[[site:name]] New results for your saved search",
           "body" : "\\u003Cp\\u003EThere are new results for your saved search on [site:name]:\\u003C\\/p\\u003E\\r\\n\\r\\n[search-api-saved-searches:results]",
           "results" : "\\u003Cp\\u003ENew results for search \\u0022[search-api-saved-search:name]\\u0022:\\u003C\\/p\\u003E\\r\\n\\u003Cul\\u003E[search-api-saved-search:items]\\u003C\\/ul\\u003E\\r\\n[search-api-saved-search:results-capped]",
           "result" : "\\u003Cli\\u003E[search-api-saved-search-result:label] ([search-api-saved-search-result:url])\\u003C\\/li\\u003E",

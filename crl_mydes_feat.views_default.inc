@@ -106,7 +106,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
   $handler->display->display_options['header']['area']['content'] = '<p>To access the current details of any watched resource, click on it\'s name below.</p>
-<p><a class="button" href="/resources/main" onclick="return window.confirm(\'The A-Z listing will appear in a moment. To add a new item to your watch list, simply click the \\\'Watch\\\' option that appears next to the resource while browsing.\');"></span><b>+</b>&nbsp;&nbsp;Watch New Resource</a>&nbsp;&nbsp;<a class="button" href="/my/activity"><span class="crl-icon-small pulse-icon"></span>Watchlist Activity</a>&nbsp;&nbsp;<a class="button" href="/my/watchlist/download"><span class="crl-icon-small download-icon"></span>Download List</a></p>';
+<p><a class="button" href="/resources/main" onclick="return window.confirm(\'You will be directed to the A-Z resource listings. To add a new item to your watch list, simply click the \\\'Watch\\\' option that appears next to the resource while browsing.\');"></span><b>+</b>&nbsp;&nbsp;Watch New Resource</a>&nbsp;&nbsp;<a class="button" href="/my/activity"><span class="crl-icon-small pulse-icon"></span>Watchlist Activity</a>&nbsp;&nbsp;<a class="button" href="/my/watchlist/download"><span class="crl-icon-small download-icon"></span>Download List</a></p>';
   $handler->display->display_options['header']['area']['format'] = 'literal';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
@@ -120,10 +120,6 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'node';
   $handler->display->display_options['relationships']['flag_content_rel']['field'] = 'flag_content_rel';
   $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'base_node_watch';
-  /* Relationship: Entity Reference: Referencing entity */
-  $handler->display->display_options['relationships']['reverse_field_resource_reference_node']['id'] = 'reverse_field_resource_reference_node';
-  $handler->display->display_options['relationships']['reverse_field_resource_reference_node']['table'] = 'node';
-  $handler->display->display_options['relationships']['reverse_field_resource_reference_node']['field'] = 'reverse_field_resource_reference_node';
   /* Field: Content: CRL Resource Alert */
   $handler->display->display_options['fields']['crl_resource_alert']['id'] = 'crl_resource_alert';
   $handler->display->display_options['fields']['crl_resource_alert']['table'] = 'views_entity_node';
@@ -157,12 +153,6 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['field_provider']['settings'] = array(
     'link' => 0,
   );
-  /* Field: Field: CRL Status */
-  $handler->display->display_options['fields']['field_activity_crl_status']['id'] = 'field_activity_crl_status';
-  $handler->display->display_options['fields']['field_activity_crl_status']['table'] = 'field_data_field_activity_crl_status';
-  $handler->display->display_options['fields']['field_activity_crl_status']['field'] = 'field_activity_crl_status';
-  $handler->display->display_options['fields']['field_activity_crl_status']['relationship'] = 'reverse_field_resource_reference_node';
-  $handler->display->display_options['fields']['field_activity_crl_status']['delta_offset'] = '0';
   /* Field: Flags: Flagged time */
   $handler->display->display_options['fields']['timestamp_2']['id'] = 'timestamp_2';
   $handler->display->display_options['fields']['timestamp_2']['table'] = 'flagging';
@@ -260,13 +250,6 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['field_provider']['settings'] = array(
     'link' => 0,
   );
-  /* Field: Field: CRL Status */
-  $handler->display->display_options['fields']['field_activity_crl_status']['id'] = 'field_activity_crl_status';
-  $handler->display->display_options['fields']['field_activity_crl_status']['table'] = 'field_data_field_activity_crl_status';
-  $handler->display->display_options['fields']['field_activity_crl_status']['field'] = 'field_activity_crl_status';
-  $handler->display->display_options['fields']['field_activity_crl_status']['relationship'] = 'reverse_field_resource_reference_node';
-  $handler->display->display_options['fields']['field_activity_crl_status']['hide_empty'] = TRUE;
-  $handler->display->display_options['fields']['field_activity_crl_status']['delta_offset'] = '0';
   /* Field: Flags: Flagged time */
   $handler->display->display_options['fields']['timestamp_2']['id'] = 'timestamp_2';
   $handler->display->display_options['fields']['timestamp_2']['table'] = 'flagging';
@@ -315,12 +298,6 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['field_provider']['settings'] = array(
     'link' => 0,
   );
-  /* Field: Field: CRL Status */
-  $handler->display->display_options['fields']['field_activity_crl_status']['id'] = 'field_activity_crl_status';
-  $handler->display->display_options['fields']['field_activity_crl_status']['table'] = 'field_data_field_activity_crl_status';
-  $handler->display->display_options['fields']['field_activity_crl_status']['field'] = 'field_activity_crl_status';
-  $handler->display->display_options['fields']['field_activity_crl_status']['relationship'] = 'reverse_field_resource_reference_node';
-  $handler->display->display_options['fields']['field_activity_crl_status']['delta_offset'] = '0';
   /* Field: Flags: Flagged time */
   $handler->display->display_options['fields']['timestamp_2']['id'] = 'timestamp_2';
   $handler->display->display_options['fields']['timestamp_2']['table'] = 'flagging';
@@ -419,7 +396,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
   $handler->display->display_options['header']['area']['content'] = '<p>To access the current results of any saved search click on its name below.</p>
-<p><a class="button" href="/resources/main" onclick="return window.confirm(\'The A-Z listing will appear in a moment. To create a new saved search, first input some personalized filter criteria and then click the \\\'Save this Search\\\' option that appears at the top of the page.\');"></span><b>+</b>&nbsp;&nbsp;Create Saved Search</a>';
+<p><a class="button" href="/resources/main" onclick="return window.confirm(\'You will be directed to the A-Z resource listings. To create a new saved search, first input some personalized filter criteria and then click the \\\'Save this Search\\\' option that appears at the top of that page.\');"></span><b>+</b>&nbsp;&nbsp;Create Saved Search</a>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['header']['area']['tokenize'] = TRUE;
   /* No results behavior: Global: Text area */
