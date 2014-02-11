@@ -6,8 +6,8 @@
 
 include_once 'crl_mydes_feat.features.inc';
 
-
 define('CRL_WATCH_FLAG', 'base_node_watch');
+
 
 /**
  * Implements hook_theme().
@@ -22,6 +22,7 @@ function crl_mydes_feat_theme() {
     ),
   );
 }
+
 
 /**
  * Implements hook_block_info().
@@ -58,8 +59,15 @@ function crl_mydes_feat_block_view($delta = '') {
       }
       break;
     case 'crl_mydes_email_settings':
-      $block['subject'] = t('My eDesiderata Subscription Settings');
-      $block['content'] = array('#markup' => '<p>Any updates to resources in your My eDesiderata watchlist, or changes to the results of a saved search, can be delivered to you automatically via email. The setting below applies only to My eDesiderata emails (watchlist and saved search activity).</p><p>[Placeholder for picklist option]</p>');
+      if (crl_mydes_feat_mydes_access()) {
+        $block['subject'] = t('My eDesiderata Email Settings');
+        $block['content'][] = array(
+          '#markup' => '<p>' . t('Updates to resources in your My eDesiderata watchlist, or changes to the results of a saved search, can be delivered to you automatically via email. The setting below applies only to My eDesiderata emails.') . '</p>',
+        );
+        $block['content'][] = array(
+          'form' => drupal_get_form('crl_mydes_feat_email_settings_form'),
+        );
+      }
   }
   return $block;
 }
@@ -80,7 +88,7 @@ function crl_mydes_feat_mydes_access($account = NULL) {
     global $user;
     $account = $user;
   }
-  if (array_intersect($account->roles, array('editor basic', 'editor power', 'administrator', 'crl-staff'))) {
+  if (array_intersect($account->roles, array('editor basic', 'editor power', 'administrator', 'crl-staff', 'mydes-temp'))) {
     return TRUE;
   }
   return FALSE;
@@ -137,13 +145,130 @@ function crl_mydes_feat_form_alter(&$form, &$form_state, $form_id) {
       '#weight' => -10,
     );
     $form['name']['#description'] = t('Give this saved search a name by which it can be later accessed within My eDesiderata');
+    // If the form is presented out side of the normal user configuration pages
+    // for the search api module, we manually control the notification interval.
     $args = arg();
     if ($args[0] !== 'search-api') {
       $form['notify_interval']['#type'] = 'hidden';
-      $form['notify_interval']['#value'] = 86400;
+      $form['notify_interval']['#value'] = crl_mydes_feat_email_settings_user_setting(TRUE);
     }
     else {
       $form['notify_interval']['#description'] = t('Select how frequently you would like to be notifed via email when resources are <em>added</em> that match this filter criteria');
     }
   }
+}
+
+
+/**
+ * Form definition for the global My eDesiderata mail settings controls.
+ */
+function crl_mydes_feat_email_settings_form() {
+  $form = array();
+  // Get the options from the sub email frequency module, but remove the
+  // "immediate" one.
+  $options = message_subscribe_email_frequency_allowed_values();
+  if (isset($options[MESSAGE_SUBSCRIBE_EMAIL_FREQUENCY_IMMEDIATE])) {
+    unset($options[MESSAGE_SUBSCRIBE_EMAIL_FREQUENCY_IMMEDIATE]);
+  }
+  $form['email_setting'] = array(
+    '#type' => 'select',
+    '#title' => t('Email Notification Interval'),
+    '#default_value' => crl_mydes_feat_email_settings_user_setting(),
+    '#options' => $options,
+  );
+  $form['submit'] = array('#type' => 'submit', '#value' => t('Submit'));
+  $form['#submit'][] = 'crl_mydes_feat_email_settings_form_submit_handler';
+  return $form;
+}
+
+
+/**
+ * Submit handler for the crl_mydes_feat_email_settings_form form.
+ * 
+ * This provides custom processing for changes to email preferences and ensures
+ * that BOTH watchlist digest and saved search mail preferences are changed.
+ */
+function crl_mydes_feat_email_settings_form_submit_handler($form, &$form_state) {
+  global $user;
+  $digest_updated = $search_updated = FALSE;
+  // Lets be very careful about gracefully cathing any errors that may happen
+  // while updating. We REALLY don't want a WSOD or something like that here.
+  try {
+    $account = user_load($user->uid); // Load fields
+    $wrapper = entity_metadata_wrapper('user', $account);
+    // Save the digest settings for the user.
+    if (isset($wrapper->message_subscribe_email_freq)) {
+      $wrapper->message_subscribe_email_freq->set($form_state['values']['email_setting']);
+      $wrapper->save();
+      $digest_updated = TRUE;
+    }
+    // Save the saved search intervals for the user across ALL thier saved
+    // searches.
+    $result = db_update('search_api_saved_search')
+      ->condition('uid', $wrapper->getIdentifier())
+      ->fields(array('notify_interval' => crl_mydes_feat_email_settings_user_setting(TRUE, $form_state['values']['email_setting'])))
+      ->execute();
+    if (!is_null($result)) {
+      $search_updated = TRUE;
+    }
+  }
+  catch (Exception $e) {
+    $message = 'Could not save email changes: !message in %function (line %line of %file).';
+    watchdog_exception('crl_mydes_feat', $e, $message);
+  }
+  // Make sure we were successfull with the updates. If there was a problem we
+  // log it as critical and display a message to the user that reassures them
+  // we'll make things right. It's important to note that users may encounter
+  // these messages in multiple places, includiing the unsubscibe interface.
+  if ($digest_updated && $search_updated) {
+    drupal_set_message(t('Your My eDesiderata email settings have been updated'));
+  }
+  else {
+    drupal_set_message(t('There was a problem updating your email settings. This problem has been logged and CRL staff will attempt to manually update your preferences.'), 'error');
+    watchdog('crl_mydes_feat', 'My eDesiderata email preference for user %name did not update. Value to set: %value', array('%name' => $user->name, '%value' => $form_state['values']['email_setting']), WATCHDOG_CRITICAL);
+  }
+}
+
+
+/**
+ * Helper to get the current My eDesiderata email setting for a user, or to
+ * convert a known setting to seconds.
+ * 
+ * @param boolean $seconds
+ *   Whether or not to report the current setting in seconds as opposed to a
+ *   key value (such as "day" or "week").
+ * @param string $known_setting
+ *   Optional "known" value (in key form) for a user's email setting. If this is
+ *   set the user's current setting will not be querued. This is useful in
+ *   conjunction with the $seconds value for simply converting a known key value
+ *   into seconds.
+ * @return mixed
+ *   Returns the user's current email setting. This will be in the form of a key
+ *   value (such as "day" or "week") unless $seconds is TRUE in which case the
+ *   value will be returned as an integer number of seconds.
+ */
+function crl_mydes_feat_email_settings_user_setting($seconds = FALSE, $known_setting = NULL) {
+  // Get default value from the current user settings if it's not passed in.
+  if (isset($known_setting)) {
+    $current_setting = $known_setting;
+  }
+  else {
+    global $user;
+    $account = user_load($user->uid); // Load fields
+    $wrapper = entity_metadata_wrapper('user', $account);
+    $current_setting = isset($wrapper->message_subscribe_email_freq) ? $wrapper->message_subscribe_email_freq->value() : MESSAGE_SUBSCRIBE_EMAIL_FREQUENCY_NEVER;
+  }
+  if ($seconds) {
+    if (strpos($current_setting, 'day') !== FALSE) {
+      $current_setting = 60*60*24;
+    }
+    elseif (strpos($current_setting, 'week') !== FALSE) {
+      $current_setting = 60*60*24*7;
+    }
+    else {
+      // A default value of -1 means "never".
+      $current_setting = -1;
+    }
+  }
+  return $current_setting;
 }
