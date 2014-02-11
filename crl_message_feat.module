@@ -299,7 +299,7 @@ function crl_message_feat_resource_message_lull($r_entity_wrapper, $type) {
  */
 function crl_message_feat_user_view_alter(&$build) {
   // Remove the mimemail "fields" that get added to the profile page. These are
-  // not treated as fields in any useful way in the system, so we have not other
+  // not treated as fields in any useful way in the system, so we have no other
   // way of hiding them.
   if (isset($build['mimemail'])) {
     unset($build['mimemail']);
@@ -307,6 +307,14 @@ function crl_message_feat_user_view_alter(&$build) {
 }
 
 
+/**
+ * Implements hook_user_mail_alter().
+ */
 function crl_message_feat_mail_alter(&$message) {
-  dpm($message, 'message');
+  // Tweak subject line for message digests. This is clunky, but has to be done
+  // this way.
+  if (strpos($message['id'], 'message_digest') === 0) {
+    $title = variable_get('site_name', 'eDesiderata');
+    $message['subject'] = '[' . $title . '] ' . t('Activity Message Digest');
+  }
 }
