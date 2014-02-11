@@ -30,6 +30,7 @@ function crl_message_feat_views_default_views() {
     21 => '21',
     4 => '4',
     5 => '5',
+    24 => '24',
   );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -124,99 +125,6 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['filters']['timestamp']['expose']['operator'] = 'timestamp_op';
   $handler->display->display_options['filters']['timestamp']['expose']['identifier'] = 'timestamp';
 
-  /* Display: Page - Date Grouped */
-  $handler = $view->new_display('page', 'Page - Date Grouped', 'page_2');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Site Activity by Date';
-  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
-  $handler->display->display_options['style_plugin'] = 'default';
-  $handler->display->display_options['style_options']['grouping'] = array(
-    0 => array(
-      'field' => 'timestamp',
-      'rendered' => 1,
-      'rendered_strip' => 0,
-    ),
-  );
-  $handler->display->display_options['style_options']['row_class'] = '[type]';
-  $handler->display->display_options['defaults']['style_options'] = FALSE;
-  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
-  $handler->display->display_options['row_plugin'] = 'fields';
-  $handler->display->display_options['defaults']['row_options'] = FALSE;
-  $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<p>Notable recent site activity sorted by date.</p>';
-  $handler->display->display_options['header']['area']['format'] = 'full_html';
-  $handler->display->display_options['defaults']['relationships'] = FALSE;
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Message: Type */
-  $handler->display->display_options['fields']['type']['id'] = 'type';
-  $handler->display->display_options['fields']['type']['table'] = 'message';
-  $handler->display->display_options['fields']['type']['field'] = 'type';
-  $handler->display->display_options['fields']['type']['label'] = '';
-  $handler->display->display_options['fields']['type']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['type']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['type']['machine_name'] = TRUE;
-  /* Field: Message: Timestamp */
-  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['table'] = 'message';
-  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['label'] = '';
-  $handler->display->display_options['fields']['timestamp']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['timestamp']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['timestamp']['date_format'] = 'custom';
-  $handler->display->display_options['fields']['timestamp']['custom_date_format'] = 'F d, Y';
-  /* Field: Time */
-  $handler->display->display_options['fields']['timestamp_1']['id'] = 'timestamp_1';
-  $handler->display->display_options['fields']['timestamp_1']['table'] = 'message';
-  $handler->display->display_options['fields']['timestamp_1']['field'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp_1']['ui_name'] = 'Time';
-  $handler->display->display_options['fields']['timestamp_1']['label'] = '';
-  $handler->display->display_options['fields']['timestamp_1']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['timestamp_1']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['timestamp_1']['date_format'] = 'custom';
-  $handler->display->display_options['fields']['timestamp_1']['custom_date_format'] = 'g:i a T';
-  $handler->display->display_options['fields']['timestamp_1']['timezone'] = 'America/Chicago';
-  /* Field: Long Message */
-  $handler->display->display_options['fields']['message_render_1']['id'] = 'message_render_1';
-  $handler->display->display_options['fields']['message_render_1']['table'] = 'message';
-  $handler->display->display_options['fields']['message_render_1']['field'] = 'message_render';
-  $handler->display->display_options['fields']['message_render_1']['ui_name'] = 'Long Message';
-  $handler->display->display_options['fields']['message_render_1']['label'] = '';
-  $handler->display->display_options['fields']['message_render_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="message-icon-small [type]"></span>[message_render_1] ([timestamp_1])';
-  $handler->display->display_options['fields']['message_render_1']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['message_render_1']['partials'] = 1;
-  $handler->display->display_options['fields']['message_render_1']['partials_delta'] = '0';
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  $handler->display->display_options['path'] = 'activity/date';
-  $handler->display->display_options['menu']['type'] = 'default tab';
-  $handler->display->display_options['menu']['title'] = 'By date';
-  $handler->display->display_options['menu']['weight'] = '10';
-  $handler->display->display_options['menu']['context'] = 0;
-  $handler->display->display_options['menu']['context_only_inline'] = 0;
-  $handler->display->display_options['tab_options']['type'] = 'normal';
-  $handler->display->display_options['tab_options']['title'] = 'Site Activity';
-  $handler->display->display_options['tab_options']['weight'] = '0';
-
-  /* Display: Page - Title Grouped */
-  $handler = $view->new_display('page', 'Page - Title Grouped', 'page');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Site Activity by Title (Last 30 days)';
-  $handler->display->display_options['path'] = 'activity/title';
-  $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'By title';
-  $handler->display->display_options['menu']['weight'] = '20';
-  $handler->display->display_options['menu']['context'] = 0;
-  $handler->display->display_options['menu']['context_only_inline'] = 0;
-  $handler->display->display_options['tab_options']['type'] = 'normal';
-  $handler->display->display_options['tab_options']['title'] = 'Messages';
-  $handler->display->display_options['tab_options']['weight'] = '0';
-  $handler->display->display_options['tab_options']['name'] = 'main-menu';
-
   /* Display: Block - Summary list */
   $handler = $view->new_display('block', 'Block - Summary list', 'block_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
@@ -268,10 +176,118 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
 
-  /* Display: Page - Watched */
-  $handler = $view->new_display('page', 'Page - Watched', 'page_1');
+  /* Display: Page - Date Grouped */
+  $handler = $view->new_display('page', 'Page - Date Grouped', 'page_2');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'My Watchlist Activity (Last 30 days)';
+  $handler->display->display_options['title'] = 'All Site Activity by Date';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['grouping'] = array(
+    0 => array(
+      'field' => 'timestamp',
+      'rendered' => 1,
+      'rendered_strip' => 0,
+    ),
+  );
+  $handler->display->display_options['style_options']['row_class'] = '[type]';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = '<p>Notable recent site activity sorted by date.</p>';
+  $handler->display->display_options['header']['area']['format'] = 'full_html';
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Message: Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'message';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['label'] = '';
+  $handler->display->display_options['fields']['type']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['type']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['type']['machine_name'] = TRUE;
+  /* Field: Message: Timestamp */
+  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['table'] = 'message';
+  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['label'] = '';
+  $handler->display->display_options['fields']['timestamp']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['timestamp']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['timestamp']['date_format'] = 'custom';
+  $handler->display->display_options['fields']['timestamp']['custom_date_format'] = 'F d, Y';
+  $handler->display->display_options['fields']['timestamp']['timezone'] = 'America/Chicago';
+  /* Field: Time */
+  $handler->display->display_options['fields']['timestamp_1']['id'] = 'timestamp_1';
+  $handler->display->display_options['fields']['timestamp_1']['table'] = 'message';
+  $handler->display->display_options['fields']['timestamp_1']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp_1']['ui_name'] = 'Time';
+  $handler->display->display_options['fields']['timestamp_1']['label'] = '';
+  $handler->display->display_options['fields']['timestamp_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['timestamp_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['timestamp_1']['date_format'] = 'custom';
+  $handler->display->display_options['fields']['timestamp_1']['custom_date_format'] = 'g:i a T';
+  $handler->display->display_options['fields']['timestamp_1']['timezone'] = 'America/Chicago';
+  /* Field: Long Message */
+  $handler->display->display_options['fields']['message_render_1']['id'] = 'message_render_1';
+  $handler->display->display_options['fields']['message_render_1']['table'] = 'message';
+  $handler->display->display_options['fields']['message_render_1']['field'] = 'message_render';
+  $handler->display->display_options['fields']['message_render_1']['ui_name'] = 'Long Message';
+  $handler->display->display_options['fields']['message_render_1']['label'] = '';
+  $handler->display->display_options['fields']['message_render_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="message-icon-small [type]"></span>[message_render_1] ([timestamp_1])';
+  $handler->display->display_options['fields']['message_render_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['message_render_1']['partials'] = 1;
+  $handler->display->display_options['fields']['message_render_1']['partials_delta'] = '0';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  $handler->display->display_options['path'] = 'activity/date';
+  $handler->display->display_options['menu']['type'] = 'default tab';
+  $handler->display->display_options['menu']['title'] = 'By date';
+  $handler->display->display_options['menu']['weight'] = '10';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $handler->display->display_options['tab_options']['type'] = 'normal';
+  $handler->display->display_options['tab_options']['title'] = 'Site Activity';
+  $handler->display->display_options['tab_options']['weight'] = '0';
+
+  /* Display: Page - Title Grouped */
+  $handler = $view->new_display('page', 'Page - Title Grouped', 'page');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'All Site Activity by Title (Last 30 days)';
+  $handler->display->display_options['path'] = 'activity/title';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'By title';
+  $handler->display->display_options['menu']['weight'] = '20';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $handler->display->display_options['tab_options']['type'] = 'normal';
+  $handler->display->display_options['tab_options']['title'] = 'Messages';
+  $handler->display->display_options['tab_options']['weight'] = '0';
+  $handler->display->display_options['tab_options']['name'] = 'main-menu';
+
+  /* Display: Page - Watched Date Grouped */
+  $handler = $view->new_display('page', 'Page - Watched Date Grouped', 'page_3');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'My Watchlist Activity by Date';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['grouping'] = array(
+    0 => array(
+      'field' => 'timestamp',
+      'rendered' => 1,
+      'rendered_strip' => 0,
+    ),
+  );
+  $handler->display->display_options['style_options']['row_class'] = '[type]';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['header'] = FALSE;
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
@@ -291,9 +307,87 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['relationships']['flag_content_rel']['field'] = 'flag_content_rel';
   $handler->display->display_options['relationships']['flag_content_rel']['relationship'] = 'field_resource_reference_target_id';
   $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'base_node_watch';
-  $handler->display->display_options['path'] = 'my/activity';
-  $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'My Watched Activity';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Message: Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'message';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['label'] = '';
+  $handler->display->display_options['fields']['type']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['type']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['type']['machine_name'] = TRUE;
+  /* Field: Message: Timestamp */
+  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['table'] = 'message';
+  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['label'] = '';
+  $handler->display->display_options['fields']['timestamp']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['timestamp']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['timestamp']['date_format'] = 'custom';
+  $handler->display->display_options['fields']['timestamp']['custom_date_format'] = 'F d, Y';
+  $handler->display->display_options['fields']['timestamp']['timezone'] = 'America/Chicago';
+  /* Field: Time */
+  $handler->display->display_options['fields']['timestamp_1']['id'] = 'timestamp_1';
+  $handler->display->display_options['fields']['timestamp_1']['table'] = 'message';
+  $handler->display->display_options['fields']['timestamp_1']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp_1']['ui_name'] = 'Time';
+  $handler->display->display_options['fields']['timestamp_1']['label'] = '';
+  $handler->display->display_options['fields']['timestamp_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['timestamp_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['timestamp_1']['date_format'] = 'custom';
+  $handler->display->display_options['fields']['timestamp_1']['custom_date_format'] = 'g:i a T';
+  $handler->display->display_options['fields']['timestamp_1']['timezone'] = 'America/Chicago';
+  /* Field: Long Message */
+  $handler->display->display_options['fields']['message_render_1']['id'] = 'message_render_1';
+  $handler->display->display_options['fields']['message_render_1']['table'] = 'message';
+  $handler->display->display_options['fields']['message_render_1']['field'] = 'message_render';
+  $handler->display->display_options['fields']['message_render_1']['ui_name'] = 'Long Message';
+  $handler->display->display_options['fields']['message_render_1']['label'] = '';
+  $handler->display->display_options['fields']['message_render_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="message-icon-small [type]"></span>[message_render_1] ([timestamp_1])';
+  $handler->display->display_options['fields']['message_render_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['message_render_1']['partials'] = 1;
+  $handler->display->display_options['fields']['message_render_1']['partials_delta'] = '0';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  $handler->display->display_options['path'] = 'my/activity/date';
+  $handler->display->display_options['menu']['type'] = 'default tab';
+  $handler->display->display_options['menu']['title'] = 'By Date';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'menu-secondary-menu';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $handler->display->display_options['tab_options']['type'] = 'normal';
+  $handler->display->display_options['tab_options']['title'] = 'My Watched Activity by Date';
+  $handler->display->display_options['tab_options']['weight'] = '0';
+  $handler->display->display_options['tab_options']['name'] = 'menu-secondary-menu';
+
+  /* Display: Page - Watched Title Grouped */
+  $handler = $view->new_display('page', 'Page - Watched Title Grouped', 'page_1');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'My Watchlist Activity by Title (Last 30 days)';
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = '<p>This view lists the recent site activity that applies specifically to your watchlist. You can manage your watchlist, and other related features, in <a href="/my">My eDesiderata</a>.</p>';
+  $handler->display->display_options['header']['area']['format'] = 'full_html';
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_resource_reference_target_id']['id'] = 'field_resource_reference_target_id';
+  $handler->display->display_options['relationships']['field_resource_reference_target_id']['table'] = 'field_data_field_resource_reference';
+  $handler->display->display_options['relationships']['field_resource_reference_target_id']['field'] = 'field_resource_reference_target_id';
+  /* Relationship: Flags: base_node_watch */
+  $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
+  $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'node';
+  $handler->display->display_options['relationships']['flag_content_rel']['field'] = 'flag_content_rel';
+  $handler->display->display_options['relationships']['flag_content_rel']['relationship'] = 'field_resource_reference_target_id';
+  $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'base_node_watch';
+  $handler->display->display_options['path'] = 'my/activity/title';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'By Title';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'menu-secondary-menu';
   $handler->display->display_options['menu']['context'] = 0;
