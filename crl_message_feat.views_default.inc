@@ -128,7 +128,7 @@ function crl_message_feat_views_default_views() {
   /* Display: Block - Summary list */
   $handler = $view->new_display('block', 'Block - Summary list', 'block_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Recent Site Activity';
+  $handler->display->display_options['title'] = 'Recent Site Activity Summary';
   $handler->display->display_options['defaults']['use_ajax'] = FALSE;
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['defaults']['use_more'] = FALSE;
@@ -179,7 +179,7 @@ function crl_message_feat_views_default_views() {
   /* Display: Page - Date Grouped */
   $handler = $view->new_display('page', 'Page - Date Grouped', 'page_2');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'All Site Activity by Date';
+  $handler->display->display_options['title'] = 'eDesiderata Activity Summary';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['style_options']['grouping'] = array(
@@ -258,7 +258,7 @@ function crl_message_feat_views_default_views() {
   /* Display: Page - Title Grouped */
   $handler = $view->new_display('page', 'Page - Title Grouped', 'page');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'All Site Activity by Title (Last 30 days)';
+  $handler->display->display_options['title'] = 'eDesiderata Activity Summary (Last 30 days)';
   $handler->display->display_options['path'] = 'activity/title';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'By title';
@@ -273,7 +273,7 @@ function crl_message_feat_views_default_views() {
   /* Display: Page - Watched Date Grouped */
   $handler = $view->new_display('page', 'Page - Watched Date Grouped', 'page_3');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'My Watchlist Activity by Date';
+  $handler->display->display_options['title'] = 'My Watchlist Activity Summary';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['style_options']['grouping'] = array(
@@ -293,7 +293,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<p>This view lists the recent site activity that applies specifically to your watchlist. You can manage your watchlist, and other related features, in <a href="/my">My eDesiderata</a>.</p>';
+  $handler->display->display_options['header']['area']['content'] = '<p>Recent updates to the resource entries in your watchlist, sorted by date. You can manage your watchlist in <a href="/my">My eDesiderata</a>.</p>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
@@ -365,13 +365,13 @@ function crl_message_feat_views_default_views() {
   /* Display: Page - Watched Title Grouped */
   $handler = $view->new_display('page', 'Page - Watched Title Grouped', 'page_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'My Watchlist Activity by Title (Last 30 days)';
+  $handler->display->display_options['title'] = 'My Watchlist Activity Summary (Last 30 days)';
   $handler->display->display_options['defaults']['header'] = FALSE;
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<p>This view lists the recent site activity that applies specifically to your watchlist. You can manage your watchlist, and other related features, in <a href="/my">My eDesiderata</a>.</p>';
+  $handler->display->display_options['header']['area']['content'] = '<p>Recent updates to the resource entries in your watchlist, sorted by resource title. You can manage your watchlist in <a href="/my">My eDesiderata</a>.</p>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;

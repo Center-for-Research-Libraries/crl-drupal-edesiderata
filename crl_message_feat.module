@@ -167,9 +167,11 @@ function crl_message_feat_comment_insert($comment) {
     $messages = array();
     // Trigger comment related messages.
     $node = node_load($comment->nid);
-    $messages[] = array('type' => 'resource_new_comment', 'fields' => array('field_resource_reference' => $node));
-    // Create messages.
-    crl_message_feat_process_messages($messages);
+    if ($node->type == 'resource') {
+      $messages[] = array('type' => 'resource_new_comment', 'fields' => array('field_resource_reference' => $node));
+      // Create messages.
+      crl_message_feat_process_messages($messages);
+    }
   }
   catch (Exception $e) {
     $message = 'Exception processing messages on comment insert: !message in %function (line %line of %file).';
