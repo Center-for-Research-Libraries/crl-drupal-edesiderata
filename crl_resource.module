@@ -217,6 +217,7 @@ function crl_resource_entity_property_info_alter(&$info) {
     'description' => t("Gets CRL resource status through backreference."),
     'getter callback' => 'crl_resource_get_status_backref',
     'options list' => 'crl_resource_activity_status_property_oplist',
+    'entity views field' => TRUE,
   );
   // Get the "master" update timestamp (the most recent timestamp between a
   // resource and all its activity).
