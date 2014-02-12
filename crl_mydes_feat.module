@@ -60,9 +60,9 @@ function crl_mydes_feat_block_view($delta = '') {
       break;
     case 'crl_mydes_email_settings':
       if (crl_mydes_feat_mydes_access()) {
-        $block['subject'] = t('My eDesiderata Email Settings');
+        $block['subject'] = t('My eDesiderata Email Notification Settings');
         $block['content'][] = array(
-          '#markup' => '<p>' . t('Updates to resources in your My eDesiderata watchlist, or changes to the results of a saved search, can be delivered to you automatically via email. The setting below applies only to My eDesiderata emails.') . '</p>',
+          '#markup' => '<p>' . t('Updates to resources in your watchlist, or changes to the results of a saved search, can be delivered to you automatically via email. The setting below applies only to My eDesiderata notifications.') . '</p>',
         );
         $block['content'][] = array(
           'form' => drupal_get_form('crl_mydes_feat_email_settings_form'),

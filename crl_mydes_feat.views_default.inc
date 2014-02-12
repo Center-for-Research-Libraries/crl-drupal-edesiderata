@@ -105,7 +105,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<p>To access the current details of any watched resource, click on it\'s name below.</p>
+  $handler->display->display_options['header']['area']['content'] = '<p>To view updates to a resource entry in your watchlist click on its name below.</p>
 <p><a class="button" href="/resources/main" onclick="return window.confirm(\'You will be directed to the A-Z resource listings. To add a new item to your watch list, simply click the \\\'Watch\\\' option that appears next to the resource while browsing.\');"></span><b>+</b>&nbsp;&nbsp;Watch New Resource</a>&nbsp;&nbsp;<a class="button" href="/my/activity"><span class="crl-icon-small pulse-icon"></span>Watchlist Activity</a>&nbsp;&nbsp;<a class="button" href="/my/watchlist/download"><span class="crl-icon-small download-icon"></span>Download List</a></p>';
   $handler->display->display_options['header']['area']['format'] = 'literal';
   /* No results behavior: Global: Text area */
@@ -214,7 +214,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['footer']['area']['id'] = 'area';
   $handler->display->display_options['footer']['area']['table'] = 'views';
   $handler->display->display_options['footer']['area']['field'] = 'area';
-  $handler->display->display_options['footer']['area']['content'] = '<p>Want to watch a resource that\'s not yet listed in the <a href-"/resources/main">A-Z index</a>? Please <a href="/submit-suggested-resources"><strong>submit a suggestion</strong></a> so we can consider it for inclusion in our listings.</p>';
+  $handler->display->display_options['footer']['area']['content'] = '<p>Want to watch a resource that\'s not yet listed in the <a href-"/resources/main">A-Z index</a>? Please <a href="/submit-suggested-resources"><strong>submit a suggestion</strong></a> so we can consider it for inclusion in eDesiderata.</p>';
   $handler->display->display_options['footer']['area']['format'] = 'literal';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: CRL Resource Alert */
@@ -240,6 +240,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
   $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['label'] = 'Resource';
   $handler->display->display_options['fields']['title_1']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['title_1']['alter']['text'] = '[title] [crl_resource_alert]';
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
@@ -395,7 +396,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<p>To access the current results of any saved search click on its name below.</p>
+  $handler->display->display_options['header']['area']['content'] = '<p>To access the current results of a saved search click on the name of the search below.</p>
 <p><a class="button" href="/resources/main" onclick="return window.confirm(\'You will be directed to the A-Z resource listings. To create a new saved search, first input some personalized filter criteria and then click the \\\'Save this Search\\\' option that appears at the top of that page.\');"></span><b>+</b>&nbsp;&nbsp;Create Saved Search</a>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['header']['area']['tokenize'] = TRUE;
