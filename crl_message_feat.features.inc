@@ -75,7 +75,7 @@ function crl_message_feat_default_message_type() {
   $items = array();
   $items['resource_expires_soon'] = entity_import('message_type', '{
     "name" : "resource_expires_soon",
-    "description" : "Resource expires soon",
+    "description" : "Offers expiring soon",
     "argument_keys" : [],
     "argument" : [],
     "category" : "message_type",
@@ -102,7 +102,7 @@ function crl_message_feat_default_message_type() {
   }');
   $items['resource_new'] = entity_import('message_type', '{
     "name" : "resource_new",
-    "description" : "Resource new",
+    "description" : "New resource entries",
     "argument_keys" : [],
     "argument" : [],
     "category" : "message_type",
@@ -122,16 +122,14 @@ function crl_message_feat_default_message_type() {
           "value" : "Resource entry was added.\\r\\n",
           "format" : "literal",
           "safe_value" : "Resource entry was added.\\n"
-        },
-        { "value" : "\\r\\n", "format" : "literal", "safe_value" : "\\n" },
-        { "value" : "\\r\\n", "format" : "literal", "safe_value" : "\\n" }
+        }
       ]
     },
     "rdf_mapping" : []
   }');
   $items['resource_new_alert'] = entity_import('message_type', '{
     "name" : "resource_new_alert",
-    "description" : "Resource new alert",
+    "description" : "New CRL alerts",
     "argument_keys" : [],
     "argument" : [],
     "category" : "message_type",
@@ -158,7 +156,7 @@ function crl_message_feat_default_message_type() {
   }');
   $items['resource_new_comment'] = entity_import('message_type', '{
     "name" : "resource_new_comment",
-    "description" : "Resource new comment",
+    "description" : "New comments",
     "argument_keys" : [],
     "argument" : [],
     "category" : "message_type",
@@ -178,15 +176,14 @@ function crl_message_feat_default_message_type() {
           "value" : "A new comment was added.\\r\\n",
           "format" : "literal",
           "safe_value" : "A new comment was added.\\n"
-        },
-        { "value" : "\\r\\n", "format" : "literal", "safe_value" : "\\n" }
+        }
       ]
     },
     "rdf_mapping" : []
   }');
   $items['resource_new_review'] = entity_import('message_type', '{
     "name" : "resource_new_review",
-    "description" : "Resource new review",
+    "description" : "CRL reviews posted",
     "argument_keys" : [],
     "argument" : [],
     "category" : "message_type",
@@ -213,7 +210,7 @@ function crl_message_feat_default_message_type() {
   }');
   $items['resource_status_update'] = entity_import('message_type', '{
     "name" : "resource_status_update",
-    "description" : "Resource status update",
+    "description" : "CRL status updates",
     "argument_keys" : [],
     "argument" : [],
     "category" : "message_type",
@@ -240,7 +237,7 @@ function crl_message_feat_default_message_type() {
   }');
   $items['resource_update'] = entity_import('message_type', '{
     "name" : "resource_update",
-    "description" : "Resource update",
+    "description" : "Resource entry updates",
     "argument_keys" : [],
     "argument" : [],
     "category" : "message_type",
@@ -260,8 +257,7 @@ function crl_message_feat_default_message_type() {
           "value" : "Resource entry was updated.\\r\\n",
           "format" : "literal",
           "safe_value" : "Resource entry was updated.\\n"
-        },
-        { "value" : "\\r\\n", "format" : "literal", "safe_value" : "\\n" }
+        }
       ]
     },
     "rdf_mapping" : []
