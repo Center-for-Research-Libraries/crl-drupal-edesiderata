@@ -192,10 +192,6 @@ function _crl_helpers_sf_sync_picklist() {
       foreach ($sf_records_full as $record) {
         if (!empty($record->Id) && !empty($record->Display_Name__c)) {
           $display_name = $record->Display_Name__c;
-          // See if this is also a member inst and alter label if so.
-          if (array_key_exists($record->Id, $institutions_array_sfid)) {
-            $display_name = $display_name . ' (MEMBER)';
-          }
           $institutions_array_sfid_full[$record->Id] = $display_name;
         }
       }
@@ -233,34 +229,36 @@ function _crl_helpers_content_tokens($text, $filter, $format, $langcode, $cache,
 
 
 /**
- * Helper function to get the institution info (either the iid for a user or
- * the name of an institution based on a given iid).
+ * Helper function to get the institution info (either the iid or the name).
  */
-function crl_helpers_get_institution($iid = NULL) {
-  $institutions_array_id = variable_get('crl_sf_sync_institutions_array', array());
-  // If we have an iid, then we return the institution name
+function crl_helpers_get_institution($iid = NULL, $return_iid = FALSE) {
+  $institutions_array_id = variable_get('crl_sf_sync_institutions_array_full', array());
+  // If we have an iid, then we return the institution name independent of the
+  // current user.
   if (isset($iid)) {
     if (isset($institutions_array_id[$iid])) {
       return $institutions_array_id[$iid];
     }
     else {
-      return t('Unknown');
+      return FALSE;
     }
   }
   // If we don't have an iid then we are checking for it based on the user's
   // info. Also be sure to only run this check once per page.
   static $user_institution_id;
-  if (!empty($user_institution_id)) {
-    return $user_institution_id;
-  }
-  global $user;
-  $account = user_load($user->uid);
-  $entity_wrapper = entity_metadata_wrapper('user', $account);
-  $iid = isset($entity_wrapper->field_institution) ? $entity_wrapper->field_institution->value() : NULL;
-  if (!empty($iid) && isset($institutions_array_id[$iid])) {
+  if (empty($user_institution_id)) {
+    global $user;
+    $account = user_load($user->uid);
+    $entity_wrapper = entity_metadata_wrapper('user', $account);
+    $iid = isset($entity_wrapper->field_institution) ? $entity_wrapper->field_institution->value() : -1;
     $user_institution_id = $iid;
-    return $iid;
-  } 
+  }
+  if (isset($institutions_array_id[$user_institution_id])) {
+    if ($return_iid) {
+      return $user_institution_id;
+    }
+    return $institutions_array_id[$user_institution_id];
+  }
   return FALSE;  
 }
 
@@ -340,6 +338,11 @@ function crl_helpers_wysiwyg_editor_settings_alter(&$settings, $context) {
  * implement some ad hoc "private comments" features.
  */
 function crl_helpers_preprocess_comment(&$vars) {
+  // Add the inst to the author's name if possible.
+  $user_inst = crl_helpers_get_institution();
+  if (!empty($user_inst)) {
+    $vars['author'] = $vars['author'] . ' (' . $user_inst . ')';
+  }
   // Hide the title/subject line.
   $vars['title'] = NULL;
   // See if any "privacy" details are set via a special "comment_privacy" field.
@@ -425,4 +428,20 @@ function crl_helpers_get_sfid() {
     }
   }
   return $sfid;
+}
+
+
+/**
+ * Helper to dynamically build the options list for the institution dropdown.
+ * 
+ * Normal users (specifically anon at registration) should only see the list
+ * of member institutions. However, because the institution field can be used to
+ * store iids for nonmember institutions we want the full list to be available
+ * whenever admins seed to made edits to a profile, etc.
+ */
+function crl_helpers_inst_oplist() {
+  if (user_access('administer users')) {
+    return variable_get('crl_sf_sync_institutions_array_full', array());
+  }
+  return variable_get('crl_sf_sync_institutions_array', array());
 }

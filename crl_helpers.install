@@ -5,3 +5,17 @@
  * Install, update and uninstall functions for the crl_helpers module.
  */
 
+
+/**
+ * Set custom allowed values function for field_institution.
+ */
+function crl_helpers_update_7100() {
+  $field_institution = field_info_field('field_institution');
+  if (!empty($field_institution)) {
+    if (isset($field_institution['settings']['allowed_values'])) {
+      unset($field_institution['settings']['allowed_values']);
+    }
+    $field_institution['settings']['allowed_values_function'] = 'crl_helpers_inst_oplist';
+    field_update_field($field_institution);
+  }
+}
