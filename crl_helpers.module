@@ -388,7 +388,7 @@ function crl_helpers_preprocess_views_data_export_xls_header(&$variables) {
   $output = '';
   $output .= "<h2>eDesiderata - Informed Investment in Electronic Resources</h2>";
   $output .= "<h3>Center for Research Libraries</h3>";
-  $output .= "<p><b>Exported from eDesiderata on " . format_date(time(), 'custom', 'F j, Y : g:i a T')." </b></p>";
+  $output .= "<p><b>Exported from eDesiderata on " . format_date(time(), 'medium')." </b></p>";
   $output .= "<p>&nbsp;</p>" . $variables['header_row'];
   $variables['header_row'] = $output;
 }
