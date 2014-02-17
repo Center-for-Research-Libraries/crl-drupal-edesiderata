@@ -18,7 +18,7 @@ function crl_message_feat_message_digest_row($vars) {
  * Custom theme function for message digest to add it to a list.
  */
 function crl_message_feat_message_digest($vars) {
-  $digest = '<p>' . t('The following activity summary digest has been generated for you from the Center for Research Libraries eDesiderata website, based on the watchlist items you specified in !mydes.', array('!mydes' => l('My eDesiderata', 'my'))) . '</p>';
+  $digest = '<p>' . t('The following activity digest has been generated for you from the Center for Research Libraries eDesiderata website, based on the watchlist items you specified in !mydes.', array('!mydes' => l('My eDesiderata', 'my'))) . '</p>';
   $digest .= theme_item_list(array('items' => $vars['messages'], 'title' => NULL, 'type' => 'ul', 'attributes' => array()));
   $digest .= '<p>' . t('You can add or remove items from your watchlist by logging-in to !mydes', array('!mydes' => l('My eDesiderata', 'my'))) . '</p>';
   return $digest;

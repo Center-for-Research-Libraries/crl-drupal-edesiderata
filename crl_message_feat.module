@@ -63,7 +63,7 @@ function crl_message_feat_node_insert($node) {
       switch ($node->type) {
         case 'activity':
           // New activity entries are treated as updates to the related resouce.
-          if (crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_update')) {
+          if (crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_update') && crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_new')) {
             $messages[] = array('type' => 'resource_update', 'fields' => array('field_resource_reference' => $r_entity_wrapper->value()));
           }
           break;
@@ -141,7 +141,7 @@ if (($node->type == 'resource' || $node->type == 'activity') && $node->status) {
       }
       // If we get here and no "special" update message(s) are set above,
       // default to the generic update message.
-      if (!$update_set && crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_update')) {
+      if (!$update_set && crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_update') && crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_new')) {
         $messages[] = array('type' => 'resource_update', 'fields' => array('field_resource_reference' => $r_entity_wrapper->value()));
       }
       // Create messages.
