@@ -776,7 +776,7 @@ function crl_resource_block_view($delta = '') {
         'back_link' => array(
           '#theme' => 'crl_resource_back_to_index',
           '#url' => $url,
-          '#back_text' => t('Back to index'),
+          '#back_text' => t('Back to listings'),
           '#browser_back' => $browser_back,
         ),
       );

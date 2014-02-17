@@ -5,3 +5,17 @@
  * Install, update and uninstall functions for the crl_helpers module.
  */
 
+
+/**
+ * Set custom allowed values function for field_activity_crl_status.
+ */
+function crl_resource_update_7100() {
+  $field_activity_crl_status = field_info_field('field_activity_crl_status');
+  if (!empty($field_activity_crl_status)) {
+    if (isset($field_activity_crl_status['settings']['allowed_values'])) {
+      unset($field_activity_crl_status['settings']['allowed_values']);
+    }
+    $field_activity_crl_status['settings']['allowed_values_function'] = 'crl_resource_activity_status_property_oplist';
+    field_update_field($field_activity_crl_status);
+  }
+}
