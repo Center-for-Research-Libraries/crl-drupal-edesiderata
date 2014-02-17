@@ -352,7 +352,7 @@ function crl_message_feat_views_default_views() {
   /* Display: Page - Watched Date Grouped */
   $handler = $view->new_display('page', 'Page - Watched Date Grouped', 'page_3');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'My Watchlist Activity Summary';
+  $handler->display->display_options['title'] = 'My eDesiderata - Watchlist Activity Summary';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['style_options']['grouping'] = array(
@@ -478,7 +478,7 @@ function crl_message_feat_views_default_views() {
   /* Display: Page - Watched Title Grouped */
   $handler = $view->new_display('page', 'Page - Watched Title Grouped', 'page_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'My Watchlist Activity Summary (Last 30 days)';
+  $handler->display->display_options['title'] = 'My eDesiderata Watchlist Activity Summary (Last 30 days)';
   $handler->display->display_options['defaults']['header'] = FALSE;
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
