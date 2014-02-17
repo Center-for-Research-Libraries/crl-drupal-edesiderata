@@ -45,7 +45,7 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
     $vars['provider'] = t('Provider') . ': ' . check_plain($provider);
     // Get updated date.
     $updated_stamp = isset($r_entity_wrapper->crl_resource_master_update_timestamp) ? $r_entity_wrapper->crl_resource_master_update_timestamp->value() : 0;
-    $updated = format_date($updated_stamp, 'custom', 'm-d-Y');
+    $updated = format_date($updated_stamp, 'short');
     $vars['updated'] = t('Updated') . ': ' . $updated;
     // Get status info
     $vars['status'] = isset($r_entity_wrapper->crl_resource_status_backref) ? $r_entity_wrapper->crl_resource_status_backref->value() : array();

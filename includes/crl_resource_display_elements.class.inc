@@ -199,7 +199,7 @@ class CrlResourceDisplayElements {
    * Build custom field: pseudo_field_resource_added
    */
   protected function build_pseudo_field_resource_added() {
-    $built = array('#theme' => 'crl_resource_pseudo_field', '#label' => t('Posted'), '#output' => format_date($this->entity_wrapper->created->value(), 'long'), '#inline' => TRUE);
+    $built = array('#theme' => 'crl_resource_pseudo_field', '#label' => t('Posted'), '#output' => format_date($this->entity_wrapper->created->value(), 'short'), '#inline' => TRUE);
     $this->pseudo_field_resource_added = $built;
   }
   
@@ -207,7 +207,7 @@ class CrlResourceDisplayElements {
    * Build custom field: pseudo_field_resource_updated
    */
   protected function build_pseudo_field_resource_updated() {
-    $built = array('#theme' => 'crl_resource_pseudo_field', '#label' => t('Updated'), '#output' => format_date($this->entity_wrapper->crl_resource_master_update_timestamp->value(), 'long'), '#inline' => TRUE);
+    $built = array('#theme' => 'crl_resource_pseudo_field', '#label' => t('Updated'), '#output' => format_date($this->entity_wrapper->crl_resource_master_update_timestamp->value(), 'short'), '#inline' => TRUE);
     $this->pseudo_field_resource_updated = $built;
   }
   
