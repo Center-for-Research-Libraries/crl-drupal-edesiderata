@@ -10,7 +10,7 @@
  * Custom theme function for rows in message digest to add the timestamp.
  */
 function crl_message_feat_message_digest_row($vars) {
-  array_push($vars['rows'], ' ('. format_date($vars['message']->timestamp, 'custom', 'F j, Y : g:i a T').')');
+  array_push($vars['rows'], ' ('. format_date($vars['message']->timestamp, 'medium').')');
   return implode($vars['rows']);
 }
  
