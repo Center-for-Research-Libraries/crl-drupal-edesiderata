@@ -32,16 +32,10 @@ function crl_resource_dashboard_feat_context_default_contexts() {
           'region' => 'user_first',
           'weight' => '-10',
         ),
-        'views-resource_dashboard-block_4' => array(
-          'module' => 'views',
-          'delta' => 'resource_dashboard-block_4',
+        'crl_resource_dashboard_feat-crl_resource_dashboard_feat_top' => array(
+          'module' => 'crl_resource_dashboard_feat',
+          'delta' => 'crl_resource_dashboard_feat_top',
           'region' => 'preface_first',
-          'weight' => '-8',
-        ),
-        'views-resource_dashboard-block_5' => array(
-          'module' => 'views',
-          'delta' => 'resource_dashboard-block_5',
-          'region' => 'preface_second',
           'weight' => '-10',
         ),
         'views-resource_dashboard-block_1' => array(
