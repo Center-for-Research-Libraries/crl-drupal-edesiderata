@@ -28,20 +28,20 @@ function crl_mydes_feat_views_api($module = NULL, $api = NULL) {
  */
 function crl_mydes_feat_flag_default_flags() {
   $flags = array();
-  // Exported flag: "My eDesiderata Watch".
+  // Exported flag: "meDesiderata Watch".
   $flags['base_node_watch'] = array(
     'entity_type' => 'node',
-    'title' => 'My eDesiderata Watch',
+    'title' => 'meDesiderata Watch',
     'global' => 0,
     'types' => array(
       0 => 'resource',
     ),
     'flag_short' => '+ Watch',
-    'flag_long' => 'Watch this item via my eDesiderata',
-    'flag_message' => 'Added to watched items in My eDesiderata',
+    'flag_long' => 'Watch this item via meDesiderata',
+    'flag_message' => 'Added to watched items in meDesiderata',
     'unflag_short' => 'Unwatch',
     'unflag_long' => 'Unwatch this item',
-    'unflag_message' => 'Removed from watched items in My eDesiderata',
+    'unflag_message' => 'Removed from watched items in meDesiderata',
     'unflag_denied_text' => '',
     'link_type' => 'toggle',
     'weight' => 0,
@@ -100,7 +100,7 @@ function crl_mydes_feat_default_search_api_saved_searches_settings() {
         },
         "notify" : {
           "title" : "[[site:name]] New results for your saved search",
-          "body" : "\\u003Cp\\u003EThere are new results for your saved search on [site:name]:\\u003C\\/p\\u003E\\r\\n\\r\\n[search-api-saved-searches:results]\\r\\n\\r\\n\\u003Cp\\u003EYou can add and remove your saved searches by logging-in to \\u003Ca href=\\u0022[site:url]\\/my\\u0022\\u003EMy eDesiderata\\u003C\\/a\\u003E\\u003C\\/p\\u003E",
+          "body" : "\\u003Cp\\u003EThere are new results for your watched groups on [site:name]:\\u003C\\/p\\u003E\\r\\n\\r\\n[search-api-saved-searches:results]\\r\\n\\r\\n\\u003Cp\\u003EYou can add and remove your watched groups by logging-in to \\u003Ca href=\\u0022[site:url]\\/my\\u0022\\u003EmeDesiderata\\u003C\\/a\\u003E\\u003C\\/p\\u003E",
           "results" : "\\u003Cp\\u003ENew results for search \\u0022[search-api-saved-search:name]\\u0022:\\u003C\\/p\\u003E\\r\\n\\u003Cul\\u003E[search-api-saved-search:items]\\u003C\\/ul\\u003E\\r\\n[search-api-saved-search:results-capped]",
           "result" : "\\u003Cli\\u003E[search-api-saved-search-result:label] ([search-api-saved-search-result:url])\\u003C\\/li\\u003E",
           "max_results" : "0",

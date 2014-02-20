@@ -19,7 +19,7 @@ function crl_mydes_feat_context_default_contexts() {
   $context->conditions = array(
     'path' => array(
       'values' => array(
-        'my' => 'my',
+        'me' => 'me',
       ),
     ),
   );
