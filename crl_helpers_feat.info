@@ -1,0 +1,10 @@
+name = CRL Helpers Feature
+core = 7.x
+package = CRL
+dependencies[] = ctools
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:2
+features[variable][] = locale_custom_disabled_strings_en
+features[variable][] = locale_custom_strings_en
+project path = sites/all/modules/custom/crl_local
