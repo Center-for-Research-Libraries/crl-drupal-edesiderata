@@ -185,7 +185,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['use_more_text'] = 'More site activity';
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'some';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '8';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '6';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['footer'] = FALSE;
@@ -352,7 +352,7 @@ function crl_message_feat_views_default_views() {
   /* Display: Page - Watched Date Grouped */
   $handler = $view->new_display('page', 'Page - Watched Date Grouped', 'page_3');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'My eDesiderata - Watchlist Activity Summary';
+  $handler->display->display_options['title'] = 'meDesiderata - Watchlist Activity Report';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['style_options']['grouping'] = array(
@@ -372,7 +372,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<p>Recent updates to the resource entries in your watchlist, sorted by date. You can manage your watchlist in <a href="/my">My eDesiderata</a>.</p>';
+  $handler->display->display_options['header']['area']['content'] = '<p>Recent updates to the resource entries in your watchlist, sorted by date. You can manage your watchlist in <a href="/my">meDesiderata</a>.</p>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
@@ -463,7 +463,7 @@ function crl_message_feat_views_default_views() {
     23 => 0,
     24 => 0,
   );
-  $handler->display->display_options['path'] = 'my/activity/date';
+  $handler->display->display_options['path'] = 'me/activity/date';
   $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'By Date';
   $handler->display->display_options['menu']['weight'] = '0';
@@ -478,13 +478,13 @@ function crl_message_feat_views_default_views() {
   /* Display: Page - Watched Title Grouped */
   $handler = $view->new_display('page', 'Page - Watched Title Grouped', 'page_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'My eDesiderata Watchlist Activity Summary (Last 30 days)';
+  $handler->display->display_options['title'] = 'meDesiderata - Watchlist Activity Report (Last 30 days)';
   $handler->display->display_options['defaults']['header'] = FALSE;
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<p>Recent updates to the resource entries in your watchlist, sorted by resource title. You can manage your watchlist in <a href="/my">My eDesiderata</a>.</p>';
+  $handler->display->display_options['header']['area']['content'] = '<p>Recent updates to the resource entries in your watchlist, sorted by resource title. You can manage your watchlist in <a href="/my">meDesiderata</a>.</p>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
@@ -498,7 +498,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['relationships']['flag_content_rel']['field'] = 'flag_content_rel';
   $handler->display->display_options['relationships']['flag_content_rel']['relationship'] = 'field_resource_reference_target_id';
   $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'base_node_watch';
-  $handler->display->display_options['path'] = 'my/activity/title';
+  $handler->display->display_options['path'] = 'me/activity/title';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'By Title';
   $handler->display->display_options['menu']['weight'] = '0';
