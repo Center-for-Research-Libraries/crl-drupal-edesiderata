@@ -231,7 +231,7 @@ function _crl_helpers_content_tokens($text, $filter, $format, $langcode, $cache,
 /**
  * Helper function to get the institution info (either the iid or the name).
  */
-function crl_helpers_get_institution($iid = NULL, $return_iid = FALSE) {
+function crl_helpers_get_institution($account = NULL, $iid = NULL, $return_iid = FALSE) {
   $institutions_array_id = variable_get('crl_sf_sync_institutions_array_full', array());
   // If we have an iid, then we return the institution name independent of the
   // current user.
@@ -245,10 +245,14 @@ function crl_helpers_get_institution($iid = NULL, $return_iid = FALSE) {
   }
   // If we don't have an iid then we are checking for it based on the user's
   // info. Also be sure to only run this check once per page.
+  if (empty($account)) {
+    global $user;
+    $account = $user;
+  }
   static $user_institution_id;
   if (empty($user_institution_id)) {
-    global $user;
-    $account = user_load($user->uid);
+    // Make sure that user fields are loaded.
+    $account = user_load($account->uid);
     $entity_wrapper = entity_metadata_wrapper('user', $account);
     $iid = isset($entity_wrapper->field_institution) ? $entity_wrapper->field_institution->value() : -1;
     $user_institution_id = $iid;
@@ -339,7 +343,7 @@ function crl_helpers_wysiwyg_editor_settings_alter(&$settings, $context) {
  */
 function crl_helpers_preprocess_comment(&$vars) {
   // Add the inst to the author's name if possible.
-  $user_inst = crl_helpers_get_institution();
+  $user_inst = crl_helpers_get_institution($vars['user'], NULL);
   if (!empty($user_inst)) {
     $vars['author'] = $vars['author'] . ' (' . $user_inst . ')';
   }
