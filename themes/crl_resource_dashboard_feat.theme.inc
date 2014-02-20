@@ -52,13 +52,21 @@ function theme_crl_resource_dashboard_feat_view_head($vars) {
   return $markup;
 }
 
+function theme_crl_resource_dashboard_feat_view_head_top($vars) {
+  $markup = '<div class="dashboard-lead-top">';
+  $markup .= '<a href="' . $vars['url'] . '" class="no-link-style"><span class="super-num"><strong>' . $vars['count'] . '</strong></span></a>';
+  $markup .= '<h3><a href="' . $vars['url'] . '">' . $vars['title'] . '</a></h3>';
+  $markup .= '</div>';
+  return $markup;
+}
 
-function theme_crl_resource_dashboard_feat_view_head_all($vars) {
-  $markup = '<div class="dashboard-lead-all">';
-  $markup .= '<div style="float: left;"><a href="' . $vars['url'] . '" class="no-link-style"><span class="super-num"><strong>' . $vars['count'] . '</strong></div></a>';
+
+function theme_crl_resource_dashboard_feat_view_head_top_old($vars) {
+  $markup = '<div class="dashboard-lead-top">';
+  $markup .= '<a href="' . $vars['url'] . '" class="no-link-style"><span class="super-num"><strong>' . $vars['count'] . '</strong></a>';
   $markup .= '<h3>' . l($vars['title'], $vars['path']) . '</h3>';
-  $aux_text = !empty($vars['aux_text']) ? ($vars['aux_text'] . '<br/>') : '';
-  $markup .= '<p>' . $aux_text . l($vars['tagline'], $vars['path']) . '</p>';
+  $aux_text = !empty($vars['aux_text']) ? ('<br/>' . $vars['aux_text']) : '';
+  $markup .= '<p>' . l($vars['tagline'], $vars['path']) . $aux_text . '</p>';
   $markup .= '</div>';
   return $markup;
 }

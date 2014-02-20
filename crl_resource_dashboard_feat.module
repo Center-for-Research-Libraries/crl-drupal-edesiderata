@@ -17,8 +17,8 @@ function crl_resource_dashboard_feat_theme() {
     'crl_resource_dashboard_feat_view_head' => array(
       'variables' => array('count' => 0, 'path' => '', 'url' => '', 'title' => '', 'status' => '', 'tagline' => '', 'aux_text' => ''),
     ),
-    // Theme hook to generate MAIN resoruce dashboard header.
-    'crl_resource_dashboard_feat_view_head_all' => array(
+    // Theme hook to generate top-level resoruce dashboard header.
+    'crl_resource_dashboard_feat_view_head_top' => array(
       'variables' => array('count' => 0, 'path' => '', 'url' => '', 'title' => '', 'status' => '', 'tagline' => '', 'aux_text' => ''),
     ),
     // Theme hook for row values of the dashboard blocks. This will
@@ -98,24 +98,25 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
         $set = TRUE;
         $status = '';
         $url_options = array();
-        $title = t('Total Resources');
+        $title = t('Total Resources (A-Z)');
         $tagline = t('Browse and Search All (A-Z)');
         $aux_text = '';
-        // $aux_text = t('Resources entered and classified');
+        //$aux_text = l(t('Browse recent site activity'), 'activity');
         $link_text = '';
-        $theme = 'crl_resource_dashboard_feat_view_head_all';
+        $theme = 'crl_resource_dashboard_feat_view_head_top';
         $path = 'resources/main';
         break;
       case 'block_5' :
         $set = TRUE;
         $status = '';
         $url_options = array();
-        $title = t('New & Modified');
+        $title = t('New & Modified (30 days)');
         $tagline = t('View all site activity');
-        $aux_text = t('Resources added/updated in 30 days');
+        $aux_text = '';
+        //$aux_text = t('Resources added/updated in 30 days');
         $link_text = '';
-        $theme = 'crl_resource_dashboard_feat_view_head_all';
-        $path = 'messages';
+        $theme = 'crl_resource_dashboard_feat_view_head_top';
+        $path = 'activity';
         break;
     }
     if ($set) {
@@ -134,4 +135,35 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
     }
 
   }
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function crl_resource_dashboard_feat_block_info() {
+  // The facet breadcrumb is a block that can be displayed on the top of a
+  // resoruce index.
+  $blocks['crl_resource_dashboard_feat_top'] = array(
+    'info' => t('CRL Resource Dashboard Top Summary'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function crl_resource_dashboard_feat_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    // Render the facet breadcrumb block.
+    case 'crl_resource_dashboard_feat_top':
+      $block['subject'] = '';
+      $block['content'][] = array('#markup' => views_embed_view('resource_dashboard', 'block_4'));
+      $block['content'][] = array('#markup' => views_embed_view('resource_dashboard', 'block_5'));
+      break;
+  }
+  return $block;
 }
