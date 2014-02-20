@@ -60,9 +60,9 @@ function crl_mydes_feat_block_view($delta = '') {
       break;
     case 'crl_mydes_email_settings':
       if (crl_mydes_feat_mydes_access()) {
-        $block['subject'] = t('My eDesiderata Email Notification Settings');
+        $block['subject'] = t('My Email Notification Settings');
         $block['content'][] = array(
-          '#markup' => '<p>' . t('Updates to resources in your watchlist, or changes to the results of a saved search, can be delivered to you automatically via email. The setting below applies only to My eDesiderata notifications.') . '</p>',
+          '#markup' => '<p>' . t('When notifications are available about updates in your watchlist or additions to a watchgroup they will be emailed at the interval specified below.') . '</p>',
         );
         $block['content'][] = array(
           'form' => drupal_get_form('crl_mydes_feat_email_settings_form'),
@@ -105,7 +105,7 @@ function crl_mydes_feat_mydes_access($account = NULL) {
  *   Returns markup for the watch resource form.
  */
 function crl_mydes_feat_generate_widget($node) {
-  $output = '<p>' . t('By watching this resource you can monitor its activity in !link.', array('!link' => l(t('My eDesiderata'), 'my'))) . '</p>';
+  $output = '<p>' . t('By watching this resource you can monitor its activity in !link.', array('!link' => l(t('My eDesiderata'), 'me'))) . '</p>';
   $flag_link = flag_create_link(CRL_WATCH_FLAG, $node->nid);
   return $output . $flag_link;
 }
@@ -141,10 +141,11 @@ function crl_mydes_feat_form_alter(&$form, &$form_state, $form_id) {
   // Make some alterations to the "save search" form.
   if ($form_id == 'search_api_saved_searches_save_form' || $form_id == 'search_api_saved_searches_search_edit_form') {
     $form['top_note'] = array(
-      '#markup' => '<hr/><p>' . t('Saving this search will make future results accessible within My eDesiderata. You can also be notifed via email when new resources are added that match this search criteria.') . '</p>',
+      '#markup' => '<hr/><p>' . t('By watching this group you can track future additions to the results that appear below. You can manage your watchgroups and email notification options in meDesiderata.') . '</p>',
       '#weight' => -10,
     );
-    $form['name']['#description'] = t('Give this saved search a name by which it can be later accessed within My eDesiderata');
+    $form['name']['#default_value'] = '';
+    $form['name']['#description'] = t('Give this group a name by which it can be later accessed within meDesiderata');
     // If the form is presented out side of the normal user configuration pages
     // for the search api module, we manually control the notification interval.
     $args = arg();
@@ -155,6 +156,7 @@ function crl_mydes_feat_form_alter(&$form, &$form_state, $form_id) {
     else {
       $form['notify_interval']['#description'] = t('Select how frequently you would like to be notifed via email when resources are <em>added</em> that match this filter criteria');
     }
+    $form['submit']['#value'] = t('Watch');
   }
 }
 
@@ -221,11 +223,11 @@ function crl_mydes_feat_email_settings_form_submit_handler($form, &$form_state) 
   // we'll make things right. It's important to note that users may encounter
   // these messages in multiple places, includiing the unsubscibe interface.
   if ($digest_updated && $search_updated) {
-    drupal_set_message(t('Your My eDesiderata email settings have been updated'));
+    drupal_set_message(t('Your meDesiderata email settings have been updated'));
   }
   else {
     drupal_set_message(t('There was a problem updating your email settings. This problem has been logged and CRL staff will attempt to manually update your preferences.'), 'error');
-    watchdog('crl_mydes_feat', 'My eDesiderata email preference for user %name did not update. Value to set: %value', array('%name' => $user->name, '%value' => $form_state['values']['email_setting']), WATCHDOG_CRITICAL);
+    watchdog('crl_mydes_feat', 'meDesiderata email preference for user %name did not update. Value to set: %value', array('%name' => $user->name, '%value' => $form_state['values']['email_setting']), WATCHDOG_CRITICAL);
   }
 }
 
