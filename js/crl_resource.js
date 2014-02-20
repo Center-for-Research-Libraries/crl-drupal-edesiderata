@@ -12,7 +12,7 @@
         typeof(ref_split[3]) == "undefined" || 
         ref_split[3] == "main" || 
         (ref_split[3] == "resources" && ref_split[4].substring(0, 4) == "main") || 
-        ref_split[3] == "my") {
+        ref_split[3] == "me") {
         $("a#back-to-index").click(function() {
           window.history.go(-1);
           return false;
