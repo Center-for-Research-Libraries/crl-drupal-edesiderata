@@ -229,12 +229,26 @@ function _crl_helpers_content_tokens($text, $filter, $format, $langcode, $cache,
 
 
 /**
- * Helper function to get the institution info (either the iid or the name).
+ * Helper function to get the institution info (either the name or the iid).
+ * 
+ * @param int $uid
+ *   An optional user ID representing the user to check. If NULL the current
+ *   user will be checked.
+ * @param int $iid
+ *   An optional (known) iid. If this is passed in, no user-specific lookup is
+ *   done, and we simply return the inst name associated with the iid.
+ * @param boolean $return_iid
+ *   Optional indicator to specifiy if an iid should be returned instead of the
+ *   instituion name. Has no signifigance if a specific $iid is passed in.
+ * @return mixed
+ *   Returns the user's institution as a string or int ID (depending on the
+ *   value of $return_iid is FALSE) Returns boolean FALSE if the inst could not
+ *   be determined.
  */
-function crl_helpers_get_institution($account = NULL, $iid = NULL, $return_iid = FALSE) {
+function crl_helpers_get_institution($uid = NULL, $iid = NULL, $return_iid = FALSE) {
   $institutions_array_id = variable_get('crl_sf_sync_institutions_array_full', array());
-  // If we have an iid, then we return the institution name independent of the
-  // current user.
+  // If we have an iid, then we return the institution name independent of any
+  // user details passed-in.
   if (isset($iid)) {
     if (isset($institutions_array_id[$iid])) {
       return $institutions_array_id[$iid];
@@ -243,20 +257,22 @@ function crl_helpers_get_institution($account = NULL, $iid = NULL, $return_iid =
       return FALSE;
     }
   }
-  // If we don't have an iid then we are checking for it based on the user's
-  // info. Also be sure to only run this check once per page.
-  if (empty($account)) {
+  // If we don't have an iid then we are checking for it based on specific
+  // user info.
+  if (empty($uid)) {
     global $user;
-    $account = $user;
+    $uid = $user->uid;
   }
-  static $user_institution_id;
-  if (empty($user_institution_id)) {
-    // Make sure that user fields are loaded.
-    $account = user_load($account->uid);
+  // Make sure to only lookup the specific user iid once for each user per page.
+  static $user_institution_ids = array();
+  if (empty($user_institution_ids[$uid])) {
+    // Make sure user fields are loaded.
+    $account = user_load($uid);
     $entity_wrapper = entity_metadata_wrapper('user', $account);
-    $iid = isset($entity_wrapper->field_institution) ? $entity_wrapper->field_institution->value() : -1;
-    $user_institution_id = $iid;
+    $user_institution_ids[$uid] = isset($entity_wrapper->field_institution) ? $entity_wrapper->field_institution->value() : -1;
   }
+  // Get and return the appropriate inst id or name.
+  $user_institution_id = $user_institution_ids[$uid];
   if (isset($institutions_array_id[$user_institution_id])) {
     if ($return_iid) {
       return $user_institution_id;
@@ -343,7 +359,7 @@ function crl_helpers_wysiwyg_editor_settings_alter(&$settings, $context) {
  */
 function crl_helpers_preprocess_comment(&$vars) {
   // Add the inst to the author's name if possible.
-  $user_inst = crl_helpers_get_institution($vars['user'], NULL);
+  $user_inst = crl_helpers_get_institution($vars['comment']->uid, NULL);
   if (!empty($user_inst)) {
     $vars['author'] = $vars['author'] . ' (' . $user_inst . ')';
   }
