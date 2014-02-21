@@ -6,6 +6,7 @@
 
 include_once 'crl_message_feat.features.inc';
 
+
 define('CRL_MESSAGE_UPDATE_DELAY', 60*60*12);
 define('CRL_MESSAGE_OFFER_EXPIRE_NOTICE', 60*60*24*13);
 
@@ -18,7 +19,6 @@ define('CRL_MESSAGE_OFFER_EXPIRE_NOTICE', 60*60*24*13);
  */
 function crl_message_feat_theme_registry_alter(&$theme_registry) {
   $theme_path = drupal_get_path('module', 'crl_message_feat') . '/themes';
-  $hooks_with_new_path = array();
   // Override the function for the message digest row theme.
   if (isset($theme_registry['message_digest_row'])) {
     $theme_registry['message_digest_row']['function'] = 'crl_message_feat_message_digest_row';
@@ -37,7 +37,8 @@ function crl_message_feat_theme_registry_alter(&$theme_registry) {
   if (isset($theme_registry['mimemail_message']) ) {
     // Becuase this is a template, we need to explicitly change the path.
     $theme_registry['mimemail_message']['path'] = $theme_path;
-    // Also declare a new preprocess function.
+    // Also declare a new preprocess function. We do this formally as the
+    // function is in another file so it won't get picked-up automatically.
     $theme_registry['mimemail_message']['includes'][] = $theme_path . '/crl_message_feat.theme.inc';
     $theme_registry['mimemail_message']['preprocess functions'][] = 'crl_message_feat_preprocess_mimemail_message';
   }
