@@ -7,7 +7,6 @@
 include_once 'crl_resource_dashboard_feat.features.inc';
 
 
-
 /**
  * Implements hook_theme().
  */
@@ -38,9 +37,9 @@ function crl_resource_dashboard_feat_theme() {
   return $hooks;
 }
 
+
 /**
  * Implements hook_views_pre_execute().
- * 
  */
 function crl_resource_dashboard_feat_views_pre_execute($view) {
   if ($view->name == 'resource_dashboard') {
@@ -60,6 +59,8 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
     $set = FALSE;
     $count = !empty($view->total_rows) ? $view->total_rows : '';
     $path = 'resources/main';
+    $url_options = array();
+    $tagline = $aux_text = $link_text = $status = '';
     switch ($view->current_display) {
       case 'block_1' :
         $set = TRUE;
@@ -96,27 +97,13 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
         break;
       case 'block_4' :
         $set = TRUE;
-        $status = '';
-        $url_options = array();
         $title = t('Total Resources (A-Z)');
-        $tagline = t('Browse and Search All (A-Z)');
-        $aux_text = '';
-        //$aux_text = l(t('Browse recent site activity'), 'activity');
-        $link_text = '';
         $theme = 'crl_resource_dashboard_feat_view_head_top';
-        $path = 'resources/main';
         break;
       case 'block_5' :
         $set = TRUE;
-        $status = '';
-        $url_options = array();
         $title = t('New & Modified (30 days)');
-        $tagline = t('View all site activity');
-        $aux_text = '';
-        //$aux_text = t('Resources added/updated in 30 days');
-        $link_text = '';
         $theme = 'crl_resource_dashboard_feat_view_head_top';
-        $path = 'activity';
         break;
     }
     if ($set) {
@@ -133,7 +120,6 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
         $view->attachment_after = l($link_text, $path, $url_options);
       }
     }
-
   }
 }
 
@@ -142,8 +128,7 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
  * Implements hook_block_info().
  */
 function crl_resource_dashboard_feat_block_info() {
-  // The facet breadcrumb is a block that can be displayed on the top of a
-  // resoruce index.
+  // Add a top level summary block that will combine 2 views blocks into one.
   $blocks['crl_resource_dashboard_feat_top'] = array(
     'info' => t('CRL Resource Dashboard Top Summary'), 
     'cache' => DRUPAL_NO_CACHE,
@@ -158,7 +143,7 @@ function crl_resource_dashboard_feat_block_info() {
 function crl_resource_dashboard_feat_block_view($delta = '') {
   $block = array();
   switch ($delta) {
-    // Render the facet breadcrumb block.
+    // Render the top level summary block that combines 2 views blocks into one.
     case 'crl_resource_dashboard_feat_top':
       $block['subject'] = '';
       $block['content'][] = array('#markup' => views_embed_view('resource_dashboard', 'block_4'));

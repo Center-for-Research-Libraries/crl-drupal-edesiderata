@@ -42,6 +42,14 @@ function crl_resource_dashboard_feat_preprocess_views_view_fields__resource_dash
 }
 
 
+/**
+ * Returns HTML for the header of a block on the resources dashboard.
+ *
+ * @param array $variables
+ *   An associative array containing variables used to render this HTML.
+ *
+ * @ingroup themeable
+*/
 function theme_crl_resource_dashboard_feat_view_head($vars) {
   $markup = '<div class="dashboard-lead">';
   $markup .= '<h3><a href="' . $vars['url'] . '"><span class="summary-icon ' . $vars['status'] . '"></span>' . $vars['title'] . '</a></h3>';
@@ -52,21 +60,19 @@ function theme_crl_resource_dashboard_feat_view_head($vars) {
   return $markup;
 }
 
+
+/**
+ * Returns HTML for the header of a TOP block on the resources dashboard.
+ *
+ * @param array $variables
+ *   An associative array containing variables used to render this HTML.
+ *
+ * @ingroup themeable
+*/
 function theme_crl_resource_dashboard_feat_view_head_top($vars) {
-  $markup = '<div class="dashboard-lead-top">';
-  $markup .= '<a href="' . $vars['url'] . '" class="no-link-style"><span class="super-num"><strong>' . $vars['count'] . '</strong></span></a>';
+  $markup = '<div class="dashboard-lead dashboard-lead-top">';
   $markup .= '<h3><a href="' . $vars['url'] . '">' . $vars['title'] . '</a></h3>';
-  $markup .= '</div>';
-  return $markup;
-}
-
-
-function theme_crl_resource_dashboard_feat_view_head_top_old($vars) {
-  $markup = '<div class="dashboard-lead-top">';
-  $markup .= '<a href="' . $vars['url'] . '" class="no-link-style"><span class="super-num"><strong>' . $vars['count'] . '</strong></a>';
-  $markup .= '<h3>' . l($vars['title'], $vars['path']) . '</h3>';
-  $aux_text = !empty($vars['aux_text']) ? ('<br/>' . $vars['aux_text']) : '';
-  $markup .= '<p>' . l($vars['tagline'], $vars['path']) . $aux_text . '</p>';
+  $markup .= '<a href="' . $vars['url'] . '" class="no-link-style"><span class="super-num"><strong>' . $vars['count'] . '</strong></span></a>';
   $markup .= '</div>';
   return $markup;
 }
