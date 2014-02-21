@@ -105,7 +105,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<p>Your can watch individual resources that are of personal interest and can easily track updates, status changes and community comments that apply to them. View updates to your watchlist with the activity report or through automated email notifications.</p>
+  $handler->display->display_options['header']['area']['content'] = '<p>Your can select individual resources of interest and track the updates, changes to CRL license status and community comments that apply to them. View updates to your watchlist with the activity report or through automated email notifications.</p>
 <p><a class="button" href="/resources/main" onclick="return window.confirm(\'You will be directed to the A-Z resource listings. To add a new item to your watchlist, simply click the \\\'Watch\\\' option that appears next to a resource while browsing.\');"></span><b>+</b>&nbsp;&nbsp;Add to Watchlist</a>&nbsp;&nbsp;<a class="button" href="/me/activity"><span class="crl-icon-small pulse-icon"></span>Watchlist Activity Report</a>&nbsp;&nbsp;<a class="button" href="/me/watchlist/download"><span class="crl-icon-small download-icon"></span>Download Watchlist</a></p>';
   $handler->display->display_options['header']['area']['format'] = 'literal';
   /* No results behavior: Global: Text area */
@@ -220,7 +220,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['footer']['area']['id'] = 'area';
   $handler->display->display_options['footer']['area']['table'] = 'views';
   $handler->display->display_options['footer']['area']['field'] = 'area';
-  $handler->display->display_options['footer']['area']['content'] = '<p>Want to watch a resource that\'s not yet listed in the <a href-"/resources/main">A-Z index</a>? Please <a href="/submit-suggested-resources"><strong>submit a suggestion</strong></a> for inclusion.</p>';
+  $handler->display->display_options['footer']['area']['content'] = '<p>Interested in a resource that you don\'t see listed in the eDesiderata <a href="/resources/main">A-Z index</a>? Please <a href="/submit-suggested-resources"><strong>submit a suggestion</strong></a> for inclusion.</p>';
   $handler->display->display_options['footer']['area']['format'] = 'literal';
 
   /* Display: Data export */
@@ -304,7 +304,7 @@ function crl_mydes_feat_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'My Watchgroups';
+  $handler->display->display_options['title'] = 'My Watchsets';
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
@@ -379,8 +379,8 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<p>You can watch groups of resources by a selected category such as subject area, CRL licensing status or any combination of filters shown in the A-Z index. Notifications about new additions to a watchgroup can be sent to you via email.</p>
-<p><a class="button" href="/resources/main" onclick="return window.confirm(\'You will be directed to the A-Z resource listings. To create a new watchgroup, first input some personalized filter criteria and then click the \\\'Watch this Group\\\' option that appears at the top of the results page.\');"></span><b>+</b>&nbsp;&nbsp;Create</a>';
+  $handler->display->display_options['header']['area']['content'] = '<p>You can select groups of resources to track by designated categories such as resource type, provider, CRL licensing status or any combination of filters in the <a href="/resources/main">A-Z index</a>. Alerts about new additions to a watchset can be sent to you through automated email notifications.</p>
+<p><a class="button" href="/resources/main" onclick="return window.confirm(\'You will be directed to the A-Z resource listings. To create a new watchset, first input some personalized filter criteria and then click the \\\'Watch this Resource Set\\\' option that appears at the top of the results page.\');"></span><b>+</b>&nbsp;&nbsp;Create</a>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['header']['area']['tokenize'] = TRUE;
   /* No results behavior: Global: Text area */
@@ -388,7 +388,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = '<p><strong>No watchgroups found.</strong></p>';
+  $handler->display->display_options['empty']['area']['content'] = '<p><strong>No watchsets found.</strong></p>';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
   /* Relationship: Saved search: User */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
@@ -442,7 +442,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'search_api_saved_search';
   $handler->display->display_options['fields']['created']['field'] = 'created';
-  $handler->display->display_options['fields']['created']['label'] = 'Search Created';
+  $handler->display->display_options['fields']['created']['label'] = 'Watched since';
   $handler->display->display_options['fields']['created']['date_format'] = 'time ago';
   /* Field: Saved search: Edit link */
   $handler->display->display_options['fields']['edit_link']['id'] = 'edit_link';

@@ -62,9 +62,6 @@ function crl_mydes_feat_block_view($delta = '') {
       if (crl_mydes_feat_mydes_access()) {
         $block['subject'] = t('My Email Notification Settings');
         $block['content'][] = array(
-          '#markup' => '<p>' . t('When notifications are available about updates in your watchlist or additions to a watchgroup they will be emailed at the interval specified below.') . '</p>',
-        );
-        $block['content'][] = array(
           'form' => drupal_get_form('crl_mydes_feat_email_settings_form'),
         );
       }
@@ -141,7 +138,7 @@ function crl_mydes_feat_form_alter(&$form, &$form_state, $form_id) {
   // Make some alterations to the "save search" form.
   if ($form_id == 'search_api_saved_searches_save_form' || $form_id == 'search_api_saved_searches_search_edit_form') {
     $form['top_note'] = array(
-      '#markup' => '<hr/><p>' . t('By watching this group you can track future additions to the results that appear below. You can manage your watchgroups and email notification options in meDesiderata.') . '</p>',
+      '#markup' => '<hr/><p>' . t('You can save this filter selection as a watchset and track future additions to these results. Manage your watchsets and email notification options in meDesiderata.') . '</p>',
       '#weight' => -10,
     );
     $form['name']['#default_value'] = '';
@@ -172,6 +169,9 @@ function crl_mydes_feat_email_settings_form() {
   if (isset($options[MESSAGE_SUBSCRIBE_EMAIL_FREQUENCY_IMMEDIATE])) {
     unset($options[MESSAGE_SUBSCRIBE_EMAIL_FREQUENCY_IMMEDIATE]);
   }
+  $form['intro'] = array(
+    '#markup' => '<p>' . t('Notifications about updates in your watchlist or additions to a watchset will be emailed at the interval specified.') . '</p>',
+  );
   $form['email_setting'] = array(
     '#type' => 'select',
     '#title' => t('Email Notification Interval'),
