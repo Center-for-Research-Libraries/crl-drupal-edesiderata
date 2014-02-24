@@ -53,7 +53,7 @@ function crl_resource_dashboard_feat_preprocess_views_view_fields__resource_dash
 function theme_crl_resource_dashboard_feat_view_head($vars) {
   $markup = '<div class="dashboard-lead">';
   $markup .= '<h3><a href="' . $vars['url'] . '"><span class="summary-icon ' . $vars['status'] . '"></span>' . $vars['title'] . '</a></h3>';
-  $markup .= '<a href="' . $vars['url'] . '" class="no-link-style"><span class="super-num"><strong>' . $vars['count'] . '</strong></span></a>';
+  $markup .= '<a href="' . $vars['url'] . '" class="no-link-style"><span class="super-num">' . $vars['count'] . '</span></a>';
   $markup .= '<p>' . $vars['tagline'];
   $markup .= '<br /><sup>(' . $vars['aux_text'] . ')</sup></p>  </div>';
   $markup .= '<hr>';
@@ -72,7 +72,7 @@ function theme_crl_resource_dashboard_feat_view_head($vars) {
 function theme_crl_resource_dashboard_feat_view_head_top($vars) {
   $markup = '<div class="dashboard-lead dashboard-lead-top">';
   $markup .= '<h3><a href="' . $vars['url'] . '">' . $vars['title'] . '</a></h3>';
-  $markup .= '<a href="' . $vars['url'] . '" class="no-link-style"><span class="super-num"><strong>' . $vars['count'] . '</strong></span></a>';
+  $markup .= '<a href="' . $vars['url'] . '" class="no-link-style"><span class="super-num">' . $vars['count'] . '</span></a>';
   $markup .= '</div>';
   return $markup;
 }
