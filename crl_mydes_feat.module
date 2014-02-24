@@ -53,13 +53,13 @@ function crl_mydes_feat_block_view($delta = '') {
       $nid = arg(1);
       $node = node_load($nid);
       // Make sure block should be visible
-      if (isset($node->type) && $node->type == 'resource' && $user->uid && crl_mydes_feat_mydes_access()) {
+      if (isset($node->type) && $node->type == 'resource' && user_access('crl access member features')) {
         $block['subject'] = t('Watch this Resource');
         $block['content'] = array('#markup' => crl_mydes_feat_generate_widget($node));
       }
       break;
     case 'crl_mydes_email_settings':
-      if (crl_mydes_feat_mydes_access()) {
+      if (user_access('crl access member features')) {
         $block['subject'] = t('My Email Notification Settings');
         $block['content'][] = array(
           'form' => drupal_get_form('crl_mydes_feat_email_settings_form'),
@@ -67,28 +67,6 @@ function crl_mydes_feat_block_view($delta = '') {
       }
   }
   return $block;
-}
-
-
-/**
- * Check if the current user has access to My eDesiderate features.
- * 
- * @param object $user
- *   The user account to check. If this is not set the current user will be
- *   checked.
- * @return boolean
- *   Returns true if the user should have access to My eDesiderata features and
- *   FALSE otherwise.
- */
-function crl_mydes_feat_mydes_access($account = NULL) {
-  if (!isset($user)) {
-    global $user;
-    $account = $user;
-  }
-  if (array_intersect($account->roles, array('editor basic', 'editor power', 'administrator', 'crl-staff', 'mydes-temp'))) {
-    return TRUE;
-  }
-  return FALSE;
 }
 
 
@@ -117,7 +95,7 @@ function crl_mydes_feat_generate_widget($node) {
  */
 function crl_mydes_feat_build_saved_search_form() {
   $output = '';
-  if (crl_mydes_feat_mydes_access()) {
+  if (user_access('crl access member features')) {
     // Add the saved search block.
     $saved_searches = search_api_saved_searches_settings_load_multiple(FALSE, array('enabled' => TRUE));
     if (!empty($saved_searches)) {
@@ -273,4 +251,24 @@ function crl_mydes_feat_email_settings_user_setting($seconds = FALSE, $known_set
     }
   }
   return $current_setting;
+}
+
+
+function crl_mydes_feat_preprocess_menu_link(&$vars) {
+  $element = $vars['element'];
+  $element['#title'] = crl_mydes_feat_style_name($element['#title']);
+  if ($element['#title'] != $vars['element']['#title']) {
+    $vars['element']['#title'] = $element['#title'];
+    $vars['element']['#localized_options']['html'] = TRUE;
+  }
+}
+
+
+function crl_mydes_feat_preprocess_delta_blocks_page_title(&$vars) {
+  $vars['page_title'] = crl_mydes_feat_style_name($vars['page_title']);
+}
+
+
+function crl_mydes_feat_style_name($text) {
+  return str_ireplace('meDesiderata', '<span class="m-edes">m</span>eDesiderata', $text);
 }
