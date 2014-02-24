@@ -28,11 +28,14 @@ function crl_helpers_feat_strongarm() {
       'Comments' => 'Community comments and discussion',
       'Create new revision and moderate' => 'Regular update with moderation (used rarely)',
       'Create new revision, no moderation' => 'Regular update',
-      'Do you really want to delete this saved search?' => 'Do you really want to delete this watchgroup?',
+      'Do you really want to delete this saved search?' => 'Do you really want to delete this watchset?',
       'Modify current revision, no moderation' => 'Minor update (do NOT notify watchers, alter activity feeds or create a new revision)',
+      'Once a day in an email digest' => 'Daily email digest',
+      'Once a week in an email digest' => 'Weekly email digest',
       'Submitted by !username on !datetime' => '!username on !datetime',
-      'Your saved search was successfully created.' => 'Your watchgroup was successfully created in meDesiderata.',
-      'Your saved search was successfully created. You will receive e-mail notifications for new results in the future.' => 'Your watchgroup was successfully created in meDesiderata. You will receive e-mail notifications for new results in the future.',
+      'Your saved search was successfully created.' => 'Your watchset was successfully created in meDesiderata.',
+      'Your saved search was successfully created. You will receive e-mail notifications for new results in the future.' => 'Your watchset was successfully created in meDesiderata. You will receive e-mail notifications for new results in the future.',
+      'The saved search was successfully deleted.' => 'The watchset was successfully deleted.',
     ),
   );
   $export['locale_custom_strings_en'] = $strongarm;
