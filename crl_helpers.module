@@ -26,27 +26,6 @@ function crl_helpers_menu() {
 
 
 /**
- * Implements hook_entity_info_alter().
- */
-function crl_helpers_entity_info_alter(&$entity_info) {
-  // Add an optional "embedded" view mode to some content types.
-  $entity_info['node']['view modes']['embedded'] = array(
-    'label' => t('Embedded'),
-    'custom settings' => TRUE,
-  );
-}
-
-
-/**
- * Implements hook_cron().
- */
-function crl_helpers_cron() {
-  // Sync institution picklist from Salesforce
-  _crl_helpers_sf_sync_picklist();
-}
-
-
-/**
  * Implements hook_theme().
  * 
  * Declare new theme hooks.
@@ -85,6 +64,40 @@ function crl_helpers_theme_registry_alter(&$theme_registry) {
       $theme_registry[$hook]['preprocess functions'][] = 'crl_helpers_preprocess_' . $hook;
     }
   }
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function crl_helpers_permission() {
+  return array(
+    'crl access member features' => array(
+      'title' => 'CRL access member features',
+      'description' => 'Access member-specific features that are defined in local modules',
+    )
+  );
+}
+
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function crl_helpers_entity_info_alter(&$entity_info) {
+  // Add an optional "embedded" view mode to some content types.
+  $entity_info['node']['view modes']['embedded'] = array(
+    'label' => t('Embedded'),
+    'custom settings' => TRUE,
+  );
+}
+
+
+/**
+ * Implements hook_cron().
+ */
+function crl_helpers_cron() {
+  // Sync institution picklist from Salesforce
+  _crl_helpers_sf_sync_picklist();
 }
 
 
