@@ -55,7 +55,7 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
     $vars['extra'] = '';
     // Integration with crl_mydes_feat to add a watch flag link to each item
     // in the index.
-    if (module_exists('crl_mydes_feat') && crl_mydes_feat_mydes_access()) {
+    if (module_exists('crl_mydes_feat') && user_access('crl access member features')) {
       $vars['extra'] = flag_create_link(CRL_WATCH_FLAG, $indexed_entity->nid);
     }
   }
