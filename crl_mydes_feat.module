@@ -10,6 +10,46 @@ define('CRL_WATCH_FLAG', 'base_node_watch');
 
 
 /**
+ * Implements hook_menu().
+ */
+function crl_mydes_feat_menu() {
+  $items['me'] = array(
+    'title' => 'meDesiderata',
+    'description' => 'meDesiderata Dashboard.',
+    'page callback' => 'crl_mydes_feat_dashboard_page',
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+
+
+/**
+ * Page callback for meDesiderata dashboard page.
+ * 
+ * @todo Theme the output.
+ */
+function crl_mydes_feat_dashboard_page() {
+  $text = '';
+  // Add generic text to always appear at the top of the page.
+  $text .= '<p>' . t('<span class="m-edes">m</span>eDesiderata is your space to track resources of direct interest to you. Individual resources or groups of resources you select to watch are listed below. You may also recieve automated email updates based on these selections.') . '</p>';
+  // Add content that is specific to login when the user does not have access
+  // to the meDes features themselves.
+  if (!user_access('crl access member features')) {
+    global $user;
+    if ($user->uid) {
+      $text .= '<p><strong>' . t('You logged in as a non-member. This means that some meDesiderata features are not available.') . '</strong></p>';
+    }
+    else {
+      // Add login block. We could place this with the normal block system or
+      // context, but this is a bit easier.
+      $text .= render(module_invoke('user', 'block_view', 'login'));
+    }
+  }
+  return $text;
+}
+
+
+/**
  * Implements hook_theme().
  */
 function crl_mydes_feat_theme() {
@@ -148,7 +188,7 @@ function crl_mydes_feat_email_settings_form() {
     unset($options[MESSAGE_SUBSCRIBE_EMAIL_FREQUENCY_IMMEDIATE]);
   }
   $form['intro'] = array(
-    '#markup' => '<p>' . t('Notifications about updates in your watchlist or additions to a watchset will be emailed at the interval specified.') . '</p>',
+    '#markup' => '<p><a id="email"></a>' . t('Notifications about updates in your watchlist or additions to a watchset will be emailed at the interval specified.') . '</p>',
   );
   $form['email_setting'] = array(
     '#type' => 'select',
