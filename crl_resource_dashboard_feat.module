@@ -104,6 +104,7 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
         $set = TRUE;
         $title = t('New & Modified (30 days)');
         $theme = 'crl_resource_dashboard_feat_view_head_top';
+        $path = 'activity';
         break;
     }
     if ($set) {
