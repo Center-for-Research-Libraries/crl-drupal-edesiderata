@@ -164,7 +164,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['timestamp_2']['field'] = 'timestamp';
   $handler->display->display_options['fields']['timestamp_2']['relationship'] = 'flag_content_rel';
   $handler->display->display_options['fields']['timestamp_2']['label'] = 'Watched since';
-  $handler->display->display_options['fields']['timestamp_2']['date_format'] = 'medium_no_time';
+  $handler->display->display_options['fields']['timestamp_2']['date_format'] = 'short';
   /* Field: Flags: Flag link */
   $handler->display->display_options['fields']['ops']['id'] = 'ops';
   $handler->display->display_options['fields']['ops']['table'] = 'flagging';
@@ -439,7 +439,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['created']['table'] = 'search_api_saved_search';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = 'Watched since';
-  $handler->display->display_options['fields']['created']['date_format'] = 'time ago';
+  $handler->display->display_options['fields']['created']['date_format'] = 'short';
   /* Field: Saved search: Edit link */
   $handler->display->display_options['fields']['edit_link']['id'] = 'edit_link';
   $handler->display->display_options['fields']['edit_link']['table'] = 'search_api_saved_search';
