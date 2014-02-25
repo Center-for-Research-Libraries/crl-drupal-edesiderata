@@ -52,7 +52,7 @@
             </tr>
         </table>
         <div style="width: 700px; margin: auto; margin-top: 2em; text-align: center; font-size: smaller">
-          To ensure that you continue receiving our emails, please add us to your address book or safe list.<br>If you are not interested in receiving any more messages like this please go to the <a href="#">unsubscribe</a> page.</small>
+          To ensure that you continue receiving our emails, please add us to your address book or safe list.<br>If you are not interested in receiving any more messages like this please go to the <?php print l('unsubscribe', 'me', array('absolute' => TRUE, 'fragment' => 'email')); ?> page.</small>
         </div>
     </body>
 </html>
