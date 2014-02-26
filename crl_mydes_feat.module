@@ -31,7 +31,7 @@ function crl_mydes_feat_menu() {
 function crl_mydes_feat_dashboard_page() {
   $text = '';
   // Add generic text to always appear at the top of the page.
-  $text .= '<p>' . t('<span class="m-edes">m</span>eDesiderata is your space to track resources of direct interest to you. Individual resources or groups of resources you select to watch are listed below. You may also recieve automated email updates based on these selections.') . '</p>';
+  $text .= '<p>' . t('<span class="m-edes">m</span>eDesiderata is your space to track resources of direct interest to you. Individual resources or sets of resources you selected to watch will be listed below. You may also recieve automated email updates based on these selections.') . '</p>';
   // Add content that is specific to login when the user does not have access
   // to the meDes features themselves.
   if (!user_access('crl access member features')) {
@@ -120,7 +120,7 @@ function crl_mydes_feat_block_view($delta = '') {
  *   Returns markup for the watch resource form.
  */
 function crl_mydes_feat_generate_widget($node) {
-  $output = '<p>' . t('By watching this resource you can monitor its activity in !link.', array('!link' => l(t('My eDesiderata'), 'me'))) . '</p>';
+  $output = '<p>' . t('By watching this resource you can monitor its activity in !link.', array('!link' => l(t('meDesiderata'), 'me'))) . '</p>';
   $flag_link = flag_create_link(CRL_WATCH_FLAG, $node->nid);
   return $output . $flag_link;
 }
@@ -188,7 +188,7 @@ function crl_mydes_feat_email_settings_form() {
     unset($options[MESSAGE_SUBSCRIBE_EMAIL_FREQUENCY_IMMEDIATE]);
   }
   $form['intro'] = array(
-    '#markup' => '<p><a id="email"></a>' . t('Notifications about updates in your watchlist or additions to a watchset will be emailed at the interval specified.') . '</p>',
+    '#markup' => '<p><a id="email"></a>' . t('Notifications about updates in your watchlist or additions to a watchset will be emailed at the interval you specify.') . '</p>',
   );
   $form['email_setting'] = array(
     '#type' => 'select',
