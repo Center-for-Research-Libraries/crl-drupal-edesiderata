@@ -31,7 +31,7 @@ function crl_mydes_feat_menu() {
 function crl_mydes_feat_dashboard_page() {
   $text = '';
   // Add generic text to always appear at the top of the page.
-  $text .= '<p>' . t('<span class="m-edes">m</span>eDesiderata is your space to track resources of direct interest to you. Individual resources or sets of resources you selected to watch will be listed below. You may also recieve automated email updates based on these selections.') . '</p>';
+  $text .= '<p>' . t('<span class="m-edes">m</span>eDesiderata is your space to track resources of direct interest to you. Individual resources or sets of resources you selected to watch will be listed below. You may also receive automated email updates based on these selections.') . '</p>';
   // Add content that is specific to login when the user does not have access
   // to the meDes features themselves.
   if (!user_access('crl access member features')) {
@@ -294,6 +294,13 @@ function crl_mydes_feat_email_settings_user_setting($seconds = FALSE, $known_set
 }
 
 
+/**
+ * Implements hook_preprocess_menu_link()
+ * 
+ * Used to add styling to special menu links (e.g. meDesiderata). We don't
+ * include this in a separate theme file because it's a preprocessor for a core
+ * theme function and will need to be included on almost every page anyway.
+ */
 function crl_mydes_feat_preprocess_menu_link(&$vars) {
   $element = $vars['element'];
   $element['#title'] = crl_mydes_feat_style_name($element['#title']);
@@ -304,11 +311,26 @@ function crl_mydes_feat_preprocess_menu_link(&$vars) {
 }
 
 
+/**
+ * Implements hook_preprocess_delta_blocks_page_title()
+ * 
+ * Used to add styling to special title links (e.g. meDesiderata). We don't
+ * include this in a separate theme file because it's a preprocessor for a main
+ * theme function and will need to be included on almost every page anyway.
+ */
 function crl_mydes_feat_preprocess_delta_blocks_page_title(&$vars) {
   $vars['page_title'] = crl_mydes_feat_style_name($vars['page_title']);
 }
 
 
+/**
+ * Helper to alter meDesiderata menu and title link text.
+ * 
+ * @param string $text
+ *   The text to check for the meDesiderata string.
+ * @return string
+ *   The altered text with the meDesiderata part styled.
+ */
 function crl_mydes_feat_style_name($text) {
   return str_ireplace('meDesiderata', '<span class="m-edes">m</span>eDesiderata', $text);
 }
