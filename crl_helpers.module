@@ -395,7 +395,7 @@ function crl_helpers_get_sfid() {
  * Normal users (specifically anon at registration) should only see the list
  * of member institutions. However, because the institution field can be used to
  * store iids for nonmember institutions we want the full list to be available
- * whenever admins seed to made edits to a profile, etc.
+ * whenever admins need to made edits to a profile, etc.
  */
 function crl_helpers_inst_oplist() {
   if (user_access('administer users')) {
