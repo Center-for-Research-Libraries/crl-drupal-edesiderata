@@ -103,7 +103,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<p>Your can select individual resources of interest and track the updates, changes to CRL license status and community comments that apply to them. View updates to your watchlist with the activity report or through automated email notifications.</p>
+  $handler->display->display_options['header']['area']['content'] = '<p>You can select individual resources of interest and track the updates, changes to CRL license status and community comments that apply to them. View updates to your watchlist with the activity report or through automated email notifications.</p>
 <p><a class="button" href="/resources/main" onclick="return window.confirm(\'You will be directed to the A-Z resource listings. To add a new item to your watchlist, simply click the \\\'Watch\\\' option that appears next to a resource while browsing.\');"></span><b>+</b>&nbsp;&nbsp;Add to Watchlist</a>&nbsp;&nbsp;<a class="button" href="/me/activity"><span class="crl-icon-small pulse-icon"></span>Watchlist Activity Report</a>&nbsp;&nbsp;<a class="button" href="/me/watchlist/download"><span class="crl-icon-small download-icon"></span>Download Watchlist</a></p>';
   $handler->display->display_options['header']['area']['format'] = 'literal';
   /* No results behavior: Global: Text area */
