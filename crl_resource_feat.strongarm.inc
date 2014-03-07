@@ -28,7 +28,7 @@ function crl_resource_feat_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_default_per_page_resource';
-  $strongarm->value = '50';
+  $strongarm->value = '70';
   $export['comment_default_per_page_resource'] = $strongarm;
 
   $strongarm = new stdClass();
