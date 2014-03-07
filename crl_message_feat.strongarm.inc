@@ -791,6 +791,7 @@ function crl_message_feat_strongarm() {
     'search_api_saved_searches' => 'MimeMailSystem',
     'message_notify' => 'MimeMailSystem',
     'message_digest' => 'MimeMailSystem',
+    'print_mail' => 'DefaultMailSystem',
   );
   $export['mail_system'] = $strongarm;
 

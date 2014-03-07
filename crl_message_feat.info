@@ -38,7 +38,6 @@ features[field_instance][] = message-resource_status_update-field_resource_refer
 features[field_instance][] = message-resource_update-field_resource_reference
 features[field_instance][] = user-user-message_subscribe_email
 features[field_instance][] = user-user-message_subscribe_email_freq
-features[filter][] = literal
 features[flag][] = email_node_watch
 features[message_type][] = resource_expires_soon
 features[message_type][] = resource_new
