@@ -7,15 +7,33 @@
 
 
 /**
+ * Implements hook_install.
+ */
+function crl_helpers_install() {
+  // Assuming field_institution is in place already, set the oplist function.
+  crl_helpers_set_oplist_function('field_institution', 'crl_helpers_inst_oplist');
+}
+
+
+/**
  * Set custom allowed values function for field_institution.
  */
 function crl_helpers_update_7100() {
-  $field_institution = field_info_field('field_institution');
-  if (!empty($field_institution)) {
-    if (isset($field_institution['settings']['allowed_values'])) {
-      unset($field_institution['settings']['allowed_values']);
+  // Set oplist function for field_institution.
+  crl_helpers_set_oplist_function('field_institution', 'crl_helpers_inst_oplist');
+}
+
+
+/**
+ * Helper to associate a custom oplist function with a field.
+ */
+function crl_helpers_set_oplist_function($field_name, $function_name) {
+  $field = field_info_field($field_name);
+  if (!empty($field)) {
+    if (isset($field['settings']['allowed_values'])) {
+      unset($field['settings']['allowed_values']);
     }
-    $field_institution['settings']['allowed_values_function'] = 'crl_helpers_inst_oplist';
-    field_update_field($field_institution);
+    $field['settings']['allowed_values_function'] = $function_name;
+    field_update_field($field);
   }
 }

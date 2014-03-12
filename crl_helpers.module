@@ -49,25 +49,6 @@ function crl_helpers_theme() {
 
 
 /**
- * Implements hook_theme_registry_alter.
- * 
- * Override some existing theme hooks details via this module directly. Because
- * these hooks are already declared, we use hook_theme_registry_alter().
- */
-function crl_helpers_theme_registry_alter(&$theme_registry) {
-  $theme_path_file = drupal_get_path('module', 'crl_helpers') . '/themes/crl_helpers.theme.inc';
-  // Declare new preprocess functions. We do this formally as these functions
-  // are in another file, so they won't get picked-up automatically.
-  foreach (array('comment', 'delta_blocks_page_title', 'views_data_export_xls_header') as $hook) {
-    if (isset($theme_registry[$hook]) ) {
-      $theme_registry[$hook]['includes'][] = $theme_path_file;
-      $theme_registry[$hook]['preprocess functions'][] = 'crl_helpers_preprocess_' . $hook;
-    }
-  }
-}
-
-
-/**
  * Implements hook_permission().
  */
 function crl_helpers_permission() {
@@ -349,9 +330,6 @@ function crl_helpers_wysiwyg_editor_settings_alter(&$settings, $context) {
 }
 
 
-
-
-
 /**
  * Implements hook_form_user_register_form_alter().
  * 
@@ -402,4 +380,103 @@ function crl_helpers_inst_oplist() {
     return variable_get('crl_sf_sync_institutions_array_full', array());
   }
   return variable_get('crl_sf_sync_institutions_array', array());
+}
+
+
+/**
+ * Implements hook_preprocess_delta_blocks_page_title().
+ * 
+ * We display titles with delta blocks, so this provides a way to do some
+ * special title alterations at the last min. This is a bit of a hack.
+ */
+function crl_helpers_preprocess_delta_blocks_page_title(&$vars) {
+  $altered = FALSE;
+  $altered_text = '';
+  $query = drupal_get_query_parameters();
+  if (!empty($query['f'][0])) {
+    switch ($query['f'][0]) {
+      case 'crl_resource_status_backref:crl_review_available':
+        $altered = TRUE;
+        $altered_text = t('Resources - CRL Reviews');
+        break;
+      case 'crl_resource_status_backref:license_available':
+        $altered = TRUE;
+        $altered_text = t('Resources - CRL Offers');
+        break;
+      case 'crl_resource_status_backref:crl_desiderata':
+        $altered = TRUE;
+        $altered_text = t('Resources - CRL Pipeline');
+        break;
+    }
+  }
+  if (drupal_is_front_page()) {
+    $altered = TRUE;
+    $altered_text = '';
+  }
+  if ($altered) {
+    $vars['page_title'] = $altered_text;
+  }
+}
+
+
+/**
+ * Implements hook_preprocess_comment().
+ * 
+ * Alter some comment variables before they are themed. Used primarily to
+ * implement some ad hoc "private comments" features.
+ */
+function crl_helpers_preprocess_comment(&$vars) {
+  // Add the inst to the author's name if possible.
+  $user_inst = crl_helpers_get_institution($vars['comment']->uid, NULL);
+  if (!empty($user_inst)) {
+    $vars['author'] = $vars['author'] . ' (' . $user_inst . ')';
+  }
+  // Hide the title/subject line.
+  $vars['title'] = NULL;
+  // See if any "privacy" details are set via a special "comment_privacy" field.
+  $wrapper = entity_metadata_wrapper('comment', $vars['comment']);
+  $privacy = isset($wrapper->field_comment_privacy) ? $wrapper->field_comment_privacy->value() : NULL;
+  // Toggle the removal/addition of text based on any privacy settings and user
+  // rights.
+  if ($privacy == 'anon') { // Hide submitter name.
+    // Don't hide anything from admins, but show a notice.
+    if (user_access('administer comments')) {
+      $vars['content']['privacy_note'] = array('#markup' => t('<strong>Privacy note:</strong> The submitter has chosen to hide their name from everyone except CRL staff.'));
+    }
+    else {
+      $vars['author'] = t('(name hidden)');
+      $vars['submitted'] = t('Submission details hidden');
+    }
+  }
+  elseif ($privacy == 'private') { // Hide entire comment.
+    global $user;
+    // Remove "reply" option.
+    if (isset($vars['content']['links']['comment']['#links']['comment-reply'])) {
+      unset($vars['content']['links']['comment']['#links']['comment-reply']);
+    }
+    // Don't hide anything from admins or author, but show a notice.
+    if (user_access('administer comments') || $vars['comment']->uid == $user->uid) {
+      $vars['content']['privacy_note'] = array('#markup' => t('<strong>Privacy note:</strong> This comment has been hidden from all users except CRL staff and the original author.'));
+    }
+    else {
+      $vars['author'] = t('(name hidden)');
+      $vars['submitted'] = t('Submission details hidden');
+      $vars['content']['comment_body'] = array('#markup' => t('Comment hidden - this is a private comment to CRL.'));
+    }
+  }
+}
+
+
+/**
+ * Implements hook_views_data_export_xls_header().
+ * 
+ * Alter some export header structures.
+ */
+function crl_helpers_preprocess_views_data_export_xls_header(&$variables) {
+  $output = '';
+  $output .= "<h2>eDesiderata - Informed Investment in Electronic Resources</h2>";
+  $output .= "<h3>Center for Research Libraries</h3>";
+  $output .= "<p><b>Exported from eDesiderata on " . format_date(time(), 'medium')." </b></p>";
+  $output .= "<p>&nbsp;</p>" . $variables['header_row'];
+  $variables['header_row'] = $output;
 }
