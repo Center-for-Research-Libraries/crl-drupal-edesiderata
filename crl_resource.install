@@ -7,15 +7,34 @@
 
 
 /**
+ * Implements hook_install.
+ */
+function crl_resource_install() {
+  // Assuming field_activity_crl_status is in place already, set the oplist
+  // function.
+  crl_resource_set_oplist_function('field_activity_crl_status', 'crl_resource_activity_status_property_oplist');
+}
+
+
+/**
  * Set custom allowed values function for field_activity_crl_status.
  */
 function crl_resource_update_7100() {
-  $field_activity_crl_status = field_info_field('field_activity_crl_status');
-  if (!empty($field_activity_crl_status)) {
-    if (isset($field_activity_crl_status['settings']['allowed_values'])) {
-      unset($field_activity_crl_status['settings']['allowed_values']);
+  // Set oplist function for field_activity_crl_status.
+  crl_resource_set_oplist_function('field_activity_crl_status', 'crl_resource_activity_status_property_oplist');
+}
+
+
+/**
+ * Helper to associate a custom oplist function with a field.
+ */
+function crl_resource_set_oplist_function($field_name, $function_name) {
+  $field = field_info_field($field_name);
+  if (!empty($field)) {
+    if (isset($field['settings']['allowed_values'])) {
+      unset($field['settings']['allowed_values']);
     }
-    $field_activity_crl_status['settings']['allowed_values_function'] = 'crl_resource_activity_status_property_oplist';
-    field_update_field($field_activity_crl_status);
+    $field['settings']['allowed_values_function'] = $function_name;
+    field_update_field($field);
   }
 }
