@@ -23,8 +23,3 @@ function crl_message_feat_message_digest($vars) {
   $digest .= '<p>' . t('You can add or remove items from your watchlist by logging-in to !mydes', array('!mydes' => l('meDesiderata', 'me'))) . '</p>';
   return $digest;
 }
-
-
-function crl_message_feat_preprocess_mimemail_message($vars) {
-  // Placeholder for prepecessing logic on the mimemail template.
-}

@@ -33,15 +33,36 @@ function crl_message_feat_theme_registry_alter(&$theme_registry) {
     // Make sure the file with the function is included.
     $theme_registry['message_digest']['includes'][] = $theme_path . '/crl_message_feat.theme.inc';
   }
-  // Override the template for a mimemail message.
-  if (isset($theme_registry['mimemail_message']) ) {
-    // Becuase this is a template, we need to explicitly change the path.
-    $theme_registry['mimemail_message']['path'] = $theme_path;
-    // Also declare a new preprocess function. We do this formally as the
-    // function is in another file so it won't get picked-up automatically.
-    $theme_registry['mimemail_message']['includes'][] = $theme_path . '/crl_message_feat.theme.inc';
-    $theme_registry['mimemail_message']['preprocess functions'][] = 'crl_message_feat_preprocess_mimemail_message';
-  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function crl_message_feat_menu() {
+  $items['admin/config/crl/messages'] = array(
+    'title' => 'CRL Messages',
+    'description' => 'Options for CRL Message Processing.',
+    'weight' => 0,
+    'page callback' => 'drupal_get_form',
+    'page arguments'   => array('crl_message_feat_options'),
+    'type'             => MENU_NORMAL_ITEM,
+    'access arguments' => array('access administration pages'),
+  );
+  return $items;
+}
+
+
+/**
+ * Configuration form callback.
+ */
+function crl_message_feat_options() {
+  $form['crl_message_feat_options_subscriptions'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Activate subscription notifications.'),
+    '#default_value' => variable_get('crl_message_feat_options_subscriptions', TRUE),
+    '#description' => t('Whether or not to trigger subscription notifications when messages are created programmatically. Should be disabled for staging sites, etc.'),
+  );
+  return system_settings_form($form);
 }
 
 
@@ -207,7 +228,7 @@ function crl_message_feat_cron() {
   }
   // Get a list of activity entries that are set to expire soon but that DO NOT
   // reference resources from the list of messages already sent (as calculated
-  // above).
+  // above). This logic assumes cron is run multiple times in one day.
   $query_expiring = new EntityFieldQuery();
   $query_expiring
     ->entityCondition('entity_type', 'node')
@@ -252,7 +273,7 @@ function crl_message_feat_cron() {
  */
 function crl_message_feat_process_messages($messages) {
   foreach ($messages as $message) {
-    // Create the message.
+    // Create the message and get the wrapper.
     $message_wrapper = entity_metadata_wrapper('message', message_create($message['type']));
     // Set fields.
     foreach ($message['fields'] as $field_name => $value) {
@@ -260,7 +281,7 @@ function crl_message_feat_process_messages($messages) {
     }
     $message_wrapper->save();
     // Also trigger any subscription mails that may be related to this message.
-    if (module_exists('message_subscribe') && array_key_exists('field_resource_reference', $message['fields'])) {
+    if (variable_get('crl_message_feat_options_subscriptions', TRUE) && module_exists('message_subscribe') && array_key_exists('field_resource_reference', $message['fields'])) {
       // The resource entity is that one that has a flag to test for the
       // subscription.
       $r_entity = $message['fields']['field_resource_reference'];
@@ -319,5 +340,76 @@ function crl_message_feat_mail_alter(&$message) {
   if (strpos($message['id'], 'message_digest') === 0) {
     $title = variable_get('site_name', 'eDesiderata');
     $message['subject'] = '[' . $title . '] ' . t('Activity Message Digest');
+  }
+}
+
+
+/**
+ * Implements hook_form_alter().
+ * 
+ * Note that this form_alter will fire last thanks to
+ * crl_message_feat_module_implements_alter(). This is critical so that we can
+ * make alterations AFTER revisioning's alterations.
+ * 
+ * @see crl_message_feat_module_implements_alter()
+ */
+function crl_message_feat_form_alter(&$form, $form_state) {
+  // For the node edit form we make some adjustments to the "revisioning"
+  // elements. The revisioning status of some edits is used to determine if
+  // messages are created, so we want to make this clear to editors.
+  if (!empty($form['#node_edit_form'])) {
+    $node = &$form['#node'];
+    if (isset($node->nid) && ($node->type == 'resource' || $node->type == 'activity')) {
+      // If revisioning is installed it will already have altered the form, so
+      // we alter it's alterations.
+      if (module_exists('revisioning')) {
+        // Highlight the revisioning options.
+        $form['revision_information']['revision_operation']['#prefix'] = '<div class="notice-box">';
+        $form['revision_information']['revision_operation']['#suffix'] = '</div>';
+        // Rebuild the options shown in a custom order and with custom text.
+        $current_options = $form['revision_information']['revision_operation']['#options'];
+        $form['revision_information']['revision_operation']['#options'] = array();
+        $new_labels = array(
+          REVISIONING_NEW_REVISION_NO_MODERATION => t('Regular Update'),
+          REVISIONING_NO_REVISION => t('Minor update (do NOT notify watchers, alter activity feeds or create a new revision)'),
+          // Uncomment the following line when CRL finally starts using
+          // moderation features. This is currently hidden to avoid confusion.
+          // REVISIONING_NEW_REVISION_WITH_MODERATION => t('Update with moderation (used rarely)'),
+        );
+        foreach (array_keys($new_labels) as $key) {
+          if (array_key_exists($key, $current_options)) {
+            $form['revision_information']['revision_operation']['#options'][$key] = $new_labels[$key];
+          }
+        }
+        $form['revision_information']['revision_operation']['#title'] = t('Update and revision details');
+        $form['revision_information']['revision_operation']['#description'] = '';
+      }
+      // If revisioning is not installed, just alter the core "revision"
+      // checkbox.
+      else {
+        $form['revision_information']['#collapsed'] = FALSE;
+        $form['revision_information']['#weight'] = -3;
+        $form['revision_information']['revision']['#weight'] = 10;
+        $form['revision_information']['revision']['#prefix'] = '<div class="notice-box">';
+        $form['revision_information']['revision']['#suffix'] = '</div>';
+        $form['revision_information']['revision']['#title'] = t('Notify watchers, alter activity feeds and create a new revision (uncheck for minor updates)');
+      }
+    }
+  }
+}
+
+
+/**
+ * Implements hook_module_implements_alter().
+ * 
+ * Used to force this module's hook_form_alter to fire last.
+ * 
+ * @see crl_message_feat_form_alter()
+ */
+function crl_message_feat_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'form_alter' && array_key_exists('crl_message_feat', $implementations)) {
+    $group = $implementations['crl_message_feat'];
+    unset($implementations['crl_message_feat']);
+    $implementations['crl_message_feat'] = $group;
   }
 }
