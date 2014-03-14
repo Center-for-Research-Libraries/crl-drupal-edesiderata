@@ -49,6 +49,22 @@ function crl_helpers_theme() {
 
 
 /**
+ * Implements hook_theme_registry_alter.
+ * 
+ * Override some existing theme hooks via this module directly. Because these
+ * hooks are already declared, we use hook_theme_registry_alter().
+ */
+function crl_helpers_theme_registry_alter(&$theme_registry) {
+  $theme_path = drupal_get_path('module', 'crl_helpers') . '/themes';
+  // Override the template for a mimemail message.
+  if (isset($theme_registry['mimemail_message']) ) {
+    // Becuase this is a template, we need to explicitly change the path.
+    $theme_registry['mimemail_message']['path'] = $theme_path;
+  }
+}
+
+
+/**
  * Implements hook_permission().
  */
 function crl_helpers_permission() {
