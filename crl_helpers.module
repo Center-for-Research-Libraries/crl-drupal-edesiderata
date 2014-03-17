@@ -357,6 +357,14 @@ function crl_helpers_inst_oplist() {
  * May be called directly or wrapped by a formal "allowed_values_function"
  * callback.
  * 
+ * @param boolean $use_opgroup
+ *   Whether-or-not to make the returned list an associative array, separating
+ *   members and nonmembers, that the form API can treat as opgroups. May not
+ *   work on all forms (such as core field edit forms).
+ * @param boolean $force_all
+ *   If true this forces the full list of BOTH members and nonmembers to be
+ *   returned no matter what the current user's permissions are.
+ * 
  * @see crl_helpers_inst_oplist()
  */
 function crl_helpers_inst_oplist_builder($use_opgroup = FALSE, $force_all = FALSE) {
