@@ -333,34 +333,62 @@ function crl_helpers_preprocess_views_data_export_xls_header(&$variables) {
 }
 
 
+/*******************************************************************************
+ * User specific functions below.... probably to be refactored
+ ******************************************************************************/
 
+
+/**
+ * Allowed values function callback for the institution picklist.
+ * 
+ * @see crl_helpers_inst_oplist_builder()
+ */
+function crl_helpers_inst_oplist() {
+  // Call the oplist builder. We can't set the builder directly as the callback
+  // because various arguments will be set as part of the callback, and we don't
+  // want to pass those on to the builder.
+  return crl_helpers_inst_oplist_builder();
+}
 
 
 /**
  * Helper to dynamically build the options list for the institution dropdown.
  * 
- * Normal users (specifically anon at registration) should only see the list
- * of member institutions. However, because the institution field can be used to
- * store iids for nonmember institutions we want the full list to be available
- * whenever admins need to made edits to a profile, etc.
+ * May be called directly or wrapped by a formal "allowed_values_function"
+ * callback.
+ * 
+ * @see crl_helpers_inst_oplist()
  */
-function crl_helpers_inst_oplist() {
+function crl_helpers_inst_oplist_builder($use_opgroup = FALSE, $force_all = FALSE) {
   $inst_list_mem = variable_get('crl_sf_sync_institutions_array', array());
-  if (user_access('administer users') || user_access('access crowd widgets')) {
-    // Add "Member" to the label for member institutions for reference if
-    // configured.
-    foreach ($inst_list_mem as $key => $value) {
-      $inst_list_mem[$key] = $inst_list_mem[$key] . ' (MEMBER)';
-    }
+  // Normal users (specifically anon at registration) should only see the list
+  // of member institutions. However, because the institution field can be used
+  // to store iids for nonmember institutions we want the full list to be
+  // available to admins.
+  if (user_access('administer users') || user_access('access crowd widgets') || $force_all) {
     // Get the full inst list and extract the nonmenbers.
     $inst_list_all = variable_get('crl_sf_sync_institutions_array_full', array());
     $inst_list_nonmem = array_diff_key($inst_list_all, $inst_list_mem);
     asort($inst_list_nonmem);
-    // Create picklist that separates members and nonmembers based on opgroups.
-    $inst_list_both = array(
-      'MEMBERS' => $inst_list_mem,
-      'NON-MEMBERS' => $inst_list_nonmem,
-    );
+    // Add "Member" and "Nonmember" text to labels for reference.
+    foreach ($inst_list_mem as $key => $value) {
+      $inst_list_mem[$key] = $inst_list_mem[$key] . ' (MEMBER)';
+    }
+    foreach ($inst_list_nonmem as $key => $value) {
+      $inst_list_nonmem[$key] = $inst_list_nonmem[$key] . ' (NONMEMBER)';
+    }
+    // If configured, create list that separates members and nonmembers with
+    // opgroups.
+    if ($use_opgroup) {
+      $inst_list_both = array(
+        'MEMBERS' => $inst_list_mem,
+        'NON-MEMBERS' => $inst_list_nonmem,
+      );
+    }
+    // Otherwise just return the two lists unioned together.
+    else {
+      $inst_list_both = $inst_list_mem + $inst_list_nonmem;
+    }
     return $inst_list_both;
   }
   return $inst_list_mem;
@@ -390,7 +418,7 @@ function crl_helpers_get_sfid() {
 
 
 /**
- * Helper function to get the institution info (either the name or the iid).
+ * Helper to get the institution info (either the name or the iid).
  * 
  * @param int $uid
  *   An optional user ID representing the user to check. If NULL the current

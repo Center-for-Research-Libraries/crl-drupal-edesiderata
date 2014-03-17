@@ -51,12 +51,9 @@
                 </td>
             </tr>
         </table>
-        <div style="width: 700px; margin: auto; margin-top: 2em; text-align: center; font-size: smaller">
+        <div style="width: 90%; margin: auto; margin-top: 2em; text-align: center; font-size: smaller">
           To ensure that you continue receiving our emails, please add us to your address book or safe list.
-          <?php
-          if (isset($unsubscribe_link)) : ?>
-            <br>If you would like to change the frequency of these messages, or unsubscribe completely, you may <a href="<?php print $unsubscribe_link ?>">alter your email preferences</a>.
-          <?php endif ?>
+          <?php if (isset($mydes_unsubscribe_message)) { print '<br/>' . $mydes_unsubscribe_message; } ?>
         </div>
     </body>
 </html>
