@@ -333,6 +333,88 @@ function crl_helpers_preprocess_views_data_export_xls_header(&$variables) {
 }
 
 
+/**
+ * Implements hook_form_alter().
+ * 
+ * Note that this form_alter will fire last thanks to
+ * crl_helpers_module_implements_alter(). This is critical so that we can
+ * make alterations AFTER revisioning's alterations.
+ * 
+ * @see crl_helpers_module_implements_alter()
+ */
+function crl_helpers_form_alter(&$form, $form_state) {
+  // For the node edit form we make some adjustments to the "revisioning"
+  // elements.
+  if (!empty($form['#node_edit_form'])) {
+    $node = &$form['#node'];
+    if (isset($node->nid)) {
+      // If revisioning is installed it will already have altered the form, so
+      // we alter it's alterations.
+      if (isset($form['revision_information'])) {
+        // Rebuild the options shown in a custom order and with custom text.
+        // Note that we need to retain the keys and ensure that we don't remove
+        // any options.
+        $new_ordered_options = array(
+          REVISIONING_NEW_REVISION_NO_MODERATION => t('Regular Update'),
+          REVISIONING_NO_REVISION => t('Minor update (do NOT notify watchers, alter activity feeds or create a new revision)'),
+          REVISIONING_NEW_REVISION_WITH_MODERATION => t('Update with moderation (used rarely)'),
+        );
+        $top_options = array();
+        foreach ($new_ordered_options as $key => $value) {
+          if (isset($form['revision_information']['revision_operation']['#options'][$key])) {
+            unset($form['revision_information']['revision_operation']['#options'][$key]);
+            $top_options[$key] = $value;
+          }
+        }
+        $form['revision_information']['revision_operation']['#options'] = $top_options + $form['revision_information']['revision_operation']['#options'];
+        $form['revision_information']['revision_operation']['#title'] = t('Update and revision details');       
+        // Temporarily hide the moderation option if it's not yet active. Doing
+        // this sort-of negates the usefulness of the revisioning module (as it
+        // means we can't fork existing entities into moderated states), but
+        // until CRL fully embraces moderation workflows this should be hidden
+        // to avoid confusion.
+        if (isset($form['revision_information']['revision_operation']['#options'][REVISIONING_NEW_REVISION_WITH_MODERATION]) && $form['revision_information']['revision_operation']['#default_value'] != REVISIONING_NEW_REVISION_WITH_MODERATION) {
+          unset($form['revision_information']['revision_operation']['#options'][REVISIONING_NEW_REVISION_WITH_MODERATION]);
+          $form['revision_information']['revision_operation']['#description'] = '';
+        }
+        // Highlight the revisioning options for resources and activity types.
+        // These warrent special attention because they may trigger messages.
+        if ($node->type == 'resource' || $node->type == 'activity') {
+          $form['revision_information']['revision_operation']['#prefix'] = '<div class="notice-box extreme">';
+          $form['revision_information']['revision_operation']['#suffix'] = '</div>';
+        }
+      }
+      // If revisioning is not installed, just alter the core "revision"
+      // checkbox.
+      else {
+        $form['revision_information']['#collapsed'] = FALSE;
+        $form['revision_information']['#weight'] = -3;
+        $form['revision_information']['revision']['#weight'] = 10;
+        $form['revision_information']['revision']['#prefix'] = '<div class="notice-box">';
+        $form['revision_information']['revision']['#suffix'] = '</div>';
+        $form['revision_information']['revision']['#title'] = t('Notify watchers, alter activity feeds and create a new revision (uncheck for minor updates)');
+      }
+    }
+  }
+}
+
+
+/**
+ * Implements hook_module_implements_alter().
+ * 
+ * Used to force this module's hook_form_alter to fire last.
+ * 
+ * @see crl_helpers_form_alter()
+ */
+function crl_helpers_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'form_alter' && array_key_exists('crl_helpers', $implementations)) {
+    $group = $implementations['crl_helpers'];
+    unset($implementations['crl_helpers']);
+    $implementations['crl_helpers'] = $group;
+  }
+}
+
+
 /*******************************************************************************
  * User specific functions below.... probably to be refactored
  ******************************************************************************/
@@ -378,10 +460,7 @@ function crl_helpers_inst_oplist_builder($use_opgroup = FALSE, $force_all = FALS
     $inst_list_all = variable_get('crl_sf_sync_institutions_array_full', array());
     $inst_list_nonmem = array_diff_key($inst_list_all, $inst_list_mem);
     asort($inst_list_nonmem);
-    // Add "Member" and "Nonmember" text to labels for reference.
-    foreach ($inst_list_mem as $key => $value) {
-      $inst_list_mem[$key] = $inst_list_mem[$key] . ' (MEMBER)';
-    }
+    // Add "Nonmember" text to labels for reference.
     foreach ($inst_list_nonmem as $key => $value) {
       $inst_list_nonmem[$key] = $inst_list_nonmem[$key] . ' (NONMEMBER)';
     }
