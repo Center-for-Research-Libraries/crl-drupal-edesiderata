@@ -132,33 +132,31 @@ function theme_crl_resource_field_status_summary($vars) {
     $output .= '<p style="text-align: right;"><strong>' . l(t('Edit CRL Offers & Status'), $vars['edit_link']['path'], $vars['edit_link']['options']) . '</a></strong></p>';
   }
   // Build the status display.
-  if (!empty($vars['status'])) {
-    $header = array('', t('Status'), t('Current'), t('Description'));
-    $rows = array();
-    foreach ($vars['status_options'] as $status_key => $text) {
-      // Get the status information
-      $active_class = 'status-inactive';
-      $current = t('no');
-      if (in_array($status_key, $vars['status'])) {
-        $active_class = 'status-active';
-        $current = t('yes');
-      }
-      // Set values
-      $rows[] = array(
-        'data' => array(
-          '<span class="summary-icon-small ' . $status_key . ' ' . $active_class . '"></span>',
-          $text,
-          $current,
-          $vars['status_descriptions'][$status_key],
-        ),
-        'class' => $active_class,
-        'no_striping' => TRUE,
-      );
+  $header = array('', t('Status'), t('Current'), t('Description'));
+  $rows = array();
+  foreach ($vars['status_options'] as $status_key => $text) {
+    // Get the status information
+    $active_class = 'status-inactive';
+    $current = t('no');
+    if (in_array($status_key, $vars['status'])) {
+      $active_class = 'status-active';
+      $current = t('yes');
     }
-    $output .= '<div id="status-summary">';
-    $output .= theme('table', array('header' => $header, 'rows' => $rows));
-    $output .= '</div>';
+    // Set values
+    $rows[] = array(
+      'data' => array(
+        '<span class="summary-icon-small ' . $status_key . ' ' . $active_class . '"></span>',
+        $text,
+        $current,
+        $vars['status_descriptions'][$status_key],
+      ),
+      'class' => $active_class,
+      'no_striping' => TRUE,
+    );
   }
+  $output .= '<div id="status-summary">';
+  $output .= theme('table', array('header' => $header, 'rows' => $rows));
+  $output .= '</div>';
   return $output;
 }
 

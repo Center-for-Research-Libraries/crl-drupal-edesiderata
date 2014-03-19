@@ -57,8 +57,12 @@ class CrlResourceDisplayElements {
     // Calculate editor link and backref status details.
     $edit_link = crl_resource_activity_edit_link($this->entity_wrapper);
     $backref_status = isset($this->entity_wrapper->crl_resource_status_backref) ? $this->entity_wrapper->crl_resource_status_backref->value() : array();
+    // See if we have any activity entries. If we do we want to be sure to
+    // display the status summary table (as empty) even if there are not status
+    // values to report.
+    $backref_entities = isset($this->entity_wrapper->crl_resource_backref) ? $this->entity_wrapper->crl_resource_backref->value() : array();
     // If we have anything to output, create render array.
-    if (!empty($edit_link) || !empty($backref_status)) {
+    if (!empty($edit_link) || !empty($backref_status) || !empty($backref_entities)) {
       $built = array(
         '#theme' => 'crl_resource_field_status_summary',
         '#edit_link' => $edit_link,
