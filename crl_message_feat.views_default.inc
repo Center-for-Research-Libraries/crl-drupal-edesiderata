@@ -35,14 +35,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['style_plugin'] = 'default';
-  $handler->display->display_options['style_options']['grouping'] = array(
-    0 => array(
-      'field' => 'title',
-      'rendered' => 1,
-      'rendered_strip' => 0,
-    ),
-  );
-  $handler->display->display_options['style_options']['row_class'] = '[type]';
+  $handler->display->display_options['style_options']['row_class'] = '[type] clearfix';
   $handler->display->display_options['row_plugin'] = 'fields';
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
@@ -90,7 +83,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['fields']['message_render_1']['ui_name'] = 'Short Message';
   $handler->display->display_options['fields']['message_render_1']['label'] = '';
   $handler->display->display_options['fields']['message_render_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="message-icon-small [type]"></span>[message_render_1] ([timestamp])';
+  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="message-icon-small [type]"></span><span class="message-list-text">[message_render_1] ([timestamp])</span>';
   $handler->display->display_options['fields']['message_render_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['message_render_1']['partials'] = 1;
   $handler->display->display_options['fields']['message_render_1']['partials_delta'] = '1';
@@ -207,7 +200,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['fields']['message_render_1']['ui_name'] = 'Long Message';
   $handler->display->display_options['fields']['message_render_1']['label'] = '';
   $handler->display->display_options['fields']['message_render_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="message-icon-small [type]"></span>[message_render_1] ([timestamp])';
+  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="message-icon-small [type]"></span><span class="message-list-text">[message_render_1] ([timestamp])</span>';
   $handler->display->display_options['fields']['message_render_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['message_render_1']['partials'] = 1;
   $handler->display->display_options['fields']['message_render_1']['partials_delta'] = '0';
@@ -227,7 +220,7 @@ function crl_message_feat_views_default_views() {
       'rendered_strip' => 0,
     ),
   );
-  $handler->display->display_options['style_options']['row_class'] = '[type]';
+  $handler->display->display_options['style_options']['row_class'] = '[type] clearfix';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
@@ -277,7 +270,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['fields']['message_render_1']['ui_name'] = 'Long Message';
   $handler->display->display_options['fields']['message_render_1']['label'] = '';
   $handler->display->display_options['fields']['message_render_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="message-icon-small [type]"></span>[message_render_1] ([timestamp_1])';
+  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="message-icon-small [type]"></span><span class="message-list-text">[message_render_1] ([timestamp_1])</span>';
   $handler->display->display_options['fields']['message_render_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['message_render_1']['partials'] = 1;
   $handler->display->display_options['fields']['message_render_1']['partials_delta'] = '0';
@@ -331,6 +324,20 @@ function crl_message_feat_views_default_views() {
   $handler = $view->new_display('page', 'Page - Title Grouped', 'page');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'eDesiderata Activity Summary (Last 30 days)';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['grouping'] = array(
+    0 => array(
+      'field' => 'title',
+      'rendered' => 1,
+      'rendered_strip' => 0,
+    ),
+  );
+  $handler->display->display_options['style_options']['row_class'] = '[type] clearfix';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['path'] = 'activity/title';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'By title';
@@ -355,7 +362,7 @@ function crl_message_feat_views_default_views() {
       'rendered_strip' => 0,
     ),
   );
-  $handler->display->display_options['style_options']['row_class'] = '[type]';
+  $handler->display->display_options['style_options']['row_class'] = '[type] clearfix';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
@@ -416,7 +423,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['fields']['message_render_1']['ui_name'] = 'Long Message';
   $handler->display->display_options['fields']['message_render_1']['label'] = '';
   $handler->display->display_options['fields']['message_render_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="message-icon-small [type]"></span>[message_render_1] ([timestamp_1])';
+  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="message-icon-small [type]"></span><span class="message-list-text">[message_render_1] ([timestamp_1])</span>';
   $handler->display->display_options['fields']['message_render_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['message_render_1']['partials'] = 1;
   $handler->display->display_options['fields']['message_render_1']['partials_delta'] = '0';
@@ -472,6 +479,20 @@ function crl_message_feat_views_default_views() {
   $handler = $view->new_display('page', 'Page - Watched Title Grouped', 'page_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'meDesiderata - Watchlist Activity Report (Last 30 days)';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['grouping'] = array(
+    0 => array(
+      'field' => 'title',
+      'rendered' => 1,
+      'rendered_strip' => 0,
+    ),
+  );
+  $handler->display->display_options['style_options']['row_class'] = '[type] clearfix';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['header'] = FALSE;
   /* Header: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
