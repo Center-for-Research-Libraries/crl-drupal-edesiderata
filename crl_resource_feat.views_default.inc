@@ -529,7 +529,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
   $handler->display->display_options['tab_options']['type'] = 'normal';
-  $handler->display->display_options['tab_options']['title'] = 'Votes Administration';
+  $handler->display->display_options['tab_options']['title'] = 'Resource Votes Administration';
   $handler->display->display_options['tab_options']['weight'] = '0';
 
   /* Display: Block - Summary */
@@ -751,6 +751,13 @@ function crl_resource_feat_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'No data to show. Consider revising any active filters.';
+  $handler->display->display_options['empty']['area']['format'] = 'full_html';
   /* Relationship: Content: Votes */
   $handler->display->display_options['relationships']['votingapi_vote']['id'] = 'votingapi_vote';
   $handler->display->display_options['relationships']['votingapi_vote']['table'] = 'node';
@@ -837,18 +844,17 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['tag']['field'] = 'tag';
   $handler->display->display_options['filters']['tag']['relationship'] = 'votingapi_vote';
   $handler->display->display_options['filters']['tag']['operator'] = 'not empty';
-  /* Filter criterion: Votes: Tag */
-  $handler->display->display_options['filters']['tag_1']['id'] = 'tag_1';
-  $handler->display->display_options['filters']['tag_1']['table'] = 'votingapi_vote';
-  $handler->display->display_options['filters']['tag_1']['field'] = 'tag';
-  $handler->display->display_options['filters']['tag_1']['relationship'] = 'votingapi_vote';
-  $handler->display->display_options['filters']['tag_1']['operator'] = 'contains';
-  $handler->display->display_options['filters']['tag_1']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['tag_1']['expose']['operator_id'] = 'tag_1_op';
-  $handler->display->display_options['filters']['tag_1']['expose']['label'] = 'Filter by vote type';
-  $handler->display->display_options['filters']['tag_1']['expose']['operator'] = 'tag_1_op';
-  $handler->display->display_options['filters']['tag_1']['expose']['identifier'] = 'tag_1';
-  $handler->display->display_options['filters']['tag_1']['expose']['remember_roles'] = array(
+  /* Filter criterion: User: Institution (field_institution) */
+  $handler->display->display_options['filters']['field_institution_value']['id'] = 'field_institution_value';
+  $handler->display->display_options['filters']['field_institution_value']['table'] = 'field_data_field_institution';
+  $handler->display->display_options['filters']['field_institution_value']['field'] = 'field_institution_value';
+  $handler->display->display_options['filters']['field_institution_value']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['field_institution_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_institution_value']['expose']['operator_id'] = 'field_institution_value_op';
+  $handler->display->display_options['filters']['field_institution_value']['expose']['label'] = 'Institution';
+  $handler->display->display_options['filters']['field_institution_value']['expose']['operator'] = 'field_institution_value_op';
+  $handler->display->display_options['filters']['field_institution_value']['expose']['identifier'] = 'field_institution_value';
+  $handler->display->display_options['filters']['field_institution_value']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
     3 => 0,
@@ -870,6 +876,9 @@ function crl_resource_feat_views_default_views() {
     19 => 0,
     20 => 0,
     21 => 0,
+    22 => 0,
+    23 => 0,
+    24 => 0,
   );
 
   /* Display: Page */
@@ -885,6 +894,18 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
+
+  /* Display: Data export */
+  $handler = $view->new_display('views_data_export', 'Data export', 'views_data_export_1');
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['style_plugin'] = 'views_data_export_xls';
+  $handler->display->display_options['style_options']['provide_file'] = 1;
+  $handler->display->display_options['style_options']['parent_sort'] = 0;
+  $handler->display->display_options['path'] = 'admin/votes/details/export';
+  $handler->display->display_options['displays'] = array(
+    'page_1' => 'page_1',
+    'default' => 0,
+  );
   $export['resource_votes_admin_details_'] = $view;
 
   $view = new view();
