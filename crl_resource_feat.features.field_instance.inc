@@ -30,8 +30,9 @@ function crl_resource_feat_field_default_field_instances() {
     'label' => 'Comment',
     'required' => 1,
     'settings' => array(
-      'text_processing' => 0,
+      'text_processing' => 1,
       'user_register_form' => FALSE,
+      'wysiwyg_unload' => 1,
     ),
     'widget' => array(
       'active' => 1,
