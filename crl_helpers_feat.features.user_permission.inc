@@ -22,7 +22,6 @@ function crl_helpers_feat_user_default_permissions() {
       'grn-gnarp' => 'grn-gnarp',
       'member-crl' => 'member-crl',
       'member-ip' => 'member-ip',
-      'mydes-temp' => 'mydes-temp',
     ),
     'module' => 'comment',
   );
@@ -63,7 +62,6 @@ function crl_helpers_feat_user_default_permissions() {
       'grn-cifnal' => 'grn-cifnal',
       'grn-gnarp' => 'grn-gnarp',
       'member-crl' => 'member-crl',
-      'mydes-temp' => 'mydes-temp',
     ),
     'module' => 'comment',
   );
@@ -79,7 +77,6 @@ function crl_helpers_feat_user_default_permissions() {
       'grn-cifnal' => 'grn-cifnal',
       'grn-gnarp' => 'grn-gnarp',
       'member-crl' => 'member-crl',
-      'mydes-temp' => 'mydes-temp',
     ),
     'module' => 'comment',
   );
@@ -95,7 +92,6 @@ function crl_helpers_feat_user_default_permissions() {
       'grn-cifnal' => 'grn-cifnal',
       'grn-gnarp' => 'grn-gnarp',
       'member-crl' => 'member-crl',
-      'mydes-temp' => 'mydes-temp',
     ),
     'module' => 'comment',
   );
