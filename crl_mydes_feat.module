@@ -50,6 +50,12 @@ function crl_mydes_feat_theme() {
       'path' => drupal_get_path('module', 'crl_mydes_feat') . '/themes',
       'file' => 'crl_mydes_feat.theme.inc',
     ),
+    // Theme hook to generate a thumbnail to the highlight meDes video.
+    'crl_mydes_feat_video_link' => array(
+      'variables' => array('video_path' => 'me/about-video', 'text' => t('Learn more about meDesiderata'), 'thumb' => TRUE, 'thumb_uri' => 'public://images/meDes_video_thumb.png'),
+      'path' => drupal_get_path('module', 'crl_mydes_feat') . '/themes',
+      'file' => 'crl_mydes_feat.theme.inc',
+    ),
   );
 }
 
@@ -111,8 +117,8 @@ function crl_mydes_feat_block_view($delta = '') {
  */
 function crl_mydes_feat_generate_widget($node) {
   $output = '<p>' . t('By watching this resource you can monitor its activity in !link.', array('!link' => l(t('meDesiderata'), 'me'))) . '</p>';
-  $flag_link = flag_create_link(CRL_WATCH_FLAG, $node->nid);
-  return $output . $flag_link;
+  $output .= flag_create_link(CRL_WATCH_FLAG, $node->nid);
+  return $output;
 }
 
 
@@ -145,6 +151,12 @@ function crl_mydes_feat_build_saved_search_form() {
 function crl_mydes_feat_form_alter(&$form, &$form_state, $form_id) {
   // Make some alterations to the "save search" form.
   if ($form_id == 'search_api_saved_searches_save_form' || $form_id == 'search_api_saved_searches_search_edit_form') {
+    $form['video_link'] = array(
+      '#theme' => 'crl_mydes_feat_video_link',
+      '#video_path' => 'me/about-video-watchsets',
+      '#text' => t('Learn more about watchsets'),
+      '#weight' => -20,
+    );
     $form['top_note'] = array(
       '#markup' => '<hr/><p>' . t('You can save this filter selection as a watchset and track future additions to these results. Manage your watchsets and email notification options in meDesiderata.') . '</p>',
       '#weight' => -10,
@@ -175,7 +187,9 @@ function crl_mydes_feat_form_alter(&$form, &$form_state, $form_id) {
 function crl_mydes_feat_dashboard_page() {
   $text = '';
   // Add generic text to always appear at the top of the page.
-  $text .= '<p>' . t('<span class="m-edes">m</span>eDesiderata is your space to track resources of direct interest to you. Individual resources or sets of resources you selected to watch will be listed below. You may also receive automated email updates based on these selections.') . '</p>';
+  $text .= theme('crl_mydes_feat_video_link', array('text' => t('Intro to meDesiderata')));
+  $text .= '<p>' . t('<span class="m-edes">m</span>eDesiderata is your space to track resources of direct interest to you. Individual resources or sets of resources you selected to watch will be listed below.') . '</p>';
+  $text .= '<p>' . t('You may also receive automated email updates based on these selections.') . '</p>';
   // Add content that is specific to login when the user does not have access
   // to the meDes features themselves.
   if (!user_access('crl access member features')) {
