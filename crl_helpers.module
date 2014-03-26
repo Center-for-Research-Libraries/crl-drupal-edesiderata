@@ -183,17 +183,22 @@ function _crl_helpers_content_tokens($text, $filter, $format, $langcode, $cache,
   $text = str_replace('[provider]', '<img class="from-provider-icon" title="Direct from Publisher" src="/' . drupal_get_path('module', 'crl_helpers') . '/images/icon_publisher.png">', $text);
   $text = str_replace('[crl_login_url]', url('user', array('query' => array('destination' => request_path()))), $text);
   $text = str_replace('[crl_signup_url]', url('user/register', array('query' => array('destination' => request_path()))), $text);
+  // Also integrate with meDesiderarta features to include a token that adds
+  // a video highlight.
+  if (module_exists('crl_mydes_feat')) {
+    $text = str_replace('[crl_medes_video]', theme('crl_mydes_feat_video_link', array('text' => t('Intro to meDesiderata'))), $text);
+  }
   return $text;
 }
 
 
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
- * 
- * HACK fix for fivestar conflict with comment previews.
- * @todo remove this after fix lands for https://drupal.org/node/1289832
  */
 function crl_helpers_form_comment_form_alter(&$form, &$form_state, $form_id) {
+  // When previewing a comment Drupal insists on showing the full node (being
+  // commented on) below the preview. This seems unecessary, cluttered, and
+  // potentially problamatic. Simple remove that part of the form.
   unset($form['comment_output_below']);
 }
 
