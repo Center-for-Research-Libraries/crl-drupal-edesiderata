@@ -30,36 +30,6 @@ function crl_resource_feat_field_default_field_instances() {
     'label' => 'Comment',
     'required' => 1,
     'settings' => array(
-      'better_formats' => array(
-        'allowed_formats' => array(
-          'filtered_html' => 0,
-          'full_html' => 0,
-          'literal' => 0,
-          'php_code' => 0,
-          'plain_text' => 'plain_text',
-        ),
-        'allowed_formats_toggle' => 1,
-        'default_order_toggle' => 0,
-        'default_order_wrapper' => array(
-          'formats' => array(
-            'filtered_html' => array(
-              'weight' => -48,
-            ),
-            'full_html' => array(
-              'weight' => -49,
-            ),
-            'literal' => array(
-              'weight' => -46,
-            ),
-            'php_code' => array(
-              'weight' => -47,
-            ),
-            'plain_text' => array(
-              'weight' => -50,
-            ),
-          ),
-        ),
-      ),
       'text_processing' => 1,
       'user_register_form' => FALSE,
       'wysiwyg_unload' => 0,
