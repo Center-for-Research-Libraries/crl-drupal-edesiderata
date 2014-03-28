@@ -134,8 +134,10 @@ if (($node->type == 'resource' || $node->type == 'activity') && $node->status) {
       // Deal with special-case update handeling.
       switch ($node->type) {
         case 'activity':
-          // Check if the CRL status has changed.
-          if ($entity_wrapper->field_activity_crl_status->value() != $entity_wrapper_orig->field_activity_crl_status->value()) {
+          // Check if the CRL status has changed. Note that we only trigger a
+          // message if there is a CURRENT status set (so that we have a value
+          // to display in the message).
+          if ($entity_wrapper->field_activity_crl_status->value() && $entity_wrapper->field_activity_crl_status->value() != $entity_wrapper_orig->field_activity_crl_status->value()) {
             $messages[] = array('type' => 'resource_status_update', 'fields' => array(
               'field_resource_reference' => $r_entity_wrapper->value(),
               'field_activity_crl_status' => $entity_wrapper->field_activity_crl_status->value(),
