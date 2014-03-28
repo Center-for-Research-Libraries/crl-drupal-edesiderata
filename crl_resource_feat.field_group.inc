@@ -209,7 +209,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->mode = 'default';
   $field_group->parent_name = 'group_details';
   $field_group->data = array(
-    'label' => 'Provider and Terms',
+    'label' => 'Terms and Provider Details',
     'weight' => '93',
     'children' => array(
       0 => 'field_resource_terms_tb',
@@ -218,7 +218,7 @@ function crl_resource_feat_field_group_info() {
     ),
     'format_type' => 'div',
     'format_settings' => array(
-      'label' => 'Provider and Terms',
+      'label' => 'Terms and Provider Details',
       'instance_settings' => array(
         'classes' => ' group-details-provider-terms field-group-div',
         'description' => '',

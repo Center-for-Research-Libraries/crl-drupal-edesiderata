@@ -101,6 +101,9 @@ function crl_resource_feat_strongarm() {
         'path' => array(
           'weight' => '6',
         ),
+        'redirect' => array(
+          'weight' => '30',
+        ),
       ),
       'display' => array(
         'pseudo_field_resource_status_summary' => array(
@@ -117,7 +120,7 @@ function crl_resource_feat_strongarm() {
         ),
         'pseudo_field_resource_provider_details' => array(
           'default' => array(
-            'weight' => '4',
+            'weight' => '7',
             'visible' => TRUE,
           ),
         ),

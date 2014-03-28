@@ -767,7 +767,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'tablefield',
       'settings' => array(),
       'type' => 'tablefield',
-      'weight' => 123,
+      'weight' => 122,
     ),
   );
 
@@ -965,7 +965,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'tablefield',
       'settings' => array(),
       'type' => 'tablefield',
-      'weight' => 126,
+      'weight' => 125,
     ),
   );
 
@@ -1596,7 +1596,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'size' => 60,
       ),
       'type' => 'taxonomy_autocomplete',
-      'weight' => 122,
+      'weight' => 121,
     ),
   );
 
@@ -1656,7 +1656,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'tablefield',
       'settings' => array(),
       'type' => 'tablefield',
-      'weight' => 124,
+      'weight' => 123,
     ),
   );
 
@@ -1672,7 +1672,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 5,
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1943,7 +1943,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'tablefield',
       'settings' => array(),
       'type' => 'tablefield',
-      'weight' => 125,
+      'weight' => 124,
     ),
   );
 
@@ -2049,7 +2049,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'tablefield',
       'settings' => array(),
       'type' => 'tablefield',
-      'weight' => 128,
+      'weight' => 126,
     ),
   );
 
@@ -2371,7 +2371,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 121,
+      'weight' => 120,
     ),
   );
 
