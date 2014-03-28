@@ -27,7 +27,7 @@ function crl_helpers_menu() {
 
 /**
  * Implements hook_theme().
- * 
+ *
  * Declare new theme hooks.
  */
 function crl_helpers_theme() {
@@ -50,7 +50,7 @@ function crl_helpers_theme() {
 
 /**
  * Implements hook_theme_registry_alter.
- * 
+ *
  * Override some existing theme hooks via this module directly. Because these
  * hooks are already declared, we use hook_theme_registry_alter().
  */
@@ -96,12 +96,12 @@ function crl_helpers_block_info() {
   // The facet breadcrumb is a block that can be displayed on the top of a
   // resoruce index.
   $blocks['crl_helpers_facet_breadcrumb'] = array(
-    'info' => t('CRL Facet Breadcrumb'), 
+    'info' => t('CRL Facet Breadcrumb'),
     'cache' => DRUPAL_NO_CACHE,
   );
   // The editor tools block shows links and info just for editors.
   $blocks['crl_helpers_editor_tools'] = array(
-    'info' => t('CRL Editor Tools'), 
+    'info' => t('CRL Editor Tools'),
     'cache' => DRUPAL_NO_CACHE,
   );
   return $blocks;
@@ -118,7 +118,7 @@ function crl_helpers_block_view($delta = '') {
     case 'crl_helpers_facet_breadcrumb':
       $block['subject'] = '';
       $output = '';
-      if (isset($_GET['f']) || !empty($_GET['search_api_views_fulltext'])) { 
+      if (isset($_GET['f']) || !empty($_GET['search_api_views_fulltext'])) {
         // Get the most recent breadcrumb.
         $breadcrumb = drupal_get_breadcrumb();
         // Drop the "home" value for the breadcrumb.
@@ -126,8 +126,8 @@ function crl_helpers_block_view($delta = '') {
         if (!empty($breadcrumb)) {
           $base_path = '/';
           if ($base_url = parse_url($_SERVER['REQUEST_URI'])) {
-            $base_path = $base_url['path']; 
-          }  
+            $base_path = $base_url['path'];
+          }
         }
         $extra = '';
         // Integration with the crl_mydes_feat module to inject a save this
@@ -176,7 +176,7 @@ function crl_helpers_filter_info() {
 
 /**
  * Callback to process the custom "crl content tokens" filter.
- * 
+ *
  * @see crl_helpers_filter_info().
  */
 function _crl_helpers_content_tokens($text, $filter, $format, $langcode, $cache, $cache_id) {
@@ -200,6 +200,19 @@ function crl_helpers_form_comment_form_alter(&$form, &$form_state, $form_id) {
   // commented on) below the preview. This seems unecessary, cluttered, and
   // potentially problamatic. Simple remove that part of the form.
   unset($form['comment_output_below']);
+  // We want to force all comments to be plain text when an input filter is
+  // used. For non-editors plain_text will likely be the default, but for
+  // editors the default will likely be something else, like full_html. To keep
+  // the comment experience consistent for all users (including editors), and to
+  // ensure clean/simple comment formatting, we detect cases where the format
+  // may be defaulting to something other than plain_text (editors making a new
+  // comment or changing an old comment that had a NULL format value), and
+  // default to plain_text. Editors will still have the power to override this
+  // manually, we are just changing defaults. Tools like better_formats could
+  // help here, but that's overkill since we can do this in just a couple lines.
+  if (empty($form['cid']['#value']) || empty($form['comment_body'][$form['comment_body']['#language']][0]['#format']) ) {
+    $form['comment_body'][$form['comment_body']['#language']][0]['#format'] = filter_fallback_format();
+  }
 }
 
 
@@ -226,7 +239,7 @@ function crl_helpers_wysiwyg_editor_settings_alter(&$settings, $context) {
 
 /**
  * Implements hook_form_user_register_form_alter().
- * 
+ *
  * Used to manipulate the main registration form.
  */
 function crl_helpers_form_user_register_form_alter(&$form, &$form_state) {
@@ -241,7 +254,7 @@ function crl_helpers_form_user_register_form_alter(&$form, &$form_state) {
 
 /**
  * Implements hook_preprocess_delta_blocks_page_title().
- * 
+ *
  * We display titles with delta blocks, so this provides a way to do some
  * special title alterations at the last min. This is a bit of a hack.
  */
@@ -277,7 +290,7 @@ function crl_helpers_preprocess_delta_blocks_page_title(&$vars) {
 
 /**
  * Implements hook_preprocess_comment().
- * 
+ *
  * Alter some comment variables before they are themed. Used primarily to
  * implement some ad hoc "private comments" features.
  */
@@ -325,7 +338,7 @@ function crl_helpers_preprocess_comment(&$vars) {
 
 /**
  * Implements hook_views_data_export_xls_header().
- * 
+ *
  * Alter some export header structures.
  */
 function crl_helpers_preprocess_views_data_export_xls_header(&$variables) {
@@ -340,11 +353,11 @@ function crl_helpers_preprocess_views_data_export_xls_header(&$variables) {
 
 /**
  * Implements hook_form_alter().
- * 
+ *
  * Note that this form_alter will fire last thanks to
  * crl_helpers_module_implements_alter(). This is critical so that we can
  * make alterations AFTER revisioning's alterations.
- * 
+ *
  * @see crl_helpers_module_implements_alter()
  */
 function crl_helpers_form_alter(&$form, $form_state) {
@@ -372,7 +385,7 @@ function crl_helpers_form_alter(&$form, $form_state) {
           }
         }
         $form['revision_information']['revision_operation']['#options'] = $top_options + $form['revision_information']['revision_operation']['#options'];
-        $form['revision_information']['revision_operation']['#title'] = t('Update and revision details');       
+        $form['revision_information']['revision_operation']['#title'] = t('Update and revision details');
         // Temporarily hide the moderation option if it's not yet active. Doing
         // this sort-of negates the usefulness of the revisioning module (as it
         // means we can't fork existing entities into moderated states), but
@@ -406,9 +419,9 @@ function crl_helpers_form_alter(&$form, $form_state) {
 
 /**
  * Implements hook_module_implements_alter().
- * 
+ *
  * Used to force this module's hook_form_alter to fire last.
- * 
+ *
  * @see crl_helpers_form_alter()
  */
 function crl_helpers_module_implements_alter(&$implementations, $hook) {
@@ -427,7 +440,7 @@ function crl_helpers_module_implements_alter(&$implementations, $hook) {
 
 /**
  * Allowed values function callback for the institution picklist.
- * 
+ *
  * @see crl_helpers_inst_oplist_builder()
  */
 function crl_helpers_inst_oplist() {
@@ -440,10 +453,10 @@ function crl_helpers_inst_oplist() {
 
 /**
  * Helper to dynamically build the options list for the institution dropdown.
- * 
+ *
  * May be called directly or wrapped by a formal "allowed_values_function"
  * callback.
- * 
+ *
  * @param boolean $use_opgroup
  *   Whether-or-not to make the returned list an associative array, separating
  *   members and nonmembers, that the form API can treat as opgroups. May not
@@ -451,7 +464,7 @@ function crl_helpers_inst_oplist() {
  * @param boolean $force_all
  *   If true this forces the full list of BOTH members and nonmembers to be
  *   returned no matter what the current user's permissions are.
- * 
+ *
  * @see crl_helpers_inst_oplist()
  */
 function crl_helpers_inst_oplist_builder($use_opgroup = FALSE, $force_all = FALSE) {
@@ -489,7 +502,7 @@ function crl_helpers_inst_oplist_builder($use_opgroup = FALSE, $force_all = FALS
 
 /**
  * Utility to get a sfid based on the user's IP.
- * 
+ *
  * This is something of a bridge between the salesforce sync logic and the
  * crl_access_by_ip logic. It is included here in crl_helpers as most of the
  * forms that need to use this utility are manipulated here (and related to
@@ -511,7 +524,7 @@ function crl_helpers_get_sfid() {
 
 /**
  * Helper to get the institution info (either the name or the iid).
- * 
+ *
  * @param int $uid
  *   An optional user ID representing the user to check. If NULL the current
  *   user will be checked.
@@ -560,7 +573,7 @@ function crl_helpers_get_institution($uid = NULL, $iid = NULL, $return_iid = FAL
     }
     return $institutions_array_id[$user_institution_id];
   }
-  return FALSE;  
+  return FALSE;
 }
 
 
@@ -575,7 +588,7 @@ function crl_helpers_cron() {
 
 /**
  * Helper to fetch the institution picklist from Salesforce.
- * 
+ *
  * @see: crl_helpers_cron().
  */
 function _crl_helpers_sf_sync_picklist() {
@@ -617,7 +630,7 @@ function _crl_helpers_sf_sync_picklist() {
       // Then choose one which will be used as the default (for referece by
       // applications that don't distinguish which type of ID to use).
       variable_set('crl_sf_sync_institutions_array', $institutions_array_sfid);
-    } 
+    }
     // Also query ALL institutions and build array for admin purposes.
     // @todo see if this logic could be better merged with the code above.
     $query_full = "SELECT Display_Name__c, Id From Account WHERE Parent_Member_Type__c = NULL ORDER BY Name_for_sorting__c ASC";
