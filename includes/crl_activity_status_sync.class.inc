@@ -76,6 +76,8 @@ class CrlActivityStatusSync {
           }
         }
       }
+      // Save the changes and be sure we also generate a new revision.
+      $node->revision = TRUE;
       node_save_action($node);
     }
   }
