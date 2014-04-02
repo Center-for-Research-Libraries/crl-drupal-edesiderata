@@ -1,0 +1,10 @@
+; $Id$
+name = CRL Resource
+description = Custom features and relationships related to the "resource" content object.
+core = 7.x
+package = CRL
+
+dependencies[] = entity
+dependencies[] = entityreference
+dependencies[] = search_api
+dependencies[] = facetapi
