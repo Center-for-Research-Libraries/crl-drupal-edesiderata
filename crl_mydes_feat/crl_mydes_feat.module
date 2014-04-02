@@ -1,0 +1,484 @@
+<?php
+/**
+ * @file
+ * Code for the My eDesiderata feature.
+ */
+
+include_once 'crl_mydes_feat.features.inc';
+
+
+define('CRL_WATCH_FLAG', 'base_node_watch');
+// Random 'salt' to use in token creation. Changing this will invalidate all
+// unsubscribe links in emails that have already been sent by the system.
+define('CRL_MYDES_FEAT_MAIL_KEY', 'DhlQu68wN9j');
+
+
+/**
+ * Implements hook_menu().
+ */
+function crl_mydes_feat_menu() {
+  // Menu item for the meDesiderata dashboard.
+  $items['me'] = array(
+    'title' => 'meDesiderata',
+    'description' => 'meDesiderata Dashboard.',
+    'page callback' => 'crl_mydes_feat_dashboard_page',
+    // We always display at least the header part of the page. Most content
+    // is block-specific and will therefore use block access checks.
+    'access callback' => TRUE,
+  );
+  // Menu callback for the special change email settings page.
+  $items['user/me/email/%'] = array(
+    'title' => 'meDesiderata Email Notification Settings',
+    'description' => 'meDesiderata Email Notification Settings.',
+    'page callback' => 'crl_mydes_feat_page_email_mod',
+    'page arguments' => array(3),
+    // Access will be checked within the callback itself.
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function crl_mydes_feat_theme() {
+  return array(
+    // Theme hook to generate a collapsable saved search box.
+    'crl_mydes_feat_save_search_form' => array(
+      'variables' => array('block' => array()),
+      'path' => drupal_get_path('module', 'crl_mydes_feat') . '/themes',
+      'file' => 'crl_mydes_feat.theme.inc',
+    ),
+    // Theme hook to generate a thumbnail to the highlight meDes video.
+    'crl_mydes_feat_video_link' => array(
+      'variables' => array('video_path' => 'me/about-video', 'text' => t('Learn more about meDesiderata'), 'thumb' => TRUE, 'thumb_uri' => 'public://images/meDes_video_thumb.png'),
+      'path' => drupal_get_path('module', 'crl_mydes_feat') . '/themes',
+      'file' => 'crl_mydes_feat.theme.inc',
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function crl_mydes_feat_block_info() {
+  // Block for use on resources pages to flag/watch a resource.
+  $blocks['crl_mydes_feat_flag'] = array(
+    'info' => t('Watch Resource via My eDesiderata'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // Block for My eDes page to allow users to control their mail settings.
+  $blocks['crl_mydes_email_settings'] = array(
+    'info' => t('Manage My eDesiderata mail settings'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function crl_mydes_feat_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'crl_mydes_feat_flag':
+      global $user;
+      $nid = arg(1);
+      $node = node_load($nid);
+      // Make sure block should be visible
+      if (isset($node->type) && $node->type == 'resource' && user_access('crl access member features')) {
+        $block['subject'] = t('Watch this Resource');
+        $block['content'] = array('#markup' => crl_mydes_feat_generate_widget($node));
+      }
+      break;
+    case 'crl_mydes_email_settings':
+      if (crl_mydes_feat_email_mod_access()) {
+        $block['subject'] = t('My Email Notification Settings');
+        $block['content'][] = array(
+          'form' => drupal_get_form('crl_mydes_feat_email_settings_form'),
+        );
+      }
+  }
+  return $block;
+}
+
+
+/**
+ * Utility to generate a "watch resource" form option (usually to be shown in
+ * a block).
+ * 
+ * @param object $node
+ *   The resource node that can be watched.
+ * @return string
+ *   Returns markup for the watch resource form.
+ */
+function crl_mydes_feat_generate_widget($node) {
+  $output = '<p>' . t('By watching this resource you can monitor its activity in !link.', array('!link' => l(t('meDesiderata'), 'me'))) . '</p>';
+  $output .= flag_create_link(CRL_WATCH_FLAG, $node->nid);
+  return $output;
+}
+
+
+/**
+ * Utility to generate a collapsible "save search" form (wrapping the existing
+ * "save search" block) that can be added to a filtered resource index.
+ * 
+ * @return string
+ *   Returns markup for the collapsible form.
+ */
+function crl_mydes_feat_build_saved_search_form() {
+  $output = '';
+  if (user_access('crl access member features')) {
+    // Add the saved search block.
+    $saved_searches = search_api_saved_searches_settings_load_multiple(FALSE, array('enabled' => TRUE));
+    if (!empty($saved_searches)) {
+      $saved_search = reset($saved_searches);
+      $block = module_invoke('search_api_saved_searches', 'block_view', $saved_search->delta);
+      drupal_add_js(drupal_get_path('module', 'crl_mydes_feat') .'/js/crl_mydes_feat.js', 'file');
+      $output .= theme('crl_mydes_feat_save_search_form', array('block' => $block));
+    }
+  }
+  return $output;
+}
+
+
+/**
+ * Implements hook_form_alter().
+ */
+function crl_mydes_feat_form_alter(&$form, &$form_state, $form_id) {
+  // Make some alterations to the "save search" form.
+  if ($form_id == 'search_api_saved_searches_save_form' || $form_id == 'search_api_saved_searches_search_edit_form') {
+    $form['video_link'] = array(
+      '#theme' => 'crl_mydes_feat_video_link',
+      '#video_path' => 'me/about-video-watchsets',
+      '#text' => t('Learn more about watchsets'),
+      '#weight' => -20,
+    );
+    $form['top_note'] = array(
+      '#markup' => '<hr/><p>' . t('You can save this filter selection as a watchset and track future additions to these results. Manage your watchsets and email notification options in meDesiderata.') . '</p>',
+      '#weight' => -10,
+    );
+    $form['name']['#default_value'] = '';
+    $form['name']['#description'] = t('Give this group a name by which it can be later accessed within meDesiderata');
+    // If the form is presented outside of the normal user configuration pages
+    // for the search api module, we manually control the notification interval.
+    $args = arg();
+    if ($args[0] !== 'search-api') {
+      global $user;
+      $form['notify_interval']['#type'] = 'hidden';
+      $form['notify_interval']['#value'] = crl_mydes_feat_email_settings_user_setting($user, TRUE);
+    }
+    else {
+      $form['notify_interval']['#description'] = t('Select how frequently you would like to be notifed via email when resources are <em>added</em> that match this filter criteria');
+    }
+    $form['submit']['#value'] = t('Watch');
+  }
+}
+
+
+/**
+ * Page callback for meDesiderata dashboard page.
+ * 
+ * @todo Theme the output.
+ */
+function crl_mydes_feat_dashboard_page() {
+  $text = '';
+  // Add generic text to always appear at the top of the page.
+  $text .= theme('crl_mydes_feat_video_link', array('text' => t('Intro to meDesiderata')));
+  $text .= '<p>' . t('<span class="m-edes">m</span>eDesiderata is your space to track resources of direct interest to you. Individual resources or sets of resources you selected to watch will be listed below.') . '</p>';
+  $text .= '<p>' . t('You may also receive automated email updates based on these selections.') . '</p>';
+  // Add content that is specific to login when the user does not have access
+  // to the meDes features themselves.
+  if (!user_access('crl access member features')) {
+    global $user;
+    if ($user->uid) {
+      $text .= '<p><strong>' . t('You logged in as a non-member. This means that some meDesiderata features are not available.') . '</strong></p>';
+    }
+    else {
+      // Add login block. We could place this with the normal block system or
+      // context, but this is a bit easier.
+      $text .= render(module_invoke('user', 'block_view', 'login'));
+    }
+  }
+  return $text;
+}
+
+
+/**
+ * Page callback for meDesiderata change mail settings page.
+ */
+function crl_mydes_feat_page_email_mod() {
+  // This is a special page that needs to be generated fresh even for anon
+  // users.
+  $GLOBALS['conf']['cache'] = FALSE;
+  global $user;
+  // If this is a logged-in user they should just control thier settings on the
+  // meDesiderata dashboard directly.
+  if ($user->uid) {
+    drupal_goto('me', array('fragment' => 'email'));
+  }
+  // For an anon user we need to make sure their path contains info about who
+  // they are along with a token to verify they should be able to load and
+  // change their email setting.
+  $access_uid = crl_mydes_feat_email_mod_access();
+  if ($access_uid) {
+    $account = user_load($access_uid);
+    drupal_set_title(t('meDesiderata Email Notification Settings for @user', array('@user' => format_username($account))));
+    drupal_set_message(t('You can change your email notification settings below. To access all other <em>m</em>eDesiderata settings and features please login.'), 'status', FALSE);
+    return drupal_get_form('crl_mydes_feat_email_settings_form');
+  }
+  // If all else fails, at least give the user the ability to access their
+  // settings by logging-in manually.
+  else {
+    drupal_set_message(t('Cound not validate account information. Please login to change your email settings.'), 'warning');
+    drupal_goto('me', array('fragment' => 'email'));
+  }
+}
+
+
+/**
+ * Form definition for the change mail settings form.
+ */
+function crl_mydes_feat_email_settings_form() {
+  $form = array();
+  $uid = crl_mydes_feat_email_mod_access();
+  if ($uid) {
+    $account = user_load($uid);
+    $form = array();
+    // Get all the options from the subscription email frequency module, but
+    // remove the "immediate" one.
+    $options = message_subscribe_email_frequency_allowed_values();
+    if (isset($options[MESSAGE_SUBSCRIBE_EMAIL_FREQUENCY_IMMEDIATE])) {
+      unset($options[MESSAGE_SUBSCRIBE_EMAIL_FREQUENCY_IMMEDIATE]);
+    }
+    $form['intro'] = array(
+      '#markup' => '<p><a id="email"></a>' . t('Notifications about updates in your watchlist or additions to a watchset will be emailed at the interval you specify.') . '</p>',
+    );
+    $form['email_setting'] = array(
+      '#type' => 'select',
+      '#title' => t('Email Notification Interval'),
+      '#default_value' => crl_mydes_feat_email_settings_user_setting($account),
+      '#options' => $options,
+    );
+    $form['submit'] = array('#type' => 'submit', '#value' => t('Submit'));
+    $form['#submit'][] = 'crl_mydes_feat_email_settings_form_submit_handler';
+  }
+  return $form;
+}
+
+
+/**
+ * Access check for the change mail settings form.
+ * 
+ * This function first tests to see if the email settings form can be
+ * generated for the current logged-in user. If not, it checks for an
+ * appropriate URL pattern which identifies the user along with a token that
+ * grants them access without actaully being logging-in.
+ * 
+ * @return mixed
+ *   Returns an interger uid if access for that uid should be granted, FALSE
+ *   otherwise. 
+ */
+function crl_mydes_feat_email_mod_access() {
+  global $user;
+  // Logged-in users always pass.
+  if ($user->uid) {
+    return $user->uid;
+  }
+  // Anon users must be requesting via a special user-specific path.
+  $args = arg();
+  $path = current_path();
+  if (drupal_match_path($path, 'user/me/email*') && isset($args[3]) && is_numeric($args[3])) {
+    $uid = $args[3];
+    if ($path == crl_mydes_feat_get_email_mod_path($uid)) {
+      return $uid;
+    }
+  }
+  return FALSE;
+}
+
+
+/**
+ * Helper to generate a Drupal path that will grant access to the change email
+ * settings form while a user is not logged-in.
+ * 
+ * @param int $uid
+ *   The user id for which to generate the path.
+ * @return string
+ *   Returns a user-specific Drupal path that can be used to access the email
+ *   settings form without being logged-in. 
+ */
+function crl_mydes_feat_get_email_mod_path($uid) {
+  // Build the path with an hmac token. Note that the use of
+  // drupal_get_hash_salt() should ensure that the token only works on this
+  // Drupal instance (and not any others that use this module with the same
+  // CRL_MYDES_FEAT_MAIL_KEY). This ensures user 10 can't use thier path to also
+  // change the email settings for a different user 10 on another site.
+  return 'user/me/email/' . $uid . '/' . drupal_hmac_base64($uid, drupal_get_hash_salt() . CRL_MYDES_FEAT_MAIL_KEY);
+}
+
+
+/**
+ * Implements hook_preprocess_mimemail_message()
+ * 
+ * Add handy variabels that can be used within a mimemail template as needed,
+ * such as our unsubscribe link variable.
+ */
+function crl_mydes_feat_preprocess_mimemail_message(&$vars) {
+  // If the sending module is in the list of modules that should trigger an
+  // unsub link, add the unsub link/message as a variable that the template
+  // can use.
+  $modules_that_trigger_unsub = array('message_notify', 'message_digest', 'search_api_saved_searches', 'message-notify', 'message-digest', 'search-api-saved-searches');
+  if (isset($vars['module']) && in_array($vars['module'], $modules_that_trigger_unsub)) {
+    $unsubscribe_url = url(crl_mydes_feat_get_email_mod_path($vars['recipient']->uid), array('absolute' => TRUE));
+    $vars['mydes_unsubscribe_message'] = t('If you would like to change the frequency of these messages, or unsubscribe completely, you may <a href="!unsubscribe_url">alter the email preferences</a> for @mail.', array('!unsubscribe_url' => $unsubscribe_url, '@mail' => $vars['recipient']->mail));
+  }
+}
+
+
+/**
+ * Submit handler for the change mail settings form.
+ * 
+ * This provides custom processing for changes to email preferences and ensures
+ * that BOTH watchlist digest and saved search mail preferences are changed.
+ */
+function crl_mydes_feat_email_settings_form_submit_handler($form, &$form_state) {
+  $digest_updated = $search_updated = FALSE;
+  // Lets be very careful about gracefully cathing any errors that may happen
+  // while updating. We REALLY don't want a WSOD or something like that here.
+  try {
+    $uid = crl_mydes_feat_email_mod_access();
+    if (!$uid) {
+      throw new Exception(t('Cound not detect the user to alter.'));
+    }
+    $account = user_load($uid);
+    $wrapper = entity_metadata_wrapper('user', $account);
+    // Save the digest settings for the user.
+    if (isset($wrapper->message_subscribe_email_freq)) {
+      $wrapper->message_subscribe_email_freq->set($form_state['values']['email_setting']);
+      $wrapper->save();
+      $digest_updated = TRUE;
+    }
+    // Save the saved search intervals for the user across ALL thier saved
+    // searches.
+    $result = db_update('search_api_saved_search')
+      ->condition('uid', $wrapper->getIdentifier())
+      ->fields(array('notify_interval' => crl_mydes_feat_email_settings_convert_seconds($form_state['values']['email_setting'])))
+      ->execute();
+    if (!is_null($result)) {
+      $search_updated = TRUE;
+    }
+  }
+  catch (Exception $e) {
+    $message = 'Could not save email changes: !message in %function (line %line of %file).';
+    watchdog_exception('crl_mydes_feat', $e, $message);
+  }
+  // Make sure we were successfull with the updates. If there was a problem we
+  // log it as critical and display a message to the user that reassures them
+  // we'll make things right. It's important to note that users may encounter
+  // these messages in multiple places, includiing the unsubscibe interface.
+  if ($digest_updated && $search_updated) {
+    drupal_set_message(t('Your meDesiderata email settings have been updated'));
+    watchdog('crl_mydes_feat', 'Updated meDesiderata email preference for user %name to: %value', array('%name' => $account->name, '%value' => $form_state['values']['email_setting']), WATCHDOG_INFO);
+  }
+  else {
+    drupal_set_message(t('There was a problem updating your email settings. This problem has been logged and CRL staff will attempt to manually update your preferences.'), 'error');
+    watchdog('crl_mydes_feat', 'meDesiderata email preference for user %name did not update. Value to set: %value', array('%name' => $account->name, '%value' => $form_state['values']['email_setting']), WATCHDOG_CRITICAL);
+  }
+}
+
+
+/**
+ * Helper to get the current meDesiderata email setting for a user.
+ * 
+ * @param object $account
+ *   The user account to check. If empty the current user will be checked.
+ * @param boolean $seconds
+ *   Whether or not to report the current setting in seconds as opposed to a
+ *   key value (such as "day" or "week").
+ * @return mixed
+ *   Returns the user's current email setting. This will be in the form of a key
+ *   value (such as "day" or "week") unless $seconds is TRUE in which case the
+ *   value will be returned as an integer number of seconds.
+ */
+function crl_mydes_feat_email_settings_user_setting($account = NULL, $seconds = FALSE) {
+  if (empty($account)) {
+    global $user;
+    $account = $user;
+  }
+  $wrapper = entity_metadata_wrapper('user', $account);
+  $current_setting = isset($wrapper->message_subscribe_email_freq) ? $wrapper->message_subscribe_email_freq->value() : MESSAGE_SUBSCRIBE_EMAIL_FREQUENCY_NEVER;
+  if ($seconds) {
+    $current_setting = crl_mydes_feat_email_settings_convert_seconds($current_setting);
+  }
+  return $current_setting;
+}
+
+
+/**
+ * Helper to convert a known main interval setting to seconds.
+ * 
+ * @param string $setting
+ *   The current interval setting as a key value (such as "day" or "week").
+ * @return mixed
+ *   Returns an integer number of seconds that's equivilent to the input
+ *   key setting.
+ */
+function crl_mydes_feat_email_settings_convert_seconds($setting) {
+  if (strpos($setting, 'day') !== FALSE) {
+    $setting = 60*60*24;
+  }
+  elseif (strpos($setting, 'week') !== FALSE) {
+    $setting = 60*60*24*7;
+  }
+  else {
+    // A default value of -1 means "never".
+    $setting = -1;
+  }
+  return $setting;
+}
+
+
+/**
+ * Implements hook_preprocess_menu_link()
+ * 
+ * Used to add styling to special menu links (e.g. meDesiderata). We don't
+ * include this in a separate theme file because it's a preprocessor for a core
+ * theme function and will need to be included on almost every page anyway.
+ */
+function crl_mydes_feat_preprocess_menu_link(&$vars) {
+  $element = $vars['element'];
+  $element['#title'] = crl_mydes_feat_style_name($element['#title']);
+  if ($element['#title'] != $vars['element']['#title']) {
+    $vars['element']['#title'] = $element['#title'];
+    $vars['element']['#localized_options']['html'] = TRUE;
+  }
+}
+
+
+/**
+ * Implements hook_preprocess_delta_blocks_page_title()
+ * 
+ * Used to add styling to special title links (e.g. meDesiderata). We don't
+ * include this in a separate theme file because it's a preprocessor for a main
+ * theme function and will need to be included on almost every page anyway.
+ */
+function crl_mydes_feat_preprocess_delta_blocks_page_title(&$vars) {
+  $vars['page_title'] = crl_mydes_feat_style_name($vars['page_title']);
+}
+
+
+/**
+ * Helper to alter meDesiderata menu and title link text.
+ * 
+ * @param string $text
+ *   The text to check for the meDesiderata string.
+ * @return string
+ *   The altered text with the meDesiderata part styled.
+ */
+function crl_mydes_feat_style_name($text) {
+  return str_ireplace('meDesiderata', '<span class="m-edes">m</span>eDesiderata', $text);
+}
