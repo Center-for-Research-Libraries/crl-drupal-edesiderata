@@ -1,0 +1,649 @@
+<?php
+
+
+/**
+ * @file
+ * General case-specific customizations for the eDesiderata site.
+ */
+
+
+/**
+ * Implements hook_menu().
+ */
+function crl_helpers_menu() {
+  $items['admin/config/crl'] = array(
+    'title' => 'CRL Customizations',
+    'description' => 'Options for CRL-specific Functionality.',
+    'position' => 'right',
+    'weight' => -100,
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
+  return $items;
+}
+
+
+/**
+ * Implements hook_theme().
+ *
+ * Declare new theme hooks.
+ */
+function crl_helpers_theme() {
+  return array(
+    // Theme hook to generate our custom facet breadcrumb.
+    'crl_helpers_facet_breadcrumb' => array(
+      'variables' => array('breadcrumb' => array(), 'base_path' => '', 'extra' => ''),
+      'path' => drupal_get_path('module', 'crl_helpers') . '/themes',
+      'file' => 'crl_helpers.theme.inc',
+    ),
+    // Theme hook to generate editor tools.
+    'crl_helpers_editor_tools' => array(
+      'variables' => array(),
+      'path' => drupal_get_path('module', 'crl_helpers') . '/themes',
+      'file' => 'crl_helpers.theme.inc',
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_theme_registry_alter.
+ *
+ * Override some existing theme hooks via this module directly. Because these
+ * hooks are already declared, we use hook_theme_registry_alter().
+ */
+function crl_helpers_theme_registry_alter(&$theme_registry) {
+  $theme_path = drupal_get_path('module', 'crl_helpers') . '/themes';
+  // Override the template for a mimemail message.
+  if (isset($theme_registry['mimemail_message']) ) {
+    // Becuase this is a template, we need to explicitly change the path.
+    $theme_registry['mimemail_message']['path'] = $theme_path;
+  }
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function crl_helpers_permission() {
+  return array(
+    'crl access member features' => array(
+      'title' => 'CRL access member features',
+      'description' => 'Access member-specific features that are defined in local modules',
+    )
+  );
+}
+
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function crl_helpers_entity_info_alter(&$entity_info) {
+  // Add an optional "embedded" view mode to some content types.
+  $entity_info['node']['view modes']['embedded'] = array(
+    'label' => t('Embedded'),
+    'custom settings' => TRUE,
+  );
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function crl_helpers_block_info() {
+  // The facet breadcrumb is a block that can be displayed on the top of a
+  // resoruce index.
+  $blocks['crl_helpers_facet_breadcrumb'] = array(
+    'info' => t('CRL Facet Breadcrumb'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // The editor tools block shows links and info just for editors.
+  $blocks['crl_helpers_editor_tools'] = array(
+    'info' => t('CRL Editor Tools'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function crl_helpers_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    // Render the facet breadcrumb block.
+    case 'crl_helpers_facet_breadcrumb':
+      $block['subject'] = '';
+      $output = '';
+      if (isset($_GET['f']) || !empty($_GET['search_api_views_fulltext'])) {
+        // Get the most recent breadcrumb.
+        $breadcrumb = drupal_get_breadcrumb();
+        // Drop the "home" value for the breadcrumb.
+        array_shift($breadcrumb);
+        if (!empty($breadcrumb)) {
+          $base_path = '/';
+          if ($base_url = parse_url($_SERVER['REQUEST_URI'])) {
+            $base_path = $base_url['path'];
+          }
+        }
+        $extra = '';
+        // Integration with the crl_mydes_feat module to inject a save this
+        // search option into the breadcrumb block.
+        if (module_exists('crl_mydes_feat')) {
+          $extra = crl_mydes_feat_build_saved_search_form();
+        }
+        $output = array(
+          'facet_breadcrumb' => array(
+            '#breadcrumb' => $breadcrumb,
+            '#base_path' => $base_path,
+            '#extra' => $extra,
+            '#theme' => 'crl_helpers_facet_breadcrumb',
+          ),
+        );
+      }
+      $block['content'] = $output;
+      break;
+    case 'crl_helpers_editor_tools':
+      $block['subject'] = '';
+      $output = array(
+        'editor_tools' => array(
+          '#theme' => 'crl_helpers_editor_tools',
+        ),
+      );
+      $block['content'] = $output;
+      break;
+  }
+  return $block;
+}
+
+
+/**
+ * Implements hook_filter_info().
+ */
+function crl_helpers_filter_info() {
+  $filters['crl_content_tokens'] = array(
+    'title' => t('CRL content tokens'),
+    'description' => t('Replace tokens in content areas with fixed values.'),
+    'process callback' => '_crl_helpers_content_tokens',
+    'cache' => FALSE,
+  );
+  return $filters;
+}
+
+
+/**
+ * Callback to process the custom "crl content tokens" filter.
+ *
+ * @see crl_helpers_filter_info().
+ */
+function _crl_helpers_content_tokens($text, $filter, $format, $langcode, $cache, $cache_id) {
+  $text = str_replace('[provider]', '<img class="from-provider-icon" title="Direct from Publisher" src="/' . drupal_get_path('module', 'crl_helpers') . '/images/icon_publisher.png">', $text);
+  $text = str_replace('[crl_login_url]', url('user', array('query' => array('destination' => request_path()))), $text);
+  $text = str_replace('[crl_signup_url]', url('user/register', array('query' => array('destination' => request_path()))), $text);
+  // Also integrate with meDesiderarta features to include a token that adds
+  // a video highlight.
+  if (module_exists('crl_mydes_feat')) {
+    $text = str_replace('[crl_medes_video]', theme('crl_mydes_feat_video_link', array('text' => t('Intro to meDesiderata'))), $text);
+  }
+  return $text;
+}
+
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function crl_helpers_form_comment_form_alter(&$form, &$form_state, $form_id) {
+  // When previewing a comment Drupal insists on showing the full node (being
+  // commented on) below the preview. This seems unecessary, cluttered, and
+  // potentially problamatic. Simple remove that part of the form.
+  unset($form['comment_output_below']);
+  // We want to force all comments to be plain text when an input filter is
+  // used. For non-editors plain_text will likely be the default, but for
+  // editors the default will likely be something else, like full_html. To keep
+  // the comment experience consistent for all users (including editors), and to
+  // ensure clean/simple comment formatting, we detect cases where the format
+  // may be defaulting to something other than plain_text (editors making a new
+  // comment or changing an old comment that had a NULL format value), and
+  // default to plain_text. Editors will still have the power to override this
+  // manually, we are just changing defaults. Tools like better_formats could
+  // help here, but that's overkill since we can do this in just a couple lines.
+  if (empty($form['cid']['#value']) || empty($form['comment_body'][$form['comment_body']['#language']][0]['#format']) ) {
+    $form['comment_body'][$form['comment_body']['#language']][0]['#format'] = filter_fallback_format();
+  }
+}
+
+
+/**
+ * Implements hook_wysiwyg_editor_settings_alter().
+ */
+function crl_helpers_wysiwyg_editor_settings_alter(&$settings, $context) {
+  if ($context['profile']->editor == 'ckeditor') {
+    // For some reason some parts of the toolbar do not inherit styles
+    // correctly unless the css file def does not have a starting "/". So strip.
+    if ($settings['contentsCss']) {
+      if (is_array($settings['contentsCss'])) {
+        foreach ($settings['contentsCss'] as $key => $def) {
+          $settings['contentsCss'][$key] = ltrim($settings['contentsCss'][$key], '/');
+        }
+      }
+      else {
+        $settings['contentsCss'] = ltrim($settings['contentsCss']);
+      }
+    }
+  }
+}
+
+
+/**
+ * Implements hook_form_user_register_form_alter().
+ *
+ * Used to manipulate the main registration form.
+ */
+function crl_helpers_form_user_register_form_alter(&$form, &$form_state) {
+  // See if we can auto-detect the user's institution value.
+  global $language;
+  $sfid = crl_helpers_get_sfid();
+  if ($sfid && empty($form['field_institution'][$form['field_institution']['#language']]['#default_value'])) {
+    $form['field_institution'][$form['field_institution']['#language']]['#default_value'] = $sfid;
+  }
+}
+
+
+/**
+ * Implements hook_preprocess_delta_blocks_page_title().
+ *
+ * We display titles with delta blocks, so this provides a way to do some
+ * special title alterations at the last min. This is a bit of a hack.
+ */
+function crl_helpers_preprocess_delta_blocks_page_title(&$vars) {
+  $altered = FALSE;
+  $altered_text = '';
+  $query = drupal_get_query_parameters();
+  if (!empty($query['f'][0])) {
+    switch ($query['f'][0]) {
+      case 'crl_resource_status_backref:crl_review_available':
+        $altered = TRUE;
+        $altered_text = t('Resources - CRL Reviews');
+        break;
+      case 'crl_resource_status_backref:license_available':
+        $altered = TRUE;
+        $altered_text = t('Resources - CRL Offers');
+        break;
+      case 'crl_resource_status_backref:crl_desiderata':
+        $altered = TRUE;
+        $altered_text = t('Resources - CRL Pipeline');
+        break;
+    }
+  }
+  if (drupal_is_front_page()) {
+    $altered = TRUE;
+    $altered_text = '';
+  }
+  if ($altered) {
+    $vars['page_title'] = $altered_text;
+  }
+}
+
+
+/**
+ * Implements hook_preprocess_comment().
+ *
+ * Alter some comment variables before they are themed. Used primarily to
+ * implement some ad hoc "private comments" features.
+ */
+function crl_helpers_preprocess_comment(&$vars) {
+  // Add the inst to the author's name if possible.
+  $user_inst = crl_helpers_get_institution($vars['comment']->uid, NULL);
+  if (!empty($user_inst)) {
+    $vars['author'] = $vars['author'] . ' (' . $user_inst . ')';
+  }
+  // Hide the title/subject line.
+  $vars['title'] = NULL;
+  // See if any "privacy" details are set via a special "comment_privacy" field.
+  $wrapper = entity_metadata_wrapper('comment', $vars['comment']);
+  $privacy = isset($wrapper->field_comment_privacy) ? $wrapper->field_comment_privacy->value() : NULL;
+  // Toggle the removal/addition of text based on any privacy settings and user
+  // rights.
+  if ($privacy == 'anon') { // Hide submitter name.
+    // Don't hide anything from admins, but show a notice.
+    if (user_access('administer comments')) {
+      $vars['content']['privacy_note'] = array('#markup' => t('<strong>Privacy note:</strong> The submitter has chosen to hide their name from everyone except CRL staff.'));
+    }
+    else {
+      $vars['author'] = t('(name hidden)');
+      $vars['submitted'] = t('Submission details hidden');
+    }
+  }
+  elseif ($privacy == 'private') { // Hide entire comment.
+    global $user;
+    // Remove "reply" option.
+    if (isset($vars['content']['links']['comment']['#links']['comment-reply'])) {
+      unset($vars['content']['links']['comment']['#links']['comment-reply']);
+    }
+    // Don't hide anything from admins or author, but show a notice.
+    if (user_access('administer comments') || $vars['comment']->uid == $user->uid) {
+      $vars['content']['privacy_note'] = array('#markup' => t('<strong>Privacy note:</strong> This comment has been hidden from all users except CRL staff and the original author.'));
+    }
+    else {
+      $vars['author'] = t('(name hidden)');
+      $vars['submitted'] = t('Submission details hidden');
+      $vars['content']['comment_body'] = array('#markup' => t('Comment hidden - this is a private comment to CRL.'));
+    }
+  }
+}
+
+
+/**
+ * Implements hook_views_data_export_xls_header().
+ *
+ * Alter some export header structures.
+ */
+function crl_helpers_preprocess_views_data_export_xls_header(&$variables) {
+  $output = '';
+  $output .= "<h2>eDesiderata - Informed Investment in Electronic Resources</h2>";
+  $output .= "<h3>Center for Research Libraries</h3>";
+  $output .= "<p><b>Exported from eDesiderata on " . format_date(time(), 'medium')." </b></p>";
+  $output .= "<p>&nbsp;</p>" . $variables['header_row'];
+  $variables['header_row'] = $output;
+}
+
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Note that this form_alter will fire last thanks to
+ * crl_helpers_module_implements_alter(). This is critical so that we can
+ * make alterations AFTER revisioning's alterations.
+ *
+ * @see crl_helpers_module_implements_alter()
+ */
+function crl_helpers_form_alter(&$form, $form_state) {
+  // For the node edit form we make some adjustments to the "revisioning"
+  // elements.
+  if (!empty($form['#node_edit_form'])) {
+    $node = &$form['#node'];
+    if (isset($node->nid)) {
+      // If revisioning is installed it will already have altered the form, so
+      // we alter it's alterations.
+      if (isset($form['revision_information'])) {
+        // Rebuild the options shown in a custom order and with custom text.
+        // Note that we need to retain the keys and ensure that we don't remove
+        // any options.
+        $new_ordered_options = array(
+          REVISIONING_NEW_REVISION_NO_MODERATION => t('Regular Update'),
+          REVISIONING_NO_REVISION => t('Minor update (do NOT notify watchers, alter activity feeds or create a new revision)'),
+          REVISIONING_NEW_REVISION_WITH_MODERATION => t('Update with moderation (used rarely)'),
+        );
+        $top_options = array();
+        foreach ($new_ordered_options as $key => $value) {
+          if (isset($form['revision_information']['revision_operation']['#options'][$key])) {
+            unset($form['revision_information']['revision_operation']['#options'][$key]);
+            $top_options[$key] = $value;
+          }
+        }
+        $form['revision_information']['revision_operation']['#options'] = $top_options + $form['revision_information']['revision_operation']['#options'];
+        $form['revision_information']['revision_operation']['#title'] = t('Update and revision details');
+        // Temporarily hide the moderation option if it's not yet active. Doing
+        // this sort-of negates the usefulness of the revisioning module (as it
+        // means we can't fork existing entities into moderated states), but
+        // until CRL fully embraces moderation workflows this should be hidden
+        // to avoid confusion.
+        if (isset($form['revision_information']['revision_operation']['#options'][REVISIONING_NEW_REVISION_WITH_MODERATION]) && $form['revision_information']['revision_operation']['#default_value'] != REVISIONING_NEW_REVISION_WITH_MODERATION) {
+          unset($form['revision_information']['revision_operation']['#options'][REVISIONING_NEW_REVISION_WITH_MODERATION]);
+          $form['revision_information']['revision_operation']['#description'] = '';
+        }
+        // Highlight the revisioning options for resources and activity types.
+        // These warrent special attention because they may trigger messages.
+        if ($node->type == 'resource' || $node->type == 'activity') {
+          $form['revision_information']['revision_operation']['#prefix'] = '<div class="notice-box extreme">';
+          $form['revision_information']['revision_operation']['#suffix'] = '</div>';
+        }
+      }
+      // If revisioning is not installed, just alter the core "revision"
+      // checkbox.
+      else {
+        $form['revision_information']['#collapsed'] = FALSE;
+        $form['revision_information']['#weight'] = -3;
+        $form['revision_information']['revision']['#weight'] = 10;
+        $form['revision_information']['revision']['#prefix'] = '<div class="notice-box">';
+        $form['revision_information']['revision']['#suffix'] = '</div>';
+        $form['revision_information']['revision']['#title'] = t('Notify watchers, alter activity feeds and create a new revision (uncheck for minor updates)');
+      }
+    }
+  }
+}
+
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Used to force this module's hook_form_alter to fire last.
+ *
+ * @see crl_helpers_form_alter()
+ */
+function crl_helpers_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'form_alter' && array_key_exists('crl_helpers', $implementations)) {
+    $group = $implementations['crl_helpers'];
+    unset($implementations['crl_helpers']);
+    $implementations['crl_helpers'] = $group;
+  }
+}
+
+
+/*******************************************************************************
+ * User specific functions below.... probably to be refactored
+ ******************************************************************************/
+
+
+/**
+ * Allowed values function callback for the institution picklist.
+ *
+ * @see crl_helpers_inst_oplist_builder()
+ */
+function crl_helpers_inst_oplist() {
+  // Call the oplist builder. We can't set the builder directly as the callback
+  // because various arguments will be set as part of the callback, and we don't
+  // want to pass those on to the builder.
+  return crl_helpers_inst_oplist_builder();
+}
+
+
+/**
+ * Helper to dynamically build the options list for the institution dropdown.
+ *
+ * May be called directly or wrapped by a formal "allowed_values_function"
+ * callback.
+ *
+ * @param boolean $use_opgroup
+ *   Whether-or-not to make the returned list an associative array, separating
+ *   members and nonmembers, that the form API can treat as opgroups. May not
+ *   work on all forms (such as core field edit forms).
+ * @param boolean $force_all
+ *   If true this forces the full list of BOTH members and nonmembers to be
+ *   returned no matter what the current user's permissions are.
+ *
+ * @see crl_helpers_inst_oplist()
+ */
+function crl_helpers_inst_oplist_builder($use_opgroup = FALSE, $force_all = FALSE) {
+  $inst_list_mem = variable_get('crl_sf_sync_institutions_array', array());
+  // Normal users (specifically anon at registration) should only see the list
+  // of member institutions. However, because the institution field can be used
+  // to store iids for nonmember institutions we want the full list to be
+  // available to admins.
+  if (user_access('administer users') || user_access('access crowd widgets') || $force_all) {
+    // Get the full inst list and extract the nonmenbers.
+    $inst_list_all = variable_get('crl_sf_sync_institutions_array_full', array());
+    $inst_list_nonmem = array_diff_key($inst_list_all, $inst_list_mem);
+    asort($inst_list_nonmem);
+    // Add "Nonmember" text to labels for reference.
+    foreach ($inst_list_nonmem as $key => $value) {
+      $inst_list_nonmem[$key] = $inst_list_nonmem[$key] . ' (NONMEMBER)';
+    }
+    // If configured, create list that separates members and nonmembers with
+    // opgroups.
+    if ($use_opgroup) {
+      $inst_list_both = array(
+        'MEMBERS' => $inst_list_mem,
+        'NON-MEMBERS' => $inst_list_nonmem,
+      );
+    }
+    // Otherwise just return the two lists unioned together.
+    else {
+      $inst_list_both = $inst_list_mem + $inst_list_nonmem;
+    }
+    return $inst_list_both;
+  }
+  return $inst_list_mem;
+}
+
+
+/**
+ * Utility to get a sfid based on the user's IP.
+ *
+ * This is something of a bridge between the salesforce sync logic and the
+ * crl_access_by_ip logic. It is included here in crl_helpers as most of the
+ * forms that need to use this utility are manipulated here (and related to
+ * provisioning or other crowd-centric logic).
+ */
+function crl_helpers_get_sfid() {
+  global $user;
+  $sfid = NULL;
+  $id_map = variable_get('crl_sf_sync_institutions_array_id_map', array());
+  if (!empty($user->crl_member_data['id']) && $id_map) {
+    // Get sfid through crlid.
+    if (!empty($id_map[$user->crl_member_data['id']])) {
+      $sfid = $id_map[$user->crl_member_data['id']];
+    }
+  }
+  return $sfid;
+}
+
+
+/**
+ * Helper to get the institution info (either the name or the iid).
+ *
+ * @param int $uid
+ *   An optional user ID representing the user to check. If NULL the current
+ *   user will be checked.
+ * @param int $iid
+ *   An optional (known) iid. If this is passed in, no user-specific lookup is
+ *   done, and we simply return the inst name associated with the iid.
+ * @param boolean $return_iid
+ *   Optional indicator to specifiy if an iid should be returned instead of the
+ *   instituion name. Has no signifigance if a specific $iid is passed in.
+ * @return mixed
+ *   Returns the user's institution as a string or int ID (depending on the
+ *   value of $return_iid is FALSE) Returns boolean FALSE if the inst could not
+ *   be determined.
+ */
+function crl_helpers_get_institution($uid = NULL, $iid = NULL, $return_iid = FALSE) {
+  $institutions_array_id = variable_get('crl_sf_sync_institutions_array_full', array());
+  // If we have an iid, then we return the institution name independent of any
+  // user details passed-in.
+  if (isset($iid)) {
+    if (isset($institutions_array_id[$iid])) {
+      return $institutions_array_id[$iid];
+    }
+    else {
+      return FALSE;
+    }
+  }
+  // If we don't have an iid then we are checking for it based on specific
+  // user info.
+  if (empty($uid)) {
+    global $user;
+    $uid = $user->uid;
+  }
+  // Make sure to only lookup the specific user iid once for each user per page.
+  static $user_institution_ids = array();
+  if (empty($user_institution_ids[$uid])) {
+    // Make sure user fields are loaded.
+    $account = user_load($uid);
+    $entity_wrapper = entity_metadata_wrapper('user', $account);
+    $user_institution_ids[$uid] = isset($entity_wrapper->field_institution) ? $entity_wrapper->field_institution->value() : -1;
+  }
+  // Get and return the appropriate inst id or name.
+  $user_institution_id = $user_institution_ids[$uid];
+  if (isset($institutions_array_id[$user_institution_id])) {
+    if ($return_iid) {
+      return $user_institution_id;
+    }
+    return $institutions_array_id[$user_institution_id];
+  }
+  return FALSE;
+}
+
+
+/**
+ * Implements hook_cron().
+ */
+function crl_helpers_cron() {
+  // Sync institution picklist from Salesforce
+  _crl_helpers_sf_sync_picklist();
+}
+
+
+/**
+ * Helper to fetch the institution picklist from Salesforce.
+ *
+ * @see: crl_helpers_cron().
+ */
+function _crl_helpers_sf_sync_picklist() {
+  if (module_exists('salesforce_api')) {
+    // Query MEMBER institutions.
+    $query = "SELECT Display_Name__c, Id, Member_ID__c From Account WHERE (Active__c = TRUE) AND (Member_Type__c = 'Voting' OR Member_Type__c = 'Group' OR Member_Type__c = 'Global') ORDER BY Name_for_sorting__c ASC";
+    $sf_records = salesforce_api_query($query);
+    $institutions_array_sfid = array();
+    $institutions_array_id = array();
+    $institutions_array_id_map = array();
+    $no_id_array = array();
+    if (!empty($sf_records)) {
+      foreach ($sf_records as $record) {
+        if (!empty($record->Id) && !empty($record->Display_Name__c)) {
+          // Store name keyed by sfid.
+          $institutions_array_sfid[$record->Id] = $record->Display_Name__c;
+          if (!empty($record->Member_ID__c)) {
+            // Store name keyed by crlid and an id map.
+            $institutions_array_id[$record->Member_ID__c] = $record->Display_Name__c;
+            $institutions_array_id_map[$record->Member_ID__c] = $record->Id;
+          }
+          else {
+            $no_id_array[$record->Id] = $record->Display_Name__c;
+          }
+        }
+      }
+      if (!empty($no_id_array)) {
+        $institutions_sans_id = '';
+        foreach($no_id_array as $value) {
+          $institutions_sans_id .= $value . ", ";
+        }
+        watchdog('crl_sf', 'The following member institutions have no CRL id in Salesforce: @institutions_sans_id', array('@institutions_sans_id' => $institutions_sans_id), WATCHDOG_WARNING);
+      }
+      // Set explicit variable for each of the id types and the map between
+      // them.
+      variable_set('crl_sf_sync_institutions_array_sfid', $institutions_array_sfid);
+      variable_set('crl_sf_sync_institutions_array_crlid', $institutions_array_id);
+      variable_set('crl_sf_sync_institutions_array_id_map', $institutions_array_id_map);
+      // Then choose one which will be used as the default (for referece by
+      // applications that don't distinguish which type of ID to use).
+      variable_set('crl_sf_sync_institutions_array', $institutions_array_sfid);
+    }
+    // Also query ALL institutions and build array for admin purposes.
+    // @todo see if this logic could be better merged with the code above.
+    $query_full = "SELECT Display_Name__c, Id From Account WHERE Parent_Member_Type__c = NULL ORDER BY Name_for_sorting__c ASC";
+    $sf_records_full = salesforce_api_query($query_full);
+    $institutions_array_sfid_full = array();
+    if (!empty($sf_records_full)) {
+      foreach ($sf_records_full as $record) {
+        if (!empty($record->Id) && !empty($record->Display_Name__c)) {
+          $display_name = $record->Display_Name__c;
+          $institutions_array_sfid_full[$record->Id] = $display_name;
+        }
+      }
+      variable_set('crl_sf_sync_institutions_array_full', $institutions_array_sfid_full);
+    }
+  }
+}

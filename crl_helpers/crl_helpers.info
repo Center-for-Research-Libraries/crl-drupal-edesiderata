@@ -1,0 +1,9 @@
+; $Id$
+name = CRL Helpers
+description = Provide case-specific functionality
+core = 7.x
+package = CRL
+
+dependencies[] = entity
+dependencies[] = entityreference
+dependencies[] = search_api
