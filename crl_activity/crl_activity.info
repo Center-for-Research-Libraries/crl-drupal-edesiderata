@@ -1,0 +1,9 @@
+; $Id$
+name = CRL Activity
+description = Custom features and relationships related to the "activity" content object.
+core = 7.x
+package = CRL
+
+dependencies[] = entity
+dependencies[] = entityreference
+dependencies[] = search_api
