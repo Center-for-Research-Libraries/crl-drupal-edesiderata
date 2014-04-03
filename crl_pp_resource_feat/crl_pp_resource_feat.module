@@ -1,0 +1,408 @@
+<?php
+/**
+ * @file
+ * Code for the CRL PP Resource feature.
+ */
+
+include_once 'crl_pp_resource_feat.features.inc';
+
+
+// Ad-hoc definition of some variables.
+// @todo Consider using normal Drupal variables here and exposing them via the
+// admin interface.
+define('CRL_PP_RESOURCE_FEAT_SP_CURRENCIES', 'usd,cad');
+define('CRL_PP_RESOURCE_FEAT_SP_VOTE_ROLES', 'pp-main,administrator,editor power');
+
+
+/**
+ * Implements hook_theme().
+ */
+function crl_pp_resource_feat_theme() {
+  $hooks = array(
+    // Theme hook to generate PP star vote widget. This will automatically get
+    // used by rate based on it's name and the standard template suggestion
+    // rules.
+    'rate_widget__pp_preference' => array(
+      'variables' => array(),
+      'template' => 'rate-widget--pp-preference',
+    ),
+    // Theme hooks to generate PP yes/no input. These will automatically get
+    // used by rate based on the name and the standard template suggestion
+    // rules.
+    'rate_widget__pp_own_lend' => array(
+      'variables' => array(),
+      'template' => 'rate-widget--pp-own-lend',
+    ),
+  );
+  foreach ($hooks as &$hook) {
+    // Make sure that our actual theme hooks and/or preprocessor logic is
+    // included for each entry.
+    $hook['path'] = drupal_get_path('module', 'crl_pp_resource_feat') . '/themes';
+    $hook['file'] = 'crl_pp_resource_feat.theme.inc';
+  }
+  return $hooks;
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function crl_pp_resource_feat_block_info() {
+  // Add vote input block.
+  $blocks['crl_pp_resource_feat_vote'] = array(
+    'info' => t('Vote input for a PP Resource'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // The "back to index" block shows a back link for navigation.
+  $blocks['crl_pp_resource_back_to_index'] = array(
+    'info' => t('CRL PP Back to Index'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function crl_pp_resource_feat_block_view($delta = '') {
+  $block = array();
+  $args = arg();
+  if ($args[0] == 'node') {
+    $node = node_load($args[1]);
+    // We only care about pp_resource and spp_resource nodes here.
+    if ($node && ($node->type == 'pp_resource' || $node->type == 'spp_resource')) {
+      switch ($delta) {
+        // Build vote input block. The specific output of the block will depend
+        // on the content type. We could just a well create SEPARATE block
+        // definitions for each type, but for now let's just keep the block list
+        // small.
+        case 'crl_pp_resource_feat_vote':
+          if ($node->type == 'spp_resource') {
+            $block['subject'] = '';
+            $block['content'] = drupal_get_form('crl_pp_resource_feat_shared_vote_input_form', $node);
+          }
+          else {
+            $block['subject'] = t('Voting');
+            $block['content'] = crl_pp_resource_feat_get_vote_input($node);
+          }
+          break;
+        // Build the back to index block.
+        case 'crl_pp_resource_back_to_index':
+          // Like above we'll use the same block for both pp_resource and
+          // spp_resoruce and just toggle the return path.
+          $url = $node->type == 'pp_resource' ? url('pp') : url('spp');       
+          // Make sure crl_resource is installed as we'll use a theme function from
+          // there.
+          if (module_exists('crl_resource')) {
+            $browser_back = FALSE;
+            $block['subject'] = '';
+            $block['content'] = array(
+              'back_link' => array(
+                '#theme' => 'crl_resource_back_to_index',
+                '#url' => $url,
+                '#back_text' => t('Back to ballot index'),
+                '#browser_back' => $browser_back,
+              ),
+            );
+          }
+          break;
+      }
+    }
+  }
+  return $block;
+}
+
+
+/**
+ * Render multiple PP rate widgets as one widget.
+ */
+function crl_pp_resource_feat_get_vote_input($node) {
+  $vote_html = rate_embed($node, 'pp_preference', RATE_FULL);
+  // Dirty markup outside of template = hack/fast fix.
+  $vote_html .= '<br /><hr />';
+  $vote_html .= rate_embed($node, 'pp_own_lend', RATE_FULL);
+  return $vote_html;
+}
+
+
+/**
+ * Form definition: SPP vote input widget.
+ * 
+ * @todo, consider themeing some of the markup here.
+ */
+function crl_pp_resource_feat_shared_vote_input_form($form, &$form_state) {
+  global $user;
+  $form = array();
+  $notes = '';
+  $form['#attributes'] = array('class' => 'shared-vote-input-form');
+  // The node data should have been passed in when the form was initially
+  // built and rendered.
+  $node = $form_state['build_info']['args'][0];
+  $form['title'] = array(
+    '#markup' => '<h2 class="block-title">' . t('Shared Purchase Pledge') . '</h2>'
+  );
+  // The actual input part of the form only really applies to users with the
+  // correct roles.
+  if (array_intersect($user->roles, explode(',', CRL_PP_RESOURCE_FEAT_SP_VOTE_ROLES))) {
+    // Get the current values (if any) for this user.
+    $default_pledge = '';
+    $default_currency = 'usd';
+    $currency_options = explode(',', CRL_PP_RESOURCE_FEAT_SP_CURRENCIES);
+    $votes = votingapi_select_votes(array('entity_type' => 'node', 'entity_id' => $node->nid, 'uid' => $user->uid));
+    foreach ($votes as $vote) {
+      if (isset($vote['tag']) && strpos($vote['tag'], 'pp_shared_pledge_') !== FALSE) {
+        $default_currency = substr($vote['tag'], 17);
+        $default_pledge = $vote['value'];
+      }
+    }
+    // Build pledge input form items.
+    $form['pledge'] = array(
+      '#type' => 'textfield',
+      '#size' => 10,
+      '#title' => t('Your Library Pledge'),
+      '#default_value' => $default_pledge,
+      '#element_validate' => array('element_validate_integer_positive'),
+      '#required' => TRUE,
+    );
+    $form['currency'] = array(
+      '#type' => 'select',
+      '#title' => '',
+      '#options' => array_combine($currency_options, array_map('strtoupper', $currency_options)),
+      '#default_value' => $default_currency,
+    );
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => empty($default_pledge) ? t('Submit') : t('Update'),
+      '#ajax' => array(
+        'callback' => 'crl_pp_resource_feat_shared_vote_input_submit',
+        'wrapper' => 'shared-vote-input-notes-' . $node->nid,
+      ),
+    );
+    // Calculate the notes that will apply to the form area managed by ajax.
+    $notes .= '<p class="vote-result">' . (empty($default_pledge) ? t('Please specify how much your library is willing to pledge to this purchase.') : t('<strong>Thank you for your commitment!</strong> You may adjust your pledge at any time before voting closes.')) . '</small></p>';
+    if ($node->comment == COMMENT_NODE_OPEN && user_access('post comments')) {
+      $uri = entity_uri('node', $node);
+      $notes .= '<p>' . l(t('Add a comment'), $uri['path'], $uri['options'] + array('fragment' => 'comment-form')) . '</p>';
+    }
+    $notes .= '<hr/>';
+  }
+  // Add "notes" element to form. This is the part that will be updated by ajax
+  // and applies to all users (as it contains the summary).
+  $form['notes'] = array(
+    '#markup' => $notes . crl_pp_resource_feat_shared_vote_get_summary($node),
+    '#prefix' => '<div id="shared-vote-input-notes-' . $node->nid . '"><div class="form-notes">',
+    '#suffix' => '</div></div>',
+  );
+  $form['#submit'] = array('crl_pp_resource_feat_shared_vote_input_submit');
+  return $form;
+}
+
+
+/**
+ * Submit handler and AJAX callback for SPP vote input widget.
+ */
+function crl_pp_resource_feat_shared_vote_input_submit($form, &$form_state) {
+  // This may be called via ajax, in which case we need to manually check for
+  // validation errors.
+  if (!form_get_errors()) {
+    global $user;
+    // The node data should have been passed in when the form was initially
+    // built and rendered.
+    $node = $form_state['build_info']['args'][0];
+    $node_wrapper = entity_metadata_wrapper('node', $node);
+    // Get the fiscal year taxonomy term that this node relates to as a wrapper.
+    $term_wrapper = entity_metadata_wrapper('taxonomy_term', isset($node_wrapper->field_fy) ? $node_wrapper->field_fy->value() : NULL);
+    // Prep the vote data to save.
+    $votes = array(
+      array(
+        'entity_type' => 'node',
+        'entity_id' => $node->nid,
+        'tag' => 'pp_shared_pledge_' . $form_state['input']['currency'],
+        'value' => $form_state['input']['pledge'],
+        'value_type' => 'points',
+      )
+    );
+    // Specifiy what vote data should be flushed/replaced upon this save. To
+    // ensure that we don't end up with multiple values for multiple currencies
+    // from one user we flush ALL vote data from this user for the node.
+    $deletion_criteria = array(
+      'entity_type' => 'node',
+      'entity_id' => $node->nid,
+      'uid' => $user->uid,
+    );
+    votingapi_set_votes($votes, $deletion_criteria);
+    // Check if a conversion will be applied when the totals are calculated. If
+    // so we want to notify the user of this.
+    $conversion = isset($term_wrapper->{'field_currency_' . $form_state['input']['currency'] . '_usd'}) ? $term_wrapper->{'field_currency_' . $form_state['input']['currency'] . '_usd'}->value() : 1;
+    $conversion_note = '';
+    if ($conversion != 1) {
+      $conversion_note = t('The conversion rate (@rate USD per @curr) from the day the ballot opened applies to the totals.', array('@rate' => $conversion, '@curr' => strtoupper($form_state['input']['currency'])));
+    }
+    drupal_set_message(t('Your pledge has been saved.' . ' ' . $conversion_note));
+  }
+  // Special handling if this is an ajax callback. 
+  if (isset($form_state['clicked_button']['#ajax'])) {
+    // Some of our "save" logic above may have changed values that are displayed
+    // on the form itself, so we can just fully rebuilt it.
+    $form = drupal_rebuild_form('crl_pp_resource_feat_shared_vote_input_form', $form_state);
+    // Status messages need to be injected manually into the returned output.
+    $form['notes']['#markup'] = theme_status_messages(array('display' => NULL)) . $form['notes']['#markup'];
+  }
+  return $form['notes'];
+}
+
+
+/**
+ * Helper to generate a vote summary for the SPP vote widget.
+ * 
+ * @todo, consider themeing this output.
+ */
+function crl_pp_resource_feat_shared_vote_get_summary($node) {
+  $summary = '';
+  $node_wrapper = entity_metadata_wrapper('node', $node);
+  // Get the fiscal year taxonomy term that this node relates to as a wrapper.
+  $term_wrapper = entity_metadata_wrapper('taxonomy_term', isset($node_wrapper->field_fy) ? $node_wrapper->field_fy->value() : NULL);
+  // Get the related vote api aggregate data for this node. 
+  $results = votingapi_select_results(array('entity_type' => 'node', 'entity_id' => $node->nid, 'function' => array('sum', 'count')));
+  $pledges_count = $pledges_total = 0;
+  foreach ($results as $result) {
+    if (isset($result['tag']) && strpos($result['tag'], 'pp_shared_pledge_') !== FALSE) {
+      // Tally the votes of all currencies.
+      if ($result['function'] == 'count') {
+        $pledges_count += $result['value'];
+      }
+      // Sum the votes in USD.
+      else {
+        $currency = substr($result['tag'], 17);
+        $conversion = isset($term_wrapper->{'field_currency_' . $currency . '_usd'}) ? $term_wrapper->{'field_currency_' . $currency . '_usd'}->value() : 1;
+        $pledges_total += ($result['value'] * $conversion);
+      }
+    }
+  }
+  // Get the percentage of target.
+  $progress_text = '';
+  $target = isset($node_wrapper->field_pp_sp_target_price) ? $node_wrapper->field_pp_sp_target_price->value() : 0;
+  if (!empty($target)) {
+    $progress_text = t('(@progress% of target)', array('@progress' => round($pledges_total / $target * 100, 1)));
+  }
+  $summary = '<strong>' . t('Total pledged by @pledges_count libraries:<br />$@pledges_total USD', array('@pledges_count' => $pledges_count, '@pledges_total' => floor($pledges_total))) . '</strong> ' . $progress_text;
+  return $summary;
+}
+
+
+/**
+ * Implements hook_votingapi_metadata_alter()
+ * 
+ * Declare various tags used for the SPP voting to voting API. Required for
+ * full views support, etc.
+ */
+function crl_pp_resource_feat_votingapi_metadata_alter(&$data) {
+  foreach (explode(',', CRL_PP_RESOURCE_FEAT_SP_CURRENCIES) as $currency) {
+    $currency_tag = 'pp_shared_pledge_' . $currency;
+    $data['tags'][$currency_tag] = array(
+      'name' => t('SP @currency currency', array('@currency' => $currency)),
+      'description' => t('Shared Purchases Votes for @currency currency', array('@currency' => $currency)),
+    );
+  }
+}
+  
+
+/**
+ * Implements hook_field_extra_fields().
+ * 
+ * Define numerous psuedo fields.
+ */
+function crl_pp_resource_feat_field_extra_fields() {
+  $extra_fields = array(
+    'display' => array(
+      'pseudo_field_pp_resource_source_notice' => array(
+        'label' => t('PP Resource Source Notice Display'),
+        'description' => t('A notice message about how the PP resoruce data was sourced.'),
+        'weight' => 900,
+      ),
+      'pseudo_field_pp_resource_sp_vote_input' => array(
+        'label' => t('PP Resource Vote Input'),
+        'description' => t('The vote input for a purchase or shared purchase resource.'),
+        'weight' => 901,
+      ),     
+    ),
+  );
+  $extra['node']['pp_resource'] = $extra_fields;
+  $extra['node']['spp_resource'] = $extra_fields;
+  return $extra;
+}
+
+
+/**
+ * Implements hook_node_view().
+ * 
+ * Attach custom display elements to a PP resource node that's about to be
+ * rendered (custom pseudo fields, etc.).
+ */
+function crl_pp_resource_feat_node_view($node, $view_mode, $langcode) {
+  if ($node->type == 'pp_resource' || $node->type == 'spp_resource') {
+    // Build the pp resource source notice field display.
+    $message = t('Information provided here is drawn from a number of sources including member nomination forms.');
+    // If crl_resource is installed we can use the pseudo field theme from that.
+    // This is done as a conditional check so we don't make crl_resource a
+    // dependency.
+    if (module_exists('crl_resource')) {
+      $built_notice = array('#theme' => 'crl_resource_pseudo_field', '#label' => t('Source'), '#output' => $message);
+    }
+    else {
+      $built_notice = array('#markup' => $message);
+    }
+    $node->content['pseudo_field_pp_resource_source_notice'] = $built_notice;
+    // Also allow the SPP input widget to be shown as a normal field, but only
+    // on teasers.
+    if ($view_mode == 'teaser') {
+      $built_pp_input = drupal_get_form('crl_pp_resource_feat_shared_vote_input_form', $node);
+      $node->content['pseudo_field_pp_resource_sp_vote_input'] = $built_pp_input;
+    }
+  }
+}
+
+
+/**
+ * Implements hook_page_alter().
+ * 
+ * Ad hoc way to add some special styles for the admin interface when viewing
+ * PP fivestar data.
+ */
+function crl_pp_resource_feat_page_alter(&$page) {
+  if (path_is_admin(current_path())) {
+    drupal_add_css('.vote-summary-wrapper ul li, .vote-user-wrapper ul li {list-style: none outside none; margin: 0px;} .vote-summary-wrapper ul, .vote-user-wrapper ul {margin: 0px;}',
+      array(
+        'group' => CSS_THEME,
+        'type' => 'inline',
+        'media' => 'screen',
+        'preprocess' => FALSE,
+        'weight' => '9999',
+      )
+    );
+  }
+}
+
+
+/**
+ * Implements hook_form_FORMID_alter().
+ *
+ * Ad hoc way to add some special default text to the Send by Email Form
+ * Print, Email and PDF data.
+ */
+function crl_pp_resource_feat_form_print_mail_form_alter(&$form, &$form_state, $form_id) {
+  if (arg(0) == 'printmail' && is_numeric(arg(1))) {
+    $nid = arg(1);
+    $node = node_load($nid);
+    $type = $node->type;
+    if ($type == "pp_resource") {
+      $form['fld_subject']['#default_value'] = t("Your input for CRL Purchase Proposal is invited");
+      $form['txt_message']['#default_value'] = t("The following title is on the Center for Research Library's Purchase Proposal Ballot, I would appreciate your comments and insights regarding it.");
+    }
+    elseif ($type == "spp_resource") {
+      $form['fld_subject']['#default_value'] = t("Your input for CRL Shared Purchase Proposal is invited");
+      $form['txt_message']['#default_value'] = t("The following title is on the Center for Research Library's Shared Purchase Proposal Ballot, I would appreciate your comments and insights regarding it.");
+    }
+  }                        
+}
