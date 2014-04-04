@@ -1,6 +1,7 @@
 name = CRL Activity Feature
 core = 7.x
 package = CRL
+dependencies[] = crl_helpers_feat
 dependencies[] = ctools
 dependencies[] = date
 dependencies[] = entityreference
@@ -71,4 +72,4 @@ features[variable][] = node_options_activity
 features[variable][] = node_preview_activity
 features[variable][] = node_submitted_activity
 features_exclude[dependencies][crl_pp_resource_feat] = crl_pp_resource_feat
-project path = sites/all/modules/custom/crl_local
+project path = sites/all/modules/crl_edesiderata

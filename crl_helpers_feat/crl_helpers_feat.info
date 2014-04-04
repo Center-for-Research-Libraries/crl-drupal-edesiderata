@@ -37,4 +37,4 @@ features[variable][] = mimemail_name
 features[variable][] = mimemail_simple_address
 features[variable][] = mimemail_sitestyle
 features[variable][] = mimemail_textonly
-project path = sites/all/modules/custom/crl_local
+project path = sites/all/modules/crl_edesiderata
