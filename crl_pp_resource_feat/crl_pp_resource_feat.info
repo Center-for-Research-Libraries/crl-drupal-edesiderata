@@ -151,4 +151,4 @@ features_exclude[field_group][group_shared_purchase|node|pp_resource|form] = gro
 features_exclude[field_base][comment_body] = comment_body
 features_exclude[field_base][field_internal_notes] = field_internal_notes
 features_exclude[field_base][field_comment_privacy] = field_comment_privacy
-project path = sites/all/modules/custom/crl_local
+project path = sites/all/modules/crl_edesiderata

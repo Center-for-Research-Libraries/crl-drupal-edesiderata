@@ -189,7 +189,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = '<hr />
-<p><strong>Access to the Shared Purchase Proposal ballot is restricted to authorized collection development librarians.</strong></p>';
+<p><strong>The FY2014 Shared Purchase Proposal ballot is now closed.</strong></p>';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Comment count */
