@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CRL Search Feature feature.
+ */
+
+include_once 'crl_search_feat.features.inc';
