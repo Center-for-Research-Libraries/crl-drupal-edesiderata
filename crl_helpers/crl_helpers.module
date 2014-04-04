@@ -434,7 +434,7 @@ function crl_helpers_module_implements_alter(&$implementations, $hook) {
 
 
 /*******************************************************************************
- * User specific functions below.... probably to be refactored
+ * User specific functions below.... probably to be refactored.
  ******************************************************************************/
 
 
