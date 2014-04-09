@@ -121,125 +121,125 @@ function crl_search_feat_default_search_api_server() {
       "indexes" : { "title_search_index" : {
           "nid" : {
             "table" : "search_api_db_title_search_index",
-            "column" : "nid_1",
+            "column" : "nid",
             "type" : "integer",
             "boost" : "1.0"
           },
           "type" : {
             "table" : "search_api_db_title_search_index",
-            "column" : "type_1",
+            "column" : "type",
             "type" : "string",
             "boost" : "1.0"
           },
           "title" : {
-            "table" : "search_api_db_title_search_index_title_1",
+            "table" : "search_api_db_title_search_index_title",
             "type" : "text",
             "boost" : "1.0"
           },
           "status" : {
             "table" : "search_api_db_title_search_index",
-            "column" : "status_1",
+            "column" : "status",
             "type" : "integer",
             "boost" : "1.0"
           },
           "created" : {
             "table" : "search_api_db_title_search_index",
-            "column" : "created_1",
+            "column" : "created",
             "type" : "date",
             "boost" : "1.0"
           },
           "changed" : {
             "table" : "search_api_db_title_search_index",
-            "column" : "changed_1",
+            "column" : "changed",
             "type" : "date",
             "boost" : "1.0"
           },
           "crl_resource_status_backref" : {
-            "table" : "search_api_db_title_search_index_crl_resource_status_backref_1",
+            "table" : "search_api_db_title_search_index_crl_resource_status_backref",
             "column" : "value",
             "type" : "list\\u003Cstring\\u003E",
             "boost" : "1.0"
           },
           "crl_resource_master_update_timestamp" : {
             "table" : "search_api_db_title_search_index",
-            "column" : "crl_resource_master_update_timestamp_1",
+            "column" : "crl_resource_master_update_timestamp",
             "type" : "date",
             "boost" : "1.0"
           },
           "crl_resource_expiration_countdown" : {
             "table" : "search_api_db_title_search_index",
-            "column" : "crl_resource_expiration_countdown_1",
+            "column" : "crl_resource_expiration_countdown",
             "type" : "integer",
             "boost" : "1.0"
           },
           "crl_resource_glossary_value" : {
             "table" : "search_api_db_title_search_index",
-            "column" : "crl_resource_glossary_value_1",
+            "column" : "crl_resource_glossary_value",
             "type" : "string",
             "boost" : "1.0"
           },
           "field_subject_area" : {
-            "table" : "search_api_db_title_search_index_field_subject_area_1",
+            "table" : "search_api_db_title_search_index_field_subject_area",
             "column" : "value",
             "type" : "list\\u003Cinteger\\u003E",
             "boost" : "1.0"
           },
           "field_resource_title_for_sort" : {
             "table" : "search_api_db_title_search_index",
-            "column" : "field_resource_title_for_sort_1",
+            "column" : "field_resource_title_for_sort",
             "type" : "string",
             "boost" : "1.0"
           },
           "field_jisc_id" : {
             "table" : "search_api_db_title_search_index",
-            "column" : "field_jisc_id_1",
+            "column" : "field_jisc_id",
             "type" : "integer",
             "boost" : "1.0"
           },
           "field_provider" : {
             "table" : "search_api_db_title_search_index",
-            "column" : "field_provider_1",
+            "column" : "field_provider",
             "type" : "integer",
             "boost" : "1.0"
           },
           "field_resource_type" : {
-            "table" : "search_api_db_title_search_index_field_resource_type_1",
+            "table" : "search_api_db_title_search_index_field_resource_type",
             "column" : "value",
             "type" : "list\\u003Cinteger\\u003E",
             "boost" : "1.0"
           },
           "field_update_alert" : {
             "table" : "search_api_db_title_search_index",
-            "column" : "field_update_alert_1",
+            "column" : "field_update_alert",
             "type" : "date",
             "boost" : "1.0"
           },
           "field_resource_reference" : {
             "table" : "search_api_db_title_search_index",
-            "column" : "field_resource_reference_1",
+            "column" : "field_resource_reference",
             "type" : "integer",
             "boost" : "1.0"
           },
           "field_activity_crl_status" : {
-            "table" : "search_api_db_title_search_index_field_activity_crl_status_1",
+            "table" : "search_api_db_title_search_index_field_activity_crl_status",
             "column" : "value",
             "type" : "list\\u003Cstring\\u003E",
             "boost" : "1.0"
           },
           "search_api_language" : {
             "table" : "search_api_db_title_search_index",
-            "column" : "search_api_language_1",
+            "column" : "search_api_language",
             "type" : "string",
             "boost" : "1.0"
           },
           "body:value" : {
-            "table" : "search_api_db_title_search_index_body_value_1",
+            "table" : "search_api_db_title_search_index_body_value",
             "type" : "text",
             "boost" : "1.0"
           },
           "field_activity_offer_duration:value2" : {
             "table" : "search_api_db_title_search_index",
-            "column" : "field_activity_offer_duration_value2_1",
+            "column" : "field_activity_offer_duration_value2",
             "type" : "date",
             "boost" : "1.0"
           }
