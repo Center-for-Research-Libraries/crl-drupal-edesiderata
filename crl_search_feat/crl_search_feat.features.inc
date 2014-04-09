@@ -13,7 +13,7 @@ function crl_search_feat_default_search_api_index() {
     "name" : "Node Search Index",
     "machine_name" : "title_search_index",
     "description" : null,
-    "server" : "solr_main_stage",
+    "server" : "main_search_server",
     "item_type" : "node",
     "options" : {
       "index_directly" : 1,
@@ -100,56 +100,6 @@ function crl_search_feat_default_search_api_index() {
     },
     "enabled" : "1",
     "read_only" : "0",
-    "rdf_mapping" : []
-  }');
-  return $items;
-}
-
-/**
- * Implements hook_default_search_api_server().
- */
-function crl_search_feat_default_search_api_server() {
-  $items = array();
-  $items['solr_main_prod'] = entity_import('search_api_server', '{
-    "name" : "Solr Main Prod",
-    "machine_name" : "solr_main_prod",
-    "description" : "",
-    "class" : "search_api_solr_service",
-    "options" : {
-      "clean_ids" : true,
-      "scheme" : "http",
-      "host" : "localhost",
-      "port" : "8983",
-      "path" : "\\/solr\\/edesiderata_prod",
-      "http_user" : "",
-      "http_pass" : "",
-      "excerpt" : 0,
-      "retrieve_data" : 0,
-      "highlight_data" : 0,
-      "http_method" : "AUTO"
-    },
-    "enabled" : "1",
-    "rdf_mapping" : []
-  }');
-  $items['solr_main_stage'] = entity_import('search_api_server', '{
-    "name" : "Solr Main Stage",
-    "machine_name" : "solr_main_stage",
-    "description" : "",
-    "class" : "search_api_solr_service",
-    "options" : {
-      "clean_ids" : true,
-      "scheme" : "http",
-      "host" : "localhost",
-      "port" : "8983",
-      "path" : "\\/solr\\/edesiderata_stage",
-      "http_user" : "",
-      "http_pass" : "",
-      "excerpt" : 0,
-      "retrieve_data" : 0,
-      "highlight_data" : 0,
-      "http_method" : "AUTO"
-    },
-    "enabled" : "1",
     "rdf_mapping" : []
   }');
   return $items;
