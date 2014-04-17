@@ -90,6 +90,27 @@ function crl_helpers_entity_info_alter(&$entity_info) {
 
 
 /**
+ * Implements hook_page_build().
+ */
+function crl_helpers_page_build(&$page) {
+  global $user;
+  // See if this user passed the IP check when trying to access the registration
+  // page.
+  if (drupal_match_path(current_path(), 'user/register')) {
+    // Disable page cache for this path.
+    $GLOBALS['conf']['cache'] = FALSE;
+    if (!crl_access_by_ip_is_member()) {
+      // If they did not pass the IP check then display a message and redirect
+      // to the homepage.
+      drupal_set_message(t('New account creation is limited to CRL members who are accessing this site either through an on-campus IP address or Proxy service.'), 'error');
+      watchdog('crl user', 'Registration access was denied because the user did not pass the member IP check');
+      drupal_goto();
+    }
+  }
+}
+
+
+/**
  * Implements hook_block_info().
  */
 function crl_helpers_block_info() {
