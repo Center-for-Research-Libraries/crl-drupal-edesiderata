@@ -796,9 +796,9 @@ function crl_resource_block_view($delta = '') {
     // indicies.
     case 'crl_resource_alpha_facet_sort':
       $alpha_block = array('content' => '');
-      // We may want to programatically decide when to include the alpha facets
-      // but for now we always include them.
-      if (TRUE) {
+      // We only want to show the A-Z facet filters if we are in the default
+      // alphabetical sort mode.
+      if (drupal_match_path(current_path(), 'resources/main')) {
         // Lookup the delta for our glossary value facet block.
         foreach (facetapi_get_delta_map() as $delta => $map) {
           if (strpos($map, 'crl_resource_glossary_value') !== FALSE) {
