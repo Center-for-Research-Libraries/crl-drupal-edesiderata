@@ -69,9 +69,8 @@ function crl_activity_theme() {
  */
 function crl_activity_cron() {
   // Do automated status checking for CRL activity entities.
-  require_once dirname(__FILE__) . '/includes/crl_activity_status_sync.class.inc';
   $sync = new CrlActivityStatusSync();
-  $sync->calculate_sync()->run_sync();
+  $sync->runSync();
 }
 
 
@@ -93,6 +92,24 @@ function crl_activity_form_activity_node_form_alter(&$form, &$form_state, $form_
   }
   if (!empty($_GET['activity_title'])) {
     $form['title']['#default_value'] = rawurldecode($_GET['activity_title']);
+  }
+}
+
+
+/**
+ * Implements hook_date_combo_process_alter().
+ * 
+ * Alter the date elements displayed on forms.
+ */
+function crl_activity_date_combo_process_alter(&$element, $form_state, $context) {
+  // For some targeted duration date fields we want to really encounrage editors
+  // to use the "end" date. The date module assumes that anytime the start and
+  // end date match, it should hide the end date. This makes good sense, but
+  // when the field is empty we want to override this behavior so that the end
+  // date option is always shown by default.
+  if (($element['#field_name'] == 'field_activity_offer_duration' || $element['#field_name'] == 'field_activity_trial_duration') &&
+      (empty($element['#default_value']['value']) && empty($element['#default_value']['value2']))) {
+    $element['show_todate']['#default_value'] = TRUE;
   }
 }
 
@@ -141,16 +158,21 @@ function crl_activity_activity_node_form_validate(&$form, &$form_state) {
   if (in_array('license_under_consideration', $set_status) && !in_array('crl_desiderata', $set_status)) {
     form_set_error('field_activity_crl_status', t('"@license_under_consideration" should only be set if "@crl_desiderata" is also set.', $oplist));
   }
-  $now = date('Y-m-d');
-  // If the offer end date is not in the future the offer status should not
-  // be set.
-  if (in_array('license_available', $set_status) && $form_state['values']['field_activity_offer_duration'][$language][0]['value2'] < $now) {
-    form_set_error('field_activity_offer_duration', t('"@license_available" cannot be set while the offer expiration date is either not set or is in the past.', $oplist));
-  }
-  // If the trial end date is not in the future the "Trial Access Available"
-  // status should not be set.
-  if (in_array('trial_access_available', $set_status) && $form_state['values']['field_activity_trial_duration'][$language][0]['value2'] < $now) {
-    form_set_error('field_activity_trial_duration', t('"@trial_access_available" cannot be set while the trial expiration date is either not set or is in the past.', $oplist));
+  // Ensure the start and end dates set make sense.
+  $to_check = array('license_available' => 'field_activity_offer_duration', 'trial_access_available' => 'field_activity_trial_duration');
+  foreach($to_check as $status => $field) {
+    if (in_array($status, $set_status)) {
+      // Force dates with no timestamps for even comparisons.
+      $today = date('Y-m-d 00:00:00'); // Ensure matching format to value/value2
+      $start = $form_state['values'][$field][$language][0]['value'];
+      $end = $form_state['values'][$field][$language][0]['value2'];
+      if (empty($start) || $start > $today) {
+        form_set_error($field, t('"@' . $status . '" cannot be set while the related start date is not set or is in the future.', $oplist));
+      }
+      if ($start != $end && $end < $today) {
+        form_set_error($field, t('"@' . $status . '" cannot be set while the related expiration date is in the past.', $oplist));
+      }
+    }
   }
 }
 

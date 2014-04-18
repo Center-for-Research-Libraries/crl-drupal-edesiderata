@@ -14,13 +14,7 @@ function crl_helpers_feat_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'locale_custom_disabled_strings_en';
-  $strongarm->value = array(
-    '' => array(
-      'Create new revision and moderate' => 'Regular update with moderation (used rarely)',
-      'Create new revision, no moderation' => 'Regular update',
-      'Modify current revision, no moderation' => 'Minor update (do NOT notify watchers, alter activity feeds or create a new revision)',
-    ),
-  );
+  $strongarm->value = array();
   $export['locale_custom_disabled_strings_en'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -40,6 +34,7 @@ function crl_helpers_feat_strongarm() {
       'The saved search was successfully deleted.' => 'The watchset was successfully deleted.',
       'Your saved search was successfully created.' => 'Your watchset was successfully created in meDesiderata.',
       'Your saved search was successfully created. You will receive e-mail notifications for new results in the future.' => 'Your watchset was successfully created in meDesiderata. You will receive e-mail notifications for new results in the future.',
+      'Show End Date' => 'Use End Date',
     ),
   );
   $export['locale_custom_strings_en'] = $strongarm;
