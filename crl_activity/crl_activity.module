@@ -26,13 +26,11 @@ function crl_activity_field_extra_fields() {
 
 /**
  * Implements hook_node_view().
- * 
- * Attach custom display elements to an activity node that's about to be
- * rendered (custom pseudo fields, etc.).
  */
 function crl_activity_node_view($node, $view_mode, $langcode) {
   if ($node->type == 'activity') {
-    // Build the activity group notice field display.
+    // Attach custom display elements to an activity node that's about to be
+    // rendered (custom pseudo fields, etc.).
     $build = NULL;
     $entity_wrapper = entity_metadata_wrapper('node', $node);
     $term = isset($entity_wrapper->field_activity_grouping) ? $entity_wrapper->field_activity_grouping->value() : NULL;
@@ -45,6 +43,17 @@ function crl_activity_node_view($node, $view_mode, $langcode) {
       }
     }
     $node->content['pseudo_field_activity_group_notice'] = $build;
+    // Alter the offer and trial duration field titles if we don't have an end
+    // date (e.g change "Offer Duration" to "Offer Start").
+    foreach(array('field_activity_offer_duration', 'field_activity_trial_duration') as $field) {
+      if (!empty($node->content[$field])) {
+        $items = field_get_items('node', $node, $field);
+        // Matching value and value2 signifies no end date.
+        if ($items[0]['value'] == $items[0]['value2']) {
+          $node->content[$field]['#title'] = str_replace(t('Duration'), t('Start'), $node->content[$field]['#title']);
+        }
+      }
+    }
   }
 }
 
