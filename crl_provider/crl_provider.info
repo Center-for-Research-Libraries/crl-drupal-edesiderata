@@ -1,10 +1,10 @@
 ; $Id$
-name = CRL Resource
-description = Custom features and relationships related to the "resource" content object.
+name = CRL Provider
+description = Custom features and relationships related to the "provider" content object.
 core = 7.x
 package = CRL
 
-dependencies[] = crl_resource_feat
+dependencies[] = crl_provider_feat
 dependencies[] = entity
 dependencies[] = entityreference
 dependencies[] = search_api

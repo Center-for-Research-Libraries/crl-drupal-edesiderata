@@ -437,3 +437,15 @@ function crl_helpers_module_implements_alter(&$implementations, $hook) {
     $implementations['crl_helpers'] = $group;
   }
 }
+
+
+/**
+ * Helper to get a country list in a format friendly for select lists.
+ *
+ * This is really just a wrapper for country_get_list() that ensures this
+ * function is available without enabling special modules.
+ */
+function crl_helpers_country_list() {
+  require_once DRUPAL_ROOT . '/includes/locale.inc';
+  return country_get_list();
+}
