@@ -393,7 +393,7 @@ function crl_activity_feat_field_default_field_instances() {
   $field_instances['node-activity-field_activity_offer_duration'] = array(
     'bundle' => 'activity',
     'deleted' => 0,
-    'description' => 'Enter any start/end dates that apply to this offer. If you do not specify an end date the system will assume that this offer never expires.',
+    'description' => 'Enter a start and end date for this offer. If this offer should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -564,7 +564,7 @@ function crl_activity_feat_field_default_field_instances() {
   $field_instances['node-activity-field_activity_trial_duration'] = array(
     'bundle' => 'activity',
     'deleted' => 0,
-    'description' => 'Enter any start/end dates that apply to this trial. If you do not specify an end date the system will assume that this trial never expires.',
+    'description' => 'Enter a start and end date for this trial. If this trial should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -824,8 +824,8 @@ function crl_activity_feat_field_default_field_instances() {
   t('Additional Notes');
   t('Attachments');
   t('CRL Status');
-  t('Enter any start/end dates that apply to this offer. If you do not specify an end date the system will assume that this offer never expires.');
-  t('Enter any start/end dates that apply to this trial. If you do not specify an end date the system will assume that this trial never expires.');
+  t('Enter a start and end date for this offer. If this offer should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.');
+  t('Enter a start and end date for this trial. If this trial should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.');
   t('General Offer and Status Notes');
   t('Grouping');
   t('How to Get Started');
