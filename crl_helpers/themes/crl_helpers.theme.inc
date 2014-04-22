@@ -64,3 +64,45 @@ function theme_crl_helpers_editor_tools($variables) {
   $output .= '</strong></p><hr />';
   return $output;
 }
+
+
+/**
+ * Returns HTML for the alpha facet and sort swither block.
+ *
+ * @param array $variables
+ *   An associative array containing variables used to render this HTML.
+ *
+ * @ingroup themeable
+ */
+function theme_crl_helpers_alpha_facet_sort(&$vars) {
+  // Add the javascript that will trigger the path change on the selection of
+  // a new sort option.
+  drupal_add_js('jQuery("select#helpers_sort_opts").change(function() { window.location = jQuery(this).val(); });', array('type' => 'inline', 'scope' => 'footer'));
+  drupal_add_js('jQuery("div#helpers_sort_opts_links").toggle(); jQuery("select#helpers_sort_opts").toggle();', array('type' => 'inline', 'scope' => 'footer'));
+  // Build the sort pulldown. We don't use the Drupal FAPI for this as it's
+  // just a simple select list (no real form). Note however that this approach
+  // has no "action" logic to process the selected values which means things
+  // won't work for users without javascript enabled.
+  $output = '';
+  if (!empty($vars['form_options'])) {
+    $output .= '<select id="helpers_sort_opts">';
+    foreach ($vars['form_options'] as $path => $details) {
+      $output .= '<option ' . ($details['selected'] ? 'selected="selected" ' : '') . 'value="' . $details['url'] . '" title="' . $details['text'] . '">' . $details['text'] . '</option>';
+    }
+    $output .= '</select>';
+    // Also add a pure html version of the toggle for non javascript devices.
+    $output .= '<div id="helpers_sort_opts_links">';
+    foreach ($vars['form_options'] as $path => $details) {
+      if ($details['selected']) {
+        $output .= '<strong>' . $details['text'] . '</strong><br/>';
+      }
+      else {
+        $output .= l($details['text'], $path) . '<br/>';
+      }
+    }
+    $output .= '</div>';
+  }
+  // Add the alpha facets block.
+  $output .= render($vars['alpha_block']['content']);
+  return $output;
+}
