@@ -22,7 +22,7 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 2,
+        'weight' => 4,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -72,7 +72,7 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 12,
+        'weight' => 5,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -112,9 +112,8 @@ function crl_provider_feat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
+        'type' => 'hidden',
         'weight' => 4,
       ),
       'embedded' => array(
@@ -158,14 +157,8 @@ function crl_provider_feat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'number',
-        'settings' => array(
-          'decimal_separator' => '.',
-          'prefix_suffix' => TRUE,
-          'scale' => 0,
-          'thousand_separator' => ' ',
-        ),
-        'type' => 'number_integer',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 3,
       ),
       'embedded' => array(
@@ -210,14 +203,8 @@ function crl_provider_feat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'number',
-        'settings' => array(
-          'decimal_separator' => '.',
-          'prefix_suffix' => TRUE,
-          'scale' => 0,
-          'thousand_separator' => ' ',
-        ),
-        'type' => 'number_integer',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 5,
       ),
       'embedded' => array(
@@ -270,7 +257,7 @@ function crl_provider_feat_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 11,
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -317,7 +304,7 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 5,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -364,7 +351,7 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 1,
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -411,7 +398,7 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 9,
+        'weight' => 4,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -461,7 +448,7 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 10,
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -479,7 +466,7 @@ function crl_provider_feat_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_provider_in_operation',
     'label' => 'Still in Operation',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -572,7 +559,7 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 8,
+        'weight' => 3,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -615,10 +602,9 @@ function crl_provider_feat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 7,
+        'type' => 'hidden',
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -636,7 +622,7 @@ function crl_provider_feat_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_title_sort',
     'label' => 'Sorting Title',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'text_processing' => 0,
       'user_register_form' => FALSE,
