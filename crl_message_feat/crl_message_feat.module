@@ -236,6 +236,10 @@ function crl_message_feat_cron() {
     ->entityCondition('entity_type', 'node')
     ->entityCondition('bundle', 'activity')
     ->propertyCondition('status', 1)
+    // Find cases where the "license_available" status is active and set to
+    // expire a configured moment from now (give-or-take one day).
+    ->fieldCondition('field_activity_crl_status', 'value', 'license_available', '=')
+    ->fieldCondition('field_activity_offer_duration', 'value', date('Y-m-d', REQUEST_TIME), '<')
     ->fieldCondition('field_activity_offer_duration', 'value2', date('Y-m-d', REQUEST_TIME + CRL_MESSAGE_OFFER_EXPIRE_NOTICE - 86400), '>')
     ->fieldCondition('field_activity_offer_duration', 'value2', date('Y-m-d', REQUEST_TIME + CRL_MESSAGE_OFFER_EXPIRE_NOTICE), '<=')
     // Force query to run without access checks. This is safe as this is

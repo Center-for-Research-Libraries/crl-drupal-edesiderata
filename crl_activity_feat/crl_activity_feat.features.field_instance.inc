@@ -393,7 +393,7 @@ function crl_activity_feat_field_default_field_instances() {
   $field_instances['node-activity-field_activity_offer_duration'] = array(
     'bundle' => 'activity',
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Enter a start and end date for this offer. If this offer should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -447,7 +447,7 @@ function crl_activity_feat_field_default_field_instances() {
         'increment' => 15,
         'input_format' => 'm/d/Y - H:i:s',
         'input_format_custom' => '',
-        'label_position' => 'above',
+        'label_position' => 'none',
         'text_parts' => array(),
         'year_range' => '-3:+3',
       ),
@@ -564,7 +564,7 @@ function crl_activity_feat_field_default_field_instances() {
   $field_instances['node-activity-field_activity_trial_duration'] = array(
     'bundle' => 'activity',
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Enter a start and end date for this trial. If this trial should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -618,7 +618,7 @@ function crl_activity_feat_field_default_field_instances() {
         'increment' => 15,
         'input_format' => 'm/d/Y - H:i:s',
         'input_format_custom' => '',
-        'label_position' => 'above',
+        'label_position' => 'none',
         'text_parts' => array(),
         'year_range' => '-3:+3',
       ),
@@ -824,6 +824,8 @@ function crl_activity_feat_field_default_field_instances() {
   t('Additional Notes');
   t('Attachments');
   t('CRL Status');
+  t('Enter a start and end date for this offer. If this offer should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.');
+  t('Enter a start and end date for this trial. If this trial should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.');
   t('General Offer and Status Notes');
   t('Grouping');
   t('How to Get Started');

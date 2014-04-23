@@ -430,7 +430,9 @@ function crl_resource_get_expiration_countdown($entity, array $options, $name, $
     $statuses = isset($a_entity_wrapper->field_activity_crl_status) ? $a_entity_wrapper->field_activity_crl_status->value() : array();
     if (in_array('license_available', $statuses)) {
       $expire = isset($a_entity_wrapper->field_activity_offer_duration) ? $a_entity_wrapper->field_activity_offer_duration->value() : NULL;
-      if (!empty($expire['value2'])) {
+      // An empty end date, or a matching start/end date, means the field does
+      // not designate an expiration.
+      if (!empty($expire['value2']) && $expire['value2'] != $expire['value']) {
         $days_left_this = floor((strtotime($expire['value2']) + 86400 - time()) / 60 / 60 / 24);
         if (is_null($days_left) || $days_left_this < $days_left) {
           $days_left = $days_left_this;
