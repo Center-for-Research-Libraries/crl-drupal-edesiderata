@@ -116,8 +116,8 @@ function crl_helpers_page_build(&$page) {
 
 
 /**
- * Implements hook_block_info().
- */
+* Implements hook_block_info().
+*/
 function crl_helpers_block_info() {
   // The facet breadcrumb is a block that can be displayed on the top of a
   // resoruce index.
@@ -132,7 +132,7 @@ function crl_helpers_block_info() {
   );
   // The alpha facet sort block shows various A-Z filter and sort options.
   $blocks['crl_helpers_alpha_facet_sort'] = array(
-    'info' => t('CRL Index Alpha Facet and Sort Options'), 
+    'info' => t('CRL Index Alpha Facet and Sort Options'),
     'cache' => DRUPAL_NO_CACHE,
   );
   return $blocks;
@@ -140,8 +140,8 @@ function crl_helpers_block_info() {
 
 
 /**
- * Implements hook_block_view().
- */
+* Implements hook_block_view().
+*/
 function crl_helpers_block_view($delta = '') {
   $block = array();
   switch ($delta) {
