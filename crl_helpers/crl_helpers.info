@@ -7,3 +7,5 @@ package = CRL
 dependencies[] = entity
 dependencies[] = entityreference
 dependencies[] = search_api
+
+files[] = includes/CrlHelpersBlocks.inc
