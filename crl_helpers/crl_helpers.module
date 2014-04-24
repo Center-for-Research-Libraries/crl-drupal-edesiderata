@@ -44,6 +44,11 @@ function crl_helpers_theme() {
       'path' => drupal_get_path('module', 'crl_helpers') . '/themes',
       'file' => 'crl_helpers.theme.inc',
     ),
+    // Theme hook to generate the alpha facet and sort switch to be displayed
+    // at the top of an index.
+    'crl_helpers_alpha_facet_sort' => array(
+      'variables' => array('alpha_block' => '', 'form_options' => array()),
+    ),
   );
 }
 
@@ -402,4 +407,63 @@ function crl_helpers_module_implements_alter(&$implementations, $hook) {
     unset($implementations['crl_helpers']);
     $implementations['crl_helpers'] = $group;
   }
+}
+
+
+/**
+ * Helper to get a country list in a format friendly for select lists.
+ *
+ * This is really just a wrapper for country_get_list() that ensures this
+ * function is available without enabling special modules.
+ */
+function crl_helpers_country_list() {
+  require_once DRUPAL_ROOT . '/includes/locale.inc';
+  return country_get_list();
+}
+
+
+/**
+ * Implements hook_entity_property_info_alter().
+ * 
+ * Define some special resource properties. Note that most of these are just
+ * meant to be used when displaying a single entity or for use in a Search API
+ * index. None of these have a schema so they aren't meant for display with
+ * SQL-based views.
+ */
+function crl_helpers_entity_property_info_alter(&$info) {
+  $properties = &$info['node']['properties'];
+  // Captures the glossary value for a node. This is incldued as a property
+  // so that it can be indexed and used as a facet.
+  $properties['crl_glossary_value'] = array(
+    'label' => t("CRL Glossary Value"),
+    'type' => 'text',
+    'description' => t("Gets CRL glossary value based on the first letter of the sort name."),
+    'getter callback' => 'crl_helpers_get_glossary_value',
+  );
+}
+
+
+/**
+ * Properties callback: get glossary value.
+ * 
+ * @see crl_helpers_entity_property_info_alter().
+ */
+function crl_helpers_get_glossary_value($entity, array $options, $name, $type, $info) {
+  // If we are not working with something that has a title we can just return.
+  if (empty($entity->title)) {
+    return;
+  }
+  $string = '';
+  // See if we have a sorting title to work with.
+  $entity_wrapper = entity_metadata_wrapper('node', $entity);
+  // Look for the sorting field.
+  $string = isset($entity_wrapper->field_title_sort) ? $entity_wrapper->field_title_sort->value() : '';
+  // If we don't have a sorting field use the normal title.
+  $string = empty($string) ? $entity->title : $string;
+  $string = trim($string);
+  // Get first character in a multibyte-safe way.
+  if (!empty($string) && mb_strlen($string)) {
+    return strtoupper(mb_substr($string, 0, 1));
+  }
+  return NULL;
 }

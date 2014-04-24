@@ -16,3 +16,29 @@ function crl_helpers_update_7100() {
   // Set oplist function for field_institution.
   // crl_helpers_set_oplist_function('field_institution', 'crl_helpers_inst_oplist');
 }
+
+
+/**
+ * Set custom allowed values function for field_country.
+ */
+function crl_helpers_update_7101() {
+  // Set oplist function for field_institution. We use
+  // _country_get_predefined_list directly instead of country_get_list() so that
+  // we don't have a dependency on the locale module.
+  crl_helpers_set_oplist_function('field_country', 'crl_helpers_country_list');
+}
+
+
+/**
+ * Helper to associate a custom oplist function with a field.
+ */
+function crl_helpers_set_oplist_function($field_name, $function_name) {
+  $field = field_info_field($field_name);
+  if (!empty($field)) {
+    if (isset($field['settings']['allowed_values'])) {
+      unset($field['settings']['allowed_values']);
+    }
+    $field['settings']['allowed_values_function'] = $function_name;
+    field_update_field($field);
+  }
+}

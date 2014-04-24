@@ -22,6 +22,7 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
   $vars['status'] = array();
   $vars['status_options'] = array();
   $vars['days_left'] = NULL;
+  $vars['extra'] = '';
   // Search API will have bulk-loaded all of our entities already (based on the
   // main view index and any relationships defined there), so we can work with
   // entity data directly after loading it from the static cache.
@@ -38,7 +39,7 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
     $vars['resource_title'] = isset($r_entity_wrapper->title) ? $r_entity_wrapper->title->value() : '';
     $vars['resource_url'] = isset($r_entity_wrapper->url) ? $r_entity_wrapper->url->value() : ''; 
     // Get summary.
-    $body = isset($r_entity_wrapper->url) ? $r_entity_wrapper->body->value() : '';
+    $body = isset($r_entity_wrapper->body) ? $r_entity_wrapper->body->value() : '';
     $vars['summary'] = $body['value'];
     // Get provider title.
     $provider = isset($r_entity_wrapper->field_provider) ? $r_entity_wrapper->field_provider->value()->title : '';
@@ -52,7 +53,6 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
     $vars['status_options'] = crl_resource_activity_status_property_oplist();
     // Check for expiration message, but only on the offer list.
     $vars['days_left'] = isset($r_entity_wrapper->crl_resource_expiration_countdown) ? $r_entity_wrapper->crl_resource_expiration_countdown->value() : NULL;
-    $vars['extra'] = '';
     // Integration with crl_mydes_feat to add a watch flag link to each item
     // in the index.
     if (module_exists('crl_mydes_feat') && user_access('crl access member features')) {
