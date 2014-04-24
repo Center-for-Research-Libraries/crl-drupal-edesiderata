@@ -732,7 +732,10 @@ function crl_resource_block_info() {
  */
 function crl_resource_block_view($delta = '') {
   // Lazy-load our block build methods via an object.
-  $blocks = new CrlResourceBlocks();
+  static $blocks;
+  if (!is_object($blocks)) {
+    $blocks = new CrlResourceBlocks();
+  }
   return $blocks->buildBlock($delta);
 }
 

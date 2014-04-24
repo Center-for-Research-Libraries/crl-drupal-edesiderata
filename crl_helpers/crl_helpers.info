@@ -8,3 +8,5 @@ dependencies[] = crl_helpers_feat
 dependencies[] = entity
 dependencies[] = entityreference
 dependencies[] = search_api
+
+files[] = includes/CrlHelpersBlocks.inc
