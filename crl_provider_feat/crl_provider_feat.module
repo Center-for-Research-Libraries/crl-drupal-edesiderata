@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the CRL Provider Feature feature.
- */
-
-include_once 'crl_provider_feat.features.inc';
