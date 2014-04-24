@@ -1,0 +1,25 @@
+<?php
+
+
+/**
+ * Implements hook_theme().
+ */
+function crl_provider_theme() {
+  $hooks = array(
+    // Theme hook to generate a resource teaser (used in views rows). This will
+    // automatically get used by views based on its name and the standard
+    // template suggestion rules. We must formally declare it to ensure our
+    // custom preprocess functions get used, etc.
+    'views_view_fields__provider_lists' => array(
+      'variables' => array(),
+      'template' => 'views-view-fields--provider-lists',
+    ),
+  );
+  foreach ($hooks as &$hook) {
+    // Make sure that our actual theme hooks and/or preprocessor logic is
+    // included for each entry.
+    $hook['path'] = drupal_get_path('module', 'crl_provider') . '/themes';
+    $hook['file'] = 'crl_provider.theme.inc';
+  }
+  return $hooks;
+}
