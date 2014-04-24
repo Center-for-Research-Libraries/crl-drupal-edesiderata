@@ -180,7 +180,7 @@ function crl_resource_feat_field_group_info() {
     'children' => array(
       0 => 'field_resource_coll_content_tb',
       1 => 'field_resource_languages',
-      2 => 'pseudo_field_resoruce_coll_content_tax',
+      2 => 'pseudo_field_resource_coll_content_tax',
       3 => 'pseudo_field_resource_table_sources',
     ),
     'format_type' => 'div',
@@ -280,8 +280,8 @@ function crl_resource_feat_field_group_info() {
     'weight' => '13',
     'children' => array(
       0 => 'group_details_collection_content',
-      1 => 'group_details_specs',
-      2 => 'group_details_provider_terms',
+      1 => 'group_details_provider_terms',
+      2 => 'group_details_specs',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -648,11 +648,11 @@ function crl_resource_feat_field_group_info() {
     'label' => 'Tabbed',
     'weight' => '0',
     'children' => array(
-      0 => 'group_overview',
-      1 => 'group_details',
+      0 => 'group_analysis',
+      1 => 'group_appendix',
       2 => 'group_crl_details',
-      3 => 'group_analysis',
-      4 => 'group_appendix',
+      3 => 'group_details',
+      4 => 'group_overview',
     ),
     'format_type' => 'htabs',
     'format_settings' => array(

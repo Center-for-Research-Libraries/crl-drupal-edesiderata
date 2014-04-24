@@ -740,7 +740,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'module' => 'tablefield',
         'settings' => array(),
         'type' => 'default',
-        'weight' => 6,
+        'weight' => 907,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1566,7 +1566,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_plain',
-        'weight' => 3,
+        'weight' => 905,
       ),
       'embedded' => array(
         'label' => 'above',
