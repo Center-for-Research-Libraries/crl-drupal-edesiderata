@@ -111,8 +111,8 @@ function crl_helpers_page_build(&$page) {
 
 
 /**
- * Implements hook_block_info().
- */
+* Implements hook_block_info().
+*/
 function crl_helpers_block_info() {
   // The facet breadcrumb is a block that can be displayed on the top of a
   // resoruce index.
@@ -125,13 +125,18 @@ function crl_helpers_block_info() {
     'info' => t('CRL Editor Tools'),
     'cache' => DRUPAL_NO_CACHE,
   );
+  // The alpha facet sort block shows various A-Z filter and sort options.
+  $blocks['crl_helpers_alpha_facet_sort'] = array(
+    'info' => t('CRL Index Alpha Facet and Sort Options'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
   return $blocks;
 }
 
 
 /**
- * Implements hook_block_view().
- */
+* Implements hook_block_view().
+*/
 function crl_helpers_block_view($delta = '') {
   $block = array();
   switch ($delta) {
@@ -175,6 +180,40 @@ function crl_helpers_block_view($delta = '') {
         ),
       );
       $block['content'] = $output;
+      break;
+    case 'crl_helpers_alpha_facet_sort':
+      $alpha_block = array('content' => '');
+      // We only want to show the A-Z facet filters if we are in the default
+      // alphabetical sort mode.
+      if (drupal_match_path(current_path(), 'resources/main') || drupal_match_path(current_path(), 'providers/main')) {
+        // Lookup the delta for our glossary value facet block.
+        foreach (facetapi_get_delta_map() as $delta => $map) {
+          if (strpos($map, 'crl_glossary_value') !== FALSE) {
+            $alpha_block = module_invoke('facetapi', 'block_view', $delta);
+            break;
+          }
+        }
+      }
+      $query = drupal_get_query_parameters();
+      // Structure the pulldown options as path => name pairs and then convert
+      // to detailed multi-dimension array.
+      $form_options = array();
+      if (drupal_match_path(current_path(), 'resources/*')) {
+        $form_options = array('resources/main' => t('Alphabetical'), 'resources/expiring' => t('Expiring first'), 'resources/updated' => t('Updated first'), 'resources/newest' => t('Newest first'));
+      }
+      if (drupal_match_path(current_path(), 'providers/*')) {
+        $form_options = array('providers/main' => t('Alphabetical'), 'providers/updated' => t('Updated first'), 'providers/newest' => t('Newest first'));
+      }
+      foreach ($form_options as $path => &$option) {
+        $text = $option;
+        $option = array(
+          'text' => $text,
+          'url' => url($path, array('query' => $query)),
+          'selected' => drupal_match_path(current_path(), $path),
+        );
+      }
+      $block['subject'] = '';
+      $block['content'] = array('#theme' => 'crl_helpers_alpha_facet_sort', '#alpha_block' => $alpha_block, '#form_options' => $form_options);
       break;
   }
   return $block;

@@ -8,4 +8,4 @@ dependencies[] = entity
 dependencies[] = entityreference
 dependencies[] = search_api
 
-files[] = includes/crl_activity_status_sync.class.inc
+files[] = includes/CrlActivityStatusSync.inc

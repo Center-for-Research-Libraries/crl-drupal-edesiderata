@@ -15,17 +15,17 @@ class CrlResourceDisplayElements {
   protected $entity_wrapper;
   protected $source_status;
   // Properties for our custom fields.
-  public $pseudo_field_resource_status_summary;
-  public $pseudo_field_resource_all_jisc_details;
-  public $pseudo_field_resource_provider_details;
-  public $pseudo_field_resource_activity;
-  public $pseudo_field_resoruce_coll_content_tax;
-  public $pseudo_field_resource_source_summary;
-  public $pseudo_field_resource_table_sources;
-  public $pseudo_field_resource_review_source;
-  public $pseudo_field_resource_added;
-  public $pseudo_field_resource_updated;
-  public $pseudo_field_resource_alerts;
+  public $pseudo_field_resource_status_summary = array();
+  public $pseudo_field_resource_all_jisc_details = array();
+  public $pseudo_field_resource_provider_details = array();
+  public $pseudo_field_resource_activity = array();
+  public $pseudo_field_resource_coll_content_tax = array();
+  public $pseudo_field_resource_source_summary = array();
+  public $pseudo_field_resource_table_sources = array();
+  public $pseudo_field_resource_review_source = array();
+  public $pseudo_field_resource_added = array();
+  public $pseudo_field_resource_updated = array();
+  public $pseudo_field_resource_alerts = array();
   
   /**
    * Constructor
@@ -152,9 +152,9 @@ class CrlResourceDisplayElements {
   }
   
   /**
-   * Build custom field: pseudo_field_resoruce_coll_content_tax
+   * Build custom field: pseudo_field_resource_coll_content_tax
    */
-  protected function build_pseudo_field_resoruce_coll_content_tax() {
+  protected function build_pseudo_field_resource_coll_content_tax() {
     $built = NULL;
     $output = '';
     $output .= drupal_render($this->entity->content['field_subject_area']);
@@ -162,7 +162,7 @@ class CrlResourceDisplayElements {
     if (!empty($output)) {
       $built = array('#markup' => $output);
     }
-    $this->pseudo_field_resoruce_coll_content_tax = $built;
+    $this->pseudo_field_resource_coll_content_tax = $built;
   }
   
   /**
