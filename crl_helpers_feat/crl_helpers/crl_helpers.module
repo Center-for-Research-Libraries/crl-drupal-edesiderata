@@ -473,7 +473,12 @@ function crl_helpers_get_glossary_value($entity, array $options, $name, $type, $
  * Implements hook_node_presave().
  */
 function crl_helpers_node_presave($node) {
-  if (isset($node->preserved_changed_timestamp)) {
-    $node->changed = $node->preserved_changed_timestamp;
+  // During some save efforts we want to preserve the original updated
+  // timestamp, or set one manually. If we have programmatic logic that sets the
+  // manual_changed_timestamp property the following lines will ensure that this
+  // gets used as the "Updated" value once the node is saved (instead of
+  // REQUEST_TIME which node_save tries to set automatically).
+  if (isset($node->manual_changed_timestamp)) {
+    $node->changed = $node->manual_changed_timestamp;
   }
 }
