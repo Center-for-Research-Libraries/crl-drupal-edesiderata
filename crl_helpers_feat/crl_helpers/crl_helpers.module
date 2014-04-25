@@ -467,3 +467,13 @@ function crl_helpers_get_glossary_value($entity, array $options, $name, $type, $
   }
   return NULL;
 }
+
+
+/**
+ * Implements hook_node_presave().
+ */
+function crl_helpers_node_presave($node) {
+  if (isset($node->preserved_changed_timestamp)) {
+    $node->changed = $node->preserved_changed_timestamp;
+  }
+}
