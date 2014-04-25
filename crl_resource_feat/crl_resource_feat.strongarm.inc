@@ -99,10 +99,10 @@ function crl_resource_feat_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '6',
+          'weight' => '7',
         ),
         'redirect' => array(
-          'weight' => '30',
+          'weight' => '11',
         ),
       ),
       'display' => array(
