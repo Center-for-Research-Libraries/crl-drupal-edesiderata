@@ -37,7 +37,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['style_options']['grouping'] = array(
     0 => array(
-      'field' => 'crl_resource_glossary_value',
+      'field' => 'crl_glossary_value',
       'rendered' => 1,
       'rendered_strip' => 1,
     ),
@@ -60,14 +60,14 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['relationships']['crl_resource_backref']['id'] = 'crl_resource_backref';
   $handler->display->display_options['relationships']['crl_resource_backref']['table'] = 'search_api_index_title_search_index';
   $handler->display->display_options['relationships']['crl_resource_backref']['field'] = 'crl_resource_backref';
-  /* Field: Indexed Node: CRL Resource Glossary Value */
-  $handler->display->display_options['fields']['crl_resource_glossary_value']['id'] = 'crl_resource_glossary_value';
-  $handler->display->display_options['fields']['crl_resource_glossary_value']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['fields']['crl_resource_glossary_value']['field'] = 'crl_resource_glossary_value';
-  $handler->display->display_options['fields']['crl_resource_glossary_value']['label'] = '';
-  $handler->display->display_options['fields']['crl_resource_glossary_value']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['crl_resource_glossary_value']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['crl_resource_glossary_value']['link_to_entity'] = 0;
+  /* Field: Indexed Node: CRL Glossary Value */
+  $handler->display->display_options['fields']['crl_glossary_value']['id'] = 'crl_glossary_value';
+  $handler->display->display_options['fields']['crl_glossary_value']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['fields']['crl_glossary_value']['field'] = 'crl_glossary_value';
+  $handler->display->display_options['fields']['crl_glossary_value']['label'] = '';
+  $handler->display->display_options['fields']['crl_glossary_value']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['crl_glossary_value']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['crl_glossary_value']['link_to_entity'] = 0;
   /* Field: Global: Custom text */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
@@ -88,9 +88,9 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['title_1']['relationship'] = 'crl_resource_backref';
   $handler->display->display_options['fields']['title_1']['link_to_entity'] = 0;
   /* Sort criterion: Indexed Node: Sorting Title */
-  $handler->display->display_options['sorts']['field_resource_title_for_sort']['id'] = 'field_resource_title_for_sort';
-  $handler->display->display_options['sorts']['field_resource_title_for_sort']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['sorts']['field_resource_title_for_sort']['field'] = 'field_resource_title_for_sort';
+  $handler->display->display_options['sorts']['field_title_sort']['id'] = 'field_title_sort';
+  $handler->display->display_options['sorts']['field_title_sort']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['sorts']['field_title_sort']['field'] = 'field_title_sort';
   /* Filter criterion: Indexed Node: Content type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'search_api_index_title_search_index';

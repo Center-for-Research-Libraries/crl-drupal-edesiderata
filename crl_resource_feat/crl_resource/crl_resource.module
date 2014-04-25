@@ -269,14 +269,6 @@ function crl_resource_entity_property_info_alter(&$info) {
     'description' => t("Get the aggregate negative interest count for a resoruce."),
     'getter callback' => 'crl_resource_get_interest_count_down',
   );
-  // Captures the glossary value for a resource. This is incldued as a property
-  // so that it can be indexed and used as a facet.
-  $properties['crl_resource_glossary_value'] = array(
-    'label' => t("CRL Resource Glossary Value"),
-    'type' => 'text',
-    'description' => t("Gets CRL resource glossary value based on the first letter of the sort name."),
-    'getter callback' => 'crl_resource_get_glossary_value',
-  );
 }
 
 
@@ -530,35 +522,6 @@ function crl_resource_get_interest_count($entity, $option) {
 
 
 /**
- * Properties callback: get glossary value.
- * 
- * @see crl_resource_entity_property_info_alter().
- */
-function crl_resource_get_glossary_value($entity, array $options, $name, $type, $info) {
-  // If we are not working with a resoruce (e.g., building a generic node search
-  // index), we can just return a NULL value.
-  if (empty($entity->type) || $entity->type != 'resource') {
-    return;
-  }
-  $string = '';
-  // See if we have a sorting title to work with.
-  $entity_wrapper = entity_metadata_wrapper('node', $entity);
-  $sort_title = isset($entity_wrapper->field_resource_title_for_sort) ? $entity_wrapper->field_resource_title_for_sort->value() : '';
-  if (!empty($sort_title)) {
-    $string = $sort_title; 
-  }
-  elseif (!empty($entity->title)) {
-    $string = $entity->title;
-  }
-  // Get first character in a multibyte-safe way.
-  if (!empty($string) && mb_strlen($string)) {
-    return strtoupper(mb_substr($string, 0, 1));
-  }
-  return NULL;
-}
-
-
-/**
  * Helper to get wrappers for all entites involved in a resource/activity
  * relationship.
  * 
@@ -716,11 +679,6 @@ function crl_resource_block_info() {
   // The common input block shows thumbs up/down vote options.
   $blocks['crl_resource_common_input'] = array(
     'info' => t('CRL Common Resource Vote and Rate Input'), 
-    'cache' => DRUPAL_NO_CACHE,
-  );
-  // The common input block shows thumbs up/down vote options.
-  $blocks['crl_resource_alpha_facet_sort'] = array(
-    'info' => t('CRL Resource Index Alpha Facet and Sort Options'), 
     'cache' => DRUPAL_NO_CACHE,
   );
   return $blocks;

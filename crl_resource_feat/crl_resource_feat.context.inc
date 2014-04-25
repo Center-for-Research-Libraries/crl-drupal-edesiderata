@@ -26,9 +26,9 @@ function crl_resource_feat_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'crl_resource-crl_resource_alpha_facet_sort' => array(
-          'module' => 'crl_resource',
-          'delta' => 'crl_resource_alpha_facet_sort',
+        'crl_helpers-crl_helpers_alpha_facet_sort' => array(
+          'module' => 'crl_helpers',
+          'delta' => 'crl_helpers_alpha_facet_sort',
           'region' => 'content',
           'weight' => '-49',
         ),
