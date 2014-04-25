@@ -88,39 +88,4 @@ class CrlResourceBlocks {
     return $block;
   }
 
-  /**
-   * Build crl_resource_alpha_facet_sort.
-   */
-  protected function crl_resource_alpha_facet_sort_build() {
-    $block = array();
-    $alpha_block = array('content' => '');
-    // We only want to show the A-Z facet filters if we are in the default
-    // alphabetical sort mode.
-    if (drupal_match_path(current_path(), 'resources/main')) {
-      // Lookup the delta for our glossary value facet block.
-      foreach (facetapi_get_delta_map() as $delta => $map) {
-        if (strpos($map, 'crl_resource_glossary_value') !== FALSE) {
-          $alpha_block = module_invoke('facetapi', 'block_view', $delta);
-          break;
-        }
-      }
-    }
-    $query = drupal_get_query_parameters();
-    // Structure the pulldown options as path => name pairs and then convert
-    // to detailed multi-dimension array.
-    $form_options = array();
-    $form_options = array('resources/main' => t('Alphabetical'), 'resources/expiring' => t('Expiring first'), 'resources/updated' => t('Updated first'), 'resources/newest' => t('Newest first'));
-    foreach ($form_options as $path => &$option) {
-      $text = $option;
-      $option = array(
-        'text' => $text,
-        'url' => url($path, array('query' => $query)),
-        'selected' => drupal_match_path(current_path(), $path),
-      );
-    }
-    $block['subject'] = '';
-    $block['content'] = array('#theme' => 'crl_resource_alpha_facet_sort', '#alpha_block' => $alpha_block, '#form_options' => $form_options);
-    return $block;
-  }
-
 }

@@ -29,7 +29,6 @@ function crl_search_feat_default_search_api_index() {
         "crl_resource_status_backref" : { "type" : "list\\u003Cstring\\u003E" },
         "crl_resource_master_update_timestamp" : { "type" : "date" },
         "crl_resource_expiration_countdown" : { "type" : "integer" },
-        "crl_resource_glossary_value" : { "type" : "string" },
         "field_subject_area" : { "type" : "list\\u003Cinteger\\u003E", "entity_type" : "taxonomy_term" },
         "field_resource_title_for_sort" : { "type" : "string" },
         "field_jisc_id" : { "type" : "integer" },
