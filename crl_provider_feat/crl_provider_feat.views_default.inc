@@ -62,10 +62,6 @@ function crl_provider_feat_views_default_views() {
   $handler->display->display_options['sorts']['field_title_sort']['id'] = 'field_title_sort';
   $handler->display->display_options['sorts']['field_title_sort']['table'] = 'search_api_index_title_search_index';
   $handler->display->display_options['sorts']['field_title_sort']['field'] = 'field_title_sort';
-  /* Sort criterion: Indexed Node: Title */
-  $handler->display->display_options['sorts']['title']['id'] = 'title';
-  $handler->display->display_options['sorts']['title']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['sorts']['title']['field'] = 'title';
   /* Filter criterion: Indexed Node: Content type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'search_api_index_title_search_index';
