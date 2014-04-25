@@ -34,8 +34,9 @@ class CrlHelpersBlocks {
       }
       $extra = '';
       // Integration with the crl_mydes_feat module to inject a save this
-      // search option into the breadcrumb block.
-      if (module_exists('crl_mydes_feat')) {
+      // search option into the breadcrumb block (only applicable to resource
+      // list).
+      if (module_exists('crl_mydes_feat') && drupal_match_path(current_path(), 'resources/*')) {
         $extra = crl_mydes_feat_build_saved_search_form();
       }
       $output = array(
