@@ -598,7 +598,7 @@ function crl_provider_feat_field_default_field_instances() {
     'bundle' => 'provider',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'This value is used for sorting when multiple resources are listed in indices. Remove any articles (such as "the") from the beginning of the title to craft this sorting title.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -622,7 +622,7 @@ function crl_provider_feat_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_title_sort',
     'label' => 'Sorting Title',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'text_processing' => 0,
       'user_register_form' => FALSE,
@@ -653,6 +653,7 @@ function crl_provider_feat_field_default_field_instances() {
   t('Resources by this Provider');
   t('Sorting Title');
   t('Still in Operation');
+  t('This value is used for sorting when multiple resources are listed in indices. Remove any articles (such as "the") from the beginning of the title to craft this sorting title.');
 
   return $field_instances;
 }

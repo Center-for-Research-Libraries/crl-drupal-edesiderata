@@ -58,11 +58,6 @@ function crl_provider_feat_views_default_views() {
   $handler->display->display_options['fields']['nothing']['label'] = '';
   $handler->display->display_options['fields']['nothing']['alter']['text'] = 'This is a placeholder field. The real content should be rendered through the appropriate theme hooks and preprocessors.';
   $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
-  /* Field: Indexed Node: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['link_to_entity'] = 1;
   /* Sort criterion: Indexed Node: Sorting Title */
   $handler->display->display_options['sorts']['field_title_sort']['id'] = 'field_title_sort';
   $handler->display->display_options['sorts']['field_title_sort']['table'] = 'search_api_index_title_search_index';
