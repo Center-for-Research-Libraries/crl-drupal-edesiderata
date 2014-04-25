@@ -119,6 +119,11 @@ function drush_crl_helpers_fieldcopy($source_field = NULL, $target_field = NULL,
 
 function _crl_helpers_field_copy($source_field, $target_field, $entity_id, $entity_type) {
   $entity = entity_load_single($entity_type, $entity_id);
+  // Try to preserve the original updated timestamp.
+  // @see crl_helpers_node_presave()
+  if (isset($entity->changed)) {
+    $entity->manual_changed_timestamp = $entity->changed;
+  }
   $entity_wrapper = entity_metadata_wrapper($entity_type, $entity);
   if(isset($entity_wrapper->{$source_field['field_name']})) {
     $value = $entity_wrapper->{$source_field['field_name']};

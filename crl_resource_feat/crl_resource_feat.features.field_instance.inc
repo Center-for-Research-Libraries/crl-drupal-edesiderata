@@ -253,7 +253,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 5,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -299,7 +299,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 10,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -344,7 +344,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -390,7 +390,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 11,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1765,7 +1765,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1807,7 +1807,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 13,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2296,7 +2296,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2341,7 +2341,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2384,10 +2384,9 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 930,
+        'type' => 'hidden',
+        'weight' => 2,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2431,7 +2430,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 4,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2485,7 +2484,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 2,
+        'weight' => 3,
       ),
       'embedded' => array(
         'label' => 'above',
