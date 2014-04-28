@@ -25,8 +25,9 @@ function crl_provider_feat_field_group_info() {
     'children' => array(
       0 => 'field_provider_address',
       1 => 'field_provider_contacts',
-      2 => 'field_title_alt',
-      3 => 'field_provider_current_owner',
+      2 => 'field_provider_current_owner',
+      3 => 'field_title_alt',
+      4 => 'field_contacts',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -55,9 +56,10 @@ function crl_provider_feat_field_group_info() {
     'weight' => '0',
     'children' => array(
       0 => 'body',
-      1 => 'field_provider_in_operation',
+      1 => 'field_country',
       2 => 'field_postal_code',
-      3 => 'field_country',
+      3 => 'field_provider_in_operation',
+      4 => 'field_link',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -110,7 +112,7 @@ function crl_provider_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'System Fields',
-    'weight' => '11',
+    'weight' => '14',
     'children' => array(
       0 => 'field_jisc_guid',
       1 => 'field_jisc_id',
@@ -146,8 +148,8 @@ function crl_provider_feat_field_group_info() {
     'label' => 'Tabbed',
     'weight' => '0',
     'children' => array(
-      0 => 'group_overview',
-      1 => 'group_details',
+      0 => 'group_details',
+      1 => 'group_overview',
       2 => 'group_resources',
     ),
     'format_type' => 'htabs',

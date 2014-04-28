@@ -16,7 +16,7 @@ function crl_provider_install() {
 
 
 /**
- * Set provider title_sort to match title.
+ * Bulk set initial provider details for existing content.
  */
 function crl_provider_update_7100() {
   // Bulk prep any existing provider data.
@@ -42,13 +42,31 @@ function crl_provider_bulk_prep_providers() {
       // Preserve changed timestamp.
       $node->manual_changed_timestamp = $node->changed;
       $wrapper = entity_metadata_wrapper('node', $node);
+      // Set sorting title to match title (as common starting point).
       if (isset($wrapper->field_title_sort)) {
         $wrapper->field_title_sort->set($node->title);
       }
+      // Add "In Operation" field to "yes" (as common starting point).
       if (isset($wrapper->field_provider_in_operation)) {
         $wrapper->field_provider_in_operation->set(TRUE);
       }
+      // Copy old contacts and address details into new multu-valued contacts.
+      if (isset($wrapper->field_provider_address)) {
+        $address = $wrapper->field_provider_address->value();
+        if (!empty($address)) {
+          $wrapper->field_contacts[0]->set($wrapper->field_provider_address->value());
+        }
+      }
+      if (isset($wrapper->field_provider_contacts)) {
+        $contacts = $wrapper->field_provider_contacts->value();
+        if (!empty($contacts)) {
+          $wrapper->field_contacts[1]->set($wrapper->field_provider_contacts->value());
+        }
+      }
       $wrapper->save();
+      // Also bulk enable comments.
+      db_query("UPDATE node SET comment = 2 WHERE type = 'provider'");
+      db_query("UPDATE node_revision SET comment = 2 WHERE nid IN (SELECT nid FROM node WHERE node.type = 'provider')");
     }
   }
 }
