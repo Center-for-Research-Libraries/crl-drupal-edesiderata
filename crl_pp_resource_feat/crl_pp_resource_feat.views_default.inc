@@ -128,10 +128,10 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['value_1']['label'] = 'Member Library Holdings';
   $handler->display->display_options['fields']['value_1']['precision'] = '0';
   $handler->display->display_options['fields']['value_1']['appearance'] = 'rate_views_widget_compact';
-  /* Sort criterion: Content: Sorting Title (field_resource_title_for_sort) */
-  $handler->display->display_options['sorts']['field_resource_title_for_sort_value']['id'] = 'field_resource_title_for_sort_value';
-  $handler->display->display_options['sorts']['field_resource_title_for_sort_value']['table'] = 'field_data_field_resource_title_for_sort';
-  $handler->display->display_options['sorts']['field_resource_title_for_sort_value']['field'] = 'field_resource_title_for_sort_value';
+  /* Sort criterion: Content: Sorting Title (field_title_sort) */
+  $handler->display->display_options['sorts']['field_title_sort_value']['id'] = 'field_title_sort_value';
+  $handler->display->display_options['sorts']['field_title_sort_value']['table'] = 'field_data_field_title_sort';
+  $handler->display->display_options['sorts']['field_title_sort_value']['field'] = 'field_title_sort_value';
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';

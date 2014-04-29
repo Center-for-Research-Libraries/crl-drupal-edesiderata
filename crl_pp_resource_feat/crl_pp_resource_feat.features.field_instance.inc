@@ -212,7 +212,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 2,
+        'weight' => 4,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -254,7 +254,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 5,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -285,7 +285,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 9,
+      'weight' => 5,
     ),
   );
 
@@ -440,7 +440,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 9,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -485,7 +485,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 10,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -530,7 +530,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -674,7 +674,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -813,7 +813,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 11,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -859,7 +859,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 12,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -939,18 +939,20 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_resource_title_for_sort'
-  $field_instances['node-pp_resource-field_resource_title_for_sort'] = array(
+  // Exported field_instance: 'node-pp_resource-field_pp_summary_comments'
+  $field_instances['node-pp_resource-field_pp_summary_comments'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'This value is used for sorting when multiple resources are listed in indices. Remove any articles (such as "the") from the beginning of the title to craft this sorting title.',
+    'description' => 'Enter summary of Comments from the Purchase Proposal that relates to this shared purchase.
+<b>This field will be used for Shared Purchase and will be hidden if not filled.</b>',
     'display' => array(
       'default' => array(
         'label' => 'above',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 4,
+        'type' => 'text_default',
+        'weight' => 2,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -962,17 +964,62 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_resource_title_for_sort',
+    'field_name' => 'field_pp_summary_comments',
+    'label' => 'Purchase Proposal Comments Summary',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+      'wysiwyg_unload' => 0,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 8,
+    ),
+  );
+
+  // Exported field_instance: 'node-pp_resource-field_title_sort'
+  $field_instances['node-pp_resource-field_title_sort'] = array(
+    'bundle' => 'pp_resource',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'This value is used for sorting when multiple resources are listed in indices. Remove any articles (such as "the") from the beginning of the title to craft this sorting title.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_title_sort',
     'label' => 'Sorting Title',
     'required' => 1,
     'settings' => array(
       'text_processing' => 0,
       'user_register_form' => FALSE,
-      'wysiwyg_unload' => 0,
     ),
     'widget' => array(
       'active' => 1,
@@ -1187,7 +1234,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 9,
+      'weight' => 5,
     ),
   );
 
@@ -1890,8 +1937,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_resource_title_for_sort'
-  $field_instances['node-spp_resource-field_resource_title_for_sort'] = array(
+  // Exported field_instance: 'node-spp_resource-field_title_sort'
+  $field_instances['node-spp_resource-field_title_sort'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
     'deleted' => 0,
@@ -1901,7 +1948,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 1,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1913,17 +1960,16 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_resource_title_for_sort',
+    'field_name' => 'field_title_sort',
     'label' => 'Sorting Title',
     'required' => 1,
     'settings' => array(
       'text_processing' => 0,
       'user_register_form' => FALSE,
-      'wysiwyg_unload' => 0,
     ),
     'widget' => array(
       'active' => 1,
