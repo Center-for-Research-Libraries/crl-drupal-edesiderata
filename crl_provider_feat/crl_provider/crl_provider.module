@@ -23,3 +23,34 @@ function crl_provider_theme() {
   }
   return $hooks;
 }
+
+
+/**
+ * Implements hook_block_info().
+ */
+function crl_provider_block_info() {
+  // The resource summary is a block at the top of each resource.
+  $blocks['crl_provider_summary'] = array(
+    'info' => t('CRL Provider Summary'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // The "back to index" block shows a caclulated back link for navigation.
+  $blocks['crl_provider_back_to_index'] = array(
+    'info' => t('CRL Provider to Index'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function crl_provider_block_view($delta = '') {
+  // Lazy-load our block build methods via an object.
+  static $blocks;
+  if (!is_object($blocks)) {
+    $blocks = new CrlProviderBlocks();
+  }
+  return $blocks->buildBlock($delta);
+}
