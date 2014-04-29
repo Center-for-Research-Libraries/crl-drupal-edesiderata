@@ -9,3 +9,5 @@ dependencies[] = entity
 dependencies[] = entityreference
 dependencies[] = search_api
 dependencies[] = facetapi
+
+files[] = includes/CrlProviderDisplayElements.inc
