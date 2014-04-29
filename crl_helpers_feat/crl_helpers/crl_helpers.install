@@ -7,6 +7,16 @@
 
 
 /**
+ * Implements hook_install.
+ */
+function crl_helpers_install() {
+  // Assuming field_country is in place already (probably as part of helpers
+  // feature), set its oplist.
+  crl_helpers_set_oplist_function('field_country', 'crl_helpers_country_list');
+}
+
+
+/**
  * Set custom allowed values function for field_institution.
  * 
  * This handleing has been moved to crl_user, but we keep the record here to
@@ -22,9 +32,7 @@ function crl_helpers_update_7100() {
  * Set custom allowed values function for field_country.
  */
 function crl_helpers_update_7101() {
-  // Set oplist function for field_institution. We use
-  // _country_get_predefined_list directly instead of country_get_list() so that
-  // we don't have a dependency on the locale module.
+  // Set oplist function for field_country.
   crl_helpers_set_oplist_function('field_country', 'crl_helpers_country_list');
 }
 

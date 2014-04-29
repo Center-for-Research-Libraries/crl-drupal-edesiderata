@@ -83,7 +83,7 @@ class CrlResourceBlocks {
     // Make sure block should be visible
     if (isset($node->type) && $node->type == 'resource' && $user->uid) {
       $block['subject'] = t('Interested in this Resource?');
-      $block['content'] = array('#markup' => rate_generate_widget(1, 'node', $nid));
+      $block['content'] = array('#markup' => rate_embed($node, 'resource_interest'));
     }
     return $block;
   }

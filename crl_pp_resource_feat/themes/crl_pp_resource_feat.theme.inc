@@ -16,7 +16,11 @@ function crl_pp_resource_feat_preprocess_rate_widget__pp_preference(&$variables)
   // module it does not dynamically lookup the css and js paths correctly, so
   // if modules have moved, the widget can break. To get around this, we just
   // formally declare the fivestar css and js here to make sure it's included.
-  drupal_add_css(drupal_get_path('module', 'rate') . '/templates/fivestar/fivestar.css');
+  drupal_add_css(drupal_get_path('module', 'rate') . '/templates/fivestar/fivestar.css', array(
+    'type' => 'file',
+    //'group' => 2000, // Needed for omega support - see https://drupal.org/node/1263750
+    //'weight' => -100
+  ));
   drupal_add_js(drupal_get_path('module', 'rate') . '/templates/fivestar/fivestar.js');
   // Get/set variables needed for calculations.
   $results = $variables['results'];

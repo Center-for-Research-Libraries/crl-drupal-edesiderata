@@ -214,7 +214,7 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Administrative Fields',
-    'weight' => '4',
+    'weight' => '3',
     'children' => array(
       0 => 'field_pp_proposal_purchased',
       1 => 'field_pp_related',
@@ -250,12 +250,12 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Administrative Fields',
-    'weight' => '4',
+    'weight' => '3',
     'children' => array(
-      0 => 'field_pp_proposal_purchased',
-      1 => 'field_pp_related',
-      2 => 'field_pp_sp_target_price',
-      3 => 'field_fy',
+      0 => 'field_fy',
+      1 => 'field_pp_proposal_purchased',
+      2 => 'field_pp_related',
+      3 => 'field_pp_sp_target_price',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -399,7 +399,7 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'System Fields',
-    'weight' => '10',
+    'weight' => '6',
     'children' => array(
       0 => 'field_voting_results',
     ),
@@ -431,7 +431,7 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'System Fields',
-    'weight' => '10',
+    'weight' => '6',
     'children' => array(
       0 => 'field_voting_results',
     ),
@@ -490,7 +490,7 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'tabbed',
-    'weight' => '8',
+    'weight' => '4',
     'children' => array(
       0 => 'group_details',
       1 => 'group_rationale',
@@ -518,9 +518,9 @@ function crl_pp_resource_feat_field_group_info() {
     'label' => 'Tabbed',
     'weight' => '0',
     'children' => array(
-      0 => 'group_vote_results',
-      1 => 'group_details',
-      2 => 'group_rationale',
+      0 => 'group_details',
+      1 => 'group_rationale',
+      2 => 'group_vote_results',
     ),
     'format_type' => 'htabs',
     'format_settings' => array(
@@ -543,7 +543,7 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'tabbed',
-    'weight' => '8',
+    'weight' => '4',
     'children' => array(
       0 => 'group_details',
       1 => 'group_rationale',

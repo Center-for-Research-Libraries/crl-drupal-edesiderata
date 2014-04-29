@@ -84,7 +84,7 @@ function crl_pp_resource_feat_block_view($delta = '') {
           }
           else {
             $block['subject'] = t('Voting');
-            $block['content'] = crl_pp_resource_feat_get_vote_input($node);
+            $block['content'] = array('#markup' => crl_pp_resource_feat_get_vote_input($node));
           }
           break;
         // Build the back to index block.
