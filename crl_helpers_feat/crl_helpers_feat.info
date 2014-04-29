@@ -45,4 +45,5 @@ features[variable][] = mimemail_name
 features[variable][] = mimemail_simple_address
 features[variable][] = mimemail_sitestyle
 features[variable][] = mimemail_textonly
+features[variable][] = rate_widgets
 project path = sites/all/modules/crl_edesiderata

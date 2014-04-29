@@ -9,8 +9,8 @@ class CrlResourceBlocks {
    * Common public build method that calles specific protected build method.
    */
   public function buildBlock($block) {
-    if (method_exists($this, $block . '_build')) {
-      return $this->{$block . '_build'}();
+    if (method_exists($this, 'build_' . $block)) {
+      return $this->{'build_' . $block}();
     }
     return array();
   }
@@ -18,7 +18,7 @@ class CrlResourceBlocks {
   /**
    * Build crl_resource_summary.
    */
-  protected function crl_resource_summary_build() {
+  protected function build_crl_resource_summary() {
     $block = array();
     $nid = arg(1); // Assumes block is placed only one node page.
     $status = array();
@@ -40,7 +40,7 @@ class CrlResourceBlocks {
     $block['subject'] = '';
     $block['content'] = array(
       'resource_summary' => array(
-        '#theme' => 'crl_resource_summary',
+        '#theme' => 'crl_helpers_summary',
         '#status' => $status,
         '#status_options' => $status_options,
         '#comment_count' => $comment_count,
@@ -55,7 +55,7 @@ class CrlResourceBlocks {
   /**
    * Build crl_resource_back_to_index.
    */
-  protected function crl_resource_back_to_index_build() {
+  protected function build_crl_resource_back_to_index() {
     $block = array();
     $browser_back = FALSE;
     $url = url('resources/main');
@@ -63,7 +63,7 @@ class CrlResourceBlocks {
     $block['subject'] = '';
     $block['content'] = array(
       'back_link' => array(
-        '#theme' => 'crl_resource_back_to_index',
+        '#theme' => 'crl_helpers_back_to_index',
         '#url' => $url,
         '#back_text' => t('Back to listings'),
         '#browser_back' => $browser_back,
@@ -75,7 +75,7 @@ class CrlResourceBlocks {
   /**
    * Build crl_resource_common_input.
    */
-  protected function crl_resource_common_input_build() {
+  protected function build_crl_resource_common_input() {
     $block = array();
     global $user;
     $nid = arg(1);

@@ -9,8 +9,8 @@ class CrlHelpersBlocks {
    * Common public build method that calles specific protected build method.
    */
   public function buildBlock($block) {
-    if (method_exists($this, $block . '_build')) {
-      return $this->{$block . '_build'}();
+    if (method_exists($this, 'build_' . $block)) {
+      return $this->{'build_' . $block}();
     }
     return array();
   }
@@ -18,7 +18,7 @@ class CrlHelpersBlocks {
   /**
    * Build crl_helpers_facet_breadcrumb.
    */
-  protected function crl_helpers_facet_breadcrumb_build() {
+  protected function build_crl_helpers_facet_breadcrumb() {
     $block = array();
     $output = '';
     if (isset($_GET['f']) || !empty($_GET['search_api_views_fulltext'])) {
@@ -55,7 +55,7 @@ class CrlHelpersBlocks {
   /**
    * Build crl_helpers_editor_tools.
    */
-  protected function crl_helpers_editor_tools_build() {
+  protected function build_crl_helpers_editor_tools() {
     $block = array();
     $block['subject'] = '';
     $output = array(
@@ -70,7 +70,7 @@ class CrlHelpersBlocks {
   /**
    * Build crl_helpers_alpha_facet_sort.
    */
-  protected function crl_helpers_alpha_facet_sort_build() {
+  protected function build_crl_helpers_alpha_facet_sort() {
     $block = array();
     $alpha_block = array('content' => '');
     // We only want to show the A-Z facet filters if we are in the default

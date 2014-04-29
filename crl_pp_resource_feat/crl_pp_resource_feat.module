@@ -99,7 +99,7 @@ function crl_pp_resource_feat_block_view($delta = '') {
             $block['subject'] = '';
             $block['content'] = array(
               'back_link' => array(
-                '#theme' => 'crl_resource_back_to_index',
+                '#theme' => 'crl_helpers_back_to_index',
                 '#url' => $url,
                 '#back_text' => t('Back to ballot index'),
                 '#browser_back' => $browser_back,
@@ -348,7 +348,7 @@ function crl_pp_resource_feat_node_view($node, $view_mode, $langcode) {
     // This is done as a conditional check so we don't make crl_resource a
     // dependency.
     if (module_exists('crl_resource')) {
-      $built_notice = array('#theme' => 'crl_resource_pseudo_field', '#label' => t('Source'), '#output' => $message);
+      $built_notice = array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('Source'), '#output' => $message);
     }
     else {
       $built_notice = array('#markup' => $message);

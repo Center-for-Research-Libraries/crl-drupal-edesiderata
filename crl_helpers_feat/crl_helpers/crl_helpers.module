@@ -49,6 +49,18 @@ function crl_helpers_theme() {
     'crl_helpers_alpha_facet_sort' => array(
       'variables' => array('alpha_block' => '', 'form_options' => array()),
     ),
+    // Theme hook to generate a full entry summary block.
+    'crl_helpers_summary' => array(
+      'variables' => array('status' => array(), 'status_options' => array(), 'comment_count' => 0, 'vote_average' => 0, 'interest_count_up' => 0, 'interest_count_down' => 0),
+    ),
+    // Theme hook to generate a "back to index" link.
+    'crl_helpers_back_to_index' => array(
+      'variables' => array('url' => '', 'back_text' => t('Back to index'), 'browser_back' => FALSE),
+    ),
+    // Theme hook for a generic pseudo field.
+    'crl_helpers_pseudo_field' => array(
+      'variables' => array('output' => '', 'label' => '', 'inline' => FALSE),
+    ),
   );
 }
 
