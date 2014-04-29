@@ -99,10 +99,10 @@ function crl_provider_feat_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '15',
+          'weight' => '6',
         ),
         'redirect' => array(
-          'weight' => '16',
+          'weight' => '7',
         ),
       ),
       'display' => array(),
