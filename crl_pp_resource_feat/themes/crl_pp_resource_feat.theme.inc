@@ -10,17 +10,8 @@
  * Preprocess function for the PP preference widget (taken from fivestar).
  */
 function crl_pp_resource_feat_preprocess_rate_widget__pp_preference(&$variables) {
-  // This widget is based on fivestar which means that rate will automatically
-  // try to include its own fivestart css and js along with some wrapper divs
-  // that the css and js reference. However, due to deficiencies in the rate
-  // module it does not dynamically lookup the css and js paths correctly, so
-  // if modules have moved, the widget can break. To get around this, we just
-  // formally declare the fivestar css and js here to make sure it's included.
-  drupal_add_css(drupal_get_path('module', 'rate') . '/templates/fivestar/fivestar.css', array(
-    'type' => 'file',
-    //'group' => 2000, // Needed for omega support - see https://drupal.org/node/1263750
-    //'weight' => -100
-  ));
+  // Borrow rate's fivestar css and js for this custom widget.
+  drupal_add_css(drupal_get_path('module', 'rate') . '/templates/fivestar/fivestar.css');
   drupal_add_js(drupal_get_path('module', 'rate') . '/templates/fivestar/fivestar.js');
   // Get/set variables needed for calculations.
   $results = $variables['results'];

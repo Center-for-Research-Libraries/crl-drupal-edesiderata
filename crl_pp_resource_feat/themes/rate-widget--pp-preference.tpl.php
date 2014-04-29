@@ -7,7 +7,7 @@ if ($mode == RATE_FULL || $mode == RATE_DISABLED) {
 }
 
 if ($mode == RATE_FULL || $mode == RATE_COMPACT) {
-  print '<div class="vote-user-wrapper">';
+  print '<div class="vote-user-wrapper rate-widget-fivestar">';
   print '<span class="vote-results ' . $your_vote_class . '">' . $your_vote_status . '</span>';
   print '<div class="rate-user">' . theme('item_list', array('items' => $stars_user)) . '</div>';
   print '<span class="vote-results">' . $your_vote . '</span>';
@@ -15,7 +15,7 @@ if ($mode == RATE_FULL || $mode == RATE_COMPACT) {
   print '</div>';
 }
 
-print '<div class="vote-summary-wrapper">';
+print '<div class="vote-summary-wrapper rate-widget-fivestar">';
 print '<span class="vote-results">' . $count_text .  '</span>';
 print theme('item_list', array('items' => $stars_all));
 print '<span class="vote-results">' . $av_vote . '</span>';
