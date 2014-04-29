@@ -79,7 +79,10 @@ function crl_resource_field_extra_fields() {
 function crl_resource_node_view($node, $view_mode, $langcode) {
   if ($node->type == 'resource') {
     $display_elements = new CrlResourceDisplayElements($node);
-    $node->content = array_merge($node->content, get_object_vars($display_elements->build()));
+    $extra_fields = crl_resource_field_extra_fields();
+    foreach($extra_fields['node']['resource']['display'] as $field_name => $details) {
+      $node->content[$field_name] = $display_elements->buildField($field_name);
+    }
   }
 }
 
@@ -106,10 +109,6 @@ function crl_resource_node_view_alter(&$build) {
  */
 function crl_resource_theme() {
   $hooks = array(
-    // Theme hook for a generic pseudo field.
-    'crl_resource_pseudo_field' => array(
-      'variables' => array('output' => '', 'label' => '', 'inline' => FALSE),
-    ),
     // Theme hook to generate a resource status summary field (used at top of
     // the activity tab within a resource).
     'crl_resource_field_status_summary' => array(
@@ -119,14 +118,6 @@ function crl_resource_theme() {
     'crl_resource_publisher_legend' => array(
       'variables' => array('icon_alt_title' => '', 'icon_text' => ''),
     ),
-    // Theme hook to generate a full resource summary block.
-    'crl_resource_summary' => array(
-      'variables' => array('status' => array(), 'status_options' => array(), 'comment_count' => 0, 'vote_average' => 0, 'interest_count_up' => 0, 'interest_count_down' => 0),
-    ),
-    // Theme hook to generate a "back to index" link.
-    'crl_resource_back_to_index' => array(
-      'variables' => array('url' => '', 'back_text' => t('Back to index'), 'browser_back' => FALSE),
-    ),
     // Theme hook to generate a resource alert tag.
     'crl_resource_alert_tag' => array(
       'variables' => array('url' => ''),
@@ -134,11 +125,6 @@ function crl_resource_theme() {
     // Theme hook to generate a countdown alert tag.
     'crl_resource_countdown_alert_tag' => array(
       'variables' => array('url' => '', 'days_left' => NULL, 'long' => FALSE),
-    ),
-    // Theme hook to generate the alpha facet and sort switch to be displayed
-    // at the top of a resource index..
-    'crl_resource_alpha_facet_sort' => array(
-      'variables' => array('alpha_block' => '', 'form_options' => array()),
     ),
     // Theme hook to generate a resource teaser (used in views rows). This will
     // automatically get used by views based on its name and the standard
