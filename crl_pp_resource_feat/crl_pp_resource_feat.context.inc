@@ -52,18 +52,18 @@ function crl_pp_resource_feat_context_default_contexts() {
         'pp_resource' => 'pp_resource',
       ),
       'options' => array(
-        'node_form' => '1',
+        'node_form' => '0',
       ),
     ),
   );
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'crl_pp_resource_feat-crl_pp_resource_back_to_index' => array(
-          'module' => 'crl_pp_resource_feat',
-          'delta' => 'crl_pp_resource_back_to_index',
+        'crl_helpers-crl_helpers_back_to_index' => array(
+          'module' => 'crl_helpers',
+          'delta' => 'crl_helpers_back_to_index',
           'region' => 'branding',
-          'weight' => '-7',
+          'weight' => '-10',
         ),
         'crl_pp_resource_feat-crl_pp_resource_feat_vote' => array(
           'module' => 'crl_pp_resource_feat',
@@ -73,8 +73,12 @@ function crl_pp_resource_feat_context_default_contexts() {
         ),
       ),
     ),
-    'breadcrumb' => 'pp',
-    'menu' => 'pp',
+    'breadcrumb' => array(
+      0 => 'menu-pp-main-menu:pp',
+    ),
+    'menu' => array(
+      0 => 'menu-pp-main-menu:pp',
+    ),
   );
   $context->condition_mode = 0;
   $export['pp_resource_page'] = $context;
@@ -129,18 +133,18 @@ function crl_pp_resource_feat_context_default_contexts() {
         'spp_resource' => 'spp_resource',
       ),
       'options' => array(
-        'node_form' => '1',
+        'node_form' => '0',
       ),
     ),
   );
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'crl_pp_resource_feat-crl_pp_resource_back_to_index' => array(
-          'module' => 'crl_pp_resource_feat',
-          'delta' => 'crl_pp_resource_back_to_index',
+        'crl_helpers-crl_helpers_back_to_index' => array(
+          'module' => 'crl_helpers',
+          'delta' => 'crl_helpers_back_to_index',
           'region' => 'branding',
-          'weight' => '-7',
+          'weight' => '-10',
         ),
         'crl_pp_resource_feat-crl_pp_resource_feat_vote' => array(
           'module' => 'crl_pp_resource_feat',
@@ -150,8 +154,12 @@ function crl_pp_resource_feat_context_default_contexts() {
         ),
       ),
     ),
-    'breadcrumb' => 'spp',
-    'menu' => 'spp',
+    'breadcrumb' => array(
+      0 => 'menu-pp-main-menu:spp',
+    ),
+    'menu' => array(
+      0 => 'menu-pp-main-menu:spp',
+    ),
   );
   $context->condition_mode = 0;
   $export['spp_resource_page'] = $context;

@@ -106,5 +106,26 @@ class CrlHelpersBlocks {
     $block['content'] = array('#theme' => 'crl_helpers_alpha_facet_sort', '#alpha_block' => $alpha_block, '#form_options' => $form_options);
     return $block;
   }
+  
+  /**
+   * Build crl_helpers_back_to_index.
+   */
+  protected function build_crl_helpers_back_to_index() {
+    $block = array();
+    // For our purposes context should have set our menu trail such that we can
+    // get out "back to" URL out of the menu trail.
+    $menu_item = array_pop(menu_get_active_trail());
+    $url = url($menu_item['href']);
+    $block['subject'] = '';
+    $block['content'] = array(
+      'back_link' => array(
+        '#theme' => 'crl_helpers_back_to_index',
+        '#url' => $url,
+        '#back_text' => t('Back to listings'),
+      ),
+    );
+    $block['content']['#attached']['js'][] = drupal_get_path('module', 'crl_helpers') .'/js/crl_helpers_back_to_index.js';
+    return $block;
+  }
 
 }
