@@ -23,11 +23,10 @@ function crl_provider_feat_field_group_info() {
     'label' => 'Details',
     'weight' => '1',
     'children' => array(
-      0 => 'field_provider_address',
-      1 => 'field_provider_contacts',
+      0 => 'field_country',
+      1 => 'field_postal_code',
       2 => 'field_provider_current_owner',
-      3 => 'field_title_alt',
-      4 => 'field_contacts',
+      3 => 'field_contacts',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -55,9 +54,7 @@ function crl_provider_feat_field_group_info() {
     'label' => 'Details',
     'weight' => '22',
     'children' => array(
-      0 => 'field_provider_address',
-      1 => 'field_provider_contacts',
-      2 => 'field_contacts',
+      0 => 'field_contacts',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -86,10 +83,13 @@ function crl_provider_feat_field_group_info() {
     'weight' => '0',
     'children' => array(
       0 => 'body',
-      1 => 'field_country',
-      2 => 'field_postal_code',
-      3 => 'field_provider_in_operation',
-      4 => 'field_link',
+      1 => 'field_provider_in_operation',
+      2 => 'field_title_alt',
+      3 => 'field_link',
+      4 => 'field_provider_type',
+      5 => 'field_provider_publisher_type',
+      6 => 'pseudo_field_provider_added',
+      7 => 'pseudo_field_provider_updated',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -122,6 +122,8 @@ function crl_provider_feat_field_group_info() {
       3 => 'field_provider_current_owner',
       4 => 'field_provider_in_operation',
       5 => 'field_link',
+      6 => 'field_provider_type',
+      7 => 'field_provider_publisher_type',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -204,7 +206,7 @@ function crl_provider_feat_field_group_info() {
     'label' => 'Resources',
     'weight' => '3',
     'children' => array(
-      0 => 'field_provider_resources',
+      0 => 'pseudo_field_provider_resources_view',
     ),
     'format_type' => 'htab',
     'format_settings' => array(

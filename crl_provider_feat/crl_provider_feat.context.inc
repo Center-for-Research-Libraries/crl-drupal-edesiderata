@@ -38,6 +38,18 @@ function crl_provider_feat_context_default_contexts() {
           'region' => 'sidebar_first',
           'weight' => '-10',
         ),
+        'facetapi-j4WNAnSeMr8OItd5KKDVtZ1wYMwHAUi9' => array(
+          'module' => 'facetapi',
+          'delta' => 'j4WNAnSeMr8OItd5KKDVtZ1wYMwHAUi9',
+          'region' => 'sidebar_first',
+          'weight' => '-9',
+        ),
+        'facetapi-Nxm1aeATzfIB5ca0QPnt5kntjby5XDX0' => array(
+          'module' => 'facetapi',
+          'delta' => 'Nxm1aeATzfIB5ca0QPnt5kntjby5XDX0',
+          'region' => 'sidebar_first',
+          'weight' => '-8',
+        ),
         'crl_helpers-crl_helpers_facet_breadcrumb' => array(
           'module' => 'crl_helpers',
           'delta' => 'crl_helpers_facet_breadcrumb',
@@ -52,8 +64,12 @@ function crl_provider_feat_context_default_contexts() {
         ),
       ),
     ),
-    'breadcrumb' => 'providers/main',
-    'menu' => 'providers/main',
+    'breadcrumb' => array(
+      0 => 'main-menu:providers/main',
+    ),
+    'menu' => array(
+      0 => 'main-menu:providers/main',
+    ),
     'theme_html' => array(
       'class' => 'resources-index',
     ),
@@ -73,7 +89,7 @@ function crl_provider_feat_context_default_contexts() {
         'provider' => 'provider',
       ),
       'options' => array(
-        'node_form' => '1',
+        'node_form' => '0',
       ),
     ),
     'path' => array(
@@ -87,11 +103,11 @@ function crl_provider_feat_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'crl_resource-crl_resource_back_to_index' => array(
-          'module' => 'crl_resource',
-          'delta' => 'crl_resource_back_to_index',
+        'crl_helpers-crl_helpers_back_to_index' => array(
+          'module' => 'crl_helpers',
+          'delta' => 'crl_helpers_back_to_index',
           'region' => 'branding',
-          'weight' => '-7',
+          'weight' => '-10',
         ),
         'crl_resource-crl_resource_summary' => array(
           'module' => 'crl_resource',
@@ -101,8 +117,12 @@ function crl_provider_feat_context_default_contexts() {
         ),
       ),
     ),
-    'breadcrumb' => 'providers/main',
-    'menu' => 'providers/main',
+    'breadcrumb' => array(
+      0 => 'main-menu:providers/main',
+    ),
+    'menu' => array(
+      0 => 'main-menu:providers/main',
+    ),
   );
   $context->condition_mode = 1;
   $export['provider_page'] = $context;

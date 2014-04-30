@@ -36,6 +36,8 @@ function crl_search_feat_default_search_api_index() {
         "field_resource_languages" : { "type" : "list\\u003Cinteger\\u003E", "entity_type" : "taxonomy_term" },
         "field_update_alert" : { "type" : "date" },
         "field_title_sort" : { "type" : "string" },
+        "field_provider_type" : { "type" : "list\\u003Cinteger\\u003E", "entity_type" : "taxonomy_term" },
+        "field_provider_publisher_type" : { "type" : "list\\u003Cinteger\\u003E", "entity_type" : "taxonomy_term" },
         "field_resource_reference" : { "type" : "integer", "entity_type" : "node" },
         "field_activity_crl_status" : { "type" : "list\\u003Cstring\\u003E" },
         "search_api_language" : { "type" : "string" },

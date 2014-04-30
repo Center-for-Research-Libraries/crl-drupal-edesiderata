@@ -34,17 +34,33 @@ class CrlProviderDisplayElements {
 
   
   /**
-   * Build custom field: pseudo_field_resource_added
+   * Build custom field: pseudo_field_provider_added
    */
   protected function build_pseudo_field_provider_added() {
-    return array('#theme' => 'crl_pseudo_field', '#label' => t('Posted'), '#output' => format_date($this->entity_wrapper->created->value(), 'short'), '#inline' => TRUE);
+    return array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('Posted'), '#output' => format_date($this->entity_wrapper->created->value(), 'short'), '#inline' => TRUE);
   }
   
   /**
-   * Build custom field: pseudo_field_resource_updated
+   * Build custom field: pseudo_field_provider_updated
    */
   protected function build_pseudo_field_provider_updated() {
-    return array('#theme' => 'crl_pseudo_field', '#label' => t('Updated'), '#output' => format_date($this->entity_wrapper->crl_resource_master_update_timestamp->value(), 'short'), '#inline' => TRUE);
+    return array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('Updated'), '#output' => format_date($this->entity_wrapper->changed->value(), 'short'), '#inline' => TRUE);
+  }
+  
+  /**
+   * Build custom field: pseudo_field_provider_resources_view
+   */
+  protected function build_pseudo_field_provider_resources_view() {
+    $rendered_view = views_embed_view('resource_lists', 'block_1', $this->entity->nid);
+    return array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('eDesiderata Resources by this Provider'), '#output' => $rendered_view, '#inline' => FALSE);
+  }
+  
+  /**
+   * Build custom field: pseudo_field_provider_full_link
+   */
+  protected function build_pseudo_field_provider_full_link() {
+    $link = l(t('View all provider details...'), $this->entity_wrapper->url->value());
+    return array('#theme' => 'crl_helpers_pseudo_field', '#label' => '', '#output' => $link, '#inline' => FALSE);
   }
   
   /**

@@ -105,7 +105,48 @@ function crl_provider_feat_strongarm() {
           'weight' => '7',
         ),
       ),
-      'display' => array(),
+      'display' => array(
+        'pseudo_field_provider_added' => array(
+          'default' => array(
+            'weight' => '15',
+            'visible' => TRUE,
+          ),
+          'embedded' => array(
+            'weight' => '4',
+            'visible' => FALSE,
+          ),
+        ),
+        'pseudo_field_provider_updated' => array(
+          'default' => array(
+            'weight' => '16',
+            'visible' => TRUE,
+          ),
+          'embedded' => array(
+            'weight' => '5',
+            'visible' => FALSE,
+          ),
+        ),
+        'pseudo_field_provider_resources_view' => array(
+          'default' => array(
+            'weight' => '910',
+            'visible' => TRUE,
+          ),
+          'embedded' => array(
+            'weight' => '6',
+            'visible' => FALSE,
+          ),
+        ),
+        'pseudo_field_provider_full_link' => array(
+          'default' => array(
+            'weight' => '1',
+            'visible' => FALSE,
+          ),
+          'embedded' => array(
+            'weight' => '3',
+            'visible' => TRUE,
+          ),
+        ),
+      ),
     ),
   );
   $export['field_bundle_settings_node__provider'] = $strongarm;
