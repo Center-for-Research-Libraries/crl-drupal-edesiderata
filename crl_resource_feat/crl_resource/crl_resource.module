@@ -657,11 +657,6 @@ function crl_resource_block_info() {
     'info' => t('CRL Resource Summary'), 
     'cache' => DRUPAL_NO_CACHE,
   );
-  // The "back to index" block shows a caclulated back link for navigation.
-  $blocks['crl_resource_back_to_index'] = array(
-    'info' => t('CRL Back to Index'), 
-    'cache' => DRUPAL_NO_CACHE,
-  );
   // The common input block shows thumbs up/down vote options.
   $blocks['crl_resource_common_input'] = array(
     'info' => t('CRL Common Resource Vote and Rate Input'), 

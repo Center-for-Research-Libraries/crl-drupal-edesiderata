@@ -51,26 +51,6 @@ class CrlResourceBlocks {
     );
     return $block;
   }
-  
-  /**
-   * Build crl_resource_back_to_index.
-   */
-  protected function build_crl_resource_back_to_index() {
-    $block = array();
-    $browser_back = FALSE;
-    $url = url('resources/main');
-    drupal_add_js(drupal_get_path('module', 'crl_resource') .'/js/crl_resource.js', 'file');
-    $block['subject'] = '';
-    $block['content'] = array(
-      'back_link' => array(
-        '#theme' => 'crl_helpers_back_to_index',
-        '#url' => $url,
-        '#back_text' => t('Back to listings'),
-        '#browser_back' => $browser_back,
-      ),
-    );
-    return $block;
-  }
  
   /**
    * Build crl_resource_common_input.

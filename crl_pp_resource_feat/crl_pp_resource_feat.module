@@ -53,11 +53,6 @@ function crl_pp_resource_feat_block_info() {
     'info' => t('Vote input for a PP Resource'), 
     'cache' => DRUPAL_NO_CACHE,
   );
-  // The "back to index" block shows a back link for navigation.
-  $blocks['crl_pp_resource_back_to_index'] = array(
-    'info' => t('CRL PP Back to Index'), 
-    'cache' => DRUPAL_NO_CACHE,
-  );
   return $blocks;
 }
 
@@ -85,26 +80,6 @@ function crl_pp_resource_feat_block_view($delta = '') {
           else {
             $block['subject'] = t('Voting');
             $block['content'] = array('#markup' => crl_pp_resource_feat_get_vote_input($node));
-          }
-          break;
-        // Build the back to index block.
-        case 'crl_pp_resource_back_to_index':
-          // Like above we'll use the same block for both pp_resource and
-          // spp_resoruce and just toggle the return path.
-          $url = $node->type == 'pp_resource' ? url('pp') : url('spp');       
-          // Make sure crl_resource is installed as we'll use a theme function from
-          // there.
-          if (module_exists('crl_resource')) {
-            $browser_back = FALSE;
-            $block['subject'] = '';
-            $block['content'] = array(
-              'back_link' => array(
-                '#theme' => 'crl_helpers_back_to_index',
-                '#url' => $url,
-                '#back_text' => t('Back to ballot index'),
-                '#browser_back' => $browser_back,
-              ),
-            );
           }
           break;
       }
