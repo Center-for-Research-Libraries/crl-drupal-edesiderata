@@ -3,7 +3,7 @@
 
 /**
  * Implements hook_field_extra_fields().
- * 
+ *
  * Define numerous psuedo fields.
  */
 function crl_resource_field_extra_fields() {
@@ -72,16 +72,22 @@ function crl_resource_field_extra_fields() {
 
 /**
  * Implements hook_node_view().
- * 
+ *
  * Attach custom display elements to a resource node that's about to be
  * rendered (custom pseudo fields, etc.).
  */
 function crl_resource_node_view($node, $view_mode, $langcode) {
   if ($node->type == 'resource') {
+    // Get info about which extra fields are visible in this view mode.
+    $extra_fields_display = field_extra_fields_get_display('node', $node->type, $view_mode);
+    // In this specific hook we will only actually build the extra fields
+    // defined by this module.
+    $extra_fields_to_build = crl_resource_field_extra_fields();
     $display_elements = new CrlResourceDisplayElements($node);
-    $extra_fields = crl_resource_field_extra_fields();
-    foreach($extra_fields['node']['resource']['display'] as $field_name => $details) {
-      $node->content[$field_name] = $display_elements->buildField($field_name);
+    foreach($extra_fields_to_build['node']['resource']['display'] as $field_name => $details) {
+      if (isset($extra_fields_display[$field_name]['visible']) && $extra_fields_display[$field_name]['visible']) {
+        $node->content[$field_name] = $display_elements->buildField($field_name);
+      }
     }
   }
 }
@@ -89,7 +95,7 @@ function crl_resource_node_view($node, $view_mode, $langcode) {
 
 /**
  * Implements hook_node_view_alter().
- * 
+ *
  * Add custom show/hide display logic on resource nodes. This fires when a node
  * is built even if its embedded with in another one (or a view). This also
  * takes place and the END of the rendering flow so this is our last chance to
@@ -173,7 +179,7 @@ function crl_resource_views_api() {
 
 /**
  * Implements hook_entity_property_info_alter().
- * 
+ *
  * Define some special resource properties (many calculated via backreferences
  * between activity and resource entries). Note that most of these are just
  * meant to be used when displaying a single entity or for use in a Search API
@@ -260,7 +266,7 @@ function crl_resource_entity_property_info_alter(&$info) {
 
 /**
  * Properties getter callback: calculate backreferences.
- * 
+ *
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_get_backref($entity, array $options, $name, $type, $info) {
@@ -278,7 +284,7 @@ function crl_resource_get_backref($entity, array $options, $name, $type, $info) 
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node', '=')
           ->entityCondition('bundle', 'activity')
-          ->fieldCondition('field_resource_reference', 'target_id', $entity->nid, '='); 
+          ->fieldCondition('field_resource_reference', 'target_id', $entity->nid, '=');
     // Force query to run without access checks. If we remove the tag below then
     // status values will reflect the current user's access permissions (status
     // values will not appear for activity entries they do not have access to)
@@ -300,7 +306,7 @@ function crl_resource_get_backref($entity, array $options, $name, $type, $info) 
 
 /**
  * Properties getter callback: calculate aggregate backreferenced status.
- * 
+ *
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_get_status_backref($entity, array $options, $name, $type, $info) {
@@ -338,7 +344,7 @@ function crl_resource_get_status_backref($entity, array $options, $name, $type, 
 /**
  * Properties getter callback: get the "master" update timestamp (the most
  * recent timestamp between a resource and all its activity).
- * 
+ *
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_get_master_update_timestamp($entity, array $options, $name, $type, $info) {
@@ -362,7 +368,7 @@ function crl_resource_get_master_update_timestamp($entity, array $options, $name
 
 /**
  * Properties getter callback: calculate alerts through backreferences.
- * 
+ *
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_get_alert($entity, array $options, $name, $type, $info) {
@@ -386,7 +392,7 @@ function crl_resource_get_alert($entity, array $options, $name, $type, $info) {
 /**
  * Properties getter callback: calculate expiration countdown through
  * backreferences.
- * 
+ *
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_get_expiration_countdown($entity, array $options, $name, $type, $info) {
@@ -423,10 +429,10 @@ function crl_resource_get_expiration_countdown($entity, array $options, $name, $
 
 /**
  * Properties getter callback: get resource vote average.
- * 
+ *
  * NOTE: requires extra queries (does not just use loaded entity data). So it's
  * probably not a good idea to fetch this property over and over on one page.
- * 
+ *
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_get_vote_average($entity, array $options, $name, $type, $info) {
@@ -456,10 +462,10 @@ function crl_resource_get_vote_average($entity, array $options, $name, $type, $i
 
 /**
  * Properties getter callback: get resource interest count positive.
- * 
+ *
  * NOTE: requires extra queries (does not just use loaded entity data). So it's
  * probably not a good idea to fetch this property over and over on one page.
- * 
+ *
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_get_interest_count_up($entity, array $options, $name, $type, $info) {
@@ -469,10 +475,10 @@ function crl_resource_get_interest_count_up($entity, array $options, $name, $typ
 
 /**
  * Properties getter callback: get resource interest count negative.
- * 
+ *
  * NOTE: requires extra queries (does not just use loaded entity data). So it's
  * probably not a good idea to fetch this property over and over on one page.
- * 
+ *
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_get_interest_count_down($entity, array $options, $name, $type, $info) {
@@ -510,11 +516,11 @@ function crl_resource_get_interest_count($entity, $option) {
 /**
  * Helper to get wrappers for all entites involved in a resource/activity
  * relationship.
- * 
+ *
  * This is a quick way to get useful wrappers for all related entities in a
  * quick call. It assumes that most of the actual entites involved are already
  * loaded in the static entity cache.
- * 
+ *
  * @param object $entity
  *   Either a resource or activity entity (or related entity wrapper).
  * @return array
@@ -570,7 +576,7 @@ function crl_resource_get_wrappers($entity) {
 /**
  * Properties callback: centrally define the key|value pairs used for the
  * various CRL status options.
- * 
+ *
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_activity_status_property_oplist() {
@@ -604,7 +610,7 @@ function crl_resource_facetapi_sort_info() {
 
 /**
  * Facet API sort callback: set actual sort order for CRL status facet.
- * 
+ *
  * @see crl_resource_facetapi_sort_info().
  */
 function crl_resource_activity_status_property_sort(array $a, array $b) {
@@ -635,7 +641,7 @@ function crl_resource_activity_status_property_sort(array $a, array $b) {
 
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
- * 
+ *
  * Add some customizations for the resource node edit form.
  */
 function crl_resource_form_resource_node_form_alter(&$form, &$form_state, $form_id) {
@@ -654,12 +660,12 @@ function crl_resource_form_resource_node_form_alter(&$form, &$form_state, $form_
 function crl_resource_block_info() {
   // The resource summary is a block at the top of each resource.
   $blocks['crl_resource_summary'] = array(
-    'info' => t('CRL Resource Summary'), 
+    'info' => t('CRL Resource Summary'),
     'cache' => DRUPAL_NO_CACHE,
   );
   // The common input block shows thumbs up/down vote options.
   $blocks['crl_resource_common_input'] = array(
-    'info' => t('CRL Common Resource Vote and Rate Input'), 
+    'info' => t('CRL Common Resource Vote and Rate Input'),
     'cache' => DRUPAL_NO_CACHE,
   );
   return $blocks;
@@ -681,7 +687,7 @@ function crl_resource_block_view($delta = '') {
 
 /**
  * Helper to an edit link for an activity based on related resource info.
- * 
+ *
  * @param object $entity
  *   A resource entity (or related entity wrapper).
  * @return array
@@ -712,7 +718,7 @@ function crl_resource_activity_edit_link($entity) {
 
 /**
  * Implements hook_menu_local_tasks_alter().
- * 
+ *
  * Manually adjust some tabs and action links on resources.
  */
 function crl_resource_menu_local_tasks_alter(&$data, $router_item, $root_path) {
