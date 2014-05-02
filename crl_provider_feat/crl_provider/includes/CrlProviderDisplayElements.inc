@@ -60,7 +60,7 @@ class CrlProviderDisplayElements {
    */
   protected function build_pseudo_field_provider_full_link() {
     $link = l(t('View all provider details...'), $this->entity_wrapper->url->value());
-    return array('#theme' => 'crl_helpers_pseudo_field', '#label' => '', '#output' => $link, '#inline' => FALSE);
+    return array('#theme' => 'crl_helpers_pseudo_field', '#label' => '', '#output' => $link, '#inline' => TRUE);
   }
   
   /**

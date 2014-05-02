@@ -1,6 +1,7 @@
 name = CRL Provider Feature
 core = 7.x
 package = CRL
+dependencies[] = crl_helpers_feat
 dependencies[] = crl_resource
 dependencies[] = crl_resource_feat
 dependencies[] = ctools
@@ -41,6 +42,8 @@ features[field_group][] = group_resources|node|provider|default
 features[field_group][] = group_system_fields|node|provider|form
 features[field_group][] = group_tabbed|node|provider|default
 features[field_group][] = group_tabbed|node|provider|form
+features[field_instance][] = comment-comment_node_provider-comment_body
+features[field_instance][] = comment-comment_node_provider-field_comment_privacy
 features[field_instance][] = node-provider-body
 features[field_instance][] = node-provider-field_contacts
 features[field_instance][] = node-provider-field_country

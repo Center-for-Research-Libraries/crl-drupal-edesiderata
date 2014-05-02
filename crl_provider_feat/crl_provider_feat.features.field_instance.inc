@@ -10,6 +10,73 @@
 function crl_provider_feat_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance: 'comment-comment_node_provider-comment_body'
+  $field_instances['comment-comment_node_provider-comment_body'] = array(
+    'bundle' => 'comment_node_provider',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'comment_body',
+    'label' => 'Comment',
+    'required' => TRUE,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 0,
+    ),
+  );
+
+  // Exported field_instance: 'comment-comment_node_provider-field_comment_privacy'
+  $field_instances['comment-comment_node_provider-field_comment_privacy'] = array(
+    'bundle' => 'comment_node_provider',
+    'default_value' => array(
+      0 => array(
+        'value' => 'normal',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'comment',
+    'field_name' => 'field_comment_privacy',
+    'label' => 'Comment Privacy Setting',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 2,
+    ),
+  );
+
   // Exported field_instance: 'node-provider-body'
   $field_instances['node-provider-body'] = array(
     'bundle' => 'provider',
@@ -768,6 +835,8 @@ function crl_provider_feat_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Abstract');
+  t('Comment');
+  t('Comment Privacy Setting');
   t('Contacts');
   t('Country');
   t('Current Owner');
