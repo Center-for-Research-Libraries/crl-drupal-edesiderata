@@ -171,7 +171,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 9,
+      'weight' => 16,
     ),
   );
 
@@ -741,6 +741,92 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-provider-field_resource_type'
+  $field_instances['node-provider-field_resource_type'] = array(
+    'bundle' => 'provider',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Some values set here are aggregated automatically from all the resources that are related to this provider. Any aggregated values cannot be unset, but new values can be added.',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 19,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_resource_type',
+    'label' => 'Related Resource Types',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 18,
+    ),
+  );
+
+  // Exported field_instance: 'node-provider-field_subject_area'
+  $field_instances['node-provider-field_subject_area'] = array(
+    'bundle' => 'provider',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Some values set here are aggregated automatically from all the resources that are related to this provider. Any aggregated values cannot be unset, but new values can be added.',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 18,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_subject_area',
+    'label' => 'Related Subject Areas',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 17,
+    ),
+  );
+
   // Exported field_instance: 'node-provider-field_title_alt'
   $field_instances['node-provider-field_title_alt'] = array(
     'bundle' => 'provider',
@@ -850,6 +936,9 @@ function crl_provider_feat_field_default_field_instances() {
   t('Prior or Alternative Titles');
   t('Provider Type');
   t('Publisher Type');
+  t('Related Resource Types');
+  t('Related Subject Areas');
+  t('Some values set here are aggregated automatically from all the resources that are related to this provider. Any aggregated values cannot be unset, but new values can be added.');
   t('Sorting Title');
   t('Still in Operation');
   t('This value is used for sorting when multiple resources are listed in indices. Remove any articles (such as "the") from the beginning of the title to craft this sorting title.');

@@ -27,6 +27,8 @@ function crl_provider_feat_field_group_info() {
       1 => 'field_postal_code',
       2 => 'field_provider_current_owner',
       3 => 'field_contacts',
+      4 => 'field_subject_area',
+      5 => 'field_resource_type',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -55,6 +57,8 @@ function crl_provider_feat_field_group_info() {
     'weight' => '22',
     'children' => array(
       0 => 'field_contacts',
+      1 => 'field_subject_area',
+      2 => 'field_resource_type',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -237,7 +241,6 @@ function crl_provider_feat_field_group_info() {
       0 => 'field_jisc_guid',
       1 => 'field_jisc_id',
       2 => 'field_jisc_import_batch',
-      3 => 'field_provider_resources',
     ),
     'format_type' => 'div',
     'format_settings' => array(

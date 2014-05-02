@@ -7,13 +7,13 @@
  * logic a lot easier.
  */
 class CrlProviderDisplayElements {
-  
+
   /**
    * Define our base properties.
    */
   protected $entity;
   protected $entity_wrapper;
-  
+
   /**
    * Constructor
    */
@@ -21,7 +21,7 @@ class CrlProviderDisplayElements {
     $this->entity = $node;
     $this->entity_wrapper = entity_metadata_wrapper('node', $this->entity);
   }
-  
+
   /**
    * Common public build method that calls specific protected build method.
    */
@@ -32,21 +32,20 @@ class CrlProviderDisplayElements {
     return array();
   }
 
-  
   /**
    * Build custom field: pseudo_field_provider_added
    */
   protected function build_pseudo_field_provider_added() {
     return array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('Posted'), '#output' => format_date($this->entity_wrapper->created->value(), 'short'), '#inline' => TRUE);
   }
-  
+
   /**
    * Build custom field: pseudo_field_provider_updated
    */
   protected function build_pseudo_field_provider_updated() {
     return array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('Updated'), '#output' => format_date($this->entity_wrapper->changed->value(), 'short'), '#inline' => TRUE);
   }
-  
+
   /**
    * Build custom field: pseudo_field_provider_resources_view
    */
@@ -54,15 +53,15 @@ class CrlProviderDisplayElements {
     $rendered_view = views_embed_view('resource_lists', 'block_1', $this->entity->nid);
     return array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('eDesiderata Resources by this Provider'), '#output' => $rendered_view, '#inline' => FALSE);
   }
-  
+
   /**
    * Build custom field: pseudo_field_provider_full_link
    */
   protected function build_pseudo_field_provider_full_link() {
-    $link = l(t('View all provider details...'), $this->entity_wrapper->url->value());
+    $link = l('<strong>' . t('View all provider details' . '</strong>'), $this->entity_wrapper->url->value(), array('html' => TRUE));
     return array('#theme' => 'crl_helpers_pseudo_field', '#label' => '', '#output' => $link, '#inline' => TRUE);
   }
-  
+
   /**
    * Build custom field: pseudo_field_resource_source_summary
    */
@@ -74,7 +73,7 @@ class CrlProviderDisplayElements {
     }
     return $built;
   }
-  
+
   /**
    * Helper to generate fixed "source" text based on resoruce status.
    */

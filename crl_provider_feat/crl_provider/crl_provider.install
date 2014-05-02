@@ -46,21 +46,23 @@ function crl_provider_bulk_prep_providers() {
       if (isset($wrapper->field_title_sort)) {
         $wrapper->field_title_sort->set($node->title);
       }
-      // Add "In Operation" field to "yes" (as common starting point).
+      // Set "In Operation" field to "yes" (as common starting point).
       if (isset($wrapper->field_provider_in_operation)) {
         $wrapper->field_provider_in_operation->set(TRUE);
       }
-      // Copy old contacts and address details into new multu-valued contacts.
+      // Copy old contacts and address details into new multi-valued contacts.
+      $i = 0;
       if (isset($wrapper->field_provider_address)) {
         $address = $wrapper->field_provider_address->value();
         if (!empty($address)) {
-          $wrapper->field_contacts[0]->set($wrapper->field_provider_address->value());
+          $wrapper->field_contacts[$i]->set($wrapper->field_provider_address->value());
+          $i++;
         }
       }
       if (isset($wrapper->field_provider_contacts)) {
         $contacts = $wrapper->field_provider_contacts->value();
         if (!empty($contacts)) {
-          $wrapper->field_contacts[1]->set($wrapper->field_provider_contacts->value());
+          $wrapper->field_contacts[$i]->set($wrapper->field_provider_contacts->value());
         }
       }
       $wrapper->save();
