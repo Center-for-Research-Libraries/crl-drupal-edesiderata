@@ -53,11 +53,6 @@ function crl_pp_resource_feat_block_info() {
     'info' => t('Vote input for a PP Resource'), 
     'cache' => DRUPAL_NO_CACHE,
   );
-  // The "back to index" block shows a back link for navigation.
-  $blocks['crl_pp_resource_back_to_index'] = array(
-    'info' => t('CRL PP Back to Index'), 
-    'cache' => DRUPAL_NO_CACHE,
-  );
   return $blocks;
 }
 
@@ -84,27 +79,7 @@ function crl_pp_resource_feat_block_view($delta = '') {
           }
           else {
             $block['subject'] = t('Voting');
-            $block['content'] = crl_pp_resource_feat_get_vote_input($node);
-          }
-          break;
-        // Build the back to index block.
-        case 'crl_pp_resource_back_to_index':
-          // Like above we'll use the same block for both pp_resource and
-          // spp_resoruce and just toggle the return path.
-          $url = $node->type == 'pp_resource' ? url('pp') : url('spp');       
-          // Make sure crl_resource is installed as we'll use a theme function from
-          // there.
-          if (module_exists('crl_resource')) {
-            $browser_back = FALSE;
-            $block['subject'] = '';
-            $block['content'] = array(
-              'back_link' => array(
-                '#theme' => 'crl_resource_back_to_index',
-                '#url' => $url,
-                '#back_text' => t('Back to ballot index'),
-                '#browser_back' => $browser_back,
-              ),
-            );
+            $block['content'] = array('#markup' => crl_pp_resource_feat_get_vote_input($node));
           }
           break;
       }
@@ -342,23 +317,17 @@ function crl_pp_resource_feat_field_extra_fields() {
  */
 function crl_pp_resource_feat_node_view($node, $view_mode, $langcode) {
   if ($node->type == 'pp_resource' || $node->type == 'spp_resource') {
+    // Get info about which extra fields are visible in this view mode.
+    $extra_fields_display = field_extra_fields_get_display('node', $node->type, $view_mode);
     // Build the pp resource source notice field display.
-    $message = t('Information provided here is drawn from a number of sources including member nomination forms.');
-    // If crl_resource is installed we can use the pseudo field theme from that.
-    // This is done as a conditional check so we don't make crl_resource a
-    // dependency.
-    if (module_exists('crl_resource')) {
-      $built_notice = array('#theme' => 'crl_resource_pseudo_field', '#label' => t('Source'), '#output' => $message);
+    if (isset($extra_fields_display['pseudo_field_pp_resource_source_notice']['visible']) && $extra_fields_display['pseudo_field_pp_resource_source_notice']['visible']) {
+      $message = t('Information provided here is drawn from a number of sources including member nomination forms.');
+      $node->content['pseudo_field_pp_resource_source_notice'] = array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('Source'), '#output' => $message);
     }
-    else {
-      $built_notice = array('#markup' => $message);
-    }
-    $node->content['pseudo_field_pp_resource_source_notice'] = $built_notice;
     // Also allow the SPP input widget to be shown as a normal field, but only
     // on teasers.
-    if ($view_mode == 'teaser') {
-      $built_pp_input = drupal_get_form('crl_pp_resource_feat_shared_vote_input_form', $node);
-      $node->content['pseudo_field_pp_resource_sp_vote_input'] = $built_pp_input;
+    if (isset($extra_fields_display['pseudo_field_pp_resource_sp_vote_input']['visible']) && $extra_fields_display['pseudo_field_pp_resource_sp_vote_input']['visible']) {
+      $node->content['pseudo_field_pp_resource_sp_vote_input'] = drupal_get_form('crl_pp_resource_feat_shared_vote_input_form', $node);
     }
   }
 }

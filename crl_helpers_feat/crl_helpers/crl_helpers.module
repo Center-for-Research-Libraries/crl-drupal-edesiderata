@@ -31,20 +31,38 @@ function crl_helpers_menu() {
  * Declare new theme hooks.
  */
 function crl_helpers_theme() {
-  return array(
+  $hooks = array(
     // Theme hook to generate our custom facet breadcrumb.
     'crl_helpers_facet_breadcrumb' => array(
       'variables' => array('breadcrumb' => array(), 'base_path' => '', 'extra' => ''),
-      'path' => drupal_get_path('module', 'crl_helpers') . '/themes',
-      'file' => 'crl_helpers.theme.inc',
     ),
     // Theme hook to generate editor tools.
     'crl_helpers_editor_tools' => array(
       'variables' => array(),
-      'path' => drupal_get_path('module', 'crl_helpers') . '/themes',
-      'file' => 'crl_helpers.theme.inc',
+    ),
+    // Theme hook to generate the alpha facet and sort switch to be displayed
+    // at the top of an index.
+    'crl_helpers_alpha_facet_sort' => array(
+      'variables' => array('alpha_block' => '', 'form_options' => array()),
+    ),
+    // Theme hook to generate a full entry summary block.
+    'crl_helpers_summary' => array(
+      'variables' => array('status' => array(), 'status_options' => array(), 'comment_count' => 0, 'vote_average' => 0, 'interest_count_up' => 0, 'interest_count_down' => 0),
+    ),
+    // Theme hook to generate a "back to index" link.
+    'crl_helpers_back_to_index' => array(
+      'variables' => array('url' => '', 'back_text' => t('Back to index'), 'browser_back' => FALSE),
+    ),
+    // Theme hook for a generic pseudo field.
+    'crl_helpers_pseudo_field' => array(
+      'variables' => array('output' => '', 'label' => '', 'inline' => FALSE),
     ),
   );
+  foreach ($hooks as &$hook) {
+    $hook['path'] = drupal_get_path('module', 'crl_helpers') . '/themes';
+    $hook['file'] = 'crl_helpers.theme.inc';
+  }
+  return $hooks;
 }
 
 
@@ -111,8 +129,8 @@ function crl_helpers_page_build(&$page) {
 
 
 /**
- * Implements hook_block_info().
- */
+* Implements hook_block_info().
+*/
 function crl_helpers_block_info() {
   // The facet breadcrumb is a block that can be displayed on the top of a
   // resoruce index.
@@ -125,59 +143,30 @@ function crl_helpers_block_info() {
     'info' => t('CRL Editor Tools'),
     'cache' => DRUPAL_NO_CACHE,
   );
+  // The alpha facet sort block shows various A-Z filter and sort options.
+  $blocks['crl_helpers_alpha_facet_sort'] = array(
+    'info' => t('CRL Index Alpha Facet and Sort Options'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // The "back to index" block shows a caclulated back link for navigation.
+  $blocks['crl_helpers_back_to_index'] = array(
+    'info' => t('CRL Back to Index'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
   return $blocks;
 }
 
 
 /**
- * Implements hook_block_view().
- */
+* Implements hook_block_view().
+*/
 function crl_helpers_block_view($delta = '') {
-  $block = array();
-  switch ($delta) {
-    // Render the facet breadcrumb block.
-    case 'crl_helpers_facet_breadcrumb':
-      $block['subject'] = '';
-      $output = '';
-      if (isset($_GET['f']) || !empty($_GET['search_api_views_fulltext'])) {
-        // Get the most recent breadcrumb.
-        $breadcrumb = drupal_get_breadcrumb();
-        // Drop the "home" value for the breadcrumb.
-        array_shift($breadcrumb);
-        if (!empty($breadcrumb)) {
-          $base_path = '/';
-          if ($base_url = parse_url($_SERVER['REQUEST_URI'])) {
-            $base_path = $base_url['path'];
-          }
-        }
-        $extra = '';
-        // Integration with the crl_mydes_feat module to inject a save this
-        // search option into the breadcrumb block.
-        if (module_exists('crl_mydes_feat')) {
-          $extra = crl_mydes_feat_build_saved_search_form();
-        }
-        $output = array(
-          'facet_breadcrumb' => array(
-            '#breadcrumb' => $breadcrumb,
-            '#base_path' => $base_path,
-            '#extra' => $extra,
-            '#theme' => 'crl_helpers_facet_breadcrumb',
-          ),
-        );
-      }
-      $block['content'] = $output;
-      break;
-    case 'crl_helpers_editor_tools':
-      $block['subject'] = '';
-      $output = array(
-        'editor_tools' => array(
-          '#theme' => 'crl_helpers_editor_tools',
-        ),
-      );
-      $block['content'] = $output;
-      break;
+  // Lazy-load our block build methods via an object.
+  static $blocks;
+  if (!is_object($blocks)) {
+    $blocks = new CrlHelpersBlocks();
   }
-  return $block;
+  return $blocks->buildBlock($delta);
 }
 
 
@@ -435,5 +424,79 @@ function crl_helpers_module_implements_alter(&$implementations, $hook) {
     $group = $implementations['crl_helpers'];
     unset($implementations['crl_helpers']);
     $implementations['crl_helpers'] = $group;
+  }
+}
+
+
+/**
+ * Helper to get a country list in a format friendly for select lists.
+ *
+ * This is really just a wrapper for country_get_list() that ensures this
+ * function is available without enabling special modules.
+ */
+function crl_helpers_country_list() {
+  require_once DRUPAL_ROOT . '/includes/locale.inc';
+  return country_get_list();
+}
+
+
+/**
+ * Implements hook_entity_property_info_alter().
+ * 
+ * Define some special resource properties. Note that most of these are just
+ * meant to be used when displaying a single entity or for use in a Search API
+ * index. None of these have a schema so they aren't meant for display with
+ * SQL-based views.
+ */
+function crl_helpers_entity_property_info_alter(&$info) {
+  $properties = &$info['node']['properties'];
+  // Captures the glossary value for a node. This is incldued as a property
+  // so that it can be indexed and used as a facet.
+  $properties['crl_glossary_value'] = array(
+    'label' => t("CRL Glossary Value"),
+    'type' => 'text',
+    'description' => t("Gets CRL glossary value based on the first letter of the sort name."),
+    'getter callback' => 'crl_helpers_get_glossary_value',
+  );
+}
+
+
+/**
+ * Properties callback: get glossary value.
+ * 
+ * @see crl_helpers_entity_property_info_alter().
+ */
+function crl_helpers_get_glossary_value($entity, array $options, $name, $type, $info) {
+  // If we are not working with something that has a title we can just return.
+  if (empty($entity->title)) {
+    return;
+  }
+  $string = '';
+  // See if we have a sorting title to work with.
+  $entity_wrapper = entity_metadata_wrapper('node', $entity);
+  // Look for the sorting field.
+  $string = isset($entity_wrapper->field_title_sort) ? $entity_wrapper->field_title_sort->value() : '';
+  // If we don't have a sorting field use the normal title.
+  $string = empty($string) ? $entity->title : $string;
+  $string = trim($string);
+  // Get first character in a multibyte-safe way.
+  if (!empty($string) && mb_strlen($string)) {
+    return strtoupper(mb_substr($string, 0, 1));
+  }
+  return NULL;
+}
+
+
+/**
+ * Implements hook_node_presave().
+ */
+function crl_helpers_node_presave($node) {
+  // During some save efforts we want to preserve the original updated
+  // timestamp, or set one manually. If we have programmatic logic that sets the
+  // manual_changed_timestamp property the following lines will ensure that this
+  // gets used as the "Updated" value once the node is saved (instead of
+  // REQUEST_TIME which node_save tries to set automatically).
+  if (isset($node->manual_changed_timestamp)) {
+    $node->changed = $node->manual_changed_timestamp;
   }
 }

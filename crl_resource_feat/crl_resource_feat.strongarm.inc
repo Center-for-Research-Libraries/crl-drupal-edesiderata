@@ -99,10 +99,10 @@ function crl_resource_feat_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '6',
+          'weight' => '7',
         ),
         'redirect' => array(
-          'weight' => '30',
+          'weight' => '11',
         ),
       ),
       'display' => array(
@@ -144,7 +144,7 @@ function crl_resource_feat_strongarm() {
         ),
         'pseudo_field_resource_table_sources' => array(
           'default' => array(
-            'weight' => '4',
+            'weight' => '906',
             'visible' => TRUE,
           ),
         ),
@@ -169,6 +169,12 @@ function crl_resource_feat_strongarm() {
         'pseudo_field_resource_alerts' => array(
           'default' => array(
             'weight' => '920',
+            'visible' => TRUE,
+          ),
+        ),
+        'pseudo_field_resource_coll_content_tax' => array(
+          'default' => array(
+            'weight' => '904',
             'visible' => TRUE,
           ),
         ),

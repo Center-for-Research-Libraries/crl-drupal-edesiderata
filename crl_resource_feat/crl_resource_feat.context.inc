@@ -26,9 +26,9 @@ function crl_resource_feat_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'crl_resource-crl_resource_alpha_facet_sort' => array(
-          'module' => 'crl_resource',
-          'delta' => 'crl_resource_alpha_facet_sort',
+        'crl_helpers-crl_helpers_alpha_facet_sort' => array(
+          'module' => 'crl_helpers',
+          'delta' => 'crl_helpers_alpha_facet_sort',
           'region' => 'content',
           'weight' => '-49',
         ),
@@ -134,7 +134,7 @@ function crl_resource_feat_context_default_contexts() {
         'resource' => 'resource',
       ),
       'options' => array(
-        'node_form' => '1',
+        'node_form' => '0',
       ),
     ),
     'path' => array(
@@ -148,11 +148,11 @@ function crl_resource_feat_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'crl_resource-crl_resource_back_to_index' => array(
-          'module' => 'crl_resource',
-          'delta' => 'crl_resource_back_to_index',
+        'crl_helpers-crl_helpers_back_to_index' => array(
+          'module' => 'crl_helpers',
+          'delta' => 'crl_helpers_back_to_index',
           'region' => 'branding',
-          'weight' => '-7',
+          'weight' => '-10',
         ),
         'crl_resource-crl_resource_summary' => array(
           'module' => 'crl_resource',
@@ -162,8 +162,9 @@ function crl_resource_feat_context_default_contexts() {
         ),
       ),
     ),
-    'breadcrumb' => 'resources/main',
-    'menu' => 'resources/main',
+    'menu' => array(
+      0 => 'main-menu:resources/main',
+    ),
   );
   $context->condition_mode = 1;
   $export['resource_page'] = $context;

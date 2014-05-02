@@ -4,6 +4,9 @@ description = Custom features and relationships related to the "activity" conten
 core = 7.x
 package = CRL
 
+dependencies[] = crl_activity_feat
 dependencies[] = entity
 dependencies[] = entityreference
 dependencies[] = search_api
+
+files[] = includes/CrlActivityStatusSync.inc

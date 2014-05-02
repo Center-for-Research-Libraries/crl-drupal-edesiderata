@@ -14,18 +14,6 @@ class CrlResourceDisplayElements {
   protected $entity;
   protected $entity_wrapper;
   protected $source_status;
-  // Properties for our custom fields.
-  public $pseudo_field_resource_status_summary;
-  public $pseudo_field_resource_all_jisc_details;
-  public $pseudo_field_resource_provider_details;
-  public $pseudo_field_resource_activity;
-  public $pseudo_field_resoruce_coll_content_tax;
-  public $pseudo_field_resource_source_summary;
-  public $pseudo_field_resource_table_sources;
-  public $pseudo_field_resource_review_source;
-  public $pseudo_field_resource_added;
-  public $pseudo_field_resource_updated;
-  public $pseudo_field_resource_alerts;
   
   /**
    * Constructor
@@ -37,23 +25,20 @@ class CrlResourceDisplayElements {
   }
   
   /**
-   * Main method to get/build our custom resoruce data and store it in the
-   * object properties.
+   * Common public build method that calls specific protected build method.
    */
-  public function build() {
-    foreach ($this as $prop_name => $prop) {
-      if (strpos($prop_name, 'pseudo_field') === 0) {
-        $this->{'build_' . $prop_name}();
-      }
+  public function buildField($field) {
+    if (method_exists($this, 'build_' . $field)) {
+      return $this->{'build_' . $field}();
     }
-    return $this;  
+    return array();
   }
   
   /**
    * Build custom field: pseudo_field_resource_status_summary
    */
   protected function build_pseudo_field_resource_status_summary() {
-    $built = NULL;
+    $built = array();
     // Calculate editor link and backref status details.
     $edit_link = crl_resource_activity_edit_link($this->entity_wrapper);
     $backref_status = isset($this->entity_wrapper->crl_resource_status_backref) ? $this->entity_wrapper->crl_resource_status_backref->value() : array();
@@ -71,14 +56,14 @@ class CrlResourceDisplayElements {
         '#status_descriptions' => $this->get_status_descriptions()
       );
     }
-    $this->pseudo_field_resource_status_summary = $built;
+    return $built;
   }
   
   /**
    * Build custom field: pseudo_field_resource_all_jisc_details
    */
   protected function build_pseudo_field_resource_all_jisc_details() {
-    $built = NULL;
+    $built = array();
     $jisc_id = isset($this->entity_wrapper->field_jisc_id) ? $this->entity_wrapper->field_jisc_id->value() : NULL;
     // If the status flags this as a JISC display, and we have a JISC ID, then
     // display the JISC details fields.
@@ -95,14 +80,14 @@ class CrlResourceDisplayElements {
         $built = array('#markup' => $output);
       }
     }
-    $this->pseudo_field_resource_all_jisc_details = $built;
+    return $built;
   }
 
   /**
    * Build custom field: pseudo_field_resource_provider_details
    */
   protected function build_pseudo_field_resource_provider_details() {
-    $built = NULL;
+    $built = array();
     $output = '';
     // Show the provider field (again) from the resource
     $output .= drupal_render($this->entity->content['field_provider']);
@@ -120,14 +105,14 @@ class CrlResourceDisplayElements {
     if (!empty($output)) {
       $built = array('#markup' => $output);
     }
-    $this->pseudo_field_resource_provider_details = $built;
+    return $built;
   }
   
   /**
    * Build custom field: pseudo_field_resource_activity
    */
   protected function build_pseudo_field_resource_activity() {
-    $built = NULL;
+    $built = array();
     $backref_entities = isset($this->entity_wrapper->crl_resource_backref) ? $this->entity_wrapper->crl_resource_backref->value() : array();
     if (!empty($backref_entities)) { // Activity data exists
       // Just get the first backref entity in the array (for now there should
@@ -145,81 +130,79 @@ class CrlResourceDisplayElements {
       }
       else {
         $restricted_message = t('The complete offer and activity details for this resource are only available to CRL members.');
-        $built = array('#theme' => 'crl_resource_pseudo_field', '#output' => $restricted_message);
+        $built = array('#theme' => 'crl_helpers_pseudo_field', '#output' => $restricted_message);
       }
     }
-    $this->pseudo_field_resource_activity = $built;
+    return $built;
   }
   
   /**
-   * Build custom field: pseudo_field_resoruce_coll_content_tax
+   * Build custom field: pseudo_field_resource_coll_content_tax
    */
-  protected function build_pseudo_field_resoruce_coll_content_tax() {
-    $built = NULL;
+  protected function build_pseudo_field_resource_coll_content_tax() {
+    $built = array();
     $output = '';
     $output .= drupal_render($this->entity->content['field_subject_area']);
     $output .= drupal_render($this->entity->content['field_resource_type']);
     if (!empty($output)) {
       $built = array('#markup' => $output);
     }
-    $this->pseudo_field_resoruce_coll_content_tax = $built;
+    return $built;
   }
   
   /**
    * Build custom field: pseudo_field_resource_source_summary
    */
   protected function build_pseudo_field_resource_source_summary() {
-    $built = NULL;
+    $built = array();
     $output = $this->get_source_text();
     if (!empty($output)) {
-      $built = array('#theme' => 'crl_resource_pseudo_field', '#label' => t('Source'), '#output' => $output);
+      $built = array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('Source'), '#output' => $output);
     }
-    $this->pseudo_field_resource_source_summary = $built;
+    return $built;
   }
   
   /**
    * Build custom field: pseudo_field_resource_table_sources
    */
   protected function build_pseudo_field_resource_table_sources() {
-    $built = NULL;
+    $built = array();
     if ($this->source_status == 'crl_review') {
       $built = array('#theme' => 'crl_resource_publisher_legend', '#icon_alt_title' => t('Direct from Publisher'), '#icon_text' => t('Denotes data sourced directly from publisher'));
     }
-    $this->pseudo_field_resource_table_sources = $built;
+    return $built;
   }
   
   /**
    * Build custom field: pseudo_field_resource_review_source
    */
   protected function build_pseudo_field_resource_review_source() {
-    $built = NULL;
+    $built = array();
     if ($this->source_status == 'crl_review') {
-      $built = array('#theme' => 'crl_resource_pseudo_field', '#output' => t('Sources for this review include information publicly posted or obtained directly from the publisher; data collected by CRL staff and specialists at CRL libraries; and examination of the digital collection when possible. Other sources are noted where cited. <em>CRL continues to gather additional information on this resource and to solicit critical assessment</em>.'));
+      $built = array('#theme' => 'crl_helpers_pseudo_field', '#output' => t('Sources for this review include information publicly posted or obtained directly from the publisher; data collected by CRL staff and specialists at CRL libraries; and examination of the digital collection when possible. Other sources are noted where cited. <em>CRL continues to gather additional information on this resource and to solicit critical assessment</em>.'));
     }
-    $this->pseudo_field_resource_review_source = $built;
+    return $built;
   }
   
   /**
    * Build custom field: pseudo_field_resource_added
    */
   protected function build_pseudo_field_resource_added() {
-    $built = array('#theme' => 'crl_resource_pseudo_field', '#label' => t('Posted'), '#output' => format_date($this->entity_wrapper->created->value(), 'short'), '#inline' => TRUE);
-    $this->pseudo_field_resource_added = $built;
+    return array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('Posted'), '#output' => format_date($this->entity_wrapper->created->value(), 'short'), '#inline' => TRUE);
   }
   
   /**
    * Build custom field: pseudo_field_resource_updated
    */
   protected function build_pseudo_field_resource_updated() {
-    $built = array('#theme' => 'crl_resource_pseudo_field', '#label' => t('Updated'), '#output' => format_date($this->entity_wrapper->crl_resource_master_update_timestamp->value(), 'short'), '#inline' => TRUE);
-    $this->pseudo_field_resource_updated = $built;
+    return array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('Updated'), '#output' => format_date($this->entity_wrapper->crl_resource_master_update_timestamp->value(), 'short'), '#inline' => TRUE);
   }
   
   /**
    * Build custom field: pseudo_field_resource_alerts
    */
   protected function build_pseudo_field_resource_alerts() {
-    $built = NULL;
+    $built = array();
     $wrappers = crl_resource_get_wrappers($this->entity_wrapper);
     $wrappers_to_check = array_merge(array($wrappers['r_entity_wrapper']), $wrappers['a_entity_wrappers']);
     foreach($wrappers_to_check as $wrapper) {
@@ -235,10 +218,10 @@ class CrlResourceDisplayElements {
             $markup .= t('The full details of this alert are only available to CRL members.');
           }
         }
-        $built[] = array('#theme' => 'crl_resource_pseudo_field', '#output' => $markup);
+        $built[] = array('#theme' => 'crl_helpers_pseudo_field', '#output' => $markup);
       }
     }
-    $this->pseudo_field_resource_alerts = $built;
+    return $built;
   }
   
   /**

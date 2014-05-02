@@ -180,7 +180,7 @@ function crl_resource_feat_field_group_info() {
     'children' => array(
       0 => 'field_resource_coll_content_tb',
       1 => 'field_resource_languages',
-      2 => 'pseudo_field_resoruce_coll_content_tax',
+      2 => 'pseudo_field_resource_coll_content_tax',
       3 => 'pseudo_field_resource_table_sources',
     ),
     'format_type' => 'div',
@@ -280,8 +280,8 @@ function crl_resource_feat_field_group_info() {
     'weight' => '13',
     'children' => array(
       0 => 'group_details_collection_content',
-      1 => 'group_details_specs',
-      2 => 'group_details_provider_terms',
+      1 => 'group_details_provider_terms',
+      2 => 'group_details_specs',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -341,7 +341,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Jisc Data',
-    'weight' => '13',
+    'weight' => '14',
     'children' => array(
       0 => 'field_resource_jisc_overview',
       1 => 'field_resource_jisc_description',
@@ -369,7 +369,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Jisc Data',
-    'weight' => '8',
+    'weight' => '9',
     'children' => array(
       0 => 'field_jisc_id',
       1 => 'field_jisc_guid',
@@ -612,7 +612,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'System Fields',
-    'weight' => '9',
+    'weight' => '10',
     'children' => array(
       0 => 'field_platform_and_user_interfac',
       1 => 'field_content_scope_and_complete',
@@ -648,11 +648,11 @@ function crl_resource_feat_field_group_info() {
     'label' => 'Tabbed',
     'weight' => '0',
     'children' => array(
-      0 => 'group_overview',
-      1 => 'group_details',
+      0 => 'group_analysis',
+      1 => 'group_appendix',
       2 => 'group_crl_details',
-      3 => 'group_analysis',
-      4 => 'group_appendix',
+      3 => 'group_details',
+      4 => 'group_overview',
     ),
     'format_type' => 'htabs',
     'format_settings' => array(
@@ -675,12 +675,12 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Tabbed',
-    'weight' => '4',
+    'weight' => '5',
     'children' => array(
-      0 => 'group_overview',
-      1 => 'group_details',
-      2 => 'group_analysis',
-      3 => 'group_appendix',
+      0 => 'group_analysis',
+      1 => 'group_appendix',
+      2 => 'group_details',
+      3 => 'group_overview',
     ),
     'format_type' => 'htabs',
     'format_settings' => array(
@@ -703,10 +703,10 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Update Alert',
-    'weight' => '7',
+    'weight' => '8',
     'children' => array(
-      0 => 'field_update_alert_message',
-      1 => 'field_update_alert',
+      0 => 'field_update_alert',
+      1 => 'field_update_alert_message',
     ),
     'format_type' => 'div',
     'format_settings' => array(

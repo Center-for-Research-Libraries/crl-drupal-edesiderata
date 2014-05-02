@@ -10,6 +10,9 @@
  * Preprocess function for the PP preference widget (taken from fivestar).
  */
 function crl_pp_resource_feat_preprocess_rate_widget__pp_preference(&$variables) {
+  // Borrow rate's fivestar css and js for this custom widget.
+  drupal_add_css(drupal_get_path('module', 'rate') . '/templates/fivestar/fivestar.css');
+  drupal_add_js(drupal_get_path('module', 'rate') . '/templates/fivestar/fivestar.js');
   // Get/set variables needed for calculations.
   $results = $variables['results'];
   $links = $variables['links'];

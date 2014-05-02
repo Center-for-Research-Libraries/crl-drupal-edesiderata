@@ -1,0 +1,52 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the crl_helpers module.
+ */
+
+
+/**
+ * Implements hook_install.
+ */
+function crl_helpers_install() {
+  // Assuming field_country is in place already (probably as part of helpers
+  // feature), set its oplist.
+  crl_helpers_set_oplist_function('field_country', 'crl_helpers_country_list');
+}
+
+
+/**
+ * Set custom allowed values function for field_institution.
+ * 
+ * This handleing has been moved to crl_user, but we keep the record here to
+ * ensure hook_update_n counts are consistent.
+ */
+function crl_helpers_update_7100() {
+  // Set oplist function for field_institution.
+  // crl_helpers_set_oplist_function('field_institution', 'crl_helpers_inst_oplist');
+}
+
+
+/**
+ * Set custom allowed values function for field_country.
+ */
+function crl_helpers_update_7101() {
+  // Set oplist function for field_country.
+  crl_helpers_set_oplist_function('field_country', 'crl_helpers_country_list');
+}
+
+
+/**
+ * Helper to associate a custom oplist function with a field.
+ */
+function crl_helpers_set_oplist_function($field_name, $function_name) {
+  $field = field_info_field($field_name);
+  if (!empty($field)) {
+    if (isset($field['settings']['allowed_values'])) {
+      unset($field['settings']['allowed_values']);
+    }
+    $field['settings']['allowed_values_function'] = $function_name;
+    field_update_field($field);
+  }
+}

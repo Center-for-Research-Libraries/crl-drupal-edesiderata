@@ -4,7 +4,11 @@ description = Custom features and relationships related to the "resource" conten
 core = 7.x
 package = CRL
 
+dependencies[] = crl_resource_feat
 dependencies[] = entity
 dependencies[] = entityreference
 dependencies[] = search_api
 dependencies[] = facetapi
+
+files[] = includes/CrlResourceDisplayElements.inc
+files[] = includes/CrlResourceBlocks.inc
