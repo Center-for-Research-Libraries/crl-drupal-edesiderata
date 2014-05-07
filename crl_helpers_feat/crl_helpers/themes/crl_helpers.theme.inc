@@ -17,7 +17,7 @@
 function theme_crl_helpers_facet_breadcrumb($variables) {
   $output = '';
   $glue = "»";
-  $reset_markup = '<span class="facet-breadcrumb-reset"><a href="' . $variables['base_path'] . '"><span class="facet-breadcrumb-reset-icon"></span><span class="facet-breadcrumb-label">' . t('Reset') . '</span></a></span>';
+  $reset_markup = '<span class="facet-breadcrumb-reset">' . l('<span class="facet-breadcrumb-reset-icon"></span><span class="facet-breadcrumb-label">' . t('Reset') . '</span>', $variables['base_path'], array('html' => TRUE)) . '</span>';
   $output .= '<div id="facet-breadcrumb" class="clearfix"><ul class="breadcrumb"><li><span class="facet-breadcrumb-label">' . t('Active Filters') . ': </span></li>';
   $switch = array('odd' => 'even', 'even' => 'odd');
   $zebra = 'even';

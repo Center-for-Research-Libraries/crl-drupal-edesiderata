@@ -6,7 +6,7 @@
 class CrlHelpersBlocks {
   
   /**
-   * Common public build method that calles specific protected build method.
+   * Common public build method that calls specific protected build method.
    */
   public function buildBlock($block) {
     if (method_exists($this, 'build_' . $block)) {
@@ -22,16 +22,11 @@ class CrlHelpersBlocks {
     $block = array();
     $output = '';
     if (isset($_GET['f']) || !empty($_GET['search_api_views_fulltext'])) {
+      $base_path = current_path();
       // Get the most recent breadcrumb.
       $breadcrumb = drupal_get_breadcrumb();
       // Drop the "home" value for the breadcrumb.
       array_shift($breadcrumb);
-      if (!empty($breadcrumb)) {
-        $base_path = '/';
-        if ($base_url = parse_url($_SERVER['REQUEST_URI'])) {
-          $base_path = $base_url['path'];
-        }
-      }
       $extra = '';
       // Integration with the crl_mydes_feat module to inject a save this
       // search option into the breadcrumb block (only applicable to resource

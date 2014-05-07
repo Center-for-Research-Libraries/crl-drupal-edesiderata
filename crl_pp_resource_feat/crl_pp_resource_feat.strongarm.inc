@@ -177,8 +177,8 @@ function crl_pp_resource_feat_strongarm() {
             'visible' => TRUE,
           ),
           'default' => array(
-            'weight' => '1',
-            'visible' => TRUE,
+            'weight' => '2',
+            'visible' => FALSE,
           ),
         ),
       ),
