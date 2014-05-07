@@ -440,7 +440,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -485,7 +485,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 9,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -530,7 +530,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -674,7 +674,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -813,7 +813,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 10,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -859,7 +859,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 11,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -952,7 +952,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 2,
+        'weight' => 1,
       ),
       'embedded' => array(
         'label' => 'above',
