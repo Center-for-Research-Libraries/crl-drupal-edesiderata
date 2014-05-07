@@ -249,7 +249,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['arguments']['field_provider']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['field_provider']['summary_options']['grouping'] = array(
     0 => array(
-      'field' => 'crl_resource_glossary_value',
+      'field' => 'crl_glossary_value',
       'rendered' => 1,
       'rendered_strip' => 1,
     ),
@@ -532,7 +532,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
   $handler->display->display_options['tab_options']['type'] = 'normal';
-  $handler->display->display_options['tab_options']['title'] = 'Resource Votes Administration';
+  $handler->display->display_options['tab_options']['title'] = 'Resource Votes Summary';
   $handler->display->display_options['tab_options']['weight'] = '0';
 
   /* Display: Block - Summary */
@@ -547,12 +547,21 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '10';
   $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = '<p>Showing 10 most popular "thumbs up", <strong><a href="/admin/votes/aggregate">View All</a><br/>
+<a href="/admin/votes/details">View Individual Votes Details</a></strong></p>';
+  $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   /* Footer: Global: Text area */
   $handler->display->display_options['footer']['area']['id'] = 'area';
   $handler->display->display_options['footer']['area']['table'] = 'views';
   $handler->display->display_options['footer']['area']['field'] = 'area';
-  $handler->display->display_options['footer']['area']['content'] = '<p align=right><strong><a href="/admin/votes/aggregate">Votes Aggregate</a>  |  <a href="/admin/votes/details">Votes Details</a></strong></p>';
+  $handler->display->display_options['footer']['area']['content'] = '<p><strong><a href="/admin/votes/aggregate">View All</a><br/>
+<a href="/admin/votes/details">View Individual Votes Details</a></strong></p>';
   $handler->display->display_options['footer']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Vote results - Interest */
