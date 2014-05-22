@@ -31,6 +31,12 @@ function crl_provider_update_7100() {
  * system as it is not run via a batch.
  */
 function crl_provider_bulk_prep_providers() {
+  // We need to do a manual cache flush here in order to ensure the entity
+  // properties defined by this module are picked-up. For some reason this
+  // can get called (via hook_install) before these properties are registered,
+  // in which case some of our logic below (specifically tasks triggered on the
+  // $wrapper->save() call) may fail. Clearing all caches gets around this.
+  drupal_flush_all_caches();
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
     ->entityCondition('bundle', 'provider')

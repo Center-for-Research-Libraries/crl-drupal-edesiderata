@@ -168,7 +168,7 @@ function crl_provider_feat_field_default_field_instances() {
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 3,
       ),
       'type' => 'text_textarea',
       'weight' => 16,
@@ -511,52 +511,6 @@ function crl_provider_feat_field_default_field_instances() {
       'settings' => array(),
       'type' => 'number',
       'weight' => 10,
-    ),
-  );
-
-  // Exported field_instance: 'node-provider-field_provider_current_owner'
-  $field_instances['node-provider-field_provider_current_owner'] = array(
-    'bundle' => 'provider',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 16,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 12,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_provider_current_owner',
-    'label' => 'Current Owner',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 8,
     ),
   );
 
@@ -925,7 +879,6 @@ function crl_provider_feat_field_default_field_instances() {
   t('Comment Privacy Setting');
   t('Contacts');
   t('Country');
-  t('Current Owner');
   t('Enter contact details by creating a <em>separate entry</em> for each distinct address or contact as applicable.');
   t('Internal Notes');
   t('JISC GUID');

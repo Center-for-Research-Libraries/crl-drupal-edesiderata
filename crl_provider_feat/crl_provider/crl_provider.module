@@ -308,7 +308,7 @@ function crl_provider_node_presave($node) {
     crl_provider_add_backref_terms($wrapper);
   }
   // If we are saving a resource entry we need to get the related provider,
-  // aggregate the term info, and then trigger a separate sace.
+  // aggregate the term info, and then trigger a separate save.
   elseif ($node->type == 'resource') {
     $p_wrapper = entity_metadata_wrapper('node', $wrapper->field_provider->value());
     crl_provider_add_backref_terms($wrapper);

@@ -39,7 +39,7 @@ function crl_provider_feat_node_info() {
       'base' => 'node_content',
       'description' => t('All site resources must be linked to one provider. This content type is a container for an individual provider\'s information.'),
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Name'),
       'help' => '',
     ),
   );
