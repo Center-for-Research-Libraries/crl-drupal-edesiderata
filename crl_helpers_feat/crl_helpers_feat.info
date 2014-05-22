@@ -31,6 +31,7 @@ features[field_base][] = field_internal_notes
 features[field_base][] = field_link
 features[field_base][] = field_postal_code
 features[field_base][] = field_title_alt
+features[field_base][] = field_title_prior
 features[field_base][] = field_title_sort
 features[filter][] = filtered_html
 features[filter][] = full_html
