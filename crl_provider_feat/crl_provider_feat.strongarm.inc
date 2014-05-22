@@ -99,16 +99,16 @@ function crl_provider_feat_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '6',
+          'weight' => '7',
         ),
         'redirect' => array(
-          'weight' => '7',
+          'weight' => '8',
         ),
       ),
       'display' => array(
         'pseudo_field_provider_added' => array(
           'default' => array(
-            'weight' => '15',
+            'weight' => '22',
             'visible' => TRUE,
           ),
           'embedded' => array(
@@ -118,7 +118,7 @@ function crl_provider_feat_strongarm() {
         ),
         'pseudo_field_provider_updated' => array(
           'default' => array(
-            'weight' => '16',
+            'weight' => '23',
             'visible' => TRUE,
           ),
           'embedded' => array(
