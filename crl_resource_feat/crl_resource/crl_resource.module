@@ -140,14 +140,6 @@ function crl_resource_theme() {
       'variables' => array(),
       'template' => 'views-view-fields--resource-lists',
     ),
-    // Theme hook to generate a resource interest voting widget (used by rate).
-    // This will automatically get used by rate based on its name and the
-    // standard template suggestion rules. We must formally declare it to ensure
-    // our custom preprocess functions get used, etc.
-    'rate_widget__resource_interest' => array(
-      'variables' => array(),
-      'template' => 'rate-widget--resource-interest',
-    ),
   );
   foreach ($hooks as &$hook) {
     // Make sure that our actual theme hooks and/or preprocessor logic is
@@ -244,22 +236,6 @@ function crl_resource_entity_property_info_alter(&$info) {
     'type' => 'decimal',
     'description' => t("Get the average of votes across all fivestar dimentions that apply to resoruces."),
     'getter callback' => 'crl_resource_get_vote_average',
-  );
-  // Get the interest count (positive). NOTE: requires extra queries (does not
-  // just use loaded entity data).
-  $properties['crl_resource_interest_count_up'] = array(
-    'label' => t("CRL Resource Interest Count"),
-    'type' => 'integer',
-    'description' => t("Get the aggregate positive interest count for a resoruce."),
-    'getter callback' => 'crl_resource_get_interest_count_up',
-  );
-  // Get the interest count (negative). NOTE: requires extra queries (does not
-  // just use loaded entity data).
-  $properties['crl_resource_interest_count_down'] = array(
-    'label' => t("CRL Resource Interest Count"),
-    'type' => 'integer',
-    'description' => t("Get the aggregate negative interest count for a resoruce."),
-    'getter callback' => 'crl_resource_get_interest_count_down',
   );
 }
 
@@ -461,59 +437,6 @@ function crl_resource_get_vote_average($entity, array $options, $name, $type, $i
 
 
 /**
- * Properties getter callback: get resource interest count positive.
- *
- * NOTE: requires extra queries (does not just use loaded entity data). So it's
- * probably not a good idea to fetch this property over and over on one page.
- *
- * @see crl_resource_entity_property_info_alter().
- */
-function crl_resource_get_interest_count_up($entity, array $options, $name, $type, $info) {
-  return crl_resource_get_interest_count($entity, '1');
-}
-
-
-/**
- * Properties getter callback: get resource interest count negative.
- *
- * NOTE: requires extra queries (does not just use loaded entity data). So it's
- * probably not a good idea to fetch this property over and over on one page.
- *
- * @see crl_resource_entity_property_info_alter().
- */
-function crl_resource_get_interest_count_down($entity, array $options, $name, $type, $info) {
-  return crl_resource_get_interest_count($entity, '-1');
-}
-
-
-/**
- * Helper to get a resource interest count based on an option key.
- */
-function crl_resource_get_interest_count($entity, $option) {
-  // If we are not working with a resource (e.g., building a generic node search
-  // index), we can just return a NULL value.
-  if (empty($entity->type) || $entity->type != 'resource') {
-    return;
-  }
-  // Get the vote data for the interest widget. We use a static cache as this
-  // query really only needs to happen once per entity.
-  static $results = array();
-  if (function_exists('votingapi_select_results') && empty($results[$entity->nid])) {
-    $criteria['entity_id'] = $entity->nid;
-    $criteria['tag'] = 'resource_interest';
-    $criteria['value_type'] = 'option';
-    $results[$entity->nid] = votingapi_select_results($criteria);
-  }
-  foreach ($results[$entity->nid] as $result) {
-    if (!empty($result['function']) && $result['function'] == 'option-' . $option && !empty($result['value'])) {
-      return (int)$result['value'];
-    }
-  }
-  return 0;
-}
-
-
-/**
  * Helper to get wrappers for all entites involved in a resource/activity
  * relationship.
  *
@@ -661,11 +584,6 @@ function crl_resource_block_info() {
   // The resource summary is a block at the top of each resource.
   $blocks['crl_resource_summary'] = array(
     'info' => t('CRL Resource Summary'),
-    'cache' => DRUPAL_NO_CACHE,
-  );
-  // The common input block shows thumbs up/down vote options.
-  $blocks['crl_resource_common_input'] = array(
-    'info' => t('CRL Common Resource Vote and Rate Input'),
     'cache' => DRUPAL_NO_CACHE,
   );
   return $blocks;

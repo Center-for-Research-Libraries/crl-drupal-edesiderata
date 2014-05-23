@@ -154,6 +154,24 @@ function crl_resource_feat_context_default_contexts() {
           'region' => 'branding',
           'weight' => '-10',
         ),
+        'crl_helpers-crl_helpers_lim_access_mess' => array(
+          'module' => 'crl_helpers',
+          'delta' => 'crl_helpers_lim_access_mess',
+          'region' => 'sidebar_second',
+          'weight' => '-10',
+        ),
+        'crl_helpers-crl_helpers_interest_input' => array(
+          'module' => 'crl_helpers',
+          'delta' => 'crl_helpers_interest_input',
+          'region' => 'sidebar_second',
+          'weight' => '-9',
+        ),
+        'crl_mydes_feat-crl_mydes_feat_flag' => array(
+          'module' => 'crl_mydes_feat',
+          'delta' => 'crl_mydes_feat_flag',
+          'region' => 'sidebar_second',
+          'weight' => '-8',
+        ),
         'crl_resource-crl_resource_summary' => array(
           'module' => 'crl_resource',
           'delta' => 'crl_resource_summary',
@@ -168,141 +186,6 @@ function crl_resource_feat_context_default_contexts() {
   );
   $context->condition_mode = 1;
   $export['resource_page'] = $context;
-
-  $context = new stdClass();
-  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
-  $context->api_version = 3;
-  $context->name = 'resource_page_anon';
-  $context->description = '';
-  $context->tag = 'permissions';
-  $context->conditions = array(
-    'node' => array(
-      'values' => array(
-        'resource' => 'resource',
-      ),
-      'options' => array(
-        'node_form' => '0',
-      ),
-    ),
-    'user' => array(
-      'values' => array(
-        'anonymous user' => 'anonymous user',
-      ),
-    ),
-  );
-  $context->reactions = array(
-    'block' => array(
-      'blocks' => array(
-        'block-27' => array(
-          'module' => 'block',
-          'delta' => '27',
-          'region' => 'sidebar_second',
-          'weight' => '-10',
-        ),
-      ),
-    ),
-  );
-  $context->condition_mode = 1;
-
-  // Translatables
-  // Included for use with string extractors like potx.
-  t('permissions');
-  $export['resource_page_anon'] = $context;
-
-  $context = new stdClass();
-  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
-  $context->api_version = 3;
-  $context->name = 'resource_page_mem';
-  $context->description = '';
-  $context->tag = 'permissions';
-  $context->conditions = array(
-    'node' => array(
-      'values' => array(
-        'resource' => 'resource',
-      ),
-      'options' => array(
-        'node_form' => '0',
-      ),
-    ),
-    'user' => array(
-      'values' => array(
-        'administrator' => 'administrator',
-        'crl-staff' => 'crl-staff',
-        'editor basic' => 'editor basic',
-        'editor power' => 'editor power',
-        'member-crl' => 'member-crl',
-      ),
-    ),
-  );
-  $context->reactions = array(
-    'block' => array(
-      'blocks' => array(
-        'crl_resource-crl_resource_common_input' => array(
-          'module' => 'crl_resource',
-          'delta' => 'crl_resource_common_input',
-          'region' => 'sidebar_second',
-          'weight' => '-9',
-        ),
-        'crl_mydes_feat-crl_mydes_feat_flag' => array(
-          'module' => 'crl_mydes_feat',
-          'delta' => 'crl_mydes_feat_flag',
-          'region' => 'sidebar_second',
-          'weight' => '-8',
-        ),
-      ),
-    ),
-  );
-  $context->condition_mode = 1;
-
-  // Translatables
-  // Included for use with string extractors like potx.
-  t('permissions');
-  $export['resource_page_mem'] = $context;
-
-  $context = new stdClass();
-  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
-  $context->api_version = 3;
-  $context->name = 'resource_page_nonmem';
-  $context->description = '';
-  $context->tag = 'permissions';
-  $context->conditions = array(
-    'context' => array(
-      'values' => array(
-        '~resource_page_mem' => '~resource_page_mem',
-      ),
-    ),
-    'node' => array(
-      'values' => array(
-        'resource' => 'resource',
-      ),
-      'options' => array(
-        'node_form' => '0',
-      ),
-    ),
-    'user' => array(
-      'values' => array(
-        'authenticated user' => 'authenticated user',
-      ),
-    ),
-  );
-  $context->reactions = array(
-    'block' => array(
-      'blocks' => array(
-        'block-28' => array(
-          'module' => 'block',
-          'delta' => '28',
-          'region' => 'sidebar_second',
-          'weight' => '-10',
-        ),
-      ),
-    ),
-  );
-  $context->condition_mode = 1;
-
-  // Translatables
-  // Included for use with string extractors like potx.
-  t('permissions');
-  $export['resource_page_nonmem'] = $context;
 
   return $export;
 }

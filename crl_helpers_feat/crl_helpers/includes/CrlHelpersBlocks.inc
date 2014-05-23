@@ -122,5 +122,56 @@ class CrlHelpersBlocks {
     $block['content']['#attached']['js'][] = drupal_get_path('module', 'crl_helpers') .'/js/crl_helpers_back_to_index.js';
     return $block;
   }
+  
+  /**
+   * Build crl_resource_interest_input.
+   */
+  protected function build_crl_helpers_interest_input() {
+    $block = array();
+    global $user;
+    $nid = arg(1);
+    $node = node_load($nid);
+    // Make sure block should be visible
+    if (isset($node->type) && user_access('crl access member features')) {
+      $subject = t('Interested in this Entry?');
+      $widgets = variable_get(RATE_VAR_WIDGETS, array());
+      foreach ($widgets as $id => $widget) {
+        if ($widget->name == $node->type . '_interest') {
+          $subject = $widget->title;
+        }
+      }
+      $block['subject'] = $subject;
+      $block['content'] = array('#markup' => rate_embed($node, $node->type . '_interest'));
+    }
+    return $block;
+  }
+  
+  /**
+   * Build crl_helpers_lim_access_mess.
+   */
+  protected function build_crl_helpers_lim_access_mess() {
+    global $user;
+    $block = array();
+    // We only output content for users that cannot access member features.
+    if (!user_access('crl access member features')) {
+      // The specific message displayed depends on whether-or-not the user is
+      // logged-in.
+      if ($user->uid) {
+        $block['subject'] = t('Information for non-members');
+        $block['content'] = t('You logged in as a non-member. This means that some CRL licensing information and community input features are not available.');
+      }
+      else {
+        $urls = array(
+          '!mlist' => 'http://www.crl.edu/membership/members',
+          '!login' => url('user', array('query' => array('destination' => request_path()))),
+          '!signup' => url('user/register', array('query' => array('destination' => request_path()))),
+        );
+        $block['subject'] = t('You are not logged-in');
+        $block['content'] = '<p>' . t('CRL licensing and community input features are only available with a CRL member login.') . '</p>';
+        $block['content'] .= '</p>' . t('If your institution is a <a href="!mlist">CRL Member</a> please<br><a class="button" href="!login">log in</a> or <a class="button" href="!signup">sign up</a>', $urls) . '</p>';
+      }
+    }
+    return $block;
+  }
 
 }
