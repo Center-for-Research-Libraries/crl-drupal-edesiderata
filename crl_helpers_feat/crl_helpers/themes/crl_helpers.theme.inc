@@ -7,6 +7,60 @@
 
 
 /**
+ * Implements hook_preprocess_crl_helpers_interest_widget().
+ * 
+ * Build custom variables for the interest widget.
+ */
+function crl_helpers_preprocess_crl_helpers_interest_widget(&$variables) {
+  extract($variables);
+  $info = array();
+  if ($mode == RATE_CLOSED) {
+    $info[] = t('Voting is closed.');
+  }
+  if ($mode != RATE_COMPACT && $mode != RATE_COMPACT_DISABLED) {
+    if (isset($results['user_vote'])) {
+      $info[] = t('You voted \'@option\'.', array('@option' => t($results['user_vote'])));
+      // We also want any status messages set to trickle through as part of an
+      // AHAH update.
+      if ($just_voted) {
+        $messages = drupal_get_messages('status');
+        foreach ($messages as $message) {
+          $info[] = $message[0];
+        }
+      }
+    }
+  }
+  $variables['info'] = implode(' ', $info);
+}
+
+
+/**
+ * Returns HTML for a vote interest widget.
+ *
+ * @param array $variables
+ *   An associative array containing variables used to render this HTML.
+ *
+ * @ingroup themeable
+*/
+function theme_crl_helpers_interest_widget($variables) {
+  extract($variables);
+  $output = '';
+  if ($display_options['description']) {
+    $output .= '<p>' . $display_options['description'] . '</p>';
+  }
+
+  $yes_button = '<a class="rate-button button" id="rate-button-100" rel="nofollow" href="' . htmlentities($links[0]['href']) . '" title="' . $links[0]['text'] . '">' . '<span class="crl-icon-small thumbsup-icon"></span>' . $links[0]['text'] . '</a>';
+  $no_button = '<a class="rate-button button" id="rate-button-101" rel="nofollow" href="' . htmlentities($links[1]['href']) . '" title="' . $links[1]['text'] . '">' . '<span class="crl-icon-small thumbsdown-icon"></span>' . $links[1]['text'] . '</a>';
+  $output .= '<p class="interest-input">' . $yes_button . ' ' . $no_button . '</p>';
+
+  if ($info) {
+    $output .= '<p class="rate-info interest-vote">' . $info . '</p>';
+  }
+  return $output;
+}
+
+
+/**
  * Returns HTML for a facet breadcrumb.
  *
  * @param array $variables

@@ -57,6 +57,13 @@ function crl_helpers_theme() {
     'crl_helpers_pseudo_field' => array(
       'variables' => array('output' => '', 'label' => '', 'inline' => FALSE),
     ),
+    // Theme hook to generate an interest voting widget (used by rate).
+    // This will automatically get used by rate based on its name and the
+    // standard template suggestion rules. We must formally declare it to ensure
+    // our custom preprocess functions get used, etc.
+    'crl_helpers_interest_widget' => array(
+      'variables' => array('links' => NULL, 'results' => NULL, 'mode' => NULL, 'just_voted' => FALSE, 'content_type' => NULL, 'content_id' => NULL, 'display_options' => NULL),
+    ),
   );
   foreach ($hooks as &$hook) {
     $hook['path'] = drupal_get_path('module', 'crl_helpers') . '/themes';
@@ -151,6 +158,17 @@ function crl_helpers_block_info() {
   // The "back to index" block shows a caclulated back link for navigation.
   $blocks['crl_helpers_back_to_index'] = array(
     'info' => t('CRL Back to Index'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // The common input block shows thumbs up/down vote options.
+  $blocks['crl_helpers_interest_input'] = array(
+    'info' => t('CRL Common Vote and Rate Input'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // The limited access message block shows a special message to users that
+  // cannot access member features.
+  $blocks['crl_helpers_lim_access_mess'] = array(
+    'info' => t('CRL Limited Access Message'),
     'cache' => DRUPAL_NO_CACHE,
   );
   return $blocks;
@@ -347,6 +365,17 @@ function crl_helpers_preprocess_views_data_export_xls_header(&$variables) {
 
 
 /**
+ * Implements hook_rate_widget_alter().
+ */
+function crl_helpers_rate_widget_alter($widget, $context) {
+  // Ensure that we use the same theme function for all interest input widgets.
+  if (strpos($widget->name, '_interest') !== FALSE) {
+    $widget->theme = 'crl_helpers_interest_widget';
+  }
+}
+
+
+/**
  * Implements hook_form_alter().
  *
  * Note that this form_alter will fire last thanks to
@@ -458,6 +487,22 @@ function crl_helpers_entity_property_info_alter(&$info) {
     'description' => t("Gets CRL glossary value based on the first letter of the sort name."),
     'getter callback' => 'crl_helpers_get_glossary_value',
   );
+  // Get the interest count (positive). NOTE: requires extra queries (does not
+  // just use loaded entity data).
+  $properties['crl_helpers_interest_count_up'] = array(
+    'label' => t("CRL Entity Interest Count"),
+    'type' => 'integer',
+    'description' => t("Get the aggregate positive interest count."),
+    'getter callback' => 'crl_helpers_get_interest_count_up',
+  );
+  // Get the interest count (negative). NOTE: requires extra queries (does not
+  // just use loaded entity data).
+  $properties['crl_helpers_interest_count_down'] = array(
+    'label' => t("CRL Entity Interest Count"),
+    'type' => 'integer',
+    'description' => t("Get the aggregate negative interest count."),
+    'getter callback' => 'crl_helpers_get_interest_count_down',
+  );
 }
 
 
@@ -484,6 +529,57 @@ function crl_helpers_get_glossary_value($entity, array $options, $name, $type, $
     return strtoupper(mb_substr($string, 0, 1));
   }
   return NULL;
+}
+
+
+/**
+ * Properties getter callback: get interest count positive.
+ *
+ * NOTE: requires extra queries (does not just use loaded entity data). So it's
+ * probably not a good idea to fetch this property over and over on one page.
+ *
+ * @see crl_helpers_entity_property_info_alter().
+ */
+function crl_helpers_get_interest_count_up($entity, array $options, $name, $type, $info) {
+  return crl_helpers_get_interest_count($entity, '1');
+}
+
+
+/**
+ * Properties getter callback: get interest count negative.
+ *
+ * NOTE: requires extra queries (does not just use loaded entity data). So it's
+ * probably not a good idea to fetch this property over and over on one page.
+ *
+ * @see crl_helpers_entity_property_info_alter().
+ */
+function crl_helpers_get_interest_count_down($entity, array $options, $name, $type, $info) {
+  return crl_helpers_get_interest_count($entity, '-1');
+}
+
+
+/**
+ * Helper to get an interest count based on an option key.
+ */
+function crl_helpers_get_interest_count($entity, $option) {
+  if (empty($entity->type)) {
+    return;
+  }
+  // Get the vote data for the interest widget. We use a static cache as this
+  // query really only needs to happen once per entity.
+  static $results = array();
+  if (function_exists('votingapi_select_results') && empty($results[$entity->nid])) {
+    $criteria['entity_id'] = $entity->nid;
+    $criteria['tag'] = $entity->type . '_interest';
+    $criteria['value_type'] = 'option';
+    $results[$entity->nid] = votingapi_select_results($criteria);
+  }
+  foreach ($results[$entity->nid] as $result) {
+    if (!empty($result['function']) && $result['function'] == 'option-' . $option && !empty($result['value'])) {
+      return (int)$result['value'];
+    }
+  }
+  return 0;
 }
 
 

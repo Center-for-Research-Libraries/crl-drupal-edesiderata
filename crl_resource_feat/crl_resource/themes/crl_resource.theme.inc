@@ -63,34 +63,6 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
 
 
 /**
- * Implements hook_preprocess_rate_widget__resource_interest().
- * 
- * Build custom variables for the resource interest widget.
- */
-function crl_resource_preprocess_rate_widget__resource_interest(&$variables) {
-  extract($variables);
-  $info = array();
-  if ($mode == RATE_CLOSED) {
-    $info[] = t('Voting is closed.');
-  }
-  if ($mode != RATE_COMPACT && $mode != RATE_COMPACT_DISABLED) {
-    if (isset($results['user_vote'])) {
-      $info[] = t('You voted \'@option\'.', array('@option' => t($results['user_vote'])));
-      // We also want any status messages set to trickle through as part of an
-      // AHAH update.
-      if ($just_voted) {
-        $messages = drupal_get_messages('status');
-        foreach ($messages as $message) {
-          $info[] = $message[0];
-        }
-      }
-    }
-  }
-  $variables['info'] = implode(' ', $info);
-}
-
-
-/**
  * Returns HTML for a resoruce status summary field.
  *
  * @param array $vars

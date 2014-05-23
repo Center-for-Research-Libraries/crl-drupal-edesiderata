@@ -38,7 +38,7 @@ class CrlResourceDisplayElements {
    * Build custom field: pseudo_field_resource_status_summary
    */
   protected function build_pseudo_field_resource_status_summary() {
-    $built = array();
+    $built = NULL;
     // Calculate editor link and backref status details.
     $edit_link = crl_resource_activity_edit_link($this->entity_wrapper);
     $backref_status = isset($this->entity_wrapper->crl_resource_status_backref) ? $this->entity_wrapper->crl_resource_status_backref->value() : array();
@@ -63,7 +63,7 @@ class CrlResourceDisplayElements {
    * Build custom field: pseudo_field_resource_all_jisc_details
    */
   protected function build_pseudo_field_resource_all_jisc_details() {
-    $built = array();
+    $built = NULL;
     $jisc_id = isset($this->entity_wrapper->field_jisc_id) ? $this->entity_wrapper->field_jisc_id->value() : NULL;
     // If the status flags this as a JISC display, and we have a JISC ID, then
     // display the JISC details fields.
@@ -87,7 +87,7 @@ class CrlResourceDisplayElements {
    * Build custom field: pseudo_field_resource_provider_details
    */
   protected function build_pseudo_field_resource_provider_details() {
-    $built = array();
+    $built = NULL;
     $output = '';
     // Show the provider field (again) from the resource
     $output .= drupal_render($this->entity->content['field_provider']);
@@ -112,7 +112,7 @@ class CrlResourceDisplayElements {
    * Build custom field: pseudo_field_resource_activity
    */
   protected function build_pseudo_field_resource_activity() {
-    $built = array();
+    $built = NULL;
     $backref_entities = isset($this->entity_wrapper->crl_resource_backref) ? $this->entity_wrapper->crl_resource_backref->value() : array();
     if (!empty($backref_entities)) { // Activity data exists
       // Just get the first backref entity in the array (for now there should
@@ -140,7 +140,7 @@ class CrlResourceDisplayElements {
    * Build custom field: pseudo_field_resource_coll_content_tax
    */
   protected function build_pseudo_field_resource_coll_content_tax() {
-    $built = array();
+    $built = NULL;
     $output = '';
     $output .= drupal_render($this->entity->content['field_subject_area']);
     $output .= drupal_render($this->entity->content['field_resource_type']);
@@ -154,7 +154,7 @@ class CrlResourceDisplayElements {
    * Build custom field: pseudo_field_resource_source_summary
    */
   protected function build_pseudo_field_resource_source_summary() {
-    $built = array();
+    $built = NULL;
     $output = $this->get_source_text();
     if (!empty($output)) {
       $built = array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('Source'), '#output' => $output);
@@ -166,7 +166,7 @@ class CrlResourceDisplayElements {
    * Build custom field: pseudo_field_resource_table_sources
    */
   protected function build_pseudo_field_resource_table_sources() {
-    $built = array();
+    $built = NULL;
     if ($this->source_status == 'crl_review') {
       $built = array('#theme' => 'crl_resource_publisher_legend', '#icon_alt_title' => t('Direct from Publisher'), '#icon_text' => t('Denotes data sourced directly from publisher'));
     }
@@ -177,7 +177,7 @@ class CrlResourceDisplayElements {
    * Build custom field: pseudo_field_resource_review_source
    */
   protected function build_pseudo_field_resource_review_source() {
-    $built = array();
+    $built = NULL;
     if ($this->source_status == 'crl_review') {
       $built = array('#theme' => 'crl_helpers_pseudo_field', '#output' => t('Sources for this review include information publicly posted or obtained directly from the publisher; data collected by CRL staff and specialists at CRL libraries; and examination of the digital collection when possible. Other sources are noted where cited. <em>CRL continues to gather additional information on this resource and to solicit critical assessment</em>.'));
     }
@@ -202,7 +202,7 @@ class CrlResourceDisplayElements {
    * Build custom field: pseudo_field_resource_alerts
    */
   protected function build_pseudo_field_resource_alerts() {
-    $built = array();
+    $built = NULL;
     $wrappers = crl_resource_get_wrappers($this->entity_wrapper);
     $wrappers_to_check = array_merge(array($wrappers['r_entity_wrapper']), $wrappers['a_entity_wrappers']);
     foreach($wrappers_to_check as $wrapper) {
