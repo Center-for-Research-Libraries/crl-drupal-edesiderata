@@ -5,6 +5,7 @@ dependencies[] = crl_helpers_feat
 dependencies[] = crl_resource
 dependencies[] = crl_resource_feat
 dependencies[] = ctools
+dependencies[] = entityreference
 dependencies[] = facetapi
 dependencies[] = features
 dependencies[] = field_group

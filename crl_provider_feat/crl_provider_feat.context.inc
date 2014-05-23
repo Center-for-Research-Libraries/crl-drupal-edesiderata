@@ -109,6 +109,18 @@ function crl_provider_feat_context_default_contexts() {
           'region' => 'branding',
           'weight' => '-10',
         ),
+        'crl_helpers-crl_helpers_lim_access_mess' => array(
+          'module' => 'crl_helpers',
+          'delta' => 'crl_helpers_lim_access_mess',
+          'region' => 'sidebar_second',
+          'weight' => '-10',
+        ),
+        'crl_helpers-crl_helpers_interest_input' => array(
+          'module' => 'crl_helpers',
+          'delta' => 'crl_helpers_interest_input',
+          'region' => 'sidebar_second',
+          'weight' => '-9',
+        ),
         'crl_resource-crl_resource_summary' => array(
           'module' => 'crl_resource',
           'delta' => 'crl_resource_summary',
