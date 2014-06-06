@@ -380,7 +380,7 @@ function crl_resource_get_expiration_countdown($entity, array $options, $name, $
   // Initialize with a very high number in case we want to use this value in
   // a sort (e.g. ensure NULL/empty values are listed last). This feels like a
   // hack and there may be better options for this.
-  $days_left = 9999999999;
+  $days_left = 999999999;
   $wrappers = crl_resource_get_wrappers($entity);
   // Get the most recent expiration.
   foreach ($wrappers['a_entity_wrappers'] as $a_entity_wrapper) {
