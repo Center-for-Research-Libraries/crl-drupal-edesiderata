@@ -42,6 +42,25 @@ function crl_provider_feat_field_default_field_bases() {
     'type' => 'text',
   );
 
+  // Exported field_base: 'field_provider_established'
+  $field_bases['field_provider_established'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_provider_established',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'number_integer',
+  );
+
   // Exported field_base: 'field_provider_in_operation'
   $field_bases['field_provider_in_operation'] = array(
     'active' => 1,

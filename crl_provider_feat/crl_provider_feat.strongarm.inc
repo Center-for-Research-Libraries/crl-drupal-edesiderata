@@ -108,7 +108,7 @@ function crl_provider_feat_strongarm() {
       'display' => array(
         'pseudo_field_provider_added' => array(
           'default' => array(
-            'weight' => '22',
+            'weight' => '24',
             'visible' => TRUE,
           ),
           'embedded' => array(
@@ -118,7 +118,7 @@ function crl_provider_feat_strongarm() {
         ),
         'pseudo_field_provider_updated' => array(
           'default' => array(
-            'weight' => '23',
+            'weight' => '25',
             'visible' => TRUE,
           ),
           'embedded' => array(
