@@ -140,7 +140,7 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 17,
+        'weight' => 36,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -171,7 +171,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 3,
       ),
       'type' => 'text_textarea',
-      'weight' => 12,
+      'weight' => 20,
     ),
   );
 
@@ -187,7 +187,7 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 20,
+        'weight' => 34,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -215,7 +215,7 @@ function crl_provider_feat_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 10,
+      'weight' => 18,
     ),
   );
 
@@ -479,7 +479,7 @@ function crl_provider_feat_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 15,
+        'weight' => 35,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -510,23 +510,23 @@ function crl_provider_feat_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 11,
+      'weight' => 19,
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_provider_current_owner'
-  $field_instances['node-provider-field_provider_current_owner'] = array(
+  // Exported field_instance: 'node-provider-field_provider_access'
+  $field_instances['node-provider-field_provider_access'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Description of access policies. Includes discussion of costs for content.',
     'display' => array(
       'default' => array(
         'label' => 'above',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 17,
+        'weight' => 14,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -542,21 +542,21 @@ function crl_provider_feat_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_provider_current_owner',
-    'label' => 'Current Owner',
+    'field_name' => 'field_provider_access',
+    'label' => 'Access',
     'required' => 0,
     'settings' => array(
-      'text_processing' => 0,
+      'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'size' => 60,
+        'rows' => 20,
       ),
-      'type' => 'text_textfield',
-      'weight' => 7,
+      'type' => 'text_textarea',
+      'weight' => 12,
     ),
   );
 
@@ -577,7 +577,7 @@ function crl_provider_feat_field_default_field_instances() {
           'thousand_separator' => '',
         ),
         'type' => 'number_integer',
-        'weight' => 18,
+        'weight' => 32,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -608,6 +608,144 @@ function crl_provider_feat_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
+      'weight' => 16,
+    ),
+  );
+
+  // Exported field_instance: 'node-provider-field_provider_financial_info'
+  $field_instances['node-provider-field_provider_financial_info'] = array(
+    'bundle' => 'provider',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Annual Revenue, links to tax documents, links to annual reports and other relevant documents.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 11,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_provider_financial_info',
+    'label' => 'Financial Information',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 20,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 9,
+    ),
+  );
+
+  // Exported field_instance: 'node-provider-field_provider_governance'
+  $field_instances['node-provider-field_provider_governance'] = array(
+    'bundle' => 'provider',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Links to organizational charts, link to bylaws, link to list of board members, link to recent job advertisements, link to board page.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 12,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_provider_governance',
+    'label' => 'Governance: Board / Owners / Parent organization',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 20,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 10,
+    ),
+  );
+
+  // Exported field_instance: 'node-provider-field_provider_history'
+  $field_instances['node-provider-field_provider_history'] = array(
+    'bundle' => 'provider',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Description of founding of organization and important changes to the organizations. [3-6 paragraphs.] ',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 10,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_provider_history',
+    'label' => 'History',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 20,
+      ),
+      'type' => 'text_textarea',
       'weight' => 8,
     ),
   );
@@ -628,7 +766,7 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 19,
+        'weight' => 33,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -657,7 +795,7 @@ function crl_provider_feat_field_default_field_instances() {
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 9,
+      'weight' => 17,
     ),
   );
 
@@ -669,11 +807,11 @@ function crl_provider_feat_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 16,
+        'weight' => 31,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -703,7 +841,53 @@ function crl_provider_feat_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 6,
+      'weight' => 15,
+    ),
+  );
+
+  // Exported field_instance: 'node-provider-field_provider_legal_info'
+  $field_instances['node-provider-field_provider_legal_info'] = array(
+    'bundle' => 'provider',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Description of relevant legal concerns, includes links to available agreements and licenses.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 15,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_provider_legal_info',
+    'label' => 'Legal Information',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 20,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 13,
     ),
   );
 
@@ -712,7 +896,7 @@ function crl_provider_feat_field_default_field_instances() {
     'bundle' => 'provider',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Include version, and a link to website and date version was harvested.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -750,6 +934,52 @@ function crl_provider_feat_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 7,
+    ),
+  );
+
+  // Exported field_instance: 'node-provider-field_provider_parent'
+  $field_instances['node-provider-field_provider_parent'] = array(
+    'bundle' => 'provider',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 30,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_provider_parent',
+    'label' => 'Parent Organization',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 14,
     ),
   );
 
@@ -845,6 +1075,98 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-provider-field_provider_sources'
+  $field_instances['node-provider-field_provider_sources'] = array(
+    'bundle' => 'provider',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 16,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_provider_sources',
+    'label' => 'Sources',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 10,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 14,
+    ),
+  );
+
+  // Exported field_instance: 'node-provider-field_provider_tech_info'
+  $field_instances['node-provider-field_provider_tech_info'] = array(
+    'bundle' => 'provider',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Description of how content is created, housed and distributed, commercial systems used, and platform(s).',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 13,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_provider_tech_info',
+    'label' => 'Technical Information',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 20,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 11,
+    ),
+  );
+
   // Exported field_instance: 'node-provider-field_provider_type'
   $field_instances['node-provider-field_provider_type'] = array(
     'bundle' => 'provider',
@@ -900,7 +1222,7 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_plain',
-        'weight' => 19,
+        'weight' => 38,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -927,7 +1249,7 @@ function crl_provider_feat_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 14,
+      'weight' => 22,
     ),
   );
 
@@ -943,7 +1265,7 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_plain',
-        'weight' => 18,
+        'weight' => 37,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -970,7 +1292,7 @@ function crl_provider_feat_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 13,
+      'weight' => 21,
     ),
   );
 
@@ -986,7 +1308,7 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 14,
+        'weight' => 28,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1032,7 +1354,7 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 15,
+        'weight' => 29,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1114,19 +1436,31 @@ function crl_provider_feat_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Abstract');
+  t('Access');
   t('Alternative Names');
+  t('Annual Revenue, links to tax documents, links to annual reports and other relevant documents.');
   t('Comment');
   t('Comment Privacy Setting');
   t('Contacts');
   t('Country');
-  t('Current Owner');
+  t('Description of access policies. Includes discussion of costs for content.');
+  t('Description of founding of organization and important changes to the organizations. [3-6 paragraphs.] ');
+  t('Description of how content is created, housed and distributed, commercial systems used, and platform(s).');
+  t('Description of relevant legal concerns, includes links to available agreements and licenses.');
   t('Enter contact details by creating a <em>separate entry</em> for each distinct address or contact as applicable.');
+  t('Financial Information');
+  t('Governance: Board / Owners / Parent organization');
+  t('History');
+  t('Include version, and a link to website and date version was harvested.');
   t('Inheriting Provider');
   t('Internal Notes');
   t('JISC GUID');
   t('JISC ID');
   t('JISC Import Batch');
+  t('Legal Information');
+  t('Links to organizational charts, link to bylaws, link to list of board members, link to recent job advertisements, link to board page.');
   t('Mission Statement');
+  t('Parent Organization');
   t('Postal Code');
   t('Prior Names');
   t('Related Resource Types');
@@ -1134,7 +1468,9 @@ function crl_provider_feat_field_default_field_instances() {
   t('See Also');
   t('Some values set here are aggregated automatically from all the resources that are related to this provider. Any aggregated values cannot be unset, but new values can be added.');
   t('Sorting Name');
+  t('Sources');
   t('Still in Operation');
+  t('Technical Information');
   t('This value is used for sorting when multiple items are listed in indices. Remove any articles (such as "the") from the beginning of the title to craft this sorting title.');
   t('Type of Organization');
   t('Type of Publisher');
