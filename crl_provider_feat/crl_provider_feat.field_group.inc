@@ -25,15 +25,13 @@ function crl_provider_feat_field_group_info() {
     'children' => array(
       0 => 'field_contacts',
       1 => 'field_country',
-      2 => 'field_postal_code',
-      3 => 'field_provider_in_operation',
-      4 => 'field_resource_type',
-      5 => 'field_subject_area',
-      6 => 'field_title_alt',
-      7 => 'field_title_prior',
-      8 => 'field_provider_inheriting',
-      9 => 'field_provider_established',
-      10 => 'field_provider_parent',
+      2 => 'field_provider_in_operation',
+      3 => 'field_resource_type',
+      4 => 'field_subject_area',
+      5 => 'field_title_alt',
+      6 => 'field_title_prior',
+      7 => 'field_provider_established',
+      8 => 'field_provider_parent',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -159,7 +157,7 @@ function crl_provider_feat_field_group_info() {
   $field_group->mode = 'default';
   $field_group->parent_name = 'group_tabbed';
   $field_group->data = array(
-    'label' => 'CRL Profile & Analysis',
+    'label' => 'CRL Analysis',
     'weight' => '2',
     'children' => array(
       0 => 'field_provider_mission_statement',
@@ -173,12 +171,13 @@ function crl_provider_feat_field_group_info() {
     ),
     'format_type' => 'htab',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'CRL Analysis',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => 'group-profile-analysis field-group-htab',
         'id' => '',
+        'classes' => 'group-profile-analysis field-group-htab',
+        'description' => '',
       ),
+      'formatter' => 'closed',
     ),
   );
   $export['group_profile_analysis|node|provider|default'] = $field_group;

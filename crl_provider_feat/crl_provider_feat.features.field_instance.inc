@@ -224,7 +224,7 @@ function crl_provider_feat_field_default_field_instances() {
     'bundle' => 'provider',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'This information is for internal use only and is not displayed to any site users.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -459,58 +459,6 @@ function crl_provider_feat_field_default_field_instances() {
       'settings' => array(),
       'type' => 'link_field',
       'weight' => 11,
-    ),
-  );
-
-  // Exported field_instance: 'node-provider-field_postal_code'
-  $field_instances['node-provider-field_postal_code'] = array(
-    'bundle' => 'provider',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'inline',
-        'module' => 'number',
-        'settings' => array(
-          'decimal_separator' => '.',
-          'prefix_suffix' => TRUE,
-          'scale' => 0,
-          'thousand_separator' => ' ',
-        ),
-        'type' => 'number_integer',
-        'weight' => 35,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 15,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_postal_code',
-    'label' => 'Postal Code',
-    'required' => 0,
-    'settings' => array(
-      'max' => '',
-      'min' => '',
-      'prefix' => '',
-      'suffix' => '',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'number',
-      'settings' => array(),
-      'type' => 'number',
-      'weight' => 19,
     ),
   );
 
@@ -796,52 +744,6 @@ function crl_provider_feat_field_default_field_instances() {
       ),
       'type' => 'options_onoff',
       'weight' => 17,
-    ),
-  );
-
-  // Exported field_instance: 'node-provider-field_provider_inheriting'
-  $field_instances['node-provider-field_provider_inheriting'] = array(
-    'bundle' => 'provider',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'inline',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 31,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_provider_inheriting',
-    'label' => 'Inheriting Provider',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 15,
     ),
   );
 
@@ -1452,7 +1354,6 @@ function crl_provider_feat_field_default_field_instances() {
   t('Governance: Board / Owners / Parent organization');
   t('History');
   t('Include version, and a link to website and date version was harvested.');
-  t('Inheriting Provider');
   t('Internal Notes');
   t('JISC GUID');
   t('JISC ID');
@@ -1461,7 +1362,6 @@ function crl_provider_feat_field_default_field_instances() {
   t('Links to organizational charts, link to bylaws, link to list of board members, link to recent job advertisements, link to board page.');
   t('Mission Statement');
   t('Parent Organization');
-  t('Postal Code');
   t('Prior Names');
   t('Related Resource Types');
   t('Related Subject Areas');
@@ -1471,6 +1371,7 @@ function crl_provider_feat_field_default_field_instances() {
   t('Sources');
   t('Still in Operation');
   t('Technical Information');
+  t('This information is for internal use only and is not displayed to any site users.');
   t('This value is used for sorting when multiple items are listed in indices. Remove any articles (such as "the") from the beginning of the title to craft this sorting title.');
   t('Type of Organization');
   t('Type of Publisher');
