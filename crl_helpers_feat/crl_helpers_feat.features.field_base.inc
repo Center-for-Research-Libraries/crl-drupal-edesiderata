@@ -221,25 +221,6 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'link_field',
   );
 
-  // Exported field_base: 'field_postal_code'
-  $field_bases['field_postal_code'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_postal_code',
-    'field_permissions' => array(
-      'type' => 0,
-    ),
-    'foreign keys' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'number',
-    'settings' => array(),
-    'translatable' => 0,
-    'type' => 'number_integer',
-  );
-
   // Exported field_base: 'field_title_alt'
   $field_bases['field_title_alt'] = array(
     'active' => 1,
