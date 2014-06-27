@@ -21,7 +21,6 @@ function crl_helpers_feat_user_default_permissions() {
       'grn-cifnal' => 'grn-cifnal',
       'grn-gnarp' => 'grn-gnarp',
       'member-crl' => 'member-crl',
-      'member-ip' => 'member-ip',
     ),
     'module' => 'comment',
   );
@@ -79,6 +78,21 @@ function crl_helpers_feat_user_default_permissions() {
       'member-crl' => 'member-crl',
     ),
     'module' => 'comment',
+  );
+
+  // Exported permission: 'rate content'.
+  $permissions['rate content'] = array(
+    'name' => 'rate content',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'crl-staff' => 'crl-staff',
+      'editor basic' => 'editor basic',
+      'editor power' => 'editor power',
+      'grn-cifnal' => 'grn-cifnal',
+      'grn-gnarp' => 'grn-gnarp',
+      'member-crl' => 'member-crl',
+    ),
+    'module' => 'fivestar',
   );
 
   // Exported permission: 'skip comment approval'.
