@@ -226,7 +226,7 @@ function crl_pp_resource_feat_field_group_info() {
       'label' => 'Administrative Fields',
       'instance_settings' => array(
         'required_fields' => 1,
-        'id' => '',
+        'id' => 'node_pp_resource_form_group_pp_admin',
         'classes' => 'notice-box',
         'description' => '<b>These fields are for administrative purpose and will not be displayed in any public views</b>',
         'show_label' => '1',
@@ -262,7 +262,7 @@ function crl_pp_resource_feat_field_group_info() {
       'label' => 'Administrative Fields',
       'instance_settings' => array(
         'required_fields' => 1,
-        'id' => '',
+        'id' => 'node_spp_resource_form_group_pp_admin',
         'classes' => 'notice-box',
         'description' => '<b>These fields are for administrative purpose and will not be displayed in any public views</b>',
         'show_label' => '1',
@@ -414,6 +414,7 @@ function crl_pp_resource_feat_field_group_info() {
         'label_element' => 'h3',
         'effect' => 'none',
         'speed' => 'fast',
+        'id' => 'node_pp_resource_form_group_system_fields',
       ),
       'formatter' => 'collapsed',
     ),
@@ -446,6 +447,7 @@ function crl_pp_resource_feat_field_group_info() {
         'label_element' => 'h3',
         'effect' => 'none',
         'speed' => 'fast',
+        'id' => 'node_spp_resource_form_group_system_fields',
       ),
       'formatter' => 'collapsed',
     ),
