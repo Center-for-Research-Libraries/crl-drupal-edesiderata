@@ -273,6 +273,7 @@ function crl_provider_feat_field_group_info() {
         'label_element' => 'h3',
         'effect' => 'none',
         'speed' => 'fast',
+        'id' => 'node_provider_form_group_system_fields',
       ),
       'formatter' => 'collapsed',
     ),
