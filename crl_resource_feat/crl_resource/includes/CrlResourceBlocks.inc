@@ -31,8 +31,8 @@ class CrlResourceBlocks {
       $entity_wrapper = entity_metadata_wrapper('node', $entity);
       $status = isset($entity_wrapper->crl_resource_status_backref) ? $entity_wrapper->crl_resource_status_backref->value() : array();
       $vote_average = isset($entity_wrapper->crl_resource_vote_average) ? $entity_wrapper->crl_resource_vote_average->value() : 0;
-      $interest_count_up = isset($entity_wrapper->crl_resource_interest_count_up) ? $entity_wrapper->crl_resource_interest_count_up->value() : 0;
-      $interest_count_down = isset($entity_wrapper->crl_resource_interest_count_down) ? $entity_wrapper->crl_resource_interest_count_down->value() : 0;
+      $interest_count_up = isset($entity_wrapper->crl_helpers_interest_count_up) ? $entity_wrapper->crl_helpers_interest_count_up->value() : 0;
+      $interest_count_down = isset($entity_wrapper->crl_helpers_interest_count_down) ? $entity_wrapper->crl_helpers_interest_count_down->value() : 0;
       if (isset($entity->comment_count)) {
         $comment_count = $entity->comment_count;
       }
@@ -49,22 +49,6 @@ class CrlResourceBlocks {
         '#interest_count_down' => $interest_count_down,
       ),
     );
-    return $block;
-  }
- 
-  /**
-   * Build crl_resource_common_input.
-   */
-  protected function build_crl_resource_common_input() {
-    $block = array();
-    global $user;
-    $nid = arg(1);
-    $node = node_load($nid);
-    // Make sure block should be visible
-    if (isset($node->type) && $node->type == 'resource' && $user->uid) {
-      $block['subject'] = t('Interested in this Resource?');
-      $block['content'] = array('#markup' => rate_embed($node, 'resource_interest'));
-    }
     return $block;
   }
 
