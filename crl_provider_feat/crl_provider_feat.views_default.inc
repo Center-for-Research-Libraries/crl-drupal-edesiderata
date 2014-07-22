@@ -129,7 +129,6 @@ function crl_provider_feat_views_default_views() {
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['path'] = 'providers/main';
-  $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Providers A-Z';
   $handler->display->display_options['menu']['weight'] = '10';
   $handler->display->display_options['menu']['name'] = 'main-menu';
