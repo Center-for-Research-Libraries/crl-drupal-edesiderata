@@ -1,0 +1,331 @@
+<?php
+
+
+/**
+ * Implements hook_field_extra_fields().
+ *
+ * Define numerous psuedo fields.
+ */
+function crl_provider_field_extra_fields() {
+  $extra['node']['provider'] = array(
+    'display' => array(
+      'pseudo_field_provider_added' => array(
+        'label' => t('Provider Added Date'),
+        'description' => t('The date the provider was added.'),
+        'weight' => 908,
+      ),
+      'pseudo_field_provider_updated' => array(
+        'label' => t('Provider Updated Date'),
+        'description' => t('The date the provider was updated.'),
+        'weight' => 909,
+      ),
+      'pseudo_field_provider_resources_view' => array(
+        'label' => t('eDesiderata Resources by this Provider'),
+        'description' => t('A views-based display of resources associated with a given provider.'),
+        'weight' => 910,
+      ),
+      'pseudo_field_provider_full_link' => array(
+        'label' => t('Link to Full Provider Details'),
+        'description' => t('A simple link to the full Provider entry (e.g., for embedded display modes).'),
+        'weight' => 911,
+      ),
+    ),
+  );
+  return $extra;
+}
+
+
+/**
+ * Implements hook_node_view().
+ *
+ * Attach custom display elements to a resource node that's about to be
+ * rendered (custom pseudo fields, etc.).
+ */
+function crl_provider_node_view($node, $view_mode, $langcode) {
+  if ($node->type == 'provider') {
+    // Get info about which extra fields are visible in this view mode.
+    $extra_fields_display = field_extra_fields_get_display('node', $node->type, $view_mode);
+    // In this specific hook we will only actually build the extra fields
+    // defined by this module.
+    $extra_fields_to_build = crl_provider_field_extra_fields();
+    $display_elements = new CrlProviderDisplayElements($node);
+    foreach($extra_fields_to_build['node']['provider']['display'] as $field_name => $details) {
+      if (isset($extra_fields_display[$field_name]['visible']) && $extra_fields_display[$field_name]['visible']) {
+        $node->content[$field_name] = $display_elements->buildField($field_name);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function crl_provider_theme() {
+  $hooks = array(
+    // Theme hook to generate a resource teaser (used in views rows). This will
+    // automatically get used by views based on its name and the standard
+    // template suggestion rules. We must formally declare it to ensure our
+    // custom preprocess functions get used, etc.
+    'views_view_fields__provider_lists' => array(
+      'variables' => array(),
+      'template' => 'views-view-fields--provider-lists',
+    ),
+  );
+  foreach ($hooks as &$hook) {
+    // Make sure that our actual theme hooks and/or preprocessor logic is
+    // included for each entry.
+    $hook['path'] = drupal_get_path('module', 'crl_provider') . '/themes';
+    $hook['file'] = 'crl_provider.theme.inc';
+  }
+  return $hooks;
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function crl_provider_block_info() {
+  // The resource summary is a block at the top of each resource.
+  $blocks['crl_provider_summary'] = array(
+    'info' => t('CRL Provider Summary'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function crl_provider_block_view($delta = '') {
+  // Lazy-load our block build methods via an object.
+  static $blocks;
+  if (!is_object($blocks)) {
+    $blocks = new CrlProviderBlocks();
+  }
+  return $blocks->buildBlock($delta);
+}
+
+
+/**
+ * Implements hook_entity_property_info_alter().
+ *
+ * Define some special provider properties (many calculated via backreferences
+ * between resources and provider entries). Note that most of these are just
+ * meant to be used when displaying a single entity or for use in a Search API
+ * index. None of these have a schema so they aren't meant for display with
+ * SQL-based views.
+ */
+function crl_provider_entity_property_info_alter(&$info) {
+  // These all apply specifically to providers, so we could add them to a
+  // $info['node']['provider']['properties'] group, but then they might not
+  // be indexable on a generic node index (via search API).
+  $properties = &$info['node']['properties'];
+  // Fetch the ids of all entities that point to a resource through a
+  // field_resource_reference field.
+  $properties['crl_provider_backref'] = array(
+    'label' => t("CRL Provider Backreference"),
+    'type' => 'list<node>',
+    'info' => field_info_field('field_provider'),
+    'description' => t("Backward reference to provider via field_provider."),
+    'getter callback' => 'crl_provider_get_backref',
+  );
+  // Get aggregate subject areas for a provider based on the subject areas
+  // assigned to its backreferenced resouuces.
+  $properties['crl_provider_backref_subject_area'] = array(
+    'label' => t("CRL Provider Backreferenced Subject Areas"),
+    'type' => 'list<taxonomy_term>',
+    'description' => t("Get subject areas associated with a provider based on its backreferenced resources."),
+    'getter callback' => 'crl_provider_get_backref_subject_area',
+  );
+  // Get aggregate resource types for a provider based on the resource types
+  // assigned to its backreferenced resrouces.
+  $properties['crl_provider_backref_resource_type'] = array(
+    'label' => t("CRL Provider Backreferenced Resource Types"),
+    'type' => 'list<taxonomy_term>',
+    'description' => t("Get resource types associated with a provider based on its backreferenced resources."),
+    'getter callback' => 'crl_provider_get_backref_resource_type',
+  );
+  // Define the formal CRL status associated with any given provider based on
+  // the aggregated values of other fields.
+  $properties['crl_provider_status'] = array(
+    'label' => t("CRL Provider Status"),
+    'type' => 'list<text>',
+    'description' => t("Gets CRL provider status."),
+    'getter callback' => 'crl_provider_get_status',
+    'options list' => 'crl_provider_status_property_oplist',
+    'entity views field' => TRUE,
+  );
+}
+
+
+/**
+ * Properties getter callback: calculate backreferences.
+ *
+ * @see crl_provider_entity_property_info_alter().
+ */
+function crl_provider_get_backref($entity, array $options, $name, $type, $info) {
+  // If we are not working with a provider (e.g., building a generic node search
+  // index), we can just return a generic value.
+  if (empty($entity->type) || $entity->type != 'provider') {
+    return array();
+  }
+  // Calculate the backreferences. We store these in a static cache.
+  static $backrefs = array();
+  if (!isset($backrefs[$entity->nid])) {
+    $backrefs[$entity->nid] = array();
+    // Get the entities that reference this resource through the
+    // field_provider field.
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node', '=')
+          ->entityCondition('bundle', 'resource')
+          ->fieldCondition('field_provider', 'target_id', $entity->nid, '=');
+    // Force query to run without access checks. If we remove the tag below then
+    // status values will reflect the current user's access permissions (status
+    // values will not appear for activity entries they do not have access to)
+    // which could be a very good thing. However, this will cause problems when
+    // this code is called though cron when provider content is being indexed.
+    // This is because cron can only run as one user (anon by default) so the
+    // indexed (facet) data can't be user-specific. For now, we just override
+    // access control for all cases but may need to think more about how to deal
+    // with this.
+    $query->addTag('DANGEROUS_ACCESS_CHECK_OPT_OUT');
+    $result = $query->execute();
+    if (!empty($result['node'])) {
+      $backrefs[$entity->nid] = array_keys($result['node']);
+    }
+  }
+  return $backrefs[$entity->nid];
+}
+
+
+/**
+ * Properties getter callback: Calculate provider subject areas based on
+ * backreferenced resources.
+ *
+ * @see crl_provider_entity_property_info_alter().
+ */
+function crl_provider_get_backref_subject_area($entity, array $options, $name, $type, $info) {
+  if (!empty($entity->type) && $entity->type == 'provider') {
+    return crl_provider_get_resource_terms($entity, 'subject_area');
+  }
+}
+
+
+/**
+ * Properties getter callback: Calculate provider content types based on
+ * backreferenced resources.
+ *
+ * @see crl_provider_entity_property_info_alter().
+ */
+function crl_provider_get_backref_resource_type($entity, array $options, $name, $type, $info) {
+  if (!empty($entity->type) && $entity->type == 'provider') {
+    return crl_provider_get_resource_terms($entity, 'resource_type');
+  }
+}
+
+
+/**
+ * Helper to get the aggregate list of taxonomy terms, via a specific term
+ * reference field, for all resources that reference a specific provider.
+ * 
+ * @param object $provider
+ *   A standard node object representing a provider.
+ * @param string $term_ref_field_name
+ *   The name of the term reference field, without the "field_" prefix, to
+ *   gather aggregate data from across referencing resources.
+ * @return array
+ *   Returns an array of tids representing the aggregate of terms applied to
+ *   the referencing resources.
+ * 
+ * @see crl_provider_get_backref_subject_area()
+ * @see crl_provider_get_backref_resource_type()
+ */
+function crl_provider_get_resource_terms($provider, $term_ref_field_name) {
+  $p_wrapper = entity_metadata_wrapper('node', $provider);
+  // Get the resources that reference this provider through a backreference
+  // lookup.
+  $resources = $p_wrapper->crl_provider_backref->value();
+  $computed_terms = array();
+  // Iterate over the resources and aggregate the applied terms from the given
+  // term reference field.
+  foreach($resources as $resource) {
+    $r_wrapper = entity_metadata_wrapper('node', $resource);
+    if (isset($r_wrapper->{'field_' . $term_ref_field_name})) {
+      $term_results = $r_wrapper->{'field_' . $term_ref_field_name}->value();
+      foreach ($term_results as $term) {
+        if (!in_array($term->tid, $computed_terms) && $term->name !== t('Unclassified')) {
+          $computed_terms[] = $term->tid;
+        }
+      }
+    }
+  }
+  return $computed_terms;
+}
+
+
+/**
+ * Properties getter callback: calculate provider status.
+ *
+ * @see crl_provider_entity_property_info_alter().
+ */
+function crl_provider_get_status($entity, array $options, $name, $type, $info) {
+  // If we are not working with a provider (e.g., building a generic node search
+  // index), we can just return a generic value.
+  if (empty($entity->type) || $entity->type != 'provider') {
+    return array();
+  }
+  // Add status-setting logic...
+  $computed_status = array();
+  return $computed_status;
+}
+
+
+/**
+ * Properties callback: centrally define the key|value pairs used for the
+ * various CRL status options.
+ *
+ * @see crl_provider_entity_property_info_alter().
+ */
+function crl_provider_status_property_oplist() {
+  return array(
+    'crl_profile' => t('CRL Analysis & Profile'),
+  );
+}
+
+
+/**
+ * Implements hook_node_presave().
+ * 
+ * When saving resources and providers, aggregate updated taxonomy information
+ * from resouces to providers.
+ */
+function crl_provider_node_presave($node) {
+  $wrapper = entity_metadata_wrapper('node', $node);
+  // If we are saving a provider entry we just need to add the aggregate term
+  // info to the node before finishing the save.
+  if ($node->type == 'provider') {
+    crl_provider_add_backref_terms($wrapper);
+  }
+  // If we are saving a resource entry we need to get the related provider,
+  // aggregate the term info, and then trigger a separate save.
+  elseif ($node->type == 'resource') {
+    $p_wrapper = entity_metadata_wrapper('node', $wrapper->field_provider->value());
+    crl_provider_add_backref_terms($wrapper);
+    $p_wrapper->save();
+  }
+}
+
+
+/**
+ * Aggregate some term info from backreferenced resources into a provider entry.
+ * 
+ * @param EntityDrupalWrapper $p_wrapper
+ *   A provider entity that's already wrapped with an entity metadata wrapper.
+ */
+function crl_provider_add_backref_terms($p_wrapper) {
+  $merged_subject_areas = array_unique(array_merge((array) $p_wrapper->field_subject_area->raw(), (array) $p_wrapper->crl_provider_backref_subject_area->raw()));
+  $p_wrapper->field_subject_area->set($merged_subject_areas);
+  $merged_resource_types = array_unique(array_merge((array) $p_wrapper->field_resource_type->raw(), (array) $p_wrapper->crl_provider_backref_resource_type->raw()));
+  $p_wrapper->field_resource_type->set($merged_resource_types);
+}
