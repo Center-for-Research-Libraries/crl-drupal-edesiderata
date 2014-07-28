@@ -1,0 +1,81 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the crl_provider module.
+ */
+
+
+/**
+ * Implements hook_install.
+ */
+function crl_provider_install() {
+  // Bulk prep any existing provider data.
+  crl_provider_bulk_prep_providers();
+}
+
+
+/**
+ * Bulk set initial provider details for existing content.
+ */
+function crl_provider_update_7100() {
+  // Bulk prep any existing provider data.
+  crl_provider_bulk_prep_providers();
+}
+
+
+/**
+ * Helper to buk prep provider data for new structures.
+ * 
+ * This function assumes that there are not too many providers (<100) in the
+ * system as it is not run via a batch.
+ */
+function crl_provider_bulk_prep_providers() {
+  // We need to do a manual cache flush here in order to ensure the entity
+  // properties defined by this module are picked-up. For some reason this
+  // can get called (via hook_install) before these properties are registered,
+  // in which case some of our logic below (specifically tasks triggered on the
+  // $wrapper->save() call) may fail. Clearing all caches gets around this.
+  drupal_flush_all_caches();
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'provider')
+    ->addMetaData('account', user_load(1));
+  $result = $query->execute();
+  if (isset($result['node'])) {
+    foreach ($result['node'] as $nid => $details) {
+      $node = node_load($nid);
+      // Preserve changed timestamp.
+      $node->manual_changed_timestamp = $node->changed;
+      $wrapper = entity_metadata_wrapper('node', $node);
+      // Set sorting title to match title (as common starting point).
+      if (isset($wrapper->field_title_sort)) {
+        $wrapper->field_title_sort->set($node->title);
+      }
+      // Set "In Operation" field to "yes" (as common starting point).
+      if (isset($wrapper->field_provider_in_operation)) {
+        $wrapper->field_provider_in_operation->set(TRUE);
+      }
+      // Copy old contacts and address details into new multi-valued contacts.
+      $i = 0;
+      if (isset($wrapper->field_provider_address)) {
+        $address = $wrapper->field_provider_address->value();
+        if (!empty($address)) {
+          $wrapper->field_contacts[$i]->set($wrapper->field_provider_address->value());
+          $i++;
+        }
+      }
+      if (isset($wrapper->field_provider_contacts)) {
+        $contacts = $wrapper->field_provider_contacts->value();
+        if (!empty($contacts)) {
+          $wrapper->field_contacts[$i]->set($wrapper->field_provider_contacts->value());
+        }
+      }
+      $wrapper->save();
+      // Also bulk enable comments.
+      db_query("UPDATE node SET comment = 2 WHERE type = 'provider'");
+      db_query("UPDATE node_revision SET comment = 2 WHERE nid IN (SELECT nid FROM node WHERE node.type = 'provider')");
+    }
+  }
+}
+
