@@ -305,7 +305,7 @@ function crl_provider_feat_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 8,
+      'weight' => 24,
     ),
   );
 
@@ -351,7 +351,7 @@ function crl_provider_feat_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 9,
+      'weight' => 25,
     ),
   );
 
@@ -397,7 +397,7 @@ function crl_provider_feat_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 7,
+      'weight' => 23,
     ),
   );
 

@@ -61,13 +61,9 @@ function crl_provider_feat_field_group_info() {
     'children' => array(
       0 => 'field_contacts',
       1 => 'field_country',
-      2 => 'field_postal_code',
-      3 => 'field_provider_in_operation',
-      4 => 'field_resource_type',
-      5 => 'field_subject_area',
-      6 => 'field_provider_inheriting',
-      7 => 'field_provider_established',
-      8 => 'field_provider_parent',
+      2 => 'field_provider_in_operation',
+      3 => 'field_provider_established',
+      4 => 'field_provider_parent',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -261,6 +257,8 @@ function crl_provider_feat_field_group_info() {
       0 => 'field_jisc_guid',
       1 => 'field_jisc_id',
       2 => 'field_jisc_import_batch',
+      3 => 'field_resource_type',
+      4 => 'field_subject_area',
     ),
     'format_type' => 'div',
     'format_settings' => array(
