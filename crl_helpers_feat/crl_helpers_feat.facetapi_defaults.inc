@@ -77,6 +77,8 @@ function crl_helpers_feat_facetapi_default_facet_settings() {
       'format' => 'full_html',
     ),
     'submit_realm' => 'Save and go back to realm settings',
+    'facet_more_text' => 'Show more',
+    'facet_fewer_text' => 'Show fewer',
   );
   $export['search_api@title_search_index:block:crl_glossary_value'] = $facet;
 
