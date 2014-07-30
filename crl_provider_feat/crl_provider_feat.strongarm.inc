@@ -112,7 +112,7 @@ function crl_provider_feat_strongarm() {
             'visible' => TRUE,
           ),
           'embedded' => array(
-            'weight' => '4',
+            'weight' => '18',
             'visible' => FALSE,
           ),
         ),
@@ -122,7 +122,7 @@ function crl_provider_feat_strongarm() {
             'visible' => TRUE,
           ),
           'embedded' => array(
-            'weight' => '5',
+            'weight' => '19',
             'visible' => FALSE,
           ),
         ),
@@ -132,7 +132,7 @@ function crl_provider_feat_strongarm() {
             'visible' => TRUE,
           ),
           'embedded' => array(
-            'weight' => '6',
+            'weight' => '20',
             'visible' => FALSE,
           ),
         ),
@@ -142,7 +142,7 @@ function crl_provider_feat_strongarm() {
             'visible' => FALSE,
           ),
           'embedded' => array(
-            'weight' => '3',
+            'weight' => '2',
             'visible' => TRUE,
           ),
         ),

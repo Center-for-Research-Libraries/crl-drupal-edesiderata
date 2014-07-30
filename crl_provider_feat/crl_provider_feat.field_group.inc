@@ -32,6 +32,7 @@ function crl_provider_feat_field_group_info() {
       6 => 'field_title_prior',
       7 => 'field_provider_established',
       8 => 'field_provider_parent',
+      9 => 'field_address',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -64,6 +65,7 @@ function crl_provider_feat_field_group_info() {
       2 => 'field_provider_in_operation',
       3 => 'field_provider_established',
       4 => 'field_provider_parent',
+      5 => 'field_address',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
