@@ -487,6 +487,12 @@ function crl_helpers_entity_property_info_alter(&$info) {
     'description' => t("Gets CRL glossary value based on the first letter of the sort name."),
     'getter callback' => 'crl_helpers_get_glossary_value',
   );
+  $properties['crl_resource_glossary_value'] = array(
+    'label' => t("CRL Resource Glossary Value"),
+    'type' => 'text',
+    'description' => t("Gets CRL glossary value based on the first letter of the sort name."),
+    'getter callback' => 'crl_helpers_get_glossary_value',
+  );
   // Get the interest count (positive). NOTE: requires extra queries (does not
   // just use loaded entity data).
   $properties['crl_helpers_interest_count_up'] = array(

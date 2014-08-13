@@ -187,13 +187,13 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Collection Content',
       'instance_settings' => array(
-        'classes' => ' group-details-collection-content field-group-div',
+        'id' => 'node_resource_full_group_details_collection_content',
+        'classes' => 'group-details-collection-content field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h2',
         'effect' => 'none',
         'speed' => 'fast',
-        'id' => 'node_resource_full_group_details_collection_content',
       ),
       'formatter' => 'open',
     ),
@@ -221,13 +221,13 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Terms and Provider Details',
       'instance_settings' => array(
-        'classes' => ' group-details-provider-terms field-group-div',
+        'id' => 'node_resource_full_group_details_provider_terms',
+        'classes' => 'group-details-provider-terms field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h2',
         'effect' => 'none',
         'speed' => 'fast',
-        'id' => 'node_resource_full_group_details_provider_terms',
       ),
       'formatter' => 'open',
     ),
@@ -256,13 +256,13 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Specifications',
       'instance_settings' => array(
-        'classes' => ' group-details-specs field-group-div',
+        'id' => 'node_resource_full_group_details_specs',
+        'classes' => 'group-details-specs field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h2',
         'effect' => 'none',
         'speed' => 'fast',
-        'id' => 'node_resource_full_group_details_specs',
       ),
       'formatter' => 'open',
     ),

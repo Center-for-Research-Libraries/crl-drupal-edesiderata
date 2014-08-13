@@ -316,7 +316,7 @@ function crl_helpers_feat_strongarm() {
     4 => (object) array(
       'name' => 'provider_interest',
       'tag' => 'provider_interest',
-      'title' => 'Interested in this Provider?',
+      'title' => 'Want to learn more about this Provider?',
       'node_types' => array(
         0 => 'provider',
       ),
