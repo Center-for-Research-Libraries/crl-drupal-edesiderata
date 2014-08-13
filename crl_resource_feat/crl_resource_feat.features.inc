@@ -43,5 +43,6 @@ function crl_resource_feat_node_info() {
       'help' => '',
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }

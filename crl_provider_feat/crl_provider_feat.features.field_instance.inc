@@ -918,7 +918,7 @@ function crl_provider_feat_field_default_field_instances() {
     'bundle' => 'provider',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Please select all that apply.',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -943,7 +943,7 @@ function crl_provider_feat_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_provider_publisher_type',
     'label' => 'Type of Publisher',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -951,7 +951,7 @@ function crl_provider_feat_field_default_field_instances() {
       'active' => 1,
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_select',
+      'type' => 'options_buttons',
       'weight' => 13,
     ),
   );
@@ -1102,7 +1102,7 @@ function crl_provider_feat_field_default_field_instances() {
     'bundle' => 'provider',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Please select all that apply.',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -1127,7 +1127,7 @@ function crl_provider_feat_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_provider_type',
     'label' => 'Type of Organization',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -1135,7 +1135,7 @@ function crl_provider_feat_field_default_field_instances() {
       'active' => 1,
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_select',
+      'type' => 'options_buttons',
       'weight' => 12,
     ),
   );
@@ -1390,6 +1390,7 @@ function crl_provider_feat_field_default_field_instances() {
   t('Main Address');
   t('Mission Statement');
   t('Parent Organization');
+  t('Please select all that apply.');
   t('Prior Names');
   t('Related Resource Types');
   t('Related Subject Areas');

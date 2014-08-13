@@ -2106,7 +2106,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     'bundle' => 'resource',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Hold down ctrl/command while clicking to select multiple.',
+    'description' => 'Please select all that apply.',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -2139,7 +2139,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'active' => 1,
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_select',
+      'type' => 'options_buttons',
       'weight' => 6,
     ),
   );
@@ -2247,7 +2247,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     'bundle' => 'resource',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Hold down ctrl/command while clicking to select multiple.',
+    'description' => 'Please select all that apply.',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -2280,7 +2280,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'active' => 1,
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_select',
+      'type' => 'options_buttons',
       'weight' => 5,
     ),
   );
@@ -2541,7 +2541,6 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('Federated Searching');
   t('Flag this item with an "update alert" until this date.');
   t('Full Text Linking');
-  t('Hold down ctrl/command while clicking to select multiple.');
   t('If this entry has relationships with other entries, add links to those entries here (one or more as needed).');
   t('If this entry represents an alias or derivative version of another one, add a link to the entry that should be considered the canonical (master) version. If you place a value in this field you will most likely leave almost all other fields blank for this entry.');
   t('Interface Tools');
@@ -2556,6 +2555,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('Overview');
   t('Personalisation');
   t('Platform and user interface');
+  t('Please select all that apply.');
   t('Post Search Options');
   t('Provider');
   t('Provider Notes');
