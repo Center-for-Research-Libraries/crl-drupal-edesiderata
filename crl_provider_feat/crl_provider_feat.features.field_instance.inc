@@ -95,7 +95,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 31,
+        'weight' => 30,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -219,7 +219,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -264,7 +264,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 24,
+        'weight' => 23,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -309,7 +309,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 29,
+        'weight' => 28,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -354,7 +354,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 30,
+        'weight' => 29,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -400,7 +400,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 28,
+        'weight' => 27,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -508,7 +508,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 12,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -559,7 +559,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 7,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -606,7 +606,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -652,7 +652,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 8,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -698,7 +698,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 5,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -748,7 +748,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 25,
+        'weight' => 24,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -793,7 +793,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 11,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -839,7 +839,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 21,
+        'weight' => 20,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -885,7 +885,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 6,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -931,7 +931,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 23,
+        'weight' => 22,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -976,7 +976,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 13,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1023,7 +1023,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 10,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1069,7 +1069,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 9,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1115,7 +1115,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 22,
+        'weight' => 21,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1158,7 +1158,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 17,
+        'weight' => 16,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1201,7 +1201,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 16,
+        'weight' => 15,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1244,7 +1244,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 26,
+        'weight' => 25,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1290,7 +1290,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 15,
+        'weight' => 14,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1335,7 +1335,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 27,
+        'weight' => 26,
       ),
       'teaser' => array(
         'label' => 'above',

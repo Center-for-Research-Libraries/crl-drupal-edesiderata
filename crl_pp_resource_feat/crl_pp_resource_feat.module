@@ -367,11 +367,11 @@ function crl_pp_resource_feat_form_print_mail_form_alter(&$form, &$form_state, $
     $type = $node->type;
     if ($type == "pp_resource") {
       $form['fld_subject']['#default_value'] = t("Your input for CRL Purchase Proposal is invited");
-      $form['txt_message']['#default_value'] = t("The following title is on the Center for Research Library's Purchase Proposal Ballot, I would appreciate your comments and insights regarding it.");
+      $form['txt_message']['#default_value'] = t("The following title is on the Center for Research Libraries' Purchase Proposal Ballot, I would appreciate your comments and insights regarding it.");
     }
     elseif ($type == "spp_resource") {
       $form['fld_subject']['#default_value'] = t("Your input for CRL Shared Purchase Proposal is invited");
-      $form['txt_message']['#default_value'] = t("The following title is on the Center for Research Library's Shared Purchase Proposal Ballot, I would appreciate your comments and insights regarding it.");
+      $form['txt_message']['#default_value'] = t("The following title is on the Center for Research Libraries' Shared Purchase Proposal Ballot, I would appreciate your comments and insights regarding it.");
     }
   }                        
 }
