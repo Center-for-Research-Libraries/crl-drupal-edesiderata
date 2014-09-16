@@ -242,6 +242,48 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-resource-field_facets'
+  $field_instances['node-resource-field_facets'] = array(
+    'bundle' => 'resource',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Select any subjects/facets that apply to this resource. These will be used for dynamic linking relationships with the main CRL website.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_facets',
+    'label' => 'Facets',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 133,
+    ),
+  );
+
   // Exported field_instance: 'node-resource-field_internal_notes'
   $field_instances['node-resource-field_internal_notes'] = array(
     'bundle' => 'resource',
@@ -253,7 +295,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -299,7 +341,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 12,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -344,7 +386,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 11,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -390,7 +432,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 13,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -567,7 +609,7 @@ function crl_resource_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 85,
+      'weight' => 142,
     ),
   );
 
@@ -707,7 +749,7 @@ function crl_resource_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 77,
+      'weight' => 134,
     ),
   );
 
@@ -813,7 +855,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 82,
+      'weight' => 139,
     ),
   );
 
@@ -859,7 +901,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 78,
+      'weight' => 135,
     ),
   );
 
@@ -905,7 +947,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 84,
+      'weight' => 141,
     ),
   );
 
@@ -1748,7 +1790,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 81,
+      'weight' => 138,
     ),
   );
 
@@ -1765,7 +1807,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 10,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1807,7 +1849,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 14,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1837,7 +1879,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 83,
+      'weight' => 140,
     ),
   );
 
@@ -1883,7 +1925,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 80,
+      'weight' => 137,
     ),
   );
 
@@ -1989,7 +2031,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 79,
+      'weight' => 136,
     ),
   );
 
@@ -2296,7 +2338,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 9,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2341,7 +2383,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2386,7 +2428,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 2,
+        'weight' => 4,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2430,7 +2472,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2484,7 +2526,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 5,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2538,6 +2580,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('Description');
   t('Endnotes');
   t('Enter any special <em>resource-specific</em> notes that relate to the provider. These notes will be shown near the other provider information that\'s taken from the provider\'s profile.');
+  t('Facets');
   t('Federated Searching');
   t('Flag this item with an "update alert" until this date.');
   t('Full Text Linking');
@@ -2564,6 +2607,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('Search Options');
   t('See');
   t('See also');
+  t('Select any subjects/facets that apply to this resource. These will be used for dynamic linking relationships with the main CRL website.');
   t('Select the option that best represents where this entry was sourced from. This selection may affect the way some fields of data are presented to the user.');
   t('Select the provider that this resource should be associated with.<br/><strong class="important">If the provider value does not yet exist in the system please create it before working with this resource entry</strong>.');
   t('Sorting Title');

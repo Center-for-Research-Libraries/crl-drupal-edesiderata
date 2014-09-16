@@ -65,6 +65,7 @@ function crl_resource_feat_field_group_info() {
       6 => 'field_resource_strength_weak',
       7 => 'field_resource_analysis_notes',
       8 => 'field_resource_external_reviews',
+      9 => 'field_facets',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -344,7 +345,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Jisc Data',
-    'weight' => '14',
+    'weight' => '15',
     'children' => array(
       0 => 'field_resource_jisc_overview',
       1 => 'field_resource_jisc_description',

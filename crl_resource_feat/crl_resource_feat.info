@@ -113,6 +113,7 @@ features[field_instance][] = comment-comment_node_resource-field_comment_privacy
 features[field_instance][] = node-resource-body
 features[field_instance][] = node-resource-field_content_scope_and_complete
 features[field_instance][] = node-resource-field_cost_and_price_structure
+features[field_instance][] = node-resource-field_facets
 features[field_instance][] = node-resource-field_internal_notes
 features[field_instance][] = node-resource-field_jisc_guid
 features[field_instance][] = node-resource-field_jisc_id
