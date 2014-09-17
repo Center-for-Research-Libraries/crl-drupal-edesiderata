@@ -71,7 +71,7 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
         $aux_text = t('by date of posting');
         $link_text = 'Browse All ' . $count . ' Reviews';
         $theme = 'crl_resource_dashboard_feat_view_head';
-        $path = 'resources/newest';
+        $path = 'resources/main';
         break;
       case 'block_2' :
         $set = TRUE;
@@ -93,7 +93,7 @@ function crl_resource_dashboard_feat_views_pre_render(&$view) {
         $aux_text = t('by date of posting');
         $link_text = 'Browse All ' . $count . ' Pipeline Items';
         $theme = 'crl_resource_dashboard_feat_view_head';
-        $path = 'resources/newest';
+        $path = 'resources/main';
         break;
       case 'block_4' :
         $set = TRUE;
