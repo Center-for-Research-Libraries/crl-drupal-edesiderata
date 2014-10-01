@@ -10,6 +10,7 @@
  * Implements hook_preprocess_views_view_fields__resource_lists().
  * 
  * Build custom variables for resource list rows.
+ * @todo consider converting all this into pseudo fields on a teaser view mode.
  */
 function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
   // Initilaize values for theme.
@@ -40,7 +41,9 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
     $vars['resource_url'] = isset($r_entity_wrapper->url) ? $r_entity_wrapper->url->value() : ''; 
     // Get summary.
     $body = isset($r_entity_wrapper->body) ? $r_entity_wrapper->body->value() : '';
-    $vars['summary'] = $body['value'];
+    // Cleanup some formatting of our summary and make sure it's a reasonable
+    // length for an index display.
+    $vars['summary'] = strip_tags(views_trim_text(array('max_length' => 800, 'word_boundary' => TRUE, 'ellipsis' => TRUE, 'html' => TRUE), $body['value']), '<p>');
     // Get provider title.
     $provider = isset($r_entity_wrapper->field_provider) ? $r_entity_wrapper->field_provider->value()->title : '';
     $vars['provider'] = t('Provider') . ': ' . check_plain($provider);
@@ -117,38 +120,6 @@ function theme_crl_resource_field_status_summary($vars) {
 function theme_crl_resource_publisher_legend($vars) {
   $icon_img = theme('image', array('path' => drupal_get_path('module', 'crl_helpers') . '/images/icon_publisher.png', 'alt' => $vars['icon_alt_title'], 'title' => $vars['icon_alt_title']));
   return '<div id="publisher-legend">' . $icon_img . ' - ' . $vars['icon_text'] . '</div>';
-}
-
-
-/**
- * Returns HTML for a view resource teaser.
- *
- * @param array $variables
- *   An associative array containing variables used to render this HTML.
- *
- * @ingroup themeable
- */
-function theme_crl_resource_teaser(&$vars) {
-  $markup = '';
-  if (!empty($vars)) {
-    $status_options = $vars['status_options'];
-    $markup .= '<h2>' . $vars['link'] . '</h2>';
-    $markup .= $vars['summary'];
-    $markup .= '<div class="teaser-details">';
-    $markup .= t('Provider') . ': ' . check_plain($vars['provider']);
-    $markup .= '<br/>' . t('Added') . ': ' . $vars['added'];
-    $markup .= '<br/>' . t('Updated') . ': ' . $vars['updated'];
-    $markup .= '</div>';    
-    if (!empty($vars['status'])) {
-      $markup .= '<div class="view-teaser-status-icons">';
-      foreach ($vars['status'] as $status) {
-        $markup .= '<span class="summary-icon-small ' . $status . '" title="' . $vars['status_options'][$status] . '"></span>';
-      }
-      $markup .= '</div>';
-    }
-    $markup .= '<div class="clearfix"></div>';
-  }
-  return $markup;
 }
 
 

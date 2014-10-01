@@ -115,6 +115,10 @@ function crl_provider_feat_strongarm() {
             'weight' => '17',
             'visible' => FALSE,
           ),
+          'teaser' => array(
+            'weight' => '1',
+            'visible' => FALSE,
+          ),
         ),
         'pseudo_field_provider_updated' => array(
           'default' => array(
@@ -123,6 +127,10 @@ function crl_provider_feat_strongarm() {
           ),
           'embedded' => array(
             'weight' => '18',
+            'visible' => FALSE,
+          ),
+          'teaser' => array(
+            'weight' => '2',
             'visible' => FALSE,
           ),
         ),
@@ -135,6 +143,10 @@ function crl_provider_feat_strongarm() {
             'weight' => '19',
             'visible' => FALSE,
           ),
+          'teaser' => array(
+            'weight' => '3',
+            'visible' => FALSE,
+          ),
         ),
         'pseudo_field_provider_full_link' => array(
           'default' => array(
@@ -143,6 +155,10 @@ function crl_provider_feat_strongarm() {
           ),
           'embedded' => array(
             'weight' => '2',
+            'visible' => FALSE,
+          ),
+          'teaser' => array(
+            'weight' => '4',
             'visible' => FALSE,
           ),
         ),
