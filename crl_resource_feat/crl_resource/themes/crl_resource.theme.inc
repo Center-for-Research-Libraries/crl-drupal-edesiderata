@@ -43,7 +43,7 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
     $body = isset($r_entity_wrapper->body) ? $r_entity_wrapper->body->value() : '';
     // Cleanup some formatting of our summary and make sure it's a reasonable
     // length for an index display.
-    $vars['summary'] = strip_tags(views_trim_text(array('max_length' => 800, 'word_boundary' => TRUE, 'ellipsis' => TRUE, 'html' => TRUE), $body['value']), '<p>');
+    $vars['summary'] = strip_tags(views_trim_text(array('max_length' => 800, 'word_boundary' => TRUE, 'ellipsis' => TRUE, 'html' => TRUE), $body['value']), '<p><i><em>');
     // Get provider title.
     $provider = isset($r_entity_wrapper->field_provider) ? $r_entity_wrapper->field_provider->value()->title : '';
     $vars['provider'] = t('Provider') . ': ' . check_plain($provider);

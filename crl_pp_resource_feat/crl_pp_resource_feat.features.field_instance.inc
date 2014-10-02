@@ -172,11 +172,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
       ),
       'teaser' => array(
         'label' => 'hidden',
-        'module' => 'text',
-        'settings' => array(
-          'trim_length' => 600,
-        ),
-        'type' => 'text_summary_or_trimmed',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 1,
       ),
     ),
@@ -201,18 +198,18 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_fy'
-  $field_instances['node-pp_resource-field_fy'] = array(
+  // Exported field_instance: 'node-pp_resource-field_contact_email'
+  $field_instances['node-pp_resource-field_contact_email'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Please enter the Purchase Proposal Fiscal Year. ',
+    'description' => 'Enter the email address of the individual who nominated this resource. This will not be displayed in any public pages.',
     'display' => array(
       'default' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 3,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -224,7 +221,96 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
+        'weight' => 8,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_contact_email',
+    'label' => 'Email',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'email',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'email_textfield',
+      'weight' => 23,
+    ),
+  );
+
+  // Exported field_instance: 'node-pp_resource-field_contact_name'
+  $field_instances['node-pp_resource-field_contact_name'] = array(
+    'bundle' => 'pp_resource',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Enter the name of the individual who nominated this resource. This will not be displayed in any public pages.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 6,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_contact_name',
+    'label' => 'Name',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 21,
+    ),
+  );
+
+  // Exported field_instance: 'node-pp_resource-field_fy'
+  $field_instances['node-pp_resource-field_fy'] = array(
+    'bundle' => 'pp_resource',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Please enter the Purchase Proposal Fiscal Year. ',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 6,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
       ),
     ),
     'entity_type' => 'node',
@@ -254,7 +340,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -266,7 +352,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 11,
       ),
     ),
     'entity_type' => 'node',
@@ -312,7 +398,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 3,
       ),
     ),
     'entity_type' => 'node',
@@ -361,7 +447,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 21,
+        'weight' => 23,
       ),
     ),
     'entity_type' => 'node',
@@ -407,7 +493,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 10,
       ),
     ),
     'entity_type' => 'node',
@@ -429,51 +515,6 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_nominator_email'
-  $field_instances['node-pp_resource-field_pp_nominator_email'] = array(
-    'bundle' => 'pp_resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Enter the email address of the individual who nominated this resource. This will not be displayed in any public pages. ',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 8,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 15,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_pp_nominator_email',
-    'label' => 'Email Address',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 21,
-    ),
-  );
-
   // Exported field_instance: 'node-pp_resource-field_pp_nominator_institution'
   $field_instances['node-pp_resource-field_pp_nominator_institution'] = array(
     'bundle' => 'pp_resource',
@@ -485,7 +526,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 11,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -497,7 +538,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 17,
       ),
     ),
     'entity_type' => 'node',
@@ -515,52 +556,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 22,
-    ),
-  );
-
-  // Exported field_instance: 'node-pp_resource-field_pp_nominator_name'
-  $field_instances['node-pp_resource-field_pp_nominator_name'] = array(
-    'bundle' => 'pp_resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Enter the name of the individual who nominated this resource. This will not be displayed in any public pages. ',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 7,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 17,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_pp_nominator_name',
-    'label' => 'Name',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 20,
+      'weight' => 24,
     ),
   );
 
@@ -588,7 +584,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 18,
+        'weight' => 20,
       ),
     ),
     'entity_type' => 'node',
@@ -635,7 +631,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 20,
+        'weight' => 22,
       ),
     ),
     'entity_type' => 'node',
@@ -674,7 +670,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -686,7 +682,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 19,
+        'weight' => 21,
       ),
     ),
     'entity_type' => 'node',
@@ -729,9 +725,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
       ),
       'teaser' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
+        'type' => 'hidden',
         'weight' => 2,
       ),
     ),
@@ -779,7 +774,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 16,
       ),
     ),
     'entity_type' => 'node',
@@ -813,7 +808,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 12,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -825,7 +820,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 14,
       ),
     ),
     'entity_type' => 'node',
@@ -859,7 +854,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 13,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -871,7 +866,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 13,
       ),
     ),
     'entity_type' => 'node',
@@ -920,7 +915,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 15,
       ),
     ),
     'entity_type' => 'node',
@@ -964,7 +959,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 5,
       ),
     ),
     'entity_type' => 'node',
@@ -998,7 +993,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 5,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1010,7 +1005,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 7,
       ),
     ),
     'entity_type' => 'node',
@@ -1061,7 +1056,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 12,
       ),
     ),
     'entity_type' => 'node',
@@ -1121,11 +1116,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
       ),
       'teaser' => array(
         'label' => 'hidden',
-        'module' => 'text',
-        'settings' => array(
-          'trim_length' => 600,
-        ),
-        'type' => 'text_summary_or_trimmed',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 1,
       ),
     ),
@@ -1150,18 +1142,18 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_fy'
-  $field_instances['node-spp_resource-field_fy'] = array(
+  // Exported field_instance: 'node-spp_resource-field_contact_email'
+  $field_instances['node-spp_resource-field_contact_email'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Please enter the Shared Proposal Fiscal Year. ',
+    'description' => 'Enter the email of the individual who nominated this resource. This will not be displayed in any public pages.',
     'display' => array(
       'default' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 2,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1173,7 +1165,96 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 5,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_contact_email',
+    'label' => 'Email',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'email',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'email_textfield',
+      'weight' => 23,
+    ),
+  );
+
+  // Exported field_instance: 'node-spp_resource-field_contact_name'
+  $field_instances['node-spp_resource-field_contact_name'] = array(
+    'bundle' => 'spp_resource',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Enter the name of the individual who nominated this resource. This will not be displayed in any public pages.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_contact_name',
+    'label' => 'Name',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 21,
+    ),
+  );
+
+  // Exported field_instance: 'node-spp_resource-field_fy'
+  $field_instances['node-spp_resource-field_fy'] = array(
+    'bundle' => 'spp_resource',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Please enter the Shared Proposal Fiscal Year. ',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 5,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 9,
       ),
     ),
     'entity_type' => 'node',
@@ -1203,7 +1284,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1215,7 +1296,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 11,
       ),
     ),
     'entity_type' => 'node',
@@ -1261,7 +1342,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 7,
       ),
     ),
     'entity_type' => 'node',
@@ -1310,7 +1391,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 21,
+        'weight' => 23,
       ),
     ),
     'entity_type' => 'node',
@@ -1356,7 +1437,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 10,
       ),
     ),
     'entity_type' => 'node',
@@ -1378,51 +1459,6 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_pp_nominator_email'
-  $field_instances['node-spp_resource-field_pp_nominator_email'] = array(
-    'bundle' => 'spp_resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Enter the email address of the individual who nominated this resource. This will not be displayed in any public pages. ',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 8,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 17,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_pp_nominator_email',
-    'label' => 'Email Address',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 21,
-    ),
-  );
-
   // Exported field_instance: 'node-spp_resource-field_pp_nominator_institution'
   $field_instances['node-spp_resource-field_pp_nominator_institution'] = array(
     'bundle' => 'spp_resource',
@@ -1434,7 +1470,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 10,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1446,7 +1482,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 16,
+        'weight' => 18,
       ),
     ),
     'entity_type' => 'node',
@@ -1464,52 +1500,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 22,
-    ),
-  );
-
-  // Exported field_instance: 'node-spp_resource-field_pp_nominator_name'
-  $field_instances['node-spp_resource-field_pp_nominator_name'] = array(
-    'bundle' => 'spp_resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Enter the name of the individual who nominated this resource. This will not be displayed in any public pages. ',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 7,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 18,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_pp_nominator_name',
-    'label' => 'Name',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 20,
+      'weight' => 24,
     ),
   );
 
@@ -1537,7 +1528,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 19,
+        'weight' => 21,
       ),
     ),
     'entity_type' => 'node',
@@ -1582,9 +1573,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
       ),
       'teaser' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
+        'type' => 'hidden',
         'weight' => 3,
       ),
     ),
@@ -1624,7 +1614,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1636,7 +1626,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 20,
+        'weight' => 22,
       ),
     ),
     'entity_type' => 'node',
@@ -1679,9 +1669,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
       ),
       'teaser' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
+        'type' => 'hidden',
         'weight' => 2,
       ),
     ),
@@ -1729,7 +1718,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 15,
+        'weight' => 17,
       ),
     ),
     'entity_type' => 'node',
@@ -1763,7 +1752,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 11,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1775,7 +1764,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 15,
       ),
     ),
     'entity_type' => 'node',
@@ -1809,7 +1798,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 12,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1821,7 +1810,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 14,
       ),
     ),
     'entity_type' => 'node',
@@ -1870,7 +1859,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 16,
       ),
     ),
     'entity_type' => 'node',
@@ -1914,7 +1903,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 13,
       ),
     ),
     'entity_type' => 'node',
@@ -1948,7 +1937,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 1,
+        'weight' => 3,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1960,7 +1949,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 6,
       ),
     ),
     'entity_type' => 'node',
@@ -2011,7 +2000,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 12,
       ),
     ),
     'entity_type' => 'node',
@@ -2099,15 +2088,16 @@ function crl_pp_resource_feat_field_default_field_instances() {
   t('Comment Privacy Setting');
   t('Comments');
   t('Currency');
-  t('Email Address');
+  t('Email');
   t('Enter any special purchase proposal resource-specific notes provided by the CRL Staff. These notes will be shown on the "Rationale" tab in the Purchase Proposal detail page.');
   t('Enter any special purchase proposal resource-specific notes provided by the Nominator. These notes will be shown on the "Rationale" tab in the Purchase Proposal detail page.');
   t('Enter summary of Comments from the Purchase Proposal that relates to this shared purchase.
 <b>This field will be used for Shared Purchase and will be hidden if not filled.</b>');
   t('Enter the Institution of nominator\'s institution. This will not be displayed in any user interface.');
   t('Enter the Provder\'s URL. This will be displayed in the detail page for the resource.');
-  t('Enter the email address of the individual who nominated this resource. This will not be displayed in any public pages. ');
-  t('Enter the name of the individual who nominated this resource. This will not be displayed in any public pages. ');
+  t('Enter the email address of the individual who nominated this resource. This will not be displayed in any public pages.');
+  t('Enter the email of the individual who nominated this resource. This will not be displayed in any public pages.');
+  t('Enter the name of the individual who nominated this resource. This will not be displayed in any public pages.');
   t('Enter the target price for purchase price in US Dollar($)');
   t('Enter the target price for shared purchase in US Dollar($)');
   t('Exchange rate for Canadian Dollar (CAD) to US Dollar USD');

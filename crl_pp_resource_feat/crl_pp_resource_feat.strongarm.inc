@@ -161,7 +161,7 @@ function crl_pp_resource_feat_strongarm() {
             'visible' => TRUE,
           ),
           'teaser' => array(
-            'weight' => '3',
+            'weight' => '9',
             'visible' => FALSE,
           ),
         ),
@@ -174,10 +174,10 @@ function crl_pp_resource_feat_strongarm() {
         'pseudo_field_pp_resource_sp_vote_input' => array(
           'teaser' => array(
             'weight' => '0',
-            'visible' => TRUE,
+            'visible' => FALSE,
           ),
           'default' => array(
-            'weight' => '2',
+            'weight' => '4',
             'visible' => FALSE,
           ),
         ),
@@ -239,18 +239,18 @@ function crl_pp_resource_feat_strongarm() {
             'visible' => TRUE,
           ),
           'teaser' => array(
-            'weight' => '5',
+            'weight' => '8',
             'visible' => FALSE,
           ),
         ),
         'pseudo_field_pp_resource_sp_vote_input' => array(
           'default' => array(
-            'weight' => '2',
+            'weight' => '4',
             'visible' => FALSE,
           ),
           'teaser' => array(
             'weight' => '0',
-            'visible' => TRUE,
+            'visible' => FALSE,
           ),
         ),
       ),

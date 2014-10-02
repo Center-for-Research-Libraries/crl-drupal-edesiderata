@@ -37,7 +37,7 @@ function crl_provider_preprocess_views_view_fields__provider_lists(&$vars) {
     $body = isset($p_entity_wrapper->body) ? $p_entity_wrapper->body->value() : '';
     // Cleanup some formatting of our summary and make sure it's a reasonable
     // length for an index display.
-    $vars['summary'] = strip_tags(views_trim_text(array('max_length' => 800, 'word_boundary' => TRUE, 'ellipsis' => TRUE, 'html' => TRUE), $body['value']), '<p>');
+    $vars['summary'] = strip_tags(views_trim_text(array('max_length' => 800, 'word_boundary' => TRUE, 'ellipsis' => TRUE, 'html' => TRUE), $body['value']), '<p><i><em>');
     // Get updated date.
     $updated_stamp = isset($p_entity_wrapper->changed) ? $p_entity_wrapper->changed->value() : 0;
     $updated = format_date($updated_stamp, 'short');

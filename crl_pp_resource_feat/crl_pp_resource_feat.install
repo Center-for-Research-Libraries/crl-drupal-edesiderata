@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the crl_pp_resource_feat module.
+ */
+
+
+/**
+ * Move field data from field_pp_nominator_name to field_contact_name and
+ * field_pp_nominator_email to field_contact_email for PP and SPP.
+ */
+function crl_pp_resource_feat_update_7100() {
+  foreach (array('pp_resource', 'spp_resource') as $bundle) {
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')->entityCondition('bundle', $bundle);
+    $result = $query->execute();
+    if (!empty($result['node'])) {
+      foreach ($result['node'] as $data) {
+        $node = node_load($data->nid);
+        // Try to preserve the original updated timestamp.
+        // @see crl_common_node_presave()
+        if (isset($node->changed)) {
+          $node->manual_changed_timestamp = $node->changed;
+        }
+        $wrapper = entity_metadata_wrapper('node', $node);
+        $changed = FALSE;
+        if (isset($wrapper->field_pp_nominator_name) && $wrapper->field_pp_nominator_name->raw()) {
+          $wrapper->field_contact_name->set($wrapper->field_pp_nominator_name->raw());
+          $changed = TRUE;
+        }
+        if (isset($wrapper->field_pp_nominator_email) && $wrapper->field_pp_nominator_email->raw()) {
+          $wrapper->field_contact_email->set($wrapper->field_pp_nominator_email->raw());
+          $changed = TRUE;
+        }
+        if ($changed) {
+          $wrapper->save();
+        }
+      }
+    }
+  }
+}
