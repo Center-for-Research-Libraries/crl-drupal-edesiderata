@@ -32,6 +32,7 @@ function crl_provider_feat_field_group_info() {
       6 => 'field_provider_established',
       7 => 'field_provider_parent',
       8 => 'field_address',
+      9 => 'field_contacts_group',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -60,11 +61,11 @@ function crl_provider_feat_field_group_info() {
     'weight' => '22',
     'children' => array(
       0 => 'field_contacts',
-      1 => 'field_country',
-      2 => 'field_provider_in_operation',
-      3 => 'field_provider_established',
-      4 => 'field_provider_parent',
-      5 => 'field_address',
+      1 => 'field_provider_in_operation',
+      2 => 'field_provider_established',
+      3 => 'field_provider_parent',
+      4 => 'field_address',
+      5 => 'field_contacts_group',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
