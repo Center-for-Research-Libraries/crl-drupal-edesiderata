@@ -161,6 +161,8 @@ function crl_pp_resource_feat_field_group_info() {
       0 => 'field_pp_nominator_email',
       1 => 'field_pp_nominator_institution',
       2 => 'field_pp_nominator_name',
+      3 => 'field_contact_name',
+      4 => 'field_contact_email',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -190,6 +192,8 @@ function crl_pp_resource_feat_field_group_info() {
       0 => 'field_pp_nominator_email',
       1 => 'field_pp_nominator_institution',
       2 => 'field_pp_nominator_name',
+      3 => 'field_contact_name',
+      4 => 'field_contact_email',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

@@ -9,7 +9,8 @@
 /**
  * Implements hook_preprocess_views_view_fields__provider_lists().
  * 
- * Build custom variables for resource list rows.
+ * Build custom variables for provider list rows.
+ * @todo consider converting all this into pseudo fields on a teaser view mode.
  */
 function crl_provider_preprocess_views_view_fields__provider_lists(&$vars) {
   // Initilaize values for theme.
@@ -34,7 +35,9 @@ function crl_provider_preprocess_views_view_fields__provider_lists(&$vars) {
     $vars['provider_url'] = isset($p_entity_wrapper->url) ? $p_entity_wrapper->url->value() : ''; 
     // Get summary.
     $body = isset($p_entity_wrapper->body) ? $p_entity_wrapper->body->value() : '';
-    $vars['summary'] = $body['value'];
+    // Cleanup some formatting of our summary and make sure it's a reasonable
+    // length for an index display.
+    $vars['summary'] = strip_tags(views_trim_text(array('max_length' => 800, 'word_boundary' => TRUE, 'ellipsis' => TRUE, 'html' => TRUE), $body['value']), '<p><i><em>');
     // Get updated date.
     $updated_stamp = isset($p_entity_wrapper->changed) ? $p_entity_wrapper->changed->value() : 0;
     $updated = format_date($updated_stamp, 'short');

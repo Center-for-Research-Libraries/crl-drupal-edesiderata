@@ -77,6 +77,223 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'field_collection_item-field_contacts_group-field_contact_email'
+  $field_instances['field_collection_item-field_contacts_group-field_contact_email'] = array(
+    'bundle' => 'field_contacts_group',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'The contact\'s email (if applicable)',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'email',
+        'settings' => array(),
+        'type' => 'email_default',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_contact_email',
+    'label' => 'Email',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'email',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'email_textfield',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance: 'field_collection_item-field_contacts_group-field_contact_fax'
+  $field_instances['field_collection_item-field_contacts_group-field_contact_fax'] = array(
+    'bundle' => 'field_contacts_group',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 4,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_contact_fax',
+    'label' => 'Fax',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance: 'field_collection_item-field_contacts_group-field_contact_name'
+  $field_instances['field_collection_item-field_contacts_group-field_contact_name'] = array(
+    'bundle' => 'field_contacts_group',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'The contacts full name.',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_contact_name',
+    'label' => 'Name',
+    'required' => 1,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 0,
+    ),
+  );
+
+  // Exported field_instance: 'field_collection_item-field_contacts_group-field_contact_phone'
+  $field_instances['field_collection_item-field_contacts_group-field_contact_phone'] = array(
+    'bundle' => 'field_contacts_group',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 3,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_contact_phone',
+    'label' => 'Phone',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance: 'field_collection_item-field_contacts_group-field_contact_title'
+  $field_instances['field_collection_item-field_contacts_group-field_contact_title'] = array(
+    'bundle' => 'field_contacts_group',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Enter the contact\'s title or a descriptive label for this contact information.',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_contact_title',
+    'label' => 'Title',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance: 'field_collection_item-field_contacts_group-field_link'
+  $field_instances['field_collection_item-field_contacts_group-field_link'] = array(
+    'bundle' => 'field_contacts_group',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'The contact\'s website (if applicable).',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'link',
+        'settings' => array(),
+        'type' => 'link_default',
+        'weight' => 5,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_link',
+    'label' => 'Website',
+    'required' => 0,
+    'settings' => array(
+      'attributes' => array(
+        'class' => '',
+        'configurable_title' => 0,
+        'rel' => '',
+        'target' => 'default',
+        'title' => '',
+      ),
+      'display' => array(
+        'url_cutoff' => 80,
+      ),
+      'enable_tokens' => 1,
+      'rel_remove' => 'default',
+      'title' => 'none',
+      'title_maxlength' => 128,
+      'title_value' => '',
+      'url' => 0,
+      'user_register_form' => FALSE,
+      'validate_url' => 1,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'link',
+      'settings' => array(),
+      'type' => 'link_field',
+      'weight' => 5,
+    ),
+  );
+
   // Exported field_instance: 'node-provider-body'
   $field_instances['node-provider-body'] = array(
     'bundle' => 'provider',
@@ -95,7 +312,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 30,
+        'weight' => 31,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -155,14 +372,14 @@ function crl_provider_feat_field_default_field_instances() {
           'use_widget_handlers' => 1,
         ),
         'type' => 'addressfield_default',
-        'weight' => 34,
+        'weight' => 33,
       ),
       'embedded' => array(
         'label' => 'above',
         'module' => 'addressfield',
         'settings' => array(
           'format_handlers' => array(
-            'address' => 'address',
+            0 => 'address',
           ),
           'use_widget_handlers' => 1,
         ),
@@ -173,7 +390,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 13,
       ),
     ),
     'entity_type' => 'node',
@@ -197,7 +414,7 @@ function crl_provider_feat_field_default_field_instances() {
         ),
       ),
       'type' => 'addressfield_standard',
-      'weight' => 18,
+      'weight' => 17,
     ),
   );
 
@@ -219,18 +436,18 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 21,
       ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_contacts',
-    'label' => 'Contacts',
+    'label' => 'Contacts (Legacy)',
     'required' => 0,
     'settings' => array(
       'text_processing' => 1,
@@ -244,6 +461,55 @@ function crl_provider_feat_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 19,
+    ),
+  );
+
+  // Exported field_instance: 'node-provider-field_contacts_group'
+  $field_instances['node-provider-field_contacts_group'] = array(
+    'bundle' => 'provider',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Enter contact details by creating a <em>separate entry</em> for each distinct contact as applicable. Fill in all fields that apply and leave the others blank (blank fields will be hidden).',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'field_collection',
+        'settings' => array(
+          'add' => '',
+          'delete' => '',
+          'description' => 1,
+          'edit' => '',
+          'view_mode' => 'full',
+        ),
+        'type' => 'field_collection_view',
+        'weight' => 34,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_contacts_group',
+    'label' => 'Contacts',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'field_collection',
+      'settings' => array(),
+      'type' => 'field_collection_embed',
+      'weight' => 18,
     ),
   );
 
@@ -264,13 +530,13 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 23,
+        'weight' => 24,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 19,
       ),
     ),
     'entity_type' => 'node',
@@ -309,13 +575,13 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 28,
+        'weight' => 29,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 30,
       ),
     ),
     'entity_type' => 'node',
@@ -354,13 +620,13 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 29,
+        'weight' => 30,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 23,
       ),
     ),
     'entity_type' => 'node',
@@ -400,13 +666,13 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 27,
+        'weight' => 28,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 22,
       ),
     ),
     'entity_type' => 'node',
@@ -454,13 +720,13 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 20,
       ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_link',
     'label' => 'Website',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'attributes' => array(
         'class' => '',
@@ -502,19 +768,19 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 14,
+        'weight' => 44,
       ),
       'embedded' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 13,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 15,
       ),
     ),
     'entity_type' => 'node',
@@ -532,7 +798,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 13,
+      'weight' => 12,
     ),
   );
 
@@ -559,13 +825,13 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 7,
       ),
     ),
     'entity_type' => 'node',
@@ -600,19 +866,19 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 11,
+        'weight' => 41,
       ),
       'embedded' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 5,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 10,
       ),
     ),
     'entity_type' => 'node',
@@ -646,19 +912,19 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 12,
+        'weight' => 42,
       ),
       'embedded' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 11,
       ),
     ),
     'entity_type' => 'node',
@@ -692,19 +958,19 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 10,
+        'weight' => 40,
       ),
       'embedded' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 6,
       ),
     ),
     'entity_type' => 'node',
@@ -748,13 +1014,13 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 24,
+        'weight' => 25,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 24,
       ),
     ),
     'entity_type' => 'node',
@@ -787,19 +1053,19 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 15,
+        'weight' => 45,
       ),
       'embedded' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 12,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 14,
       ),
     ),
     'entity_type' => 'node',
@@ -817,7 +1083,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 14,
+      'weight' => 13,
     ),
   );
 
@@ -833,19 +1099,19 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 9,
+        'weight' => 39,
       ),
       'embedded' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 20,
+        'weight' => 21,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 25,
       ),
     ),
     'entity_type' => 'node',
@@ -885,13 +1151,13 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 7,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 5,
       ),
     ),
     'entity_type' => 'node',
@@ -931,18 +1197,18 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 22,
+        'weight' => 23,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 29,
       ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_provider_publisher_type',
-    'label' => 'Type of Publisher',
+    'label' => 'Publisher Role(s)',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -976,13 +1242,13 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 14,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 8,
       ),
     ),
     'entity_type' => 'node',
@@ -1017,19 +1283,19 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 16,
+        'weight' => 46,
       ),
       'embedded' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 11,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 12,
       ),
     ),
     'entity_type' => 'node',
@@ -1047,7 +1313,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 10,
       ),
       'type' => 'text_textarea',
-      'weight' => 15,
+      'weight' => 14,
     ),
   );
 
@@ -1063,19 +1329,19 @@ function crl_provider_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 13,
+        'weight' => 43,
       ),
       'embedded' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 10,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 16,
       ),
     ),
     'entity_type' => 'node',
@@ -1093,7 +1359,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 12,
+      'weight' => 11,
     ),
   );
 
@@ -1115,13 +1381,13 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 21,
+        'weight' => 22,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 28,
       ),
     ),
     'entity_type' => 'node',
@@ -1158,18 +1424,18 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 16,
+        'weight' => 17,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 27,
       ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_resource_type',
-    'label' => 'Related Resource Types',
+    'label' => 'Resource Types',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -1201,18 +1467,18 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 15,
+        'weight' => 16,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 26,
       ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_subject_area',
-    'label' => 'Related Subject Areas',
+    'label' => 'Subject Areas',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -1244,13 +1510,13 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 25,
+        'weight' => 26,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 18,
       ),
     ),
     'entity_type' => 'node',
@@ -1290,13 +1556,13 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 15,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 9,
       ),
     ),
     'entity_type' => 'node',
@@ -1335,13 +1601,13 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 26,
+        'weight' => 27,
       ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 17,
       ),
     ),
     'entity_type' => 'node',
@@ -1372,11 +1638,16 @@ function crl_provider_feat_field_default_field_instances() {
   t('Comment');
   t('Comment Privacy Setting');
   t('Contacts');
+  t('Contacts (Legacy)');
   t('Description of access policies. Includes discussion of costs for content.');
   t('Description of founding of organization and important changes to the organizations. [3-6 paragraphs.] ');
   t('Description of how content is created, housed and distributed, commercial systems used, and platform(s).');
   t('Description of relevant legal concerns, includes links to available agreements and licenses.');
+  t('Email');
+  t('Enter contact details by creating a <em>separate entry</em> for each distinct contact as applicable. Fill in all fields that apply and leave the others blank (blank fields will be hidden).');
   t('Enter contact details by creating a <em>separate entry</em> for each distinct contact as applicable. Include all relevant details such as name, title, email, phone number along with any needed notes.');
+  t('Enter the contact\'s title or a descriptive label for this contact information.');
+  t('Fax');
   t('Financial Information');
   t('Governance: Board / Owners / Parent organization');
   t('History');
@@ -1389,21 +1660,27 @@ function crl_provider_feat_field_default_field_instances() {
   t('Links to organizational charts, link to bylaws, link to list of board members, link to recent job advertisements, link to board page.');
   t('Main Address');
   t('Mission Statement');
+  t('Name');
   t('Parent Organization');
+  t('Phone');
   t('Please select all that apply.');
   t('Prior Names');
-  t('Related Resource Types');
-  t('Related Subject Areas');
+  t('Publisher Role(s)');
+  t('Resource Types');
   t('See Also');
   t('Some values set here are aggregated automatically from all the resources that are related to this provider. Any aggregated values cannot be unset, but new values can be added.');
   t('Sorting Name');
   t('Sources');
   t('Still in Operation');
+  t('Subject Areas');
   t('Technical Information');
+  t('The contact\'s email (if applicable)');
+  t('The contact\'s website (if applicable).');
+  t('The contacts full name.');
   t('This information is for internal use only and is not displayed to any site users.');
   t('This value is used for sorting when multiple items are listed in indices. Remove any articles (such as "the") from the beginning of the title to craft this sorting title.');
+  t('Title');
   t('Type of Organization');
-  t('Type of Publisher');
   t('Website');
   t('Year established');
 

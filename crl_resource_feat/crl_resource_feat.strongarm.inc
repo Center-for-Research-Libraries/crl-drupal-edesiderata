@@ -111,11 +111,27 @@ function crl_resource_feat_strongarm() {
             'weight' => '999',
             'visible' => TRUE,
           ),
+          'teaser' => array(
+            'weight' => '1',
+            'visible' => FALSE,
+          ),
+          'embedded' => array(
+            'weight' => '0',
+            'visible' => FALSE,
+          ),
         ),
         'pseudo_field_resource_all_jisc_details' => array(
           'default' => array(
             'weight' => '80',
             'visible' => TRUE,
+          ),
+          'teaser' => array(
+            'weight' => '2',
+            'visible' => FALSE,
+          ),
+          'embedded' => array(
+            'weight' => '1',
+            'visible' => FALSE,
           ),
         ),
         'pseudo_field_resource_provider_details' => array(
@@ -123,11 +139,27 @@ function crl_resource_feat_strongarm() {
             'weight' => '7',
             'visible' => TRUE,
           ),
+          'teaser' => array(
+            'weight' => '3',
+            'visible' => FALSE,
+          ),
+          'embedded' => array(
+            'weight' => '2',
+            'visible' => FALSE,
+          ),
         ),
         'pseudo_field_resource_activity' => array(
           'default' => array(
             'weight' => '1001',
             'visible' => TRUE,
+          ),
+          'teaser' => array(
+            'weight' => '4',
+            'visible' => FALSE,
+          ),
+          'embedded' => array(
+            'weight' => '3',
+            'visible' => FALSE,
           ),
         ),
         'pseudo_field_resoruce_coll_content_tax' => array(
@@ -141,11 +173,27 @@ function crl_resource_feat_strongarm() {
             'weight' => '927',
             'visible' => TRUE,
           ),
+          'teaser' => array(
+            'weight' => '6',
+            'visible' => FALSE,
+          ),
+          'embedded' => array(
+            'weight' => '5',
+            'visible' => FALSE,
+          ),
         ),
         'pseudo_field_resource_table_sources' => array(
           'default' => array(
             'weight' => '906',
             'visible' => TRUE,
+          ),
+          'teaser' => array(
+            'weight' => '7',
+            'visible' => FALSE,
+          ),
+          'embedded' => array(
+            'weight' => '6',
+            'visible' => FALSE,
           ),
         ),
         'pseudo_field_resource_review_source' => array(
@@ -153,11 +201,27 @@ function crl_resource_feat_strongarm() {
             'weight' => '93',
             'visible' => TRUE,
           ),
+          'teaser' => array(
+            'weight' => '8',
+            'visible' => FALSE,
+          ),
+          'embedded' => array(
+            'weight' => '7',
+            'visible' => FALSE,
+          ),
         ),
         'pseudo_field_resource_added' => array(
           'default' => array(
             'weight' => '923',
             'visible' => TRUE,
+          ),
+          'teaser' => array(
+            'weight' => '9',
+            'visible' => FALSE,
+          ),
+          'embedded' => array(
+            'weight' => '8',
+            'visible' => FALSE,
           ),
         ),
         'pseudo_field_resource_updated' => array(
@@ -165,17 +229,41 @@ function crl_resource_feat_strongarm() {
             'weight' => '924',
             'visible' => TRUE,
           ),
+          'teaser' => array(
+            'weight' => '10',
+            'visible' => FALSE,
+          ),
+          'embedded' => array(
+            'weight' => '9',
+            'visible' => FALSE,
+          ),
         ),
         'pseudo_field_resource_alerts' => array(
           'default' => array(
             'weight' => '920',
             'visible' => TRUE,
           ),
+          'teaser' => array(
+            'weight' => '11',
+            'visible' => FALSE,
+          ),
+          'embedded' => array(
+            'weight' => '10',
+            'visible' => FALSE,
+          ),
         ),
         'pseudo_field_resource_coll_content_tax' => array(
           'default' => array(
             'weight' => '904',
             'visible' => TRUE,
+          ),
+          'teaser' => array(
+            'weight' => '5',
+            'visible' => FALSE,
+          ),
+          'embedded' => array(
+            'weight' => '4',
+            'visible' => FALSE,
           ),
         ),
       ),
