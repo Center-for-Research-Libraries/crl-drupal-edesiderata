@@ -85,7 +85,7 @@ function crl_provider_feat_field_default_field_instances() {
     'description' => 'The contact\'s email (if applicable)',
     'display' => array(
       'default' => array(
-        'label' => 'inline',
+        'label' => 'hidden',
         'module' => 'email',
         'settings' => array(),
         'type' => 'email_default',
@@ -152,7 +152,7 @@ function crl_provider_feat_field_default_field_instances() {
     'description' => 'The contacts full name.',
     'display' => array(
       'default' => array(
-        'label' => 'inline',
+        'label' => 'hidden',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
@@ -220,7 +220,7 @@ function crl_provider_feat_field_default_field_instances() {
     'description' => 'Enter the contact\'s title or a descriptive label for this contact information.',
     'display' => array(
       'default' => array(
-        'label' => 'inline',
+        'label' => 'hidden',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
@@ -254,7 +254,7 @@ function crl_provider_feat_field_default_field_instances() {
     'description' => 'The contact\'s website (if applicable).',
     'display' => array(
       'default' => array(
-        'label' => 'inline',
+        'label' => 'hidden',
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_default',
