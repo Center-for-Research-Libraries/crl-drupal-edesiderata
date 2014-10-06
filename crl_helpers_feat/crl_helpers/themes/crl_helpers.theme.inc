@@ -177,7 +177,7 @@ function theme_crl_helpers_pseudo_field($vars) {
   $separator = '';
   if (!empty($vars['inline'])) {
     $class = 'field-label-inline';
-    $separator = ':&nbsp;';
+    $separator = '<span class="field-colon">:</span>&nbsp;';
   }
   $output = '<div class="field ' . $class . '">';
   if (!empty($vars['label'])) {
