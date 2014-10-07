@@ -85,7 +85,7 @@ function crl_provider_feat_field_default_field_instances() {
     'description' => 'The contact\'s email (if applicable)',
     'display' => array(
       'default' => array(
-        'label' => 'inline',
+        'label' => 'hidden',
         'module' => 'email',
         'settings' => array(),
         'type' => 'email_default',
@@ -152,7 +152,7 @@ function crl_provider_feat_field_default_field_instances() {
     'description' => 'The contacts full name.',
     'display' => array(
       'default' => array(
-        'label' => 'inline',
+        'label' => 'hidden',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
@@ -220,7 +220,7 @@ function crl_provider_feat_field_default_field_instances() {
     'description' => 'Enter the contact\'s title or a descriptive label for this contact information.',
     'display' => array(
       'default' => array(
-        'label' => 'inline',
+        'label' => 'hidden',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
@@ -254,7 +254,7 @@ function crl_provider_feat_field_default_field_instances() {
     'description' => 'The contact\'s website (if applicable).',
     'display' => array(
       'default' => array(
-        'label' => 'inline',
+        'label' => 'hidden',
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_default',
@@ -447,7 +447,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_contacts',
-    'label' => 'Contacts (Legacy)',
+    'label' => 'Contacts (Old - To be Removed)',
     'required' => 0,
     'settings' => array(
       'text_processing' => 1,
@@ -710,7 +710,7 @@ function crl_provider_feat_field_default_field_instances() {
         'weight' => 21,
       ),
       'embedded' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_default',
@@ -1208,7 +1208,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_provider_publisher_type',
-    'label' => 'Publisher Role(s)',
+    'label' => 'Provider Role(s)',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -1638,7 +1638,7 @@ function crl_provider_feat_field_default_field_instances() {
   t('Comment');
   t('Comment Privacy Setting');
   t('Contacts');
-  t('Contacts (Legacy)');
+  t('Contacts (Old - To be Removed)');
   t('Description of access policies. Includes discussion of costs for content.');
   t('Description of founding of organization and important changes to the organizations. [3-6 paragraphs.] ');
   t('Description of how content is created, housed and distributed, commercial systems used, and platform(s).');
@@ -1665,7 +1665,7 @@ function crl_provider_feat_field_default_field_instances() {
   t('Phone');
   t('Please select all that apply.');
   t('Prior Names');
-  t('Publisher Role(s)');
+  t('Provider Role(s)');
   t('Resource Types');
   t('See Also');
   t('Some values set here are aggregated automatically from all the resources that are related to this provider. Any aggregated values cannot be unset, but new values can be added.');
