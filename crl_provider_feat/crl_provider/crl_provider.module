@@ -57,6 +57,43 @@ function crl_provider_node_view($node, $view_mode, $langcode) {
   }
 }
 
+
+/**
+ * Implements hook_node_view_alter().
+ * 
+ * Add custom show/hide display logic on provider nodes. This fires when a node
+ * is built even if its embedded with in another one (or a view).
+ */
+function crl_provider_node_view_alter(&$build) {
+  // Checks for provider nodes.
+  if ($build['#bundle'] == 'provider') {
+    $entity_wrapper = entity_metadata_wrapper('node', $build['#node']);
+    $status = isset($entity_wrapper->field_provider_status) ? $entity_wrapper->field_provider_status->value() : '';
+    $profile_group = 'group_profile_analysis';
+    // See if we are dealing with an unpublished profile tab.
+    if ($status != 'published' && !empty($build['#fieldgroups'][$profile_group])) {
+      // If we are an editor we don't hide anything, but we show helper
+      // messages.
+      if (crl_helpers_is_editor()) {
+        $message = t('<strong>The CRL Profile and Analyis is not yet published.</strong> You are able to view this tab because you have editor rights. The general public will not be able to see the content in this tab until the profile is offically marked as published.');
+        $build['#fieldgroups'][$profile_group]->format_settings['instance_settings']['description'] = '<div class="messages warning">' . $message . '</div>';
+        $label = &$build['#fieldgroups'][$profile_group]->label;
+        $label = $label . ' ' . t('(unpublished)');
+      }
+      // Otherwise hide the profile tab completely. Our hide logic is based on
+      // fieldgroups. This means that any view modes that don't nest the fields
+      // we want to hide within a fieldgroup will NOT be altered (the fields may
+      // still be shown).
+      else {
+        foreach ($build['#fieldgroups'][$profile_group]->children as $field) {
+          $build[$field]['#access'] = FALSE;
+        }
+      }
+    }
+  }
+}
+
+
 /**
  * Implements hook_theme().
  */

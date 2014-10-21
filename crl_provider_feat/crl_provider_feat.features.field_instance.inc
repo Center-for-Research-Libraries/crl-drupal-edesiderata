@@ -524,7 +524,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 2,
+        'weight' => 3,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -569,7 +569,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 5,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -614,7 +614,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 4,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -660,7 +660,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -798,7 +798,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 12,
+      'weight' => 16,
     ),
   );
 
@@ -896,7 +896,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 9,
+      'weight' => 13,
     ),
   );
 
@@ -942,7 +942,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 10,
+      'weight' => 14,
     ),
   );
 
@@ -988,7 +988,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 8,
+      'weight' => 12,
     ),
   );
 
@@ -1083,7 +1083,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 13,
+      'weight' => 17,
     ),
   );
 
@@ -1129,7 +1129,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 7,
+      'weight' => 11,
     ),
   );
 
@@ -1313,7 +1313,49 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 10,
       ),
       'type' => 'text_textarea',
-      'weight' => 14,
+      'weight' => 18,
+    ),
+  );
+
+  // Exported field_instance: 'node-provider-field_provider_status'
+  $field_instances['node-provider-field_provider_status'] = array(
+    'bundle' => 'provider',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Specify the workflow status for this provider if a profile will apply. <strong>All fields in the profile/analysis tab will be hidden from the public until a "Published" status is selected here.</strong>',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_provider_status',
+    'label' => 'CRL Profile and Analysis Status',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 10,
     ),
   );
 
@@ -1359,7 +1401,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 11,
+      'weight' => 15,
     ),
   );
 
@@ -1595,7 +1637,7 @@ function crl_provider_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1635,6 +1677,7 @@ function crl_provider_feat_field_default_field_instances() {
   t('Access');
   t('Alternative Names');
   t('Annual Revenue, links to tax documents, links to annual reports and other relevant documents.');
+  t('CRL Profile and Analysis Status');
   t('Comment');
   t('Comment Privacy Setting');
   t('Contacts');
@@ -1671,6 +1714,7 @@ function crl_provider_feat_field_default_field_instances() {
   t('Some values set here are aggregated automatically from all the resources that are related to this provider. Any aggregated values cannot be unset, but new values can be added.');
   t('Sorting Name');
   t('Sources');
+  t('Specify the workflow status for this provider if a profile will apply. <strong>All fields in the profile/analysis tab will be hidden from the public until a "Published" status is selected here.</strong>');
   t('Still in Operation');
   t('Subject Areas');
   t('Technical Information');

@@ -150,7 +150,7 @@ function crl_provider_feat_strongarm() {
         ),
         'pseudo_field_provider_full_link' => array(
           'default' => array(
-            'weight' => '1',
+            'weight' => '2',
             'visible' => FALSE,
           ),
           'embedded' => array(

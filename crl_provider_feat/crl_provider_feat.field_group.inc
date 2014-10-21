@@ -201,6 +201,7 @@ function crl_provider_feat_field_group_info() {
       5 => 'field_provider_access',
       6 => 'field_provider_legal_info',
       7 => 'field_provider_sources',
+      8 => 'field_provider_status',
     ),
     'format_type' => 'htab',
     'format_settings' => array(

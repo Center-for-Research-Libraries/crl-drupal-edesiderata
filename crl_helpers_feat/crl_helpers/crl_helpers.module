@@ -472,7 +472,7 @@ function crl_helpers_country_list() {
 /**
  * Implements hook_entity_property_info_alter().
  * 
- * Define some special resource properties. Note that most of these are just
+ * Define some "common" node properties. Note that most of these are just
  * meant to be used when displaying a single entity or for use in a Search API
  * index. None of these have a schema so they aren't meant for display with
  * SQL-based views.
@@ -483,12 +483,6 @@ function crl_helpers_entity_property_info_alter(&$info) {
   // so that it can be indexed and used as a facet.
   $properties['crl_glossary_value'] = array(
     'label' => t("CRL Glossary Value"),
-    'type' => 'text',
-    'description' => t("Gets CRL glossary value based on the first letter of the sort name."),
-    'getter callback' => 'crl_helpers_get_glossary_value',
-  );
-  $properties['crl_resource_glossary_value'] = array(
-    'label' => t("CRL Resource Glossary Value"),
     'type' => 'text',
     'description' => t("Gets CRL glossary value based on the first letter of the sort name."),
     'getter callback' => 'crl_helpers_get_glossary_value',
@@ -586,6 +580,35 @@ function crl_helpers_get_interest_count($entity, $option) {
     }
   }
   return 0;
+}
+
+
+/**
+ * Helper to detect an account with general editor rights.
+ * 
+ * This is an ad hoc method to separate all editors from non-editors given that
+ * each group may be represented across multiple roles. A permission could be
+ * used for this as well but that adds some deployment overhead in addition to
+ * rid coupling.
+ */
+function crl_helpers_is_editor($account = NULL) {
+  if (empty($account)) {
+    global $user;
+    $account = $user;
+  }
+  if ($account->uid) {
+    // See if we are an editor based on role. Note that there is no truely
+    // good way to do this detection because roles do not have machine names.
+    // As we cannot depend on a rid across sites we do a best effort to
+    // detect an editor based on the role name. This is hacky and is not true
+    // security by any means.
+    foreach ($account->roles as $role) {
+      if (strpos($role, 'editor') !== FALSE || strpos($role, 'administrator') !== FALSE) {
+        return TRUE;
+      }
+    }
+  }
+  return FALSE;
 }
 
 

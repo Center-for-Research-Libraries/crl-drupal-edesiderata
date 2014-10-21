@@ -384,6 +384,36 @@ function crl_provider_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
+  // Exported field_base: 'field_provider_status'
+  $field_bases['field_provider_status'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_provider_status',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'planned' => 'Profile Planned (unpublished)',
+        'draft' => 'Profile Drafted (unpublished)',
+        'published' => 'Profile Published',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
   // Exported field_base: 'field_provider_tech_info'
   $field_bases['field_provider_tech_info'] = array(
     'active' => 1,
