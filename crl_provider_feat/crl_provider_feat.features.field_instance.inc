@@ -798,7 +798,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 16,
+      'weight' => 32,
     ),
   );
 
@@ -896,7 +896,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 13,
+      'weight' => 29,
     ),
   );
 
@@ -942,7 +942,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 14,
+      'weight' => 30,
     ),
   );
 
@@ -988,7 +988,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 12,
+      'weight' => 28,
     ),
   );
 
@@ -1083,7 +1083,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 17,
+      'weight' => 33,
     ),
   );
 
@@ -1129,7 +1129,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 11,
+      'weight' => 27,
     ),
   );
 
@@ -1176,6 +1176,48 @@ function crl_provider_feat_field_default_field_instances() {
       ),
       'type' => 'text_textfield',
       'weight' => 14,
+    ),
+  );
+
+  // Exported field_instance: 'node-provider-field_provider_profile_status'
+  $field_instances['node-provider-field_provider_profile_status'] = array(
+    'bundle' => 'provider',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Specify the workflow status for this provider if a profile will apply. <strong>All fields in the profile/analysis tab will be hidden from the public until a "Published" status is selected here.</strong>',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 1,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_provider_profile_status',
+    'label' => 'CRL Profile and Analysis Status',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 26,
     ),
   );
 
@@ -1313,49 +1355,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 10,
       ),
       'type' => 'text_textarea',
-      'weight' => 18,
-    ),
-  );
-
-  // Exported field_instance: 'node-provider-field_provider_status'
-  $field_instances['node-provider-field_provider_status'] = array(
-    'bundle' => 'provider',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Specify the workflow status for this provider if a profile will apply. <strong>All fields in the profile/analysis tab will be hidden from the public until a "Published" status is selected here.</strong>',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 1,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_provider_status',
-    'label' => 'CRL Profile and Analysis Status',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 10,
+      'weight' => 34,
     ),
   );
 
@@ -1401,7 +1401,7 @@ function crl_provider_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 15,
+      'weight' => 31,
     ),
   );
 
