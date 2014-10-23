@@ -127,6 +127,10 @@ function crl_provider_block_info() {
     'info' => t('CRL Provider Summary'),
     'cache' => DRUPAL_NO_CACHE,
   );
+  $blocks['crl_provider_update_links'] = array(
+    'info' => t('CRL Provider Update Links'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
   return $blocks;
 }
 

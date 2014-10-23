@@ -127,6 +127,12 @@ function crl_provider_feat_context_default_contexts() {
           'region' => 'sidebar_second',
           'weight' => '-9',
         ),
+        'crl_provider-crl_provider_update_links' => array(
+          'module' => 'crl_provider',
+          'delta' => 'crl_provider_update_links',
+          'region' => 'sidebar_second',
+          'weight' => '-8',
+        ),
         'crl_resource-crl_resource_summary' => array(
           'module' => 'crl_resource',
           'delta' => 'crl_resource_summary',

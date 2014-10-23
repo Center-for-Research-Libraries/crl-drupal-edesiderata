@@ -16,11 +16,11 @@ class CrlProviderBlocks {
   }
   
   /**
-   * Build crl_resource_summary.
+   * Build crl_provider_summary.
    */
   protected function build_crl_provider_summary() {
     $block = array();
-    $nid = arg(1); // Assumes block is placed only one node page.
+    $nid = arg(1); // Assumes block is placed only on node page.
     $comment_count = 0;
     $entities = entity_load('node', array($nid));
     if (!empty($entities[$nid])) {
@@ -37,6 +37,25 @@ class CrlProviderBlocks {
         '#status' => $status,
         '#comment_count' => $comment_count,
       ),
+    );
+    return $block;
+  }
+  
+  /**
+   * Build crl_provider_summary.
+   */
+  protected function build_crl_provider_update_links() {
+    $block = array();
+    $nid = arg(1); // Assumes block is placed only on node page.
+    $entities = entity_load('node', array($nid));
+    if (!empty($entities[$nid])) {
+      $entity = $entities[$nid];
+      $entity_wrapper = entity_metadata_wrapper('node', $entity);
+    }
+    $link = url('update-provider-information', array('query' => array('name' => $entity->title, 'nid' => $nid)));
+    $block['subject'] = 'Update Provider Details';
+    $block['content'] = array(
+      '#markup' => '<p>Are familar with this provider and would like to add corrections or updates?</p><a class="button" href="' . $link . '">Submit Corrections</a>',
     );
     return $block;
   }

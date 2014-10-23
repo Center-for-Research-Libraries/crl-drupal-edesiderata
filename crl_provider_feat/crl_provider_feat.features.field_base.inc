@@ -290,7 +290,6 @@ function crl_provider_feat_field_default_field_bases() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
-        'planned' => 'Profile Planned (unpublished)',
         'draft' => 'Profile Drafted (unpublished)',
         'published' => 'Profile Published',
       ),
