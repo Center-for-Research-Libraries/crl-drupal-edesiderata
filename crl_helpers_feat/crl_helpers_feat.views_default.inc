@@ -334,7 +334,7 @@ function crl_helpers_feat_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<p>Showing 10 most recent, <strong><a href="/admin/comment-summary">View All</a></strong></p>';
+  $handler->display->display_options['header']['area']['content'] = '<p>Showing 10 most recent.</p>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   /* Footer: Global: Text area */
@@ -690,8 +690,7 @@ function crl_helpers_feat_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<p>Showing 10 most recently updated, <strong><a href="/admin/content-summary/all">View All</a></strong><br/>
-Reports for individual content types are also available: <strong><a href="/admin/content-summary/activity">Activity</a> | <a href="/admin/content-summary/resources">Resources</a> | <a href="/admin/content-summary/providers">Providers</a></strong></p>';
+  $handler->display->display_options['header']['area']['content'] = '<p>Showing 10 most recently updated</p>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   /* Footer: Global: Text area */
@@ -1461,6 +1460,40 @@ Reports for individual content types are also available: <strong><a href="/admin
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'provider' => 'provider',
+  );
+  /* Filter criterion: Content: CRL Profile and Analysis Status (field_provider_profile_status) */
+  $handler->display->display_options['filters']['field_provider_profile_status_value']['id'] = 'field_provider_profile_status_value';
+  $handler->display->display_options['filters']['field_provider_profile_status_value']['table'] = 'field_data_field_provider_profile_status';
+  $handler->display->display_options['filters']['field_provider_profile_status_value']['field'] = 'field_provider_profile_status_value';
+  $handler->display->display_options['filters']['field_provider_profile_status_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_provider_profile_status_value']['expose']['operator_id'] = 'field_provider_profile_status_value_op';
+  $handler->display->display_options['filters']['field_provider_profile_status_value']['expose']['label'] = 'CRL Profile Status';
+  $handler->display->display_options['filters']['field_provider_profile_status_value']['expose']['operator'] = 'field_provider_profile_status_value_op';
+  $handler->display->display_options['filters']['field_provider_profile_status_value']['expose']['identifier'] = 'profile_status';
+  $handler->display->display_options['filters']['field_provider_profile_status_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    5 => 0,
+    6 => 0,
+    7 => 0,
+    8 => 0,
+    9 => 0,
+    10 => 0,
+    11 => 0,
+    12 => 0,
+    13 => 0,
+    14 => 0,
+    15 => 0,
+    16 => 0,
+    17 => 0,
+    18 => 0,
+    19 => 0,
+    20 => 0,
+    21 => 0,
+    22 => 0,
+    23 => 0,
   );
   $handler->display->display_options['path'] = 'admin/content-summary/providers';
   $handler->display->display_options['menu']['type'] = 'tab';

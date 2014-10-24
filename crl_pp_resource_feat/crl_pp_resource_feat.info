@@ -140,6 +140,7 @@ features[variable][] = node_preview_pp_resource
 features[variable][] = node_preview_spp_resource
 features[variable][] = node_submitted_pp_resource
 features[variable][] = node_submitted_spp_resource
+features[views_view][] = pp_resource_export
 features[views_view][] = pp_resource_lists
 features[views_view][] = pp_resource_votes_admin
 features[views_view][] = pp_resource_votes_admin_details_
