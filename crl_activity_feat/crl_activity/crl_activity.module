@@ -198,32 +198,26 @@ function crl_activity_activity_node_form_validate(&$form, &$form_state) {
 function crl_activity_node_view_alter(&$build) {
   // Checks for activity nodes.
   if ($build['#bundle'] == 'activity') {
-    // Unset some fields based on status values.
-    $license_available = FALSE;
-    $trial_access_available = FALSE;
-    $unset_fields = array();
     $entity_wrapper = entity_metadata_wrapper('node', $build['#node']);
     $status_array = isset($entity_wrapper->field_activity_crl_status) ? $entity_wrapper->field_activity_crl_status->value() : array();
-    if (!empty($status_array)) {
-      foreach ($status_array as $status) {
-        if ($status == 'license_available') {
-          $license_available = TRUE;
-        }
-        if ($status == 'trial_access_available') {
-          $trial_access_available = TRUE;
-        }
-      }
+    // Our hide logic is based on fieldgroups. This means that any view modes
+    // that don't nest the fields we want to hide within a fieldgroup will NOT
+    // be altered (the fields may still be shown).
+    $hide_groups = array();
+    if (array_search('license_available', $status_array) === FALSE) {
+      $hide_groups[] = 'group_activity_offer';
     }
-    if (!$license_available) {
-      $unset_fields = array_merge($unset_fields, array('field_activity_offer_duration', 'field_activty_offer_terms', 'field_activity_get_started', 'field_activity_license_doc', 'field_activity_auth_form', 'field_activity_pricing_terms', 'field_activity_offer_notes'));
+    if (array_search('trial_access_available', $status_array) === FALSE) {
+      $hide_groups[] = 'group_activity_trial';
     }
-    if (!$trial_access_available) {
-      $unset_fields = array_merge($unset_fields, array('field_activity_trial_duration', 'field_trial_access_info', 'field_access_trial_url', 'field_activity_trial_notes'));
-    }
-    if (!empty($unset_fields)) {
-      foreach($unset_fields as $field) {
-        if (isset($build[$field])) {
-          unset($build[$field]);
+    // Lookup the children within the fieldgroups to hide, and set the #access
+    // flag to FALSE for each respective field. This should ensure the
+    // appropriate fields are hidden without needing to change anything
+    // structurally.
+    foreach ($hide_groups as $group_to_hide) {
+      if (!empty($build['#fieldgroups'][$group_to_hide])) {
+        foreach ($build['#fieldgroups'][$group_to_hide]->children as $field) {
+          $build[$field]['#access'] = FALSE;
         }
       }
     }

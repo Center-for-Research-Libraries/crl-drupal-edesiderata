@@ -15,29 +15,67 @@ class CrlProviderBlocks {
     return array();
   }
   
+  
   /**
    * Build crl_resource_summary.
    */
   protected function build_crl_provider_summary() {
     $block = array();
-    $nid = arg(1); // Assumes block is placed only one node page.
-    $comment_count = 0;
-    $entities = entity_load('node', array($nid));
-    if (!empty($entities[$nid])) {
-      $entity = $entities[$nid];
-      $entity_wrapper = entity_metadata_wrapper('node', $entity);
-      if (isset($entity->comment_count)) {
-        $comment_count = $entity->comment_count;
+    $menu_item = menu_get_item();
+    // Our block logic only applies to nodes.
+    if ($menu_item['path'] == 'node/%') {
+      $nid = arg(1);
+      $entities = entity_load('node', array($nid));
+      if (!empty($entities[$nid]) && $entities[$nid]->type == 'provider') {
+        $entity = $entities[$nid];
+        $entity_wrapper = entity_metadata_wrapper('node', $entity);
+        $status_options = crl_provider_status_property_oplist();
+        $status = isset($entity_wrapper->crl_provider_status) ? $entity_wrapper->crl_provider_status->value() : array();
+        $interest_count_up = isset($entity_wrapper->crl_helpers_interest_count_up) ? $entity_wrapper->crl_helpers_interest_count_up->value() : 0;
+        $interest_count_down = isset($entity_wrapper->crl_helpers_interest_count_down) ? $entity_wrapper->crl_helpers_interest_count_down->value() : 0;
+        $comment_count = isset($entity->comment_count) ? check_plain($entity->comment_count) : 0;
+        $block['subject'] = '';
+        $block['content'] = array(
+          'resource_summary' => array(
+            '#theme' => 'crl_helpers_summary',
+            '#status' => $status,
+            '#status_options' => $status_options,
+            '#comment_count' => $comment_count,
+            '#interest_count_up' => $interest_count_up,
+            '#interest_count_down' => $interest_count_down,
+          ),
+        );
       }
     }
-    $block['subject'] = '';
-    $block['content'] = array(
-      'resource_summary' => array(
-        '#theme' => 'crl_helpers_summary',
-        '#status' => $status,
-        '#comment_count' => $comment_count,
-      ),
-    );
+    return $block;
+  }
+  
+  
+  /**
+   * Build crl_provider_update_links.
+   */
+  protected function build_crl_provider_update_links() {
+    $block = array();
+    // Our block logic only applies to nodes.
+    $menu_item = menu_get_item();
+    if ($menu_item['path'] == 'node/%') {
+      $nid = arg(1);
+      $entities = entity_load('node', array($nid));
+      if (!empty($entities[$nid]) && $entities[$nid]->type == 'provider') {
+        $link_path = 'update-provider-information';
+        $link_options = array(
+          'attributes' => array(
+            'class' => array('button')),
+          'query' => array(
+            'name' => $entities[$nid]->title,
+            'nid' => $nid),
+        );
+        $block['subject'] = 'Update Provider Details';
+        $block['content'] = array(
+          '#markup' => '<p>' . t('Are familar with this provider and would like to add corrections or updates?') . '<br/>' . l(t('Submit Corrections'), $link_path, $link_options),
+        );
+      }
+    }
     return $block;
   }
 

@@ -38,17 +38,23 @@ function crl_provider_feat_context_default_contexts() {
           'region' => 'sidebar_first',
           'weight' => '-10',
         ),
+        'facetapi-prfVco0ZkwVVzGPhbHRFe0EP0WXqfCOG' => array(
+          'module' => 'facetapi',
+          'delta' => 'prfVco0ZkwVVzGPhbHRFe0EP0WXqfCOG',
+          'region' => 'sidebar_first',
+          'weight' => '-9',
+        ),
         'facetapi-j4WNAnSeMr8OItd5KKDVtZ1wYMwHAUi9' => array(
           'module' => 'facetapi',
           'delta' => 'j4WNAnSeMr8OItd5KKDVtZ1wYMwHAUi9',
           'region' => 'sidebar_first',
-          'weight' => '-9',
+          'weight' => '-8',
         ),
         'facetapi-Nxm1aeATzfIB5ca0QPnt5kntjby5XDX0' => array(
           'module' => 'facetapi',
           'delta' => 'Nxm1aeATzfIB5ca0QPnt5kntjby5XDX0',
           'region' => 'sidebar_first',
-          'weight' => '-8',
+          'weight' => '-7',
         ),
         'crl_helpers-crl_helpers_facet_breadcrumb' => array(
           'module' => 'crl_helpers',
@@ -121,9 +127,15 @@ function crl_provider_feat_context_default_contexts() {
           'region' => 'sidebar_second',
           'weight' => '-9',
         ),
-        'crl_resource-crl_resource_summary' => array(
-          'module' => 'crl_resource',
-          'delta' => 'crl_resource_summary',
+        'crl_provider-crl_provider_update_links' => array(
+          'module' => 'crl_provider',
+          'delta' => 'crl_provider_update_links',
+          'region' => 'sidebar_second',
+          'weight' => '-8',
+        ),
+        'crl_provider-crl_provider_summary' => array(
+          'module' => 'crl_provider',
+          'delta' => 'crl_provider_summary',
           'region' => 'preface_first',
           'weight' => '10',
         ),

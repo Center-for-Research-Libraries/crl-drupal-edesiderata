@@ -11,6 +11,205 @@ function crl_pp_resource_feat_views_default_views() {
   $export = array();
 
   $view = new view();
+  $view->name = 'pp_resource_export';
+  $view->description = 'XSL export for internal use';
+  $view->tag = 'default';
+  $view->base_table = 'node';
+  $view->human_name = 'PP Resource Export';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'PP Resource Export';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    3 => '3',
+    5 => '5',
+  );
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'title' => 'title',
+    'body' => 'body',
+    'field_pp_publisher' => 'field_pp_publisher',
+    'field_pp_publisher_url' => 'field_pp_publisher_url',
+    'field_pp_subject_area' => 'field_pp_subject_area',
+    'field_pp_notes' => 'field_pp_notes',
+    'field_pp_piece_count_and_pricing' => 'field_pp_piece_count_and_pricing',
+    'field_pp_nominator_comments' => 'field_pp_nominator_comments',
+    'field_pp_crl_comments' => 'field_pp_crl_comments',
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Background Information */
+  $handler->display->display_options['fields']['body']['id'] = 'body';
+  $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
+  $handler->display->display_options['fields']['body']['field'] = 'body';
+  /* Field: Content: Provider */
+  $handler->display->display_options['fields']['field_pp_publisher']['id'] = 'field_pp_publisher';
+  $handler->display->display_options['fields']['field_pp_publisher']['table'] = 'field_data_field_pp_publisher';
+  $handler->display->display_options['fields']['field_pp_publisher']['field'] = 'field_pp_publisher';
+  /* Field: Content: Provider URL */
+  $handler->display->display_options['fields']['field_pp_publisher_url']['id'] = 'field_pp_publisher_url';
+  $handler->display->display_options['fields']['field_pp_publisher_url']['table'] = 'field_data_field_pp_publisher_url';
+  $handler->display->display_options['fields']['field_pp_publisher_url']['field'] = 'field_pp_publisher_url';
+  /* Field: Content: Topic(s) Covered */
+  $handler->display->display_options['fields']['field_pp_subject_area']['id'] = 'field_pp_subject_area';
+  $handler->display->display_options['fields']['field_pp_subject_area']['table'] = 'field_data_field_pp_subject_area';
+  $handler->display->display_options['fields']['field_pp_subject_area']['field'] = 'field_pp_subject_area';
+  $handler->display->display_options['fields']['field_pp_subject_area']['delta_offset'] = '0';
+  /* Field: Content: Scope */
+  $handler->display->display_options['fields']['field_pp_notes']['id'] = 'field_pp_notes';
+  $handler->display->display_options['fields']['field_pp_notes']['table'] = 'field_data_field_pp_notes';
+  $handler->display->display_options['fields']['field_pp_notes']['field'] = 'field_pp_notes';
+  /* Field: Content: Piece Count and Pricing */
+  $handler->display->display_options['fields']['field_pp_piece_count_and_pricing']['id'] = 'field_pp_piece_count_and_pricing';
+  $handler->display->display_options['fields']['field_pp_piece_count_and_pricing']['table'] = 'field_data_field_pp_piece_count_and_pricing';
+  $handler->display->display_options['fields']['field_pp_piece_count_and_pricing']['field'] = 'field_pp_piece_count_and_pricing';
+  /* Field: Content: Nominator's Comments */
+  $handler->display->display_options['fields']['field_pp_nominator_comments']['id'] = 'field_pp_nominator_comments';
+  $handler->display->display_options['fields']['field_pp_nominator_comments']['table'] = 'field_data_field_pp_nominator_comments';
+  $handler->display->display_options['fields']['field_pp_nominator_comments']['field'] = 'field_pp_nominator_comments';
+  /* Field: Content: CRL Comments */
+  $handler->display->display_options['fields']['field_pp_crl_comments']['id'] = 'field_pp_crl_comments';
+  $handler->display->display_options['fields']['field_pp_crl_comments']['table'] = 'field_data_field_pp_crl_comments';
+  $handler->display->display_options['fields']['field_pp_crl_comments']['field'] = 'field_pp_crl_comments';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'pp_resource' => 'pp_resource',
+  );
+
+  /* Display: Data export */
+  $handler = $view->new_display('views_data_export', 'Data export', 'views_data_export_1');
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'views_data_export_xls';
+  $handler->display->display_options['style_options']['provide_file'] = 1;
+  $handler->display->display_options['style_options']['parent_sort'] = 0;
+  $handler->display->display_options['path'] = 'pp/export';
+
+  /* Display: Page */
+  $handler = $view->new_display('page', 'Page', 'page_1');
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'title' => 'title',
+    'body' => 'body',
+    'field_pp_publisher' => 'field_pp_publisher',
+    'field_pp_publisher_url' => 'field_pp_publisher_url',
+    'field_pp_subject_area' => 'field_pp_subject_area',
+    'field_pp_notes' => 'field_pp_notes',
+    'field_pp_piece_count_and_pricing' => 'field_pp_piece_count_and_pricing',
+    'field_pp_nominator_comments' => 'field_pp_nominator_comments',
+    'field_pp_crl_comments' => 'field_pp_crl_comments',
+  );
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_wrapper_type'] = 'h2';
+  /* Field: Content: Background Information */
+  $handler->display->display_options['fields']['body']['id'] = 'body';
+  $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
+  $handler->display->display_options['fields']['body']['field'] = 'body';
+  $handler->display->display_options['fields']['body']['label'] = '';
+  $handler->display->display_options['fields']['body']['element_type'] = 'div';
+  $handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
+  /* Field: Content: Provider */
+  $handler->display->display_options['fields']['field_pp_publisher']['id'] = 'field_pp_publisher';
+  $handler->display->display_options['fields']['field_pp_publisher']['table'] = 'field_data_field_pp_publisher';
+  $handler->display->display_options['fields']['field_pp_publisher']['field'] = 'field_pp_publisher';
+  $handler->display->display_options['fields']['field_pp_publisher']['element_label_type'] = 'strong';
+  $handler->display->display_options['fields']['field_pp_publisher']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['field_pp_publisher']['hide_empty'] = TRUE;
+  /* Field: Content: Provider URL */
+  $handler->display->display_options['fields']['field_pp_publisher_url']['id'] = 'field_pp_publisher_url';
+  $handler->display->display_options['fields']['field_pp_publisher_url']['table'] = 'field_data_field_pp_publisher_url';
+  $handler->display->display_options['fields']['field_pp_publisher_url']['field'] = 'field_pp_publisher_url';
+  $handler->display->display_options['fields']['field_pp_publisher_url']['element_label_type'] = 'strong';
+  $handler->display->display_options['fields']['field_pp_publisher_url']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['field_pp_publisher_url']['hide_empty'] = TRUE;
+  /* Field: Content: Topic(s) Covered */
+  $handler->display->display_options['fields']['field_pp_subject_area']['id'] = 'field_pp_subject_area';
+  $handler->display->display_options['fields']['field_pp_subject_area']['table'] = 'field_data_field_pp_subject_area';
+  $handler->display->display_options['fields']['field_pp_subject_area']['field'] = 'field_pp_subject_area';
+  $handler->display->display_options['fields']['field_pp_subject_area']['element_label_type'] = 'strong';
+  $handler->display->display_options['fields']['field_pp_subject_area']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['field_pp_subject_area']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['field_pp_subject_area']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_pp_subject_area']['multi_type'] = 'ul';
+  /* Field: Content: Scope */
+  $handler->display->display_options['fields']['field_pp_notes']['id'] = 'field_pp_notes';
+  $handler->display->display_options['fields']['field_pp_notes']['table'] = 'field_data_field_pp_notes';
+  $handler->display->display_options['fields']['field_pp_notes']['field'] = 'field_pp_notes';
+  $handler->display->display_options['fields']['field_pp_notes']['element_label_type'] = 'strong';
+  $handler->display->display_options['fields']['field_pp_notes']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['field_pp_notes']['hide_empty'] = TRUE;
+  /* Field: Content: Piece Count and Pricing */
+  $handler->display->display_options['fields']['field_pp_piece_count_and_pricing']['id'] = 'field_pp_piece_count_and_pricing';
+  $handler->display->display_options['fields']['field_pp_piece_count_and_pricing']['table'] = 'field_data_field_pp_piece_count_and_pricing';
+  $handler->display->display_options['fields']['field_pp_piece_count_and_pricing']['field'] = 'field_pp_piece_count_and_pricing';
+  $handler->display->display_options['fields']['field_pp_piece_count_and_pricing']['element_label_type'] = 'strong';
+  $handler->display->display_options['fields']['field_pp_piece_count_and_pricing']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['field_pp_piece_count_and_pricing']['hide_empty'] = TRUE;
+  /* Field: Content: Nominator's Comments */
+  $handler->display->display_options['fields']['field_pp_nominator_comments']['id'] = 'field_pp_nominator_comments';
+  $handler->display->display_options['fields']['field_pp_nominator_comments']['table'] = 'field_data_field_pp_nominator_comments';
+  $handler->display->display_options['fields']['field_pp_nominator_comments']['field'] = 'field_pp_nominator_comments';
+  $handler->display->display_options['fields']['field_pp_nominator_comments']['element_label_type'] = 'strong';
+  $handler->display->display_options['fields']['field_pp_nominator_comments']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['field_pp_nominator_comments']['hide_empty'] = TRUE;
+  /* Field: Content: CRL Comments */
+  $handler->display->display_options['fields']['field_pp_crl_comments']['id'] = 'field_pp_crl_comments';
+  $handler->display->display_options['fields']['field_pp_crl_comments']['table'] = 'field_data_field_pp_crl_comments';
+  $handler->display->display_options['fields']['field_pp_crl_comments']['field'] = 'field_pp_crl_comments';
+  $handler->display->display_options['fields']['field_pp_crl_comments']['element_label_type'] = 'strong';
+  $handler->display->display_options['fields']['field_pp_crl_comments']['element_wrapper_type'] = 'div';
+  $handler->display->display_options['fields']['field_pp_crl_comments']['hide_empty'] = TRUE;
+  $handler->display->display_options['path'] = 'pp/export_all';
+  $export['pp_resource_export'] = $view;
+
+  $view = new view();
   $view->name = 'pp_resource_lists';
   $view->description = '';
   $view->tag = 'default';

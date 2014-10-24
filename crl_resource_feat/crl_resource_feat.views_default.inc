@@ -552,8 +552,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<p>Showing 10 most popular "thumbs up", <strong><a href="/admin/votes/aggregate">View All</a><br/>
-<a href="/admin/votes/details">View Individual Votes Details</a></strong></p>';
+  $handler->display->display_options['header']['area']['content'] = '<p>Showing 10 most popular "thumbs up" for resources</p>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   /* Footer: Global: Text area */
