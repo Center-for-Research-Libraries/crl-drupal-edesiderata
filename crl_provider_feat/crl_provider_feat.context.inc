@@ -133,9 +133,9 @@ function crl_provider_feat_context_default_contexts() {
           'region' => 'sidebar_second',
           'weight' => '-8',
         ),
-        'crl_resource-crl_resource_summary' => array(
-          'module' => 'crl_resource',
-          'delta' => 'crl_resource_summary',
+        'crl_provider-crl_provider_summary' => array(
+          'module' => 'crl_provider',
+          'delta' => 'crl_provider_summary',
           'region' => 'preface_first',
           'weight' => '10',
         ),
