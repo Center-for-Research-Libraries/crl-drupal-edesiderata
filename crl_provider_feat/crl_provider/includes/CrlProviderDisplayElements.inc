@@ -51,7 +51,10 @@ class CrlProviderDisplayElements {
    */
   protected function build_pseudo_field_provider_resources_view() {
     $rendered_view = views_embed_view('resource_lists', 'block_1', $this->entity->nid);
-    return array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('eDesiderata Resources by this Provider'), '#output' => $rendered_view, '#inline' => FALSE);
+    // Only show if we have view results.
+    if (trim(strip_tags($rendered_view))) {
+      return array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('eDesiderata Resources by this Provider'), '#output' => $rendered_view, '#inline' => FALSE);
+    }
   }
 
   /**
