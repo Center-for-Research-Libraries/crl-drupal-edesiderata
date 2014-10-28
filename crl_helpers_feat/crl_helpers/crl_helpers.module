@@ -272,31 +272,36 @@ function crl_helpers_wysiwyg_editor_settings_alter(&$settings, $context) {
  * special title alterations at the last min. This is a bit of a hack.
  */
 function crl_helpers_preprocess_delta_blocks_page_title(&$vars) {
-  $altered = FALSE;
-  $altered_text = '';
   $query = drupal_get_query_parameters();
   if (!empty($query['f'][0])) {
     switch ($query['f'][0]) {
       case 'crl_resource_status_backref:crl_review_available':
-        $altered = TRUE;
-        $altered_text = t('Resources - CRL Reviews');
+        $vars['page_title'] = t('Resources - CRL Reviews');
         break;
       case 'crl_resource_status_backref:license_available':
-        $altered = TRUE;
-        $altered_text = t('Resources - CRL Offers');
+        $vars['page_title'] = t('Resources - CRL Offers');
         break;
       case 'crl_resource_status_backref:crl_desiderata':
-        $altered = TRUE;
-        $altered_text = t('Resources - CRL Pipeline');
+        $vars['page_title'] = t('Resources - CRL Pipeline');
+        break;
+      case 'crl_provider_status:crl_profile':
+        $vars['page_title'] = t('Providers - CRL Profiles');
         break;
     }
   }
-  if (drupal_is_front_page()) {
-    $altered = TRUE;
-    $altered_text = '';
+  elseif (drupal_is_front_page()) {
+    $vars['page_title'] = '';
   }
-  if ($altered) {
-    $vars['page_title'] = $altered_text;
+  else {
+    // Also check for providers pages.
+    $menu_item = menu_get_item();
+    if ($menu_item['path'] == 'node/%') {
+      $nid = arg(1);
+      $node = node_load($nid);
+      if (!empty($node) && $node->type == 'provider') {
+        $vars['page_title'] = t('Provider') . ' - ' . $vars['page_title'];
+      }
+    }
   }
 }
 

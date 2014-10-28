@@ -328,7 +328,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'body',
-    'label' => 'Abstract',
+    'label' => 'Brief Description',
     'required' => 0,
     'settings' => array(
       'display_summary' => 1,
@@ -1676,10 +1676,10 @@ function crl_provider_feat_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Abstract');
   t('Access');
   t('Alternative Names');
   t('Annual Revenue, links to tax documents, links to annual reports and other relevant documents.');
+  t('Brief Description');
   t('CRL Profile and Analysis Status');
   t('Comment');
   t('Comment Privacy Setting');

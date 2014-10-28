@@ -20,20 +20,19 @@ class CrlResourceBlocks {
    */
   protected function build_crl_resource_summary() {
     $block = array();
-    $menu_item = menu_get_item();
     // Our block logic only applies to nodes.
+    $menu_item = menu_get_item();
     if ($menu_item['path'] == 'node/%') {
       $nid = arg(1);
-      $entities = entity_load('node', array($nid));
-      if (!empty($entities[$nid]) && $entities[$nid]->type == 'resource') {
-        $entity = $entities[$nid];
-        $entity_wrapper = entity_metadata_wrapper('node', $entity);
+      $node = node_load($nid);
+      if (!empty($node) && $node->type == 'resource') {
+        $entity_wrapper = entity_metadata_wrapper('node', $node);
         $status_options = crl_resource_activity_status_property_oplist();
         $status = isset($entity_wrapper->crl_resource_status_backref) ? $entity_wrapper->crl_resource_status_backref->value() : array();
         $vote_average = isset($entity_wrapper->crl_resource_vote_average) ? $entity_wrapper->crl_resource_vote_average->value() : 0;
         $interest_count_up = isset($entity_wrapper->crl_helpers_interest_count_up) ? $entity_wrapper->crl_helpers_interest_count_up->value() : 0;
         $interest_count_down = isset($entity_wrapper->crl_helpers_interest_count_down) ? $entity_wrapper->crl_helpers_interest_count_down->value() : 0;
-        $comment_count = isset($entity->comment_count) ? check_plain($entity->comment_count) : 0;
+        $comment_count = isset($node->comment_count) ? check_plain($node->comment_count) : 0;
         $block['subject'] = '';
         $block['content'] = array(
           'resource_summary' => array(
