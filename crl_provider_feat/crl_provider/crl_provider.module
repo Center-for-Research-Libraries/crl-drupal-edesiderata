@@ -74,7 +74,7 @@ function crl_provider_node_view_alter(&$build) {
     if ($profile_status != 'published' && !empty($build['#fieldgroups'][$profile_group])) {
       // If we are an editor we don't hide anything, but we show helper
       // messages.
-      if (crl_helpers_is_editor()) {
+      if (entity_access('update', 'node', $build['#node'])) {
         $message = t('<strong>This CRL Profile and Analysis is not yet published.</strong> You are able to view this tab because you have editor rights. The general public will not be able to see the content in this tab until the profile is offically marked as published.');
         $build['#fieldgroups'][$profile_group]->format_settings['instance_settings']['description'] = '<div class="messages warning">' . $message . '</div>';
         $label = &$build['#fieldgroups'][$profile_group]->label;

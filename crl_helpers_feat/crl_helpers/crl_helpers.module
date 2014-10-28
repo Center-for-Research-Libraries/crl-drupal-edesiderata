@@ -272,31 +272,36 @@ function crl_helpers_wysiwyg_editor_settings_alter(&$settings, $context) {
  * special title alterations at the last min. This is a bit of a hack.
  */
 function crl_helpers_preprocess_delta_blocks_page_title(&$vars) {
-  $altered = FALSE;
-  $altered_text = '';
   $query = drupal_get_query_parameters();
   if (!empty($query['f'][0])) {
     switch ($query['f'][0]) {
       case 'crl_resource_status_backref:crl_review_available':
-        $altered = TRUE;
-        $altered_text = t('Resources - CRL Reviews');
+        $vars['page_title'] = t('Resources - CRL Reviews');
         break;
       case 'crl_resource_status_backref:license_available':
-        $altered = TRUE;
-        $altered_text = t('Resources - CRL Offers');
+        $vars['page_title'] = t('Resources - CRL Offers');
         break;
       case 'crl_resource_status_backref:crl_desiderata':
-        $altered = TRUE;
-        $altered_text = t('Resources - CRL Pipeline');
+        $vars['page_title'] = t('Resources - CRL Pipeline');
+        break;
+      case 'crl_provider_status:crl_profile':
+        $vars['page_title'] = t('Providers - CRL Profiles');
         break;
     }
   }
-  if (drupal_is_front_page()) {
-    $altered = TRUE;
-    $altered_text = '';
+  elseif (drupal_is_front_page()) {
+    $vars['page_title'] = '';
   }
-  if ($altered) {
-    $vars['page_title'] = $altered_text;
+  else {
+    // Also check for providers pages.
+    $menu_item = menu_get_item();
+    if ($menu_item['path'] == 'node/%') {
+      $nid = arg(1);
+      $node = node_load($nid);
+      if (!empty($node) && $node->type == 'provider') {
+        $vars['page_title'] = t('Provider') . ' - ' . $vars['page_title'];
+      }
+    }
   }
 }
 
@@ -580,35 +585,6 @@ function crl_helpers_get_interest_count($entity, $option) {
     }
   }
   return 0;
-}
-
-
-/**
- * Helper to detect an account with general editor rights.
- * 
- * This is an ad hoc method to separate all editors from non-editors given that
- * each group may be represented across multiple roles. A permission could be
- * used for this as well but that adds some deployment overhead in addition to
- * rid coupling.
- */
-function crl_helpers_is_editor($account = NULL) {
-  if (empty($account)) {
-    global $user;
-    $account = $user;
-  }
-  if ($account->uid) {
-    // See if we are an editor based on role. Note that there is no truely
-    // good way to do this detection because roles do not have machine names.
-    // As we cannot depend on a rid across sites we do a best effort to
-    // detect an editor based on the role name. This is hacky and is not true
-    // security by any means.
-    foreach ($account->roles as $role) {
-      if (strpos($role, 'editor') !== FALSE || strpos($role, 'administrator') !== FALSE) {
-        return TRUE;
-      }
-    }
-  }
-  return FALSE;
 }
 
 

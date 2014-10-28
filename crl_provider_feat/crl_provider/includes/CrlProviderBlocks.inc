@@ -21,19 +21,18 @@ class CrlProviderBlocks {
    */
   protected function build_crl_provider_summary() {
     $block = array();
-    $menu_item = menu_get_item();
     // Our block logic only applies to nodes.
+    $menu_item = menu_get_item();
     if ($menu_item['path'] == 'node/%') {
       $nid = arg(1);
-      $entities = entity_load('node', array($nid));
-      if (!empty($entities[$nid]) && $entities[$nid]->type == 'provider') {
-        $entity = $entities[$nid];
-        $entity_wrapper = entity_metadata_wrapper('node', $entity);
+      $node = node_load($nid);
+      if (!empty($node) && $node->type == 'provider') {
+        $entity_wrapper = entity_metadata_wrapper('node', $node);
         $status_options = crl_provider_status_property_oplist();
         $status = isset($entity_wrapper->crl_provider_status) ? $entity_wrapper->crl_provider_status->value() : array();
         $interest_count_up = isset($entity_wrapper->crl_helpers_interest_count_up) ? $entity_wrapper->crl_helpers_interest_count_up->value() : 0;
         $interest_count_down = isset($entity_wrapper->crl_helpers_interest_count_down) ? $entity_wrapper->crl_helpers_interest_count_down->value() : 0;
-        $comment_count = isset($entity->comment_count) ? check_plain($entity->comment_count) : 0;
+        $comment_count = isset($node->comment_count) ? check_plain($node->comment_count) : 0;
         $block['subject'] = '';
         $block['content'] = array(
           'resource_summary' => array(
@@ -60,19 +59,19 @@ class CrlProviderBlocks {
     $menu_item = menu_get_item();
     if ($menu_item['path'] == 'node/%') {
       $nid = arg(1);
-      $entities = entity_load('node', array($nid));
-      if (!empty($entities[$nid]) && $entities[$nid]->type == 'provider') {
+      $node = node_load($nid);
+      if (!empty($node) && $node->type == 'provider') {
         $link_path = 'update-provider-information';
         $link_options = array(
           'attributes' => array(
             'class' => array('button')),
           'query' => array(
-            'name' => $entities[$nid]->title,
+            'name' => $node->title,
             'nid' => $nid),
         );
         $block['subject'] = 'Update Provider Details';
         $block['content'] = array(
-          '#markup' => '<p>' . t('Are familar with this provider and would like to add corrections or updates?') . '<br/>' . l(t('Submit Corrections'), $link_path, $link_options),
+          '#markup' => '<p>' . t('Do you have corrections or updates to suggest regarding this provider?') . '<br/>' . l(t('Submit Corrections'), $link_path, $link_options),
         );
       }
     }
