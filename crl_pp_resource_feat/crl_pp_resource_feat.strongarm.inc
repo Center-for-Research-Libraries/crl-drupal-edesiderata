@@ -111,6 +111,45 @@ function crl_pp_resource_feat_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'content_access_pp_resource';
+  $strongarm->value = array(
+    'view_own' => array(
+      0 => 1,
+      1 => 2,
+      2 => 3,
+      3 => 5,
+    ),
+    'view' => array(
+      0 => 7,
+      1 => 9,
+      2 => 21,
+      3 => 3,
+      4 => 5,
+    ),
+  );
+  $export['content_access_pp_resource'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'content_access_spp_resource';
+  $strongarm->value = array(
+    'view_own' => array(
+      0 => 1,
+      1 => 2,
+      2 => 3,
+      3 => 5,
+    ),
+    'view' => array(
+      0 => 3,
+      1 => 5,
+    ),
+  );
+  $export['content_access_spp_resource'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__pp_resource';
   $strongarm->value = array(
     'view_modes' => array(

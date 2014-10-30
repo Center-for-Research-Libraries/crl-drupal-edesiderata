@@ -375,3 +375,26 @@ function crl_pp_resource_feat_form_print_mail_form_alter(&$form, &$form_state, $
     }
   }                        
 }
+
+
+/**
+ * Implements hook_page_build().
+ */
+function crl_pp_resource_feat_page_build(&$vars) {
+  // When we are in a PP or SPP context we want to swap in an alternate main
+  // menu. This is a bit of a hack.
+  if (module_exists('context')) {
+    $contexts = context_active_contexts();
+    $trigger_contexts = array('pp_resource_index', 'spp_resource_index', 'pp_resource_page', 'spp_resource_page');
+    $intersect = array_intersect(array_keys($contexts), $trigger_contexts);
+    if (!empty($intersect) && array_key_exists('menu-pp-main-menu', menu_get_menus())) {
+      // Yep, here we change the global conf to override 'menu-pp-main-menu'.
+      // This is frankly a dirty thing to do, but it is such a simple and
+      // elegant way to accomplish something that would otherwise require ugly
+      // theme-specific preprocessing or rebuilding whole menu trees in alter
+      // hooks.
+      global $conf;
+      $conf['menu_main_links_source'] = 'menu-pp-main-menu';
+    }
+  }
+}
