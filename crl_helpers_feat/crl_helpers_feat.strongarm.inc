@@ -214,6 +214,7 @@ function crl_helpers_feat_strongarm() {
       'comment_display_mode' => '1',
       'roles' => array(
         3 => '3',
+        7 => '7',
         13 => 0,
         14 => 0,
         15 => 0,
@@ -235,7 +236,6 @@ function crl_helpers_feat_strongarm() {
         9 => 0,
         6 => 0,
         10 => 0,
-        7 => 0,
       ),
       'allow_voting_by_author' => 1,
       'noperm_behaviour' => '3',
@@ -279,6 +279,7 @@ function crl_helpers_feat_strongarm() {
       'comment_display_mode' => '1',
       'roles' => array(
         3 => '3',
+        7 => '7',
         13 => 0,
         14 => 0,
         15 => 0,
@@ -300,7 +301,6 @@ function crl_helpers_feat_strongarm() {
         9 => 0,
         6 => 0,
         10 => 0,
-        7 => 0,
       ),
       'allow_voting_by_author' => 1,
       'noperm_behaviour' => '3',

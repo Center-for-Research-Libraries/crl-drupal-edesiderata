@@ -299,7 +299,7 @@ function crl_helpers_preprocess_delta_blocks_page_title(&$vars) {
       $nid = arg(1);
       $node = node_load($nid);
       if (!empty($node) && $node->type == 'provider') {
-        $vars['page_title'] = t('Provider') . ' - ' . $vars['page_title'];
+        $vars['page_title'] = '<span title="Provider" class="provider">' . 'P' . '</span>' . $vars['page_title'];
       }
     }
   }

@@ -19,7 +19,7 @@ function crl_pp_resource_feat_context_default_contexts() {
   $context->conditions = array(
     'views' => array(
       'values' => array(
-        'pp_resource_lists:page_2' => 'pp_resource_lists:page_2',
+        'pp_resource_lists:page_1' => 'pp_resource_lists:page_1',
       ),
     ),
   );
@@ -34,8 +34,12 @@ function crl_pp_resource_feat_context_default_contexts() {
         ),
       ),
     ),
-    'breadcrumb' => 'spp',
-    'menu' => 'spp',
+    'breadcrumb' => array(
+      0 => 'menu-pp-main-menu:pp',
+    ),
+    'menu' => array(
+      0 => 'menu-pp-main-menu:pp',
+    ),
   );
   $context->condition_mode = 0;
   $export['pp_resource_index'] = $context;
@@ -120,6 +124,40 @@ function crl_pp_resource_feat_context_default_contexts() {
   // Included for use with string extractors like potx.
   t('permissions');
   $export['pp_resource_page_pp_main'] = $context;
+
+  $context = new stdClass();
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'spp_resource_index';
+  $context->description = '';
+  $context->tag = '';
+  $context->conditions = array(
+    'views' => array(
+      'values' => array(
+        'pp_resource_lists:page_2' => 'pp_resource_lists:page_2',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'user-login' => array(
+          'module' => 'user',
+          'delta' => 'login',
+          'region' => 'content',
+          'weight' => '10',
+        ),
+      ),
+    ),
+    'breadcrumb' => array(
+      0 => 'menu-pp-main-menu:spp',
+    ),
+    'menu' => array(
+      0 => 'menu-pp-main-menu:spp',
+    ),
+  );
+  $context->condition_mode = 0;
+  $export['spp_resource_index'] = $context;
 
   $context = new stdClass();
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
