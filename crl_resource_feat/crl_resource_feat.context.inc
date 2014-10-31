@@ -32,6 +32,12 @@ function crl_resource_feat_context_default_contexts() {
           'region' => 'content',
           'weight' => '-49',
         ),
+        'block-33' => array(
+          'module' => 'block',
+          'delta' => '33',
+          'region' => 'user_first',
+          'weight' => '-10',
+        ),
         'views--exp-resource_lists-page' => array(
           'module' => 'views',
           'delta' => '-exp-resource_lists-page',

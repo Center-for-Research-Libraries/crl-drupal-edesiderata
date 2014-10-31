@@ -98,7 +98,7 @@ function crl_pp_resource_feat_block_view($delta = '') {
       global $user;
       if (array_intersect(content_access_get_settings('view', 'pp_resource'), array_keys($user->roles))) {
         $block['subject'] = '';
-        $block['content'] = array('#markup' => '<p>' . t('<strong>Voting Now Open for CRL Purchase Proposal Program</strong>... !link', array('!link' => l(t('access the ballot'), 'pp'))) . '</p>');
+        $block['content'] = array('#markup' => '<p>' . t('<strong>Voting Now Open for CRL Purchase Proposal Program</strong>... !link.', array('!link' => l(t('access the ballot'), 'pp'))) . '</p>');
       }
       break;
     case 'crl_pp_resource_feat_spp_link':
@@ -106,7 +106,7 @@ function crl_pp_resource_feat_block_view($delta = '') {
       global $user;
       if (array_intersect(content_access_get_settings('view', 'spp_resource'), array_keys($user->roles))) {
         $block['subject'] = '';
-        $block['content'] = array('#markup' => '<p>' . t('<strong>Voting Now Open for CRL Shared Purchase Program</strong>... !link', array('!link' => l(t('access the ballot'), 'spp'))) . '</p>');
+        $block['content'] = array('#markup' => '<p>' . t('<strong>Voting Now Open for CRL Shared Purchase Program</strong>... !link.', array('!link' => l(t('access the ballot'), 'spp'))) . '</p>');
       }
       break;
   }
