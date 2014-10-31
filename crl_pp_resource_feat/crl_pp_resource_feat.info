@@ -2,6 +2,7 @@ name = CRL PP Resource Feature
 core = 7.x
 package = CRL
 dependencies[] = block
+dependencies[] = content_access
 dependencies[] = context
 dependencies[] = crl_helpers_feat
 dependencies[] = crl_resource_feat
