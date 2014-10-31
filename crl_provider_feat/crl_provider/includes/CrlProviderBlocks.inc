@@ -29,7 +29,9 @@ class CrlProviderBlocks {
       if (!empty($node) && $node->type == 'provider') {
         $entity_wrapper = entity_metadata_wrapper('node', $node);
         $status_options = crl_provider_status_property_oplist();
-        $status = isset($entity_wrapper->crl_provider_status) ? $entity_wrapper->crl_provider_status->value() : array();
+        // Temporarily turn off status display.
+        // $status = isset($entity_wrapper->crl_provider_status) ? $entity_wrapper->crl_provider_status->value() : array();
+        $status = array();
         $interest_count_up = isset($entity_wrapper->crl_helpers_interest_count_up) ? $entity_wrapper->crl_helpers_interest_count_up->value() : 0;
         $interest_count_down = isset($entity_wrapper->crl_helpers_interest_count_down) ? $entity_wrapper->crl_helpers_interest_count_down->value() : 0;
         $comment_count = isset($node->comment_count) ? check_plain($node->comment_count) : 0;
