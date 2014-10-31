@@ -42,7 +42,7 @@ function crl_pp_resource_feat_preprocess_rate_widget__pp_preference(&$variables)
       $variables['your_vote'] = t('@calc/@count', array('@calc' => $results_calc, '@count' => $count));
     }
     else {
-      $variables['your_vote_status'] = t('Your vote pending');
+      $variables['your_vote_status'] = t('Click star to vote');
       $variables['your_vote_class'] = 'vote-pending';
       $variables['your_vote'] = '';
     }

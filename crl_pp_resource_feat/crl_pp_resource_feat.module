@@ -53,6 +53,15 @@ function crl_pp_resource_feat_block_info() {
     'info' => t('Vote input for a PP Resource'), 
     'cache' => DRUPAL_NO_CACHE,
   );
+  // Add simple notice text that can be included anywhere (e.g., dashboard).
+  $blocks['crl_pp_resource_feat_pp_link'] = array(
+    'info' => t('Text hook to PP'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['crl_pp_resource_feat_spp_link'] = array(
+    'info' => t('Text hook to spp'), 
+    'cache' => DRUPAL_NO_CACHE,
+  );
   return $blocks;
 }
 
@@ -62,28 +71,44 @@ function crl_pp_resource_feat_block_info() {
  */
 function crl_pp_resource_feat_block_view($delta = '') {
   $block = array();
-  $args = arg();
-  if ($args[0] == 'node') {
-    $node = node_load($args[1]);
-    // We only care about pp_resource and spp_resource nodes here.
-    if ($node && ($node->type == 'pp_resource' || $node->type == 'spp_resource')) {
-      switch ($delta) {
-        // Build vote input block. The specific output of the block will depend
-        // on the content type. We could just a well create SEPARATE block
-        // definitions for each type, but for now let's just keep the block list
-        // small.
-        case 'crl_pp_resource_feat_vote':
-          if ($node->type == 'spp_resource') {
-            $block['subject'] = '';
-            $block['content'] = drupal_get_form('crl_pp_resource_feat_shared_vote_input_form', $node);
-          }
-          else {
+  switch ($delta) {
+    // Build vote input block. The specific output of the block will depend
+    // on the content type. We could just a well create SEPARATE block
+    // definitions for each type, but for now let's just keep the block list
+    // small.
+    case 'crl_pp_resource_feat_vote':
+      $menu_item = menu_get_item();
+      if ($menu_item['path'] == 'node/%') {
+        $nid = arg(1);
+        $node = node_load($nid);
+        if ($node) {
+          if ($node->type == 'pp_resource') {
             $block['subject'] = t('Voting');
             $block['content'] = array('#markup' => crl_pp_resource_feat_get_vote_input($node));
           }
-          break;
+          elseif ($node->type == 'spp_resource') {
+            $block['subject'] = '';
+            $block['content'] = drupal_get_form('crl_pp_resource_feat_shared_vote_input_form', $node);
+          }
+        }
       }
-    }
+      break;
+    case 'crl_pp_resource_feat_pp_link':
+      // Check bundle-level permissions based on content access settings.
+      global $user;
+      if (array_intersect(content_access_get_settings('view', 'pp_resource'), array_keys($user->roles))) {
+        $block['subject'] = '';
+        $block['content'] = array('#markup' => '<p>' . t('<strong>Voting Now Open for CRL Purchase Proposal Program</strong>... !link.', array('!link' => l(t('access the ballot'), 'pp'))) . '</p>');
+      }
+      break;
+    case 'crl_pp_resource_feat_spp_link':
+      // Check bundle-level permissions based on content access settings.
+      global $user;
+      if (array_intersect(content_access_get_settings('view', 'spp_resource'), array_keys($user->roles))) {
+        $block['subject'] = '';
+        $block['content'] = array('#markup' => '<p>' . t('<strong>Voting Now Open for CRL Shared Purchase Program</strong>... !link.', array('!link' => l(t('access the ballot'), 'spp'))) . '</p>');
+      }
+      break;
   }
   return $block;
 }
@@ -388,7 +413,7 @@ function crl_pp_resource_feat_page_build(&$vars) {
     $trigger_contexts = array('pp_resource_index', 'spp_resource_index', 'pp_resource_page', 'spp_resource_page');
     $intersect = array_intersect(array_keys($contexts), $trigger_contexts);
     if (!empty($intersect) && array_key_exists('menu-pp-main-menu', menu_get_menus())) {
-      // Yep, here we change the global conf to override 'menu-pp-main-menu'.
+      // Soooo, here we change the global conf to override 'menu-pp-main-menu'.
       // This is frankly a dirty thing to do, but it is such a simple and
       // elegant way to accomplish something that would otherwise require ugly
       // theme-specific preprocessing or rebuilding whole menu trees in alter

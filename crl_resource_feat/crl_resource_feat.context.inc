@@ -32,6 +32,12 @@ function crl_resource_feat_context_default_contexts() {
           'region' => 'content',
           'weight' => '-49',
         ),
+        'block-33' => array(
+          'module' => 'block',
+          'delta' => '33',
+          'region' => 'user_first',
+          'weight' => '-10',
+        ),
         'views--exp-resource_lists-page' => array(
           'module' => 'views',
           'delta' => '-exp-resource_lists-page',
@@ -62,22 +68,32 @@ function crl_resource_feat_context_default_contexts() {
           'region' => 'sidebar_first',
           'weight' => '-6',
         ),
+        'block-32' => array(
+          'module' => 'block',
+          'delta' => '32',
+          'region' => 'preface_first',
+          'weight' => '-10',
+        ),
         'crl_helpers-crl_helpers_facet_breadcrumb' => array(
           'module' => 'crl_helpers',
           'delta' => 'crl_helpers_facet_breadcrumb',
           'region' => 'preface_first',
-          'weight' => '-50',
+          'weight' => '-9',
         ),
         'delta_blocks-tabs' => array(
           'module' => 'delta_blocks',
           'delta' => 'tabs',
           'region' => 'preface_first',
-          'weight' => '-40',
+          'weight' => '-8',
         ),
       ),
     ),
-    'breadcrumb' => 'resources/main',
-    'menu' => 'resources/main',
+    'breadcrumb' => array(
+      0 => 'main-menu:resources/main',
+    ),
+    'menu' => array(
+      0 => 'main-menu:resources/main',
+    ),
     'theme_html' => array(
       'class' => 'resources-index',
     ),
