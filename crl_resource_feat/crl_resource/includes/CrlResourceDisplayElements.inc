@@ -87,25 +87,27 @@ class CrlResourceDisplayElements {
    * Build custom field: pseudo_field_resource_provider_details
    */
   protected function build_pseudo_field_resource_provider_details() {
-    $built = NULL;
-    $output = '';
-    // Show the provider field (again) from the resource
-    $output .= drupal_render($this->entity->content['field_provider']);
     // Add the embedded display for the provider
     $provider = isset($this->entity_wrapper->field_provider) ? $this->entity_wrapper->field_provider->value() : NULL;
     if (!empty($provider)) {
-      // Make sure we can view the provider node.
+      // Show the provider field (again) for the resource. Note that we don't
+      // render the field data that's stored on the entity directly (we take a
+      // copy instead). This is so the field is not marked as printed and can
+      // still be displayed elsewhere.
+      $field_provider = $this->entity->content['field_provider'];
+      $output['provider_link'] = $field_provider;
+      $output['provider_link']['#weight'] = -10;
+      // Also show the "embedded" view mode for the provider node itself. First
+      // make sure we can view the actual provider node.
       if (entity_access('view', 'node', $provider)) {
         $provider_build = node_view($provider, 'embedded');
         // Drop the title from this view.
         $provider_build['#node']->title = '';
-        $output .= drupal_render($provider_build);
+        $output['provider_embed'] = $provider_build;
       }
+      return $output;
     }
-    if (!empty($output)) {
-      $built = array('#markup' => $output);
-    }
-    return $built;
+    return array();
   }
   
   /**
