@@ -533,7 +533,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'inline',
         'module' => 'entityreference',
         'settings' => array(
-          'link' => 0,
+          'link' => 1,
         ),
         'type' => 'entityreference_label',
         'weight' => 922,
