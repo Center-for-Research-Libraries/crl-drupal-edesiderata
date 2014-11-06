@@ -987,12 +987,17 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['status']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['status']['type'] = 'boolean';
   $handler->display->display_options['fields']['status']['not'] = 0;
-  /* Field: Broken/missing handler */
-  $handler->display->display_options['fields']['field_resource_title_for_sort']['id'] = 'field_resource_title_for_sort';
-  $handler->display->display_options['fields']['field_resource_title_for_sort']['table'] = 'field_data_field_resource_title_for_sort';
-  $handler->display->display_options['fields']['field_resource_title_for_sort']['field'] = 'field_resource_title_for_sort';
-  $handler->display->display_options['fields']['field_resource_title_for_sort']['label'] = 'sort-title';
-  $handler->display->display_options['fields']['field_resource_title_for_sort']['element_label_colon'] = FALSE;
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = 'type';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = 'edes_resource';
+  /* Field: Content: Sorting Title */
+  $handler->display->display_options['fields']['field_title_sort']['id'] = 'field_title_sort';
+  $handler->display->display_options['fields']['field_title_sort']['table'] = 'field_data_field_title_sort';
+  $handler->display->display_options['fields']['field_title_sort']['field'] = 'field_title_sort';
+  $handler->display->display_options['fields']['field_title_sort']['label'] = 'sort-title';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
