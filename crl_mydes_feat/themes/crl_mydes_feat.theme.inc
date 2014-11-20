@@ -35,7 +35,7 @@ function theme_crl_mydes_feat_video_link($variables) {
     $output .= l($variables['text'], $variables['video_path'], array('target' => '_blank'));
   }
   else {
-    $output .= '<div class="medes-vid-highlight">';
+    $output .= '<div class="edes-vid-highlight">';
     $output .= '<a href="' . url($variables['video_path']) . '" target="_blank"><img src="' .  file_create_url($variables['thumb_uri']) . '" /></a>';
     $output .= '<p>' . check_plain($variables['text']) . '</p>';
     $output .= '</div>';
