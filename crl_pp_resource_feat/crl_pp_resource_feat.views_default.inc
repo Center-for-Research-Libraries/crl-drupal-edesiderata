@@ -247,15 +247,6 @@ function crl_pp_resource_feat_views_default_views() {
       'empty_column' => 0,
     ),
   );
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<p>CRL\'s <a href="http://www.crl.edu/collections/collection-building/cooperative-resource-development/pp-program">Purchase Proposal program</a> is an annual cooperative collection development activity. Member libraries nominate and vote for CRL to purchase microform and hard copy collections that may be too costly or esoteric for individual institutions to acquire. CRL collections are developed by and for the member community, with input and participation of all voting members.</p>
-
-<div id="ballot"></div>';
-  $handler->display->display_options['header']['area']['format'] = 'full_html';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -359,9 +350,7 @@ function crl_pp_resource_feat_views_default_views() {
 </div>
 <p>CRL\'s <a href="http://www.crl.edu/collections/collection-building/cooperative-resource-development/pp-program">Purchase Proposal program</a> is an annual cooperative collection development activity. Member libraries nominate and vote for CRL to purchase microform and hard copy collections that may be too costly or esoteric for individual institutions to acquire. CRL collections are developed by and for the member community, with input and participation of all voting members.</p>
 
-<p>A <a href="http://www.crl.edu/sites/default/files/images/misc/PP%20Ballot%20Detailed%20Description%20FY15.pdf">PDF version</a> of this ballot information is also available for offline reference and printing.</p>
-
-<p>The ballot closing date is <strong>December 1, 2014</strong></p>
+<p><strong>The FY2015 ballot is now closed</strong></p>
 
 <div id="ballot"></div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
@@ -371,8 +360,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = '<hr />
-<p><strong>The FY2015 Purchase Proposal ballot is only accessible to logged-in CRL Members.</strong></p>';
+  $handler->display->display_options['empty']['area']['content'] = '<hr />';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
   $handler->display->display_options['path'] = 'pp';
   $handler->display->display_options['menu']['type'] = 'normal';
@@ -609,18 +597,16 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['comment_count']['id'] = 'comment_count';
   $handler->display->display_options['fields']['comment_count']['table'] = 'node_comment_statistics';
   $handler->display->display_options['fields']['comment_count']['field'] = 'comment_count';
+  /* Sort criterion: Content: Fiscal Year (field_fy) */
+  $handler->display->display_options['sorts']['field_fy_tid']['id'] = 'field_fy_tid';
+  $handler->display->display_options['sorts']['field_fy_tid']['table'] = 'field_data_field_fy';
+  $handler->display->display_options['sorts']['field_fy_tid']['field'] = 'field_fy_tid';
+  $handler->display->display_options['sorts']['field_fy_tid']['order'] = 'DESC';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
@@ -632,12 +618,15 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['tid']['id'] = 'tid';
   $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
   $handler->display->display_options['filters']['tid']['field'] = 'tid';
-  $handler->display->display_options['filters']['tid']['value'] = '';
+  $handler->display->display_options['filters']['tid']['value'] = array(
+    106 => '106',
+  );
   $handler->display->display_options['filters']['tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['tid']['expose']['operator_id'] = 'tid_op';
   $handler->display->display_options['filters']['tid']['expose']['label'] = 'Fiscal Year';
   $handler->display->display_options['filters']['tid']['expose']['operator'] = 'tid_op';
   $handler->display->display_options['filters']['tid']['expose']['identifier'] = 'tid';
+  $handler->display->display_options['filters']['tid']['expose']['required'] = TRUE;
   $handler->display->display_options['filters']['tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -662,7 +651,6 @@ function crl_pp_resource_feat_views_default_views() {
     21 => 0,
     22 => 0,
     23 => 0,
-    24 => 0,
   );
   $handler->display->display_options['filters']['tid']['type'] = 'select';
   $handler->display->display_options['filters']['tid']['vocabulary'] = 'fy';
@@ -973,13 +961,6 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['comment_count']['field'] = 'comment_count';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
@@ -991,11 +972,15 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['tid']['id'] = 'tid';
   $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
   $handler->display->display_options['filters']['tid']['field'] = 'tid';
+  $handler->display->display_options['filters']['tid']['value'] = array(
+    90 => '90',
+  );
   $handler->display->display_options['filters']['tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['tid']['expose']['operator_id'] = 'tid_op';
   $handler->display->display_options['filters']['tid']['expose']['label'] = 'Fiscal Year';
   $handler->display->display_options['filters']['tid']['expose']['operator'] = 'tid_op';
   $handler->display->display_options['filters']['tid']['expose']['identifier'] = 'tid';
+  $handler->display->display_options['filters']['tid']['expose']['required'] = TRUE;
   $handler->display->display_options['filters']['tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -1020,7 +1005,6 @@ function crl_pp_resource_feat_views_default_views() {
     21 => 0,
     22 => 0,
     23 => 0,
-    24 => 0,
   );
   $handler->display->display_options['filters']['tid']['type'] = 'select';
   $handler->display->display_options['filters']['tid']['vocabulary'] = 'fy';
@@ -1153,13 +1137,6 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['comment_count']['field'] = 'comment_count';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
@@ -1171,11 +1148,15 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['tid']['id'] = 'tid';
   $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
   $handler->display->display_options['filters']['tid']['field'] = 'tid';
+  $handler->display->display_options['filters']['tid']['value'] = array(
+    90 => '90',
+  );
   $handler->display->display_options['filters']['tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['tid']['expose']['operator_id'] = 'tid_op';
   $handler->display->display_options['filters']['tid']['expose']['label'] = 'Fiscal Year';
   $handler->display->display_options['filters']['tid']['expose']['operator'] = 'tid_op';
   $handler->display->display_options['filters']['tid']['expose']['identifier'] = 'tid';
+  $handler->display->display_options['filters']['tid']['expose']['required'] = TRUE;
   $handler->display->display_options['filters']['tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -1200,7 +1181,6 @@ function crl_pp_resource_feat_views_default_views() {
     21 => 0,
     22 => 0,
     23 => 0,
-    24 => 0,
   );
   $handler->display->display_options['filters']['tid']['type'] = 'select';
   $handler->display->display_options['filters']['tid']['vocabulary'] = 'fy';
@@ -1476,13 +1456,6 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['sorts']['timestamp']['field'] = 'timestamp';
   $handler->display->display_options['sorts']['timestamp']['relationship'] = 'votingapi_vote';
   $handler->display->display_options['sorts']['timestamp']['order'] = 'DESC';
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type_1']['id'] = 'type_1';
   $handler->display->display_options['filters']['type_1']['table'] = 'node';
@@ -1496,12 +1469,16 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['tid']['id'] = 'tid';
   $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
   $handler->display->display_options['filters']['tid']['field'] = 'tid';
+  $handler->display->display_options['filters']['tid']['value'] = array(
+    106 => '106',
+  );
   $handler->display->display_options['filters']['tid']['group'] = 1;
   $handler->display->display_options['filters']['tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['tid']['expose']['operator_id'] = 'tid_op';
   $handler->display->display_options['filters']['tid']['expose']['label'] = 'Fiscal Year';
   $handler->display->display_options['filters']['tid']['expose']['operator'] = 'tid_op';
   $handler->display->display_options['filters']['tid']['expose']['identifier'] = 'tid';
+  $handler->display->display_options['filters']['tid']['expose']['required'] = TRUE;
   $handler->display->display_options['filters']['tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -1526,7 +1503,6 @@ function crl_pp_resource_feat_views_default_views() {
     21 => 0,
     22 => 0,
     23 => 0,
-    24 => 0,
   );
   $handler->display->display_options['filters']['tid']['type'] = 'select';
   $handler->display->display_options['filters']['tid']['vocabulary'] = 'fy';
@@ -1660,11 +1636,11 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['style_options']['columns'] = array(
     'title' => 'title',
     'type' => 'type',
+    'field_fy' => 'field_fy',
     'name' => 'name',
     'mail' => 'mail',
-    'field_institution' => 'field_institution',
     'uid' => 'uid',
-    'field_fy' => 'field_fy',
+    'field_institution' => 'field_institution',
     'tag' => 'tag',
     'value' => 'value',
     'timestamp' => 'timestamp',
@@ -1685,6 +1661,13 @@ function crl_pp_resource_feat_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'field_fy' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'name' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
@@ -1699,13 +1682,6 @@ function crl_pp_resource_feat_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_institution' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
     'uid' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
@@ -1713,9 +1689,9 @@ function crl_pp_resource_feat_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_fy' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'desc',
+    'field_institution' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
