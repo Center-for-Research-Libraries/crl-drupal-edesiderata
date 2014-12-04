@@ -26,12 +26,6 @@ function crl_resource_dashboard_feat_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'crl_pp_resource_feat-crl_pp_resource_feat_pp_link' => array(
-          'module' => 'crl_pp_resource_feat',
-          'delta' => 'crl_pp_resource_feat_pp_link',
-          'region' => 'content',
-          'weight' => '-10',
-        ),
         'views-crl_messages-block_1' => array(
           'module' => 'views',
           'delta' => 'crl_messages-block_1',
