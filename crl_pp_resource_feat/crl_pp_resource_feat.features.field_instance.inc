@@ -209,7 +209,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 4,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -253,7 +253,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 2,
+        'weight' => 3,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -298,7 +298,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -340,7 +340,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -526,7 +526,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 10,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -653,56 +653,6 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_proposal_purchased'
-  $field_instances['node-pp_resource-field_pp_proposal_purchased'] = array(
-    'bundle' => 'pp_resource',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
-    'default_value_function' => '',
-    'default_value_php' => '',
-    'deleted' => 0,
-    'description' => 'Check this box if this resource was purchased. This field will be used in historical reports.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 8,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 21,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_pp_proposal_purchased',
-    'label' => 'Proposal Purchased',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'display_label' => 1,
-      ),
-      'type' => 'options_onoff',
-      'weight' => 33,
-    ),
-  );
-
   // Exported field_instance: 'node-pp_resource-field_pp_publisher'
   $field_instances['node-pp_resource-field_pp_publisher'] = array(
     'bundle' => 'pp_resource',
@@ -797,6 +747,52 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-pp_resource-field_pp_purchase_status'
+  $field_instances['node-pp_resource-field_pp_purchase_status'] = array(
+    'bundle' => 'pp_resource',
+    'default_value' => array(
+      0 => array(
+        'value' => 'no',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_pp_purchase_status',
+    'label' => 'Purchase Status',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 33,
+    ),
+  );
+
   // Exported field_instance: 'node-pp_resource-field_pp_related'
   $field_instances['node-pp_resource-field_pp_related'] = array(
     'bundle' => 'pp_resource',
@@ -808,7 +804,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 11,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -839,7 +835,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 36,
+      'weight' => 35,
     ),
   );
 
@@ -854,7 +850,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 12,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -885,7 +881,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 35,
+      'weight' => 34,
     ),
   );
 
@@ -993,7 +989,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1116,9 +1112,12 @@ function crl_pp_resource_feat_field_default_field_instances() {
       ),
       'teaser' => array(
         'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'trim_length' => 600,
+        ),
+        'type' => 'text_trimmed',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -1391,7 +1390,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 23,
+        'weight' => 21,
       ),
     ),
     'entity_type' => 'node',
@@ -1528,7 +1527,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 21,
+        'weight' => 19,
       ),
     ),
     'entity_type' => 'node',
@@ -1626,7 +1625,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 22,
+        'weight' => 20,
       ),
     ),
     'entity_type' => 'node',
@@ -2116,6 +2115,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   t('Provider');
   t('Provider URL');
   t('Purchase Proposal Comments Summary');
+  t('Purchase Status');
   t('Related Purchase Proposal Title');
   t('Scope');
   t('Sorting Title');

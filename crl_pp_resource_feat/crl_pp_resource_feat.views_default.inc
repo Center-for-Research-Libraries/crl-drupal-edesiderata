@@ -597,6 +597,10 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['comment_count']['id'] = 'comment_count';
   $handler->display->display_options['fields']['comment_count']['table'] = 'node_comment_statistics';
   $handler->display->display_options['fields']['comment_count']['field'] = 'comment_count';
+  /* Field: Content: Purchase Status */
+  $handler->display->display_options['fields']['field_pp_purchase_status']['id'] = 'field_pp_purchase_status';
+  $handler->display->display_options['fields']['field_pp_purchase_status']['table'] = 'field_data_field_pp_purchase_status';
+  $handler->display->display_options['fields']['field_pp_purchase_status']['field'] = 'field_pp_purchase_status';
   /* Sort criterion: Content: Fiscal Year (field_fy) */
   $handler->display->display_options['sorts']['field_fy_tid']['id'] = 'field_fy_tid';
   $handler->display->display_options['sorts']['field_fy_tid']['table'] = 'field_data_field_fy';
@@ -769,6 +773,10 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['comment_count']['id'] = 'comment_count';
   $handler->display->display_options['fields']['comment_count']['table'] = 'node_comment_statistics';
   $handler->display->display_options['fields']['comment_count']['field'] = 'comment_count';
+  /* Field: Content: Purchase Status */
+  $handler->display->display_options['fields']['field_pp_purchase_status']['id'] = 'field_pp_purchase_status';
+  $handler->display->display_options['fields']['field_pp_purchase_status']['table'] = 'field_data_field_pp_purchase_status';
+  $handler->display->display_options['fields']['field_pp_purchase_status']['field'] = 'field_pp_purchase_status';
   $handler->display->display_options['path'] = 'admin/pp/aggregate/export';
   $handler->display->display_options['displays'] = array(
     'page_1' => 'page_1',
@@ -959,6 +967,11 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['comment_count']['id'] = 'comment_count';
   $handler->display->display_options['fields']['comment_count']['table'] = 'node_comment_statistics';
   $handler->display->display_options['fields']['comment_count']['field'] = 'comment_count';
+  /* Field: Content: Proposal Purchased */
+  $handler->display->display_options['fields']['field_pp_proposal_purchased']['id'] = 'field_pp_proposal_purchased';
+  $handler->display->display_options['fields']['field_pp_proposal_purchased']['table'] = 'field_data_field_pp_proposal_purchased';
+  $handler->display->display_options['fields']['field_pp_proposal_purchased']['field'] = 'field_pp_proposal_purchased';
+  $handler->display->display_options['fields']['field_pp_proposal_purchased']['label'] = 'Purchased';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Type */
@@ -1135,6 +1148,11 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['comment_count']['id'] = 'comment_count';
   $handler->display->display_options['fields']['comment_count']['table'] = 'node_comment_statistics';
   $handler->display->display_options['fields']['comment_count']['field'] = 'comment_count';
+  /* Field: Content: Proposal Purchased */
+  $handler->display->display_options['fields']['field_pp_proposal_purchased']['id'] = 'field_pp_proposal_purchased';
+  $handler->display->display_options['fields']['field_pp_proposal_purchased']['table'] = 'field_data_field_pp_proposal_purchased';
+  $handler->display->display_options['fields']['field_pp_proposal_purchased']['field'] = 'field_pp_proposal_purchased';
+  $handler->display->display_options['fields']['field_pp_proposal_purchased']['label'] = 'Purchased';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Type */

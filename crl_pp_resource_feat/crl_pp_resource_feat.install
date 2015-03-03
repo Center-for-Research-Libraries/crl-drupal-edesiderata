@@ -40,3 +40,29 @@ function crl_pp_resource_feat_update_7100() {
     }
   }
 }
+
+/**
+ * Capture data from field_pp_proposal_purchased in new field_pp_purchase_status.
+ */
+function crl_pp_resource_feat_update_7101() {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')->entityCondition('bundle', 'pp_resource');
+  $result = $query->execute();
+  if (!empty($result['node'])) {
+    foreach ($result['node'] as $data) {
+      $node = node_load($data->nid);
+      // Try to preserve the original updated timestamp.
+      // @see crl_common_node_presave()
+      if (isset($node->changed)) {
+        $node->manual_changed_timestamp = $node->changed;
+      }
+      $wrapper = entity_metadata_wrapper('node', $node);
+      $status = 'no';
+      if (isset($wrapper->field_pp_proposal_purchased) && $wrapper->field_pp_proposal_purchased->value()) {
+        $status = 'yes';
+      }
+      $wrapper->field_pp_purchase_status->set($status);
+      $wrapper->save();
+    }
+  }
+}
