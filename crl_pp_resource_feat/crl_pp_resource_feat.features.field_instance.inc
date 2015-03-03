@@ -653,56 +653,6 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_proposal_purchased'
-  $field_instances['node-pp_resource-field_pp_proposal_purchased'] = array(
-    'bundle' => 'pp_resource',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
-    'default_value_function' => '',
-    'default_value_php' => '',
-    'deleted' => 0,
-    'description' => 'Check this box if this resource was purchased. This field will be used in historical reports.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 9,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 21,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_pp_proposal_purchased',
-    'label' => 'Proposal Purchased',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'display_label' => 1,
-      ),
-      'type' => 'options_onoff',
-      'weight' => 32,
-    ),
-  );
-
   // Exported field_instance: 'node-pp_resource-field_pp_publisher'
   $field_instances['node-pp_resource-field_pp_publisher'] = array(
     'bundle' => 'pp_resource',
