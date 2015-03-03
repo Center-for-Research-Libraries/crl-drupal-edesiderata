@@ -158,11 +158,9 @@ function crl_pp_resource_feat_field_group_info() {
     'label' => 'Nominator',
     'weight' => '21',
     'children' => array(
-      0 => 'field_pp_nominator_email',
-      1 => 'field_pp_nominator_institution',
-      2 => 'field_pp_nominator_name',
-      3 => 'field_contact_name',
-      4 => 'field_contact_email',
+      0 => 'field_pp_nominator_institution',
+      1 => 'field_contact_email',
+      2 => 'field_contact_name',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -224,6 +222,7 @@ function crl_pp_resource_feat_field_group_info() {
       1 => 'field_pp_related',
       2 => 'field_pp_sp_target_price',
       3 => 'field_fy',
+      4 => 'field_pp_purchase_status',
     ),
     'format_type' => 'div',
     'format_settings' => array(

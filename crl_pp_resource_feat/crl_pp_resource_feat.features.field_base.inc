@@ -328,6 +328,36 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'text',
   );
 
+  // Exported field_base: 'field_pp_purchase_status'
+  $field_bases['field_pp_purchase_status'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_pp_purchase_status',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'no' => 'Not Purchased',
+        'yes' => 'Purchased',
+        'spp' => 'Deferred to Shared Purchase',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
   // Exported field_base: 'field_pp_related'
   $field_bases['field_pp_related'] = array(
     'active' => 1,
