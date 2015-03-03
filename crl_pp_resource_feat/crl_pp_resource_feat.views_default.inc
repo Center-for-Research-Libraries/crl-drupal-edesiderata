@@ -389,9 +389,9 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['header']['area']['empty'] = TRUE;
   $handler->display->display_options['header']['area']['content'] = '<p>CRL’s <a href="http://www.crl.edu/shared-purchase-program">Shared Purchase Program</a> supports the cooperative acquisition of costly sets that were nominated for the Purchase Proposal Program, but were not of sufficiently broad interest to warrant purchase (or were proposed after voting). In Shared Purchase the nominating library and CRL contribute seed funds, and through the ballot other member libraries can voluntarily pledge funds toward the purchase of sets.  Purchased materials are available for use to all member libraries.</p>
 
-<p>A <a href="http://www.crl.edu/sites/default/files/attachments/news/FY14%20Shared%20Purchase%20Ballot.pdf">PDF version</a> of this ballot information is also available for offline reference and printing.</p>
+<p>A <a href="http://www.crl.edu/sites/default/files/d6/attachments/pages/share_purchase_fy15_ballot.pdf">PDF version</a> of this ballot information is also available for offline reference and printing.</p>
 
-<p>The pledge ballot closing date has been extended to <strong>Friday, March 28, 2014</strong></p>
+<p>The pledge ballot closing date is <strong>Friday, March 27, 2015</strong></p>
 
 <div id="ballot"></div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
@@ -402,7 +402,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = '<hr />
-<p><strong>The FY2014 Shared Purchase Proposal ballot is now closed.</strong></p>';
+<p><strong>The Shared Purchase Proposal Ballot is only available for logged-in CRL Members.</strong></p>';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Comment count */
@@ -973,7 +973,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
   $handler->display->display_options['filters']['tid']['field'] = 'tid';
   $handler->display->display_options['filters']['tid']['value'] = array(
-    90 => '90',
+    106 => '106',
   );
   $handler->display->display_options['filters']['tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['tid']['expose']['operator_id'] = 'tid_op';
@@ -1149,7 +1149,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
   $handler->display->display_options['filters']['tid']['field'] = 'tid';
   $handler->display->display_options['filters']['tid']['value'] = array(
-    90 => '90',
+    106 => '106',
   );
   $handler->display->display_options['filters']['tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['tid']['expose']['operator_id'] = 'tid_op';
