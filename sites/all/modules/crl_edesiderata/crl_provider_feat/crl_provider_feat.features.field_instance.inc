@@ -350,17 +350,7 @@ function crl_provider_feat_field_default_field_instances() {
   // Exported field_instance: 'node-provider-field_address'
   $field_instances['node-provider-field_address'] = array(
     'bundle' => 'provider',
-    'default_value' => array(
-      0 => array(
-        'element_key' => 'node|provider|field_address|und|0',
-        'thoroughfare' => '',
-        'premise' => '',
-        'locality' => '',
-        'administrative_area' => '',
-        'postal_code' => '',
-        'country' => 'US',
-      ),
-    ),
+    'default_value' => NULL,
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -407,6 +397,7 @@ function crl_provider_feat_field_default_field_instances() {
       'module' => 'addressfield',
       'settings' => array(
         'available_countries' => array(),
+        'default_country' => '',
         'format_handlers' => array(
           'address' => 'address',
           'address-hide-country' => 0,
