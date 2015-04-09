@@ -1,0 +1,14 @@
+diff --git a/tablefield.module b/tablefield.module
+index 0967b7b..a707ae6 100644
+--- a/tablefield.module
++++ b/tablefield.module
+@@ -463,6 +463,9 @@ function tablefield_field_widget_form(&$form, &$form_state, $field, $instance, $
+     $element['#base_type'] = $element['#type'];
+     $element['#type'] = 'text_format';
+     $element['#format'] = isset($items[$delta]['format']) ? $items[$delta]['format'] : NULL;
++    if (module_exists('wysiwyg')) {
++      $element['#wysiwyg'] = FALSE;
++    }
+   }
+ 
+   return $element;

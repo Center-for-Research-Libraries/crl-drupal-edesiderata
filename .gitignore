@@ -1,0 +1,11 @@
+# Ignore configuration files that may contain sensitive information.
+sites/*/settings*.php
+
+# Ignore paths that contain user-generated content.
+sites/*/files
+sites/*/private
+
+/nbproject
+
+# Ignore modules that are maintained in separate git repos
+sites/all/modules/shared_unofficial

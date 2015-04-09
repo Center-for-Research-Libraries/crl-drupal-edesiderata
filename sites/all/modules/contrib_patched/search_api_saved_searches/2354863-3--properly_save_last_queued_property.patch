@@ -1,0 +1,115 @@
+diff --git a/search_api_saved_searches.install b/search_api_saved_searches.install
+index da096d6..40e3005 100644
+--- a/search_api_saved_searches.install
++++ b/search_api_saved_searches.install
+@@ -207,3 +207,19 @@ function search_api_saved_searches_update_7103() {
+   db_add_index('search_api_saved_search', 'user', array('mail', 'uid'));
+   db_add_index('search_api_saved_search', 'notify', array('enabled', 'notify_interval', 'last_queued', 'last_execute'));
+ }
++
++/**
++ * Fix incorrect {search_api_saved_search}.last_queued values.
++ *
++ * This might lead to duplicate mails for saved searches in some rare cases, but
++ * is necessary to prevent saved searches from never being executed at all
++ * anymore.
++ *
++ * @see https://www.drupal.org/node/2354863
++ */
++function search_api_saved_searches_update_7104() {
++  db_update('search_api_saved_search')
++    ->expression('last_queued', 'last_execute')
++    ->where('last_queued > last_execute')
++    ->execute();
++}
+diff --git a/search_api_saved_searches.module b/search_api_saved_searches.module
+index 2e0552e..158c1f3 100644
+--- a/search_api_saved_searches.module
++++ b/search_api_saved_searches.module
+@@ -1099,19 +1099,15 @@ function search_api_saved_searches_cron() {
+   $user_searches = array();
+   foreach ($searches as $search) {
+     $user_searches[$search->mail . ' ' . $search->settings_id][] = $search;
++    // Set the last execution timestamp now, so the interval doesn't move and we
++    // don't get problems if the next cron run occurrs before the queue is
++    // completely executed.
++    $search->last_queued = REQUEST_TIME;
++    $search->save();
+   }
+   foreach ($user_searches as $searches) {
+     $queue->createItem($searches);
+   }
+-  // Set the last execution timestamp now, so the interval doesn't move and we
+-  // don't get problems if the next cron run occurrs before the queue is
+-  // completely executed.
+-  db_update('search_api_saved_search')
+-    ->fields(array(
+-      'last_queued' => REQUEST_TIME,
+-    ))
+-    ->condition('id', $ids, 'IN')
+-    ->execute();
+ }
+ 
+ /**
+@@ -1137,18 +1133,21 @@ function search_api_saved_searches_cron_queue_info() {
+  *   An array of SearchApiSavedSearch objects to check for new results. All of
+  *   these should have the same mail address and base settings.
+  *
++ * @throws SearchApiException
++ *   If an error occurred in one of the searches.
++ *
+  * @see search_api_saved_searches_cron_queue_info()
+  */
+ function search_api_saved_searches_check_updates(array $searches) {
+   if (!$searches) {
+     return;
+   }
+-  try {
+-    $search = $searches[key($searches)];
+-    $settings = $search->settings();
+-    $index = $settings->index();
+-    $mail_params = array();
+-    foreach ($searches as $search) {
++  $search = $searches[key($searches)];
++  $settings = $search->settings();
++  $index = $settings->index();
++  $mail_params = array();
++  foreach ($searches as $search) {
++    try {
+       // Make sure we run the query as the user who owns the saved search.
+       // Otherwise node access will not work properly.
+       $search->query['options']['search_api_access_account'] = $search->uid;
+@@ -1208,19 +1207,21 @@ function search_api_saved_searches_check_updates(array $searches) {
+       $search->last_execute = time();
+       $search->save();
+     }
+-    // If we set any searches in the mail parameters, send the mail.
+-    if ($mail_params) {
+-      $mail_params['user'] = user_load($search->uid);
+-      $mail_params['settings'] = $settings;
+-      $message = drupal_mail('search_api_saved_searches', 'notify', $search->mail,
+-          user_preferred_language($mail_params['user']), $mail_params);
+-      if ($message['result']) {
+-        watchdog('search_api_saved_searches', 'A mail with new saved search results was sent to @mail.',
+-            array('@mail' => $search->mail), WATCHDOG_INFO);
+-      }
++    catch (SearchApiException $e) {
++      $args = _drupal_decode_exception($e);
++      $args['@id'] = $search->id;
++      throw new SearchApiException(t('%type while trying to check for new results on saved search @id: !message in %function (line %line of %file).', $args));
+     }
+   }
+-  catch (SearchApiException $e) {
+-    watchdog('search_api_saved_searches', $e->getMessage(), NULL, WATCHDOG_ERROR);
++  // If we set any searches in the mail parameters, send the mail.
++  if ($mail_params) {
++    $mail_params['user'] = user_load($search->uid);
++    $mail_params['settings'] = $settings;
++    $message = drupal_mail('search_api_saved_searches', 'notify', $search->mail,
++        user_preferred_language($mail_params['user']), $mail_params);
++    if ($message['result']) {
++      watchdog('search_api_saved_searches', 'A mail with new saved search results was sent to @mail.',
++          array('@mail' => $search->mail), WATCHDOG_INFO);
++    }
+   }
+ }

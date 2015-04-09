@@ -1,0 +1,108 @@
+/* Correct weird borders on horizontal tab links in Safari and Chrome */
+.horizontal-tabs :focus {
+  outline: none;
+}
+
+/* Get rid of bullets for faucet block select items */
+.block-facetapi .content li {
+  list-style: none !important;
+}
+.block-facetapi .content ul {
+  padding-left: 0;
+}
+
+
+.form-item-search-api-views-fulltext input {
+  width: 100% !important;
+}
+
+/* Formatting for "CRL Details" Box on Title page */
+/*
+fieldset.group-crl-details {
+  float: right;
+  width: 200px;
+  margin: 0px 0px 15px 15px;
+}
+body.page-node-edit fieldset.group-crl-details, body.page-node-add fieldset.group-crl-details {
+  float: none;
+  width: auto;
+}
+*/
+
+/* Review page view */
+.field-label {
+  font-size: 16px;
+  margin-top: 1em;
+}
+
+span.big_num {
+  font-size: 135%;
+  font-weight: bold;
+  color: #555;
+}
+
+
+/* Tweaks for facet glossary */
+ul.facetapi-facet-field-title-glossary li {
+  display: inline;
+  padding: 2px 4px;
+  border-right: 1px solid #999;
+}
+ul.facetapi-facet-field-title-glossary li.last {
+  border-right: none;
+}
+
+
+/* Hide none-sort widgets for exposed filter above list and position */
+.region-highlighted #views-exposed-form-title-lists-page #edit-search-api-views-fulltext-wrapper,
+.region-highlighted #views-exposed-form-title-lists-page .views-submit-button {
+  display: none;
+}
+.region-highlighted #views-exposed-form-title-lists-page {
+  width: 150px;
+  float: right;
+}
+#highlighted {
+    font-size: 100%;
+}
+
+/* Hide sort widgets for exposed filter in sidevar */
+.region-sidebar-first #views-exposed-form-title-lists-page .views-widget-sort-by,
+.region-sidebar-first #views-exposed-form-title-lists-page .views-widget-sort-order {
+  display: none;
+}
+
+
+/************* Tweaks for clean display ***************/
+body.clean-display #sidebar-first,
+body.clean-display #sidebar-second,
+body.clean-display .navigation,
+body.clean-display #toolbar,
+body.clean-display #footer-wrapper,
+body.clean-display #header,
+body.clean-display .tabs,
+body.clean-display .add-or-remove-shortcuts,
+body.clean-display #admin-menu,
+body.clean-display .breadcrumb,
+body.clean-display #messages {
+  display: none !important;
+}
+body.clean-display #content,
+body.clean-display #main,
+body.clean-display #page-wrapper,
+body.clean-display #page,
+body.clean-display #triptych-wrapper,
+body.clean-display div.section {
+  width: 100% !important;
+  min-width: 500px !important;
+  min-heigth: 500px !important;
+  background-color: white !important;
+}
+body.clean-display #page {
+  width: 90% !important;
+  background-color: white !important;
+}
+  
+body.clean-display {
+  margin-top: 0px !important;
+}

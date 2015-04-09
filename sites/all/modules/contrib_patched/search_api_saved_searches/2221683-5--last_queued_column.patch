@@ -1,0 +1,158 @@
+diff --git a/search_api_saved_searches.install b/search_api_saved_searches.install
+index 056527d..88151bb 100644
+--- a/search_api_saved_searches.install
++++ b/search_api_saved_searches.install
+@@ -112,6 +112,11 @@ function search_api_saved_searches_schema() {
+         'type' => 'int',
+         'not null' => TRUE,
+       ),
++      'last_queued' => array(
++        'description' => 'The Unix timestamp when the saved search was last queued.',
++        'type' => 'int',
++        'not null' => TRUE,
++      ),
+       'last_execute' => array(
+         'description' => 'The Unix timestamp when the saved search was last executed.',
+         'type' => 'int',
+@@ -172,3 +177,23 @@ function search_api_saved_searches_update_7101() {
+       ->execute();
+   }
+ }
++
++/**
++ * Update searches to correctly use the settings' delta, not numeric ID, as the identifier.
++ */
++function search_api_saved_searches_update_7102() {
++  $spec = array(
++    'description' => 'The Unix timestamp when the saved search was last queued.',
++    'type' => 'int',
++    'not null' => TRUE,
++  );
++  db_change_field('search_api_saved_search', 'last_execute', 'last_queued', $spec);
++  $spec['description'] = 'The Unix timestamp when the saved search was last executed.';
++  $spec['not null'] = FALSE;
++  db_add_field('search_api_saved_search', 'last_execute', $spec);
++  db_update('search_api_saved_search')
++    ->expression('last_execute', 'last_queued')
++    ->execute();
++  $spec['not null'] = TRUE;
++  db_change_field('search_api_saved_search', 'last_execute', 'last_execute', $spec);
++}
+diff --git a/search_api_saved_searches.module b/search_api_saved_searches.module
+index 2f1b871..a68834f 100644
+--- a/search_api_saved_searches.module
++++ b/search_api_saved_searches.module
+@@ -160,6 +160,7 @@ function search_api_saved_searches_entity_property_info_alter(array &$info) {
+   $searches['settings_id']['type'] = 'token';
+   $searches['enabled']['type'] = 'boolean';
+   $searches['created']['type'] = 'date';
++  $searches['last_queued']['type'] = 'date';
+   $searches['last_execute']['type'] = 'date';
+   // We can't assign "duration" until Entity API Views integration supports
+   // this.
+@@ -970,6 +971,7 @@ function search_api_saved_searches_save_form_submit(array $form, array &$form_st
+     'name' => $values['name'],
+     'mail' => $values['mail'],
+     'created' => REQUEST_TIME,
++    'last_queued' => REQUEST_TIME,
+     'last_execute' => REQUEST_TIME,
+     'notify_interval' => $values['notify_interval'],
+     'query' => $query,
+@@ -1081,7 +1083,9 @@ function search_api_saved_searches_cron() {
+   $ids = db_select('search_api_saved_search', 's')
+     ->fields('s', array('id'))
+     ->condition('enabled', 1)
+-    ->where('notify_interval >= 0 AND last_execute + notify_interval < :time', array(':time' => REQUEST_TIME + 15))
++    ->condition('notify_interval', 0, '>=')
++    ->where('last_execute >= last_queued')
++    ->where('last_queued + notify_interval < :time', array(':time' => REQUEST_TIME + 15))
+     ->execute()
+     ->fetchCol();
+   if (!$ids) {
+@@ -1093,6 +1097,7 @@ function search_api_saved_searches_cron() {
+   // Group the search according to mail and settings. Grouping by mail prevents
+   // a user from getting several mails at once, for different searches. Grouping
+   // by settings is necessary since the mails can differ between settings.
++  $user_searches = array();
+   foreach ($searches as $search) {
+     $user_searches[$search->mail . ' ' . $search->settings_id][] = $search;
+   }
+@@ -1104,7 +1109,7 @@ function search_api_saved_searches_cron() {
+   // completely executed.
+   db_update('search_api_saved_search')
+     ->fields(array(
+-      'last_execute' => REQUEST_TIME,
++      'last_queued' => REQUEST_TIME,
+     ))
+     ->condition('id', $ids, 'IN')
+     ->execute();
+@@ -1127,13 +1132,20 @@ function search_api_saved_searches_cron_queue_info() {
+ /**
+  * Checks for new results for saved searches, and sends a mail if necessary.
+  *
+- * @param array $searches
++ * Used as a worker callback for the homonymous cron queue.
++ *
++ * @param SearchApiSavedSearch[] $searches
+  *   An array of SearchApiSavedSearch objects to check for new results. All of
+  *   these should have the same mail address and base settings.
++ *
++ * @see search_api_saved_searches_cron_queue_info()
+  */
+ function search_api_saved_searches_check_updates(array $searches) {
++  if (!$searches) {
++    return;
++  }
+   try {
+-    $search = reset($searches);
++    $search = $searches[key($searches)];
+     $settings = $search->settings();
+     $index = $settings->index();
+     $mail_params = array();
+@@ -1150,6 +1162,7 @@ function search_api_saved_searches_check_updates(array $searches) {
+       }
+       $response = $query->execute();
+       if (!empty($response['results'])) {
++        $old = array();
+         $new = $results = drupal_map_assoc(array_keys($response['results']));
+         if (empty($settings->options['date_field'])) {
+           // ID-based method: Compare these results to the old ones.
+@@ -1189,9 +1202,12 @@ function search_api_saved_searches_check_updates(array $searches) {
+         if (empty($settings->options['date_field']) && ($new || array_diff($old, $results))) {
+           // The results changed in some way: store the latest version.
+           $search->results = implode(',', $results);
+-          $search->save();
+         }
+       }
++      // Use time() instead of REQUEST_TIME to minimize the potential of sending
++      // duplicate results due to longer-running cron queue workers.
++      $search->last_execute = time();
++      $search->save();
+     }
+     // If we set any searches in the mail parameters, send the mail.
+     if ($mail_params) {
+diff --git a/search_api_saved_searches.search_entity.inc b/search_api_saved_searches.search_entity.inc
+index 8431686..3bac485 100644
+--- a/search_api_saved_searches.search_entity.inc
++++ b/search_api_saved_searches.search_entity.inc
+@@ -71,6 +71,11 @@ class SearchApiSavedSearch extends Entity {
+   /**
+    * @var integer
+    */
++  public $last_queued;
++
++  /**
++   * @var integer
++   */
+   public $last_execute;
+ 
+   /**
+@@ -145,7 +150,7 @@ class SearchApiSavedSearch extends Entity {
+   }
+ 
+   /**
+-   * @return SearchApiIndex
++   * @return SearchApiSavedSearchesSettings
+    *   The settings this saved search uses.
+    *
+    * @throws SearchApiException
