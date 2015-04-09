@@ -8,6 +8,7 @@
  * Menu callback; displays a listing of log mails.
  */
 function mail_logger_overview() {
+  drupal_add_css(drupal_get_path('module', 'mail_logger') . '/mail_logger.css');
   $form = drupal_get_form('mail_logger_form_overview');
   $output = drupal_render($form);
 
@@ -38,6 +39,27 @@ function mail_logger_overview() {
   if ($type != 'all') {
     $query->condition('mailkey', $type);
   }
+
+  if(!empty($_SESSION['mail_logger_overview_from_date'])){
+      $from_time = strtotime($_SESSION['mail_logger_overview_from_date']['year'].'-'.$_SESSION['mail_logger_overview_from_date']['month'].'-'.$_SESSION['mail_logger_overview_from_date']['day']);
+  }else{
+      $from_time = strtotime('-1 month');
+  }
+
+  if(!empty($_SESSION['mail_logger_overview_to_date'])){
+      $to_time = strtotime($_SESSION['mail_logger_overview_to_date']['year'].'-'.$_SESSION['mail_logger_overview_to_date']['month'].'-'.$_SESSION['mail_logger_overview_to_date']['day'] . 't23:59:59');
+  }else{
+      $to_time = strtotime('now') + 86400;
+  }
+  $query->condition('date_sent', $from_time, '>=');
+  $query->condition('date_sent', $to_time, '<=');
+
+  if(!empty($_SESSION['mail_logger_overview_search_field']) && !empty($_SESSION['mail_logger_overview_search_value'])){
+      $search_field = $_SESSION['mail_logger_overview_search_field'];
+      $search_value = $_SESSION['mail_logger_overview_search_value'];
+      $query->condition($search_field, '%'.$search_value.'%', 'LIKE');
+  }
+
   $result = $query->execute();
 
   $rows = array();
@@ -103,13 +125,64 @@ function mail_logger_form_overview() {
     $_SESSION['mail_logger_overview_filter'] = 'all';
   }
 
-  $form['filter'] = array(
+  $first_mail = db_select('mail_logger', 'ml')
+    ->fields('ml', array(
+      'date_sent'
+    ))
+    ->orderBy('date_sent', 'ASC')
+    ->range(0, 1)
+    ->execute()
+    ->fetchField();
+
+  $timezone = new DateTimeZone(date_default_timezone_get());
+  $default_from_date = $first_mail ? DateTime::createFromFormat('U', $first_mail) : DateTime::createFromFormat('U', strtotime('-1 month'));
+  $default_from_date->setTimezone($timezone);
+  $default_from_date = array('year' => $default_from_date->format('Y'), 'month' => $default_from_date->format('n'), 'day' => $default_from_date->format('j'));
+
+  $is_filtering = $_SESSION['mail_logger_overview_filter'] != 'all' || !empty($_SESSION['mail_logger_overview_from_date']) || !empty($_SESSION['mail_logger_overview_to_date']) || !empty($_SESSION['mail_logger_overview_search_field']) || !empty($_SESSION['mail_logger_overview_search_value']);
+
+  $form['filter_logs'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Filter Mail Log',
+    '#collapsible' => true,
+    '#collapsed' => !$is_filtering,
+  );
+  $form['filter_logs']['from_date'] = array(
+    '#type' => 'date',
+    '#title' => t('From Date'),
+    '#default_value' => (!empty($_SESSION['mail_logger_overview_from_date'])) ? $_SESSION['mail_logger_overview_from_date'] : $default_from_date,
+  );
+
+  $default_to_date = DateTime::createFromFormat('U', time() + 86400);
+  $default_to_date->setTimezone($timezone);
+  $default_to_date = array('year' => $default_to_date->format('Y'), 'month' => $default_to_date->format('n'), 'day' => $default_to_date->format('j'));
+
+  $form['filter_logs']['to_date'] = array(
+    '#type' => 'date',
+    '#title' => t('To Date'),
+    '#default_value' => (!empty($_SESSION['mail_logger_overview_to_date'])) ? $_SESSION['mail_logger_overview_to_date'] : $default_to_date,
+  );
+
+  $form['filter_logs']['search_field'] = array(
+    '#type' => 'select',
+    '#options' => array(''=>'-- Select a field --', 'mailto'=>'To Email Address', 'mailfrom'=>'From Email Address', 'subject'=>'Subject', 'body'=>'Body', 'language'=>'Language'),
+    '#title' => t('Field'),
+    '#default_value' => (!empty($_SESSION['mail_logger_overview_search_field'])) ? $_SESSION['mail_logger_overview_search_field'] : ''
+  );
+  $form['filter_logs']['search_value'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Contains'),
+    '#default_value' => (!empty($_SESSION['mail_logger_overview_search_value'])) ? $_SESSION['mail_logger_overview_search_value'] : ''
+  );
+
+  $form['filter_logs']['filter'] = array(
     '#type' => 'select',
     '#title' => t('Filter by Mailkey'),
     '#options' => $names,
     '#default_value' => $_SESSION['mail_logger_overview_filter']
   );
-  $form['submit'] = array('#type' => 'submit', '#value' => t('Filter'));
+  $form['filter_logs']['submit'] = array('#type' => 'submit', '#value' => t('Filter'), '#attributes' => array('filter'));
+  $form['filter_logs']['reset'] = array('#type' => 'submit', '#value' => t('Reset'), '#attributes' => array('reset'));
   $form['#redirect'] = FALSE;
 
   $form['mail_logger_clear'] = array(
@@ -128,11 +201,39 @@ function mail_logger_form_overview() {
   return $form;
 }
 
+function mail_logger_form_overview_validate($form, &$form_state) {
+  if (in_array('reset', $form_state['triggering_element']['#attributes'])) {
+    return;
+  }
+
+  if ($form_state['values']['to_date'] < $form_state['values']['from_date']) {
+    form_set_error('to_date', 'The To Date must be after the From Date.');
+  }
+  if (!empty($form_state['values']['search_value']) && empty($form_state['values']['search_field'])) {
+    form_set_error('search_field', 'Please choose a search field.');
+  }
+  else if (empty($form_state['values']['search_value']) && !empty($form_state['values']['search_field'])) {
+    form_set_error('search_value', 'Please enter a search text.');
+  }
+}
+
 /**
  * hook_submit for mail_logger_form_overview
  */
 function mail_logger_form_overview_submit($form, &$form_state) {
-  $_SESSION['mail_logger_overview_filter'] = $form_state['values']['filter'];
+  if (in_array('filter', $form_state['triggering_element']['#attributes'])) {
+    $_SESSION['mail_logger_overview_filter'] = $form_state['values']['filter'];
+    $_SESSION['mail_logger_overview_from_date'] = $form_state['values']['from_date'];
+    $_SESSION['mail_logger_overview_to_date'] = $form_state['values']['to_date'];
+    $_SESSION['mail_logger_overview_search_field'] = $form_state['values']['search_field'];
+    $_SESSION['mail_logger_overview_search_value'] = $form_state['values']['search_value'];
+  } else if (in_array('reset', $form_state['triggering_element']['#attributes'])) {
+    $_SESSION['mail_logger_overview_filter'] = 'all';
+    $_SESSION['mail_logger_overview_from_date'] = '';
+    $_SESSION['mail_logger_overview_to_date'] = '';
+    $_SESSION['mail_logger_overview_search_field'] = '';
+    $_SESSION['mail_logger_overview_search_value'] = '';
+  }
 }
 
 /**

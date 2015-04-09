@@ -90,6 +90,7 @@ function mail_logger_install() {
  * Implementation of hook_uninstall().
  */
 function mail_logger_uninstall() {
+  variable_del('mail_logger_log_maximum_age');
 }
 
 /**

@@ -64,3 +64,22 @@
   background-color:#DCD5D2;
   padding:10px;
 }
+.form-item-from-date{
+    float: left;
+}
+.form-item-to-date{
+    float:left;
+    margin-left: 30px;
+}
+.form-item-search-value{
+    float: left;
+    margin-left: 30px;
+    width: 300px;
+}
+.form-item-search-field{
+    float: left;
+    clear: both;
+}
+.form-item-filter{
+    clear: both;
+}
