@@ -822,7 +822,7 @@ function crl_helpers_feat_strongarm() {
     'alpha_region_footer_fourth_equal_height_element' => 0,
     'alpha_region_footer_fourth_equal_height_container' => 0,
     'magic_css_excludes' => '',
-    'magic_footer_js' => 1,
+    'magic_footer_js' => 0,
     'magic_library_head' => 0,
     'magic_experimental_js' => 0,
     'magic_js_excludes' => '',
