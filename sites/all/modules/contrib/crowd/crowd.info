@@ -1,0 +1,21 @@
+name = "Crowd SSO"
+description = "Implements Atlassian Crowd SSO in Drupal"
+core = "7.x"
+php = "5"
+package = "Authentication"
+configure = "admin/config/crowd"
+
+; Local Class Files
+files[] = "includes/CrowdServiceInterface.inc"
+files[] = "includes/CrowdRestClient.inc"
+
+; Test Files
+files[] = "tests/CrowdAuthenticationCase.test"
+files[] = "tests/CrowdConfCase.test"
+
+; Information added by Drupal.org packaging script on 2015-04-03
+version = "7.x-2.0"
+core = "7.x"
+project = "crowd"
+datestamp = "1428096496"
+

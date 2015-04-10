@@ -1,0 +1,140 @@
+<?php
+
+
+/**
+ * @file
+ * This is a helper module to implement some hooks during automated testing.
+ */
+
+
+/**
+ * Implements hook_menu().
+ */
+function crowd_tests_menu() {
+  // Add menu item that can be used for mocking cookie management.
+  $items['crowd/test/getsetcookie'] = array(
+    'title' => 'Crowd Test Get or Set Cookie',
+    'description' => 'Cookie manipulation for for automated testing purposes.',
+    'page callback' => 'crowd_tests_getsetcookie',
+    'page arguments' => array(3),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+
+/**
+ * Menu callback. Generate page that can be used to mock remote cookie changes.
+ *
+ * This function can be used to set and check a Crowd token cookie. This can
+ * simulate cases where the cookie is set by a remote site, etc.
+ *
+ * @param string $token
+ *   A token value to set. If empty no new token will be set but any current
+ *   token will be printed to the screen.
+ */
+function crowd_tests_getsetcookie($token = NULL) {
+  // Make sure this page is not cached.
+  $GLOBALS['conf']['cache'] = FALSE;
+  // Set the cookie if we are passed a value.
+  if ($token && setcookie('crowd.token_key', $token, 0, '/')) {
+    return array('#markup' => t('Cookie value of @cookie set.', array('@cookie' => $token)));
+  }
+  // Otherwise report any cookie value found.
+  elseif (isset($_COOKIE['crowd_token_key'])) {
+    return array('#markup' => t('Cookie value of @cookie found.', array('@cookie' => $_COOKIE['crowd_token_key'])));
+  }
+  return array('#markup' => t('No Crowd cookie could be found.'));
+}
+
+
+/**
+ * Implement hook_crowd_client_connect_class_alter()
+ */
+function crowd_tests_crowd_client_connect_class_alter(&$connection_class) {
+  // Use an alternate Crowd client connection class that can mock Crowd server
+  // responses.
+  $connection_class = 'CrowdRestTest';
+}
+
+
+/**
+ * Extend the crowd REST service connection for testing purposes.
+ */
+class CrowdRestTest extends CrowdRestClient {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function apiHttpRequest($path, $options = array(), $data = NULL, $method = 'GET') {
+    // We will mock a response as though it came from a real Crowd server.
+    $response = new stdClass();
+    $response_data = array();
+    // Our mocked responses vary depending on the requested path.
+    switch ($path) {
+      // Mocked token validate and user info responses - rjacobs.
+      case 'session/passingtoken':
+        if ($method == 'POST') {
+          $response->code = 200;
+          $response_data = array('user' => array('name' => 'rjacobs'));
+        }
+        if ($method == 'GET') {
+          $response->code = 200;
+          $response_data = array('user' => array('name' => 'rjacobs', 'email' => 'rjacobs@exmaple.com', 'active' => 1));
+        }
+        break;
+      // Mocked token validate and user info responses - user2.
+      case 'session/passingtoken2':
+        if ($method == 'POST') {
+          $response->code = 200;
+          $response_data = array('user' => array('name' => 'user2'));
+        }
+        if ($method == 'GET') {
+          $response->code = 200;
+          $response_data = array('user' => array('name' => 'user2', 'email' => 'user2@exmaple.com', 'active' => 1));
+        }
+        break;
+      // Mocked user/pass validate.
+      case 'session':
+        if ($method == 'POST' && !empty($data)) {
+          $xml = new SimpleXMLElement($data);
+          $username = $xml->username;
+          $password = $xml->password;
+          if ($username == 'rjacobs' && $password == 'secret') {
+            $response->code = 201;
+            $response_data = array('token' => 'passingtoken');
+          }
+          elseif ($username == 'user2' && $password == 'secret2') {
+            $response->code = 201;
+            $response_data = array('token' => 'passingtoken2');
+          }
+          else {
+            $response->code = 400;
+          }
+        }
+        break;
+      // Mocked list user's groups response.
+      case 'user/group/nested':
+        if (isset($options['query']['username'])) {
+          $response->code = 200;
+          // Our first test user is the only one who gets a group.
+          if ($options['query']['username'] == 'rjacobs') {
+            $response_data = array('groups' => array(array('name' => 'testgroup')));
+          }
+          else {
+            $response_data = array('groups' => array());
+          }
+        }
+        break;
+    }
+    // If the request cannot be mocked simulate an application connection error.
+    if (!isset($response->code)) {
+      throw new CrowdException('Could not connect to the Crowd server.', NULL, NULL, $response);
+    }
+    // Encode the data in the way a real Crowd server would.
+    $response->data = drupal_json_encode($response_data);
+    return $response;
+  }
+
+}

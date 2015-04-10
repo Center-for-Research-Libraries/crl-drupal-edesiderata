@@ -1,0 +1,88 @@
+<?php
+
+/**
+ * @file
+ * Test case for basic Crowd SSO features.
+ */
+
+/**
+ * Class to define case for basic Crowd SSO features.
+ */
+class CrowdAuthenticationCase extends DrupalWebTestCase {
+
+  /**
+   * Define test case info.
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Crowd authentication tests',
+      'description' => 'Tests core Crowd authentication features.',
+      'group' => 'Crowd',
+    );
+  }
+
+  /**
+   * Define setup tasks.
+   */
+  public function setUp() {
+    parent::setUp('crowd', 'crowd_tests');
+    // Test with core page caching active.
+    variable_set('cache', TRUE);
+  }
+
+  /**
+   * Test SSO login functionality.
+   */
+  public function testSsoLogin() {
+    // Goto the homepage and ensure that we are initially not logged in.
+    $this->drupalGet('');
+    $this->assertText(t('User login'), 'No user is logged-in initially.');
+    // Set a cookie token value that our mocked Crowd connection will treat as
+    // valid.
+    $this->drupalGet('crowd/test/getsetcookie/passingtoken');
+    $this->assertText(t('Cookie value of passingtoken set'), 'Test valid Crowd token cookie set.');
+    // Request the user page. This request should trigger the SSO checks and
+    // log us in. We want to be sure that we get logged-in AND that we stay
+    // on the user page that was initially requested (e.g., any redirects or
+    // page refreshes processed during SSO should not lead us away from our
+    // initially requested path).
+    $this->drupalGet('user');
+    $this->assertText(t('Log out'), 'The test user was logged-in via SSO.');
+    $this->assertText('rjacobs', 'Correct username was created in local account.');
+    // Also check the logout process.
+    $this->drupalGet('user/logout');
+    $this->drupalGet('crowd/test/getsetcookie');
+    $this->assertText(t('No Crowd cookie could be found.'), 'Crowd token cookie is removed after logout.');
+    // Repeat the SSO login test against the homepage. That page should be in
+    // the page cache by this point, so this will test caching support.
+    $this->drupalGet('crowd/test/getsetcookie/passingtoken');
+    $this->assertText(t('Cookie value of passingtoken set'), 'Test valid Crowd token cookie set.');
+    $this->drupalGet('');
+    $this->assertText(t('Log out'), 'The test user was logged-in on a cached page request.');
+  }
+
+  /**
+   * Test manual login functionality (entering a username and password on login
+   * form).
+   */
+  public function testManualLogin() {
+    // Goto the homepage and ensure that we are initially not logged in.
+    $this->drupalGet('');
+    $this->assertText(t('User login'), 'No user is logged-in initially.');
+    // First try a login that should fail.
+    $edit = array(
+      'name' => 'rjacobs',
+      'pass' => 'bogus',
+    );
+    $this->drupalPost('user', $edit, t('Log in'));
+    $this->assertText(t('Sorry, unrecognized username or password. Have you forgotten your password?'), 'Known bad login fails.');
+    // Now try a login that should work.
+    $edit['pass'] = 'secret';
+    $this->drupalPost('user', $edit, t('Log in'));
+    $this->assertText(t('Successfully authenticated @name.', array('@name' => 'rjacobs')), 'Known good login passes.');
+    // Ensure that we now have a valid Crowd token cookie set.
+    $this->drupalGet('crowd/test/getsetcookie');
+    $this->assertText(t('Cookie value of passingtoken found.'), 'Test valid Crowd token cookie found.');
+  }
+
+}

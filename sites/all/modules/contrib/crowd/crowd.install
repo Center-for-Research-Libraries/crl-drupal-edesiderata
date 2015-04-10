@@ -1,0 +1,43 @@
+<?php
+
+
+/**
+ * @file
+ * Crowd module install file.
+ */
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function crowd_uninstall() {
+  // Clear-out module-specific variables.
+  variable_del('crowd_service_api');
+  variable_del('crowd_server');
+  variable_del('crowd_port');
+  variable_del('crowd_uri');
+  variable_del('crowd_application');
+  variable_del('crowd_application_password');
+  variable_del('crowd_cookie_sso_domain');
+  variable_del('crowd_secure_sso_cookie');
+  variable_del('crowd_logout_no_cookie');
+  variable_del('crowd_validate_token');
+  variable_del('crowd_allow_local_logins');
+  variable_del('crowd_cookie_name');
+  variable_del('crowd_cookie_duration');
+  variable_del('crowd_groups');
+  variable_del('crowd_flush_roles_on_update');
+  variable_del('crowd_handle_username_collision');
+  variable_del('crowd_redirect_user_edit_url');
+  variable_del('crowd_redirect_content_profile_url');
+  variable_del('crowd_redirect_pass_reset_url');
+}
+
+
+/**
+ * Update registry and cache to accomodate changes made to connection class.
+ */
+function crowd_update_7200() {
+  // Empty update to force a rebuild of the cache/registry. We have changed
+  // many structures which require clean caches and a registry re-scan.
+}

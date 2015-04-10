@@ -1,0 +1,110 @@
+<?php
+
+/**
+ * @file
+ * Test case for basic Crowd SSO features.
+ */
+
+/**
+ * Class to define case for basic Crowd SSO features.
+ */
+class CrowdConfCase extends DrupalWebTestCase {
+
+  /**
+   * Define test case info.
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Crowd configuration tests',
+      'description' => 'Tests Crowd features that are controlled by optional configuration.',
+      'group' => 'Crowd',
+    );
+  }
+
+  /**
+   * Define setup tasks.
+   */
+  public function setUp() {
+    parent::setUp('crowd', 'crowd_tests');
+    // Setup a group map. Note that with the default install of Drupal rid 3
+    // is the administrator group.
+    variable_set('crowd_groups', array('testgroup' => 3));
+    // Test with core page caching active.
+    variable_set('cache', TRUE);
+  }
+
+  /**
+   * Test configuration options related to session management.
+   */
+  public function testConfSession() {
+    // Login through Crowd.
+    $edit = array(
+      'name' => 'rjacobs',
+      'pass' => 'secret',
+    );
+    $this->drupalPost('user', $edit, t('Log in'));
+    $this->assertText(t('Successfully authenticated @name.', array('@name' => 'rjacobs')), 'Test user logged-in.');
+    // Simulate a situation where the cookie becomes corrupt. The user should
+    // still stay logged in unless the special 'crowd_logout_no_cookie' option
+    // is set to TRUE.
+    $this->drupalGet('crowd/test/getsetcookie/corrupttoken');
+    $this->assertText(t('Cookie value of corrupttoken set'), 'Test corrupt Crowd token cookie set.');
+    $this->drupalGet('');
+    $this->assertText(t('Log out'), 'The new user remains logged-in with a bad cookie when configured to do so.');
+    variable_set('crowd_logout_no_cookie', TRUE);
+    $this->drupalGet('');
+    $this->assertText(t('User login'), 'The new user is logged-out automatically with a bad cookie when configured to do so.');
+    // Simulate a situation where one user logs in remotely, but then later
+    // logs in as a DIFFERENT user remotely. Their Drupal session should
+    // automatically update to reflect the new user as long as the special
+    // 'crowd_logout_no_cookie' option remains TRUE.
+    $this->drupalGet('crowd/test/getsetcookie/passingtoken');
+    $this->assertText(t('Cookie value of passingtoken set'), 'Test valid Crowd token cookie set.');
+    $this->drupalGet('user');
+    $this->assertText('rjacobs', 'The first test user is again logged-in.');
+    $this->drupalGet('crowd/test/getsetcookie/passingtoken2');
+    $this->assertText(t('Cookie value of passingtoken2 set'), 'A new test valid Crowd token cookie set.');
+    $this->drupalGet('user');
+    $this->assertText('user2', 'The logged-in user was automatically switched based on changes to the Crowd token cookie.');
+  }
+
+  /**
+   * Test configuration options related to group mapping.
+   */
+  public function testConfGroupMapping() {
+    // Login through Crowd as a user that should have group-to-role mappings.
+    $edit = array(
+      'name' => 'rjacobs',
+      'pass' => 'secret',
+    );
+    $this->drupalPost('user', $edit, t('Log in'));
+    $this->assertText(t('Successfully authenticated @name.', array('@name' => 'rjacobs')), 'Test user logged-in.');
+    // Test that this user is now in group with rid 3 based on the group map
+    // setup.
+    $user = user_load(2);
+    $this->assertEqual($user->name, 'rjacobs', 'Test user has uid 2');
+    $this->assertTrue(array_key_exists(3, $user->roles), 'Mapped role found for test user');
+    // Also verify that this user does in-fact have the role rights as dictated
+    // from rid 3.
+    $this->drupalGet('admin');
+    $this->assertResponse(200, 'Test user has appropriate group rights.');
+    // Now login as a different user that should not have group-to-role
+    // mappings.
+    $this->drupalGet('user/logout');
+    $this->assertText(t('User login'), 'First test user logged-out.');
+    $edit = array(
+      'name' => 'user2',
+      'pass' => 'secret2',
+    );
+    $this->drupalPost('user', $edit, t('Log in'));
+    $this->assertText(t('Successfully authenticated @name.', array('@name' => 'user2')), 'Second test user logged-in.');
+    // Test that the second user is NOT in group with rid 3.
+    $user = user_load(3);
+    $this->assertEqual($user->name, 'user2', 'Test user has uid 3');
+    $this->assertFalse(array_key_exists(3, $user->roles), 'Mapped role not found for second test user');
+    // Also verify that this user does have any rights from rid 3.
+    $this->drupalGet('admin');
+    $this->assertResponse(403, 'Second test user has appropriate group rights.');
+  }
+
+}

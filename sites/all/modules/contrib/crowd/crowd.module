@@ -1,0 +1,762 @@
+<?php
+
+
+/**
+ * @file
+ * Provides single sign-on integration between Drupal and Atlassian Crowd.
+ */
+
+
+/**
+ * Implements hook_boot().
+ *
+ * Here we run checks for users who are NOT already logged-in to Drupal.
+ * These must be run in hook_boot as non-logged-in users may be requesting a
+ * cached page.
+ */
+function crowd_boot() {
+  global $user;
+  $crowd_boot_defer_sso = &drupal_static('crowd_boot_defer_sso', FALSE);
+  // Set the token that will be tested.
+  $auth_token = crowd_get_set_cookie_data();
+  // Only proceed if we are NOT logged-in AND we have a crowd token to test.
+  if (!$user->uid && !empty($auth_token)) {
+    // First make sure that we are not re-trying a token that failed already.
+    if (isset($_SESSION['crowd']['crowd_failed_auth_token']) && $_SESSION['crowd']['crowd_failed_auth_token'] == $auth_token) {
+      return;
+    }
+    // If we got here it means we are ready to process an SSO login, which is
+    // something that requires a full bootstrap. If the dynamic_cache module is
+    // active we can forgo the process until hook_init by dynamically disabling
+    // caching (in fact we MUST do this if dynamic_cache is active, see:
+    // http://drupal.org/node/1980914).
+    $module_list = module_list(); // Can't use module_exists in hook_boot.
+    if (in_array('dynamic_cache', $module_list)) {
+      // Bypass cache (requires dynamic_cache to work).
+      $GLOBALS['conf']['cache'] = FALSE;
+      // Set flag to run SSO checks when we get to hook_init later.
+      $crowd_boot_defer_sso = TRUE;
+      return;
+    }
+    // If dynamic_cache is not active we have to process the SSO login now (in
+    // case Drupal is serving a cached page). This means we must first force
+    // a full bootstrap, which can be daring to do during hook_boot.
+    drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
+    _crowd_process_sso($auth_token);
+  }
+}
+
+
+/**
+ * Implements hook_init().
+ */
+function crowd_init() {
+  global $user;
+  $auth_token_cookie = crowd_get_set_cookie_data();
+  $auth_token_session = crowd_get_set_session_data();
+  // First check and see if we should process the SSO login here in hook_init
+  // instead of in hook_boot. This can only be done in certain circumstances.
+  // @see: crowd_boot()
+  if (module_exists('dynamic_cache') && drupal_static('crowd_boot_defer_sso', FALSE)) {
+    _crowd_process_sso($auth_token_cookie);
+  }
+  // This module has configuration options that, when enabled, will
+  // automatically log the authenticated user out of Drupal if the Crowd SSO
+  // cookie cannot be found or is not valid. User 1 is exempted from this. These
+  // checks should only apply to Crowd-authenticated users.
+  if ($user->uid && $user->uid > 1 && $auth_token_session) {
+    $force_logout = FALSE;
+    $crowd_init_logout_no_redirect = &drupal_static('crowd_init_logout_no_redirect', FALSE);
+    // See if we should test for a forced logout if there is a problem with
+    // the SSO token.
+    if (variable_get('crowd_logout_no_cookie', FALSE)) {
+      // If the cookie token is missing we force a logout.
+      if (!$auth_token_cookie) {
+        $force_logout = TRUE;
+        $watchdog_message = 'Forcing local logout of user @user because their SSO cookie is missing.';
+      }
+      // If the cookie token has CHANGED from what it was during the initial
+      // Drupal login we force a logout.
+      elseif ($auth_token_cookie !== $auth_token_session) {
+        $force_logout = TRUE;
+        // Set a flag to let other methods know that a mismatch was detected.
+        $_SESSION['crowd']['crowd_token_mismatch'] = TRUE;
+        $watchdog_message = 'Forcing local logout of user @user because their SSO cookie has changed since their local session was started. This user may have closed and re-opened their session, or authenticated a different Crowd user account via another Crowd app. Thier new token will be tested on the next page request.';
+      }
+    }
+    // See if we should formally re-validate the cookie token remotely.
+    if (variable_get('crowd_validate_token', FALSE)) {
+      $valid_cookie = FALSE;
+      if ($auth_token_cookie) {
+        try {
+          $valid_cookie = crowd_client_connect()->validateSession($auth_token_cookie);
+        }
+        catch (CrowdException $e) {
+          $e->logResponse();
+        }
+      }
+      // We want to check for a valid cookie AND make sure that this cookie
+      // still represents the currently logged-in user.
+      if (!$valid_cookie || $auth_token_cookie !== $auth_token_session) {
+        $force_logout = TRUE;
+        $watchdog_message = 'Forcing local logout of user @user because their existing SSO cookie no longer validates remotly against the Crowd server or no longer represents the currently logged-in user.';
+      }
+    }
+    // Process a forced logout if any of the criteria checked above are met.
+    if ($force_logout) {
+      watchdog('crowd', $watchdog_message, array('@user' => $user->name), WATCHDOG_WARNING);
+      module_load_include('inc', 'user', 'user.pages');
+      // Set a flag, that will persist through a logout (i.e., is not a
+      // session variable), which can be checked during the drupal_goto() at
+      // the end of the logout. This will allow us to reload the current page
+      // instead of directing to the homepage.
+      $crowd_init_logout_no_redirect = TRUE;
+      user_logout();
+    }
+  }
+  // Also process any configured redirects.
+  _crowd_process_redirects();
+}
+
+
+/**
+ * Run an SSO check against the Crowd server and login the user to Drupal if the
+ * check passes. Requires a full Drupal bootstrap.
+ *
+ * @param string $auth_token
+ *   The Crowd token that represents an active session.
+ */
+function _crowd_process_sso($auth_token) {
+  global $user;
+  $crowd_user = array();
+  try {
+    // Connect to Crowd and test the token.
+    $crowd_client = crowd_client_connect();
+    $user_valid = $crowd_client->validateSession($auth_token);
+    // If authentication passed also fetch the user info. This is compulsory
+    // for the validation process to be considered complete.
+    if ($user_valid) {
+      $crowd_user = $crowd_client->getUserFromToken($auth_token);
+    }
+  }
+  catch (CrowdException $e) {
+    $e->logResponse();
+  }
+  // Check to make sure we got a user and the user is active in Crowd
+  if (!empty($crowd_user) && !empty($crowd_user['active'])) {
+    // Force the user to be authenticated in Drupal
+    crowd_login_local($crowd_user);
+    if (!empty($user->uid)) {
+      // Now we need to reload the page that was requested. This is needed
+      // as even though we are now logged-in Drupal may still be
+      // sending a cached page.
+      $query = drupal_get_query_parameters();
+      unset($_GET['destination']);
+      drupal_goto(current_path(), array('query' => $query));
+    }
+  }
+  // If we got here it means the SSO login was tried and failed for some
+  // reason. We need to set a flag to prevent the same token from being tested
+  // over and over.
+  $_SESSION['crowd']['crowd_failed_auth_token'] = $auth_token;
+  watchdog('crowd', "SSO authentication failed. The user may have an expired or corrupt Crowd SSO token/cookie (value tested: @token). This token will not be re-tested for the remainder of this user's anonymous session.", array('@token' => $auth_token), WATCHDOG_WARNING);
+}
+
+
+/**
+ * Handle special redirects for Drupal account management URLs if confgiured.
+ *
+ * This function does not return anything, and if a redirect is processed
+ * drupal_goto() will be called meaning the function won't return at all.
+ *
+ * @see: crowd_init()
+ */
+function _crowd_process_redirects() {
+  global $user;
+  // No redirects should be processed if we are user 1 or the "crowd-local" URL
+  // query param is set.
+  if ($user->uid != 1 && !isset($_GET['crowd-local'])) {
+    $auth_token_session = crowd_get_set_session_data();
+    $redirect = '';
+    $crowd_redirect_user_edit_url = trim(variable_get('crowd_redirect_user_edit_url', ''));
+    $crowd_redirect_pass_reset_url = trim(variable_get('crowd_redirect_pass_reset_url', ''));
+    // Check for user edit page redirects.
+    if (!empty($crowd_redirect_user_edit_url) && drupal_match_path(current_path(), 'user/*/edit')) {
+      // Only redirect if this is the CURRENT user and this user was
+      // authenticated via Crowd.
+      if ($user->uid == arg(1) && $auth_token_session) {
+        $redirect = $crowd_redirect_user_edit_url;
+      }
+    }
+    // Check-for password reset page redirects.
+    if (!empty($crowd_redirect_pass_reset_url) && drupal_match_path(current_path(), 'user/password')) {
+      // Only redirect if this is an anon user or the user was authenticated
+      // through Crowd.
+      if (!$user->uid || $auth_token_session) {
+        $redirect = $crowd_redirect_pass_reset_url;
+      }
+    }
+    // Handle the actual redirect if one is called for.
+    if (!empty($redirect)) {
+      // Allow modules to react to or alter the redirect.
+      foreach (module_implements('crowd_redirect') as $module) {
+        $function = $module . '_crowd_redirect';
+        $function($redirect);
+      }
+      drupal_goto(ltrim($redirect, '/'));
+    }
+  }
+}
+
+
+/**
+ * Try to authenticate a user remotly via Crowd.
+ *
+ * This function will authenticate a set of credentials agaist a remote crowd
+ * server, and if successful it will initiate a Crowd session for that user and
+ * set the Crowd SSO token cookie. This function DOES NOT log the user in
+ * locally to Drupal.
+ *
+ * @param string $username
+ *   The Crowd username.
+ * @param string $password
+ *   The Crowd password.
+ * @param boolean $show_reject_message
+ *   Whether-or-not to display a message when the user/pass combination fails.
+ *   Setting to FALSE can be useful if this function is used in a chain with
+ *   other auth methods (and a successful login is still possible even if this
+ *   Crowd check fails).
+ * @return array
+ *   Returns an associative array of Crowd user data if the login was
+ *   successful, or an empty array upon failure.
+ */
+function crowd_login_remote($username, $password, $show_reject_message = TRUE) {
+  global $user;
+  $crowd_user = array();
+  try {
+    // Attempt to authenticate the user in Crowd.
+    $crowd_client = crowd_client_connect();
+    $response = $crowd_client->authorize($username, $password);
+    // If authentication passed also fetch the user info. This is compulsory
+    // for the login process to be considered complete.
+    if (!empty($response['token'])) {
+      $auth_token = $response['token'];
+      $crowd_user = $crowd_client->getUserFromToken($auth_token);
+    }
+  }
+  catch (CrowdException $e) {
+    if ($show_reject_message) {
+      drupal_set_message(t('There is currently a problem with authentication system, please try again later.'), 'error');
+    }
+    $e->logResponse();
+    return;
+  }
+  if (!empty($crowd_user) && !empty($crowd_user['active'])) {
+    // Set the SSO cookie.
+    $cookie_name_real = crowd_get_cookie_name(FALSE);
+    $expire = 0;
+    $duration = (int)trim(variable_get('crowd_cookie_duration', 0));
+    if (!empty($duration)) {
+      $expire = time() + 60 * $duration;
+    }
+    setcookie($cookie_name_real, $auth_token, $expire, '/', variable_get('crowd_cookie_sso_domain', ''), variable_get('crowd_secure_sso_cookie', FALSE), TRUE);
+    // Set the token value in the CURRENT $_COOKIE superglobal just in case we
+    // need to access it later within this same page request.
+    crowd_get_set_cookie_data($auth_token);
+    // Store the SSO token details within the local Drupal session data so we
+    // can locally validate it later as needed.
+    crowd_get_set_session_data($auth_token);
+    drupal_set_message(t('Successfully authenticated @name.', array('@name' => $username)));
+    watchdog('crowd', 'User @username successfully authenticated against Crowd', array('@username' => $username), WATCHDOG_INFO);
+  }
+  else {
+    if ($show_reject_message) {
+      drupal_set_message(t('Unable to log in, check your username/password and try again.'), 'error');
+    }
+    watchdog('crowd', 'User %username failed to authenticate against Crowd.', array('%username' => $username), WATCHDOG_NOTICE);
+  }
+  return $crowd_user;
+}
+
+
+/**
+ * Login a user to Drupal based on Crowd user information.
+ *
+ * Note that this function does not validate any username or password info and
+ * assumes all validation processes have taken place prior.
+ *
+ * @param array $crowd_user
+ *   An associative array containing user data fetched from Crowd via a
+ *   service call.
+ * @return
+ *   boolean TRUE if the login was successful, FALSE otherwise.
+ */
+function crowd_login_local($crowd_user) {
+  global $user;
+  // First we need to see if this is already a Drupal user. We check via a
+  // manual query instead of user_load to keep things lean (as we don't need a
+  // fully-loaded user object).
+  $user_local = db_query("SELECT uid, status, name FROM {users} WHERE name = :name", array(':name' => $crowd_user['username']))->fetchObject();
+  if ($user_local) {
+    // If we found a Drupal user we need to see if the user is a LOCAL drupal
+    // user (i.e. not linked in the authmap table).
+    $user_authmap = user_get_authmaps($crowd_user['username']);
+    if (!is_array($user_authmap)) {
+      // We have a name collision where we are trying to login a user with crowd
+      // credentials that already exists as a LOCAL Drupal user. Handle this
+      // based on admin settings.
+      switch (variable_get('crowd_handle_username_collision', 'abort')) {
+        case 'merge':
+          // If we are going to silently merge the Crowd and Drupal accounts
+          // we need to adjust the authmap table before proceeding with the
+          // login.
+          watchdog('crowd', 'Username collision detected. Username @username is authenticating via crowd but already exists as a local Drupal user. Merging Crowd and Drupal accounts and proceeding with login.', array('@username' => $user_local->name), WATCHDOG_WARNING);
+          user_set_authmaps($user_local, array("authname_crowd" => $user_local->name));
+          break;
+        case 'abort':
+        case 'default':
+          // If we abort the login simply report and return.
+          watchdog('crowd', 'Username collision detected. Username @username is authenticating via crowd but already exists as a local Drupal user. Aborting login.', array('@username' => $user_local->name), WATCHDOG_ERROR);
+          drupal_set_message(t("Attempted to login via Crowd with username @username, but a local account was detected with that same username. Please contact the site administrator.", array('@username' => $crowd_user['username'])), 'warning');
+          return FALSE;
+      }
+    }
+    // We are working with an existing user, so make sure they are not blocked
+    // before proceeding further.
+    if (!$user_local->status) {
+      return FALSE;
+    }
+  }
+  // Force a login to Drupal.
+  user_external_login_register($crowd_user['username'], 'crowd');
+  // Finalize the login process.
+  if ($user->uid) {
+    // Make sure that any active Crowd session data is still being tracked in
+    // the local session (as the local login logic above will have reset our
+    // session variables).
+    crowd_get_set_session_data(crowd_get_set_cookie_data());
+    // Update the user object with data from Crowd.
+    crowd_sync_user_data($crowd_user);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function crowd_menu() {
+  $items['admin/config/crowd'] = array(
+    'title' => 'Crowd Settings',
+    'description' => 'Configure central authentication services.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('crowd_admin_settings'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer crowd'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'includes/crowd.admin.inc',
+  );
+  $items['admin/config/crowd/main'] = array(
+    'title' => 'Settings',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer crowd'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => 0,
+  );
+  $items['admin/config/crowd/group-mapping'] = array(
+    'title' => 'Crowd Groups to Drupal Roles',
+    'description' => 'Map which Drupal roles that should automaticaly get assigned.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('crowd_group_mapping'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer crowd'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'includes/crowd.admin.inc',
+    'weight' => 1,
+  );
+  return $items;
+}
+
+
+/**
+ * Implements hook_admin_paths_alter().
+ */
+function crowd_admin_paths_alter(&$paths) {
+  // This module offers configurable redirects to "take over" the user edit and
+  // reset password pages. In order for these redirects to work correctly with
+  // the Drupal overlay we need to ensure that these pages are NOT considered
+  // "admin" pages by Drupal.
+  $paths['user/*/edit'] = FALSE;
+  $paths['user/password'] = FALSE;
+}
+
+
+/**
+ * Implements hook_perm().
+ */
+function crowd_permission() {
+  return array(
+    'administer crowd' => array(
+      'title' => t('Administer Crowd Settings'),
+      'description' => t('Set and change Crowd server settings and configure role mapping.'),
+      'restrict access' => TRUE,
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_user_delete().
+ */
+function crowd_user_delete($account) {
+  // Delete the entry from the authmap table
+  db_query("DELETE FROM {authmap} WHERE uid = :uid AND module='crowd'", array(':uid' => $account->uid));
+}
+
+
+/**
+ * Implements of hook_user_logout().
+ */
+function crowd_user_logout($account) {
+  // Log the user out of Crowd
+  crowd_logout();
+}
+
+
+/**
+ * Implements hook_drupal_goto_alter().
+ *
+ * This is used to intercept a redirect action during logout. There are some
+ * cases where we would prefer to refresh the current page on logout instead of
+ * the default action of directing to the homepage. This altered redirect will
+ * kick-in when the 'crowd_init_logout_no_redirect' static has been set.
+ */
+function crowd_drupal_goto_alter(&$path, &$options, &$http_response_code) {
+  if (drupal_static('crowd_init_logout_no_redirect', FALSE) && empty($path)) {
+    // Set goto variables to redirect to the current page.
+    $path = current_path();
+    $query = drupal_get_query_parameters();
+    if (!empty($query) && empty($options['query'])) {
+      $options['query'] = $query;
+    }
+  }
+}
+
+
+/**
+ * Implements hook_form_alter().
+ */
+function crowd_form_alter(&$form, $form_state, $form_id) {
+  // We want to modifiy the core login authentication handlers to allow Crowd
+  // to be an authentication authority with an optional fallback on the core
+  // local Drupal authentication.
+  if ($form_id == 'user_login_block' || $form_id == 'user_login') {
+    // See if we can find the core authentication function. If so, we replace
+    // it with our own.
+    $validate_key = array_search('user_login_authenticate_validate', $form['#validate']);
+    if ($validate_key !== FALSE) {
+      $form['#validate'][$validate_key] = 'crowd_login_form_validate';
+    }
+    // If we can't find it, that probably means that some other authentication
+    // module it already alterting this form. It's not really clear to what
+    // extent things will work in this situation, but we'll still add the Crowd
+    // validation logic last as a potential fallback.
+    else {
+      $form['#validate'][] = 'crowd_login_form_validate';
+      // Make sure core's user_login_final_validate function is still listed
+      // last.
+      $final_validate_key = array_search('user_login_final_validate', $form['#validate']);
+      if ($final_validate_key !== FALSE) {
+        unset($form['#validate'][$final_validate_key]);
+        $form['#validate'][] = 'user_login_final_validate';
+      }
+    }
+    // We also alter the core submit handler for the form with out own wrapper.
+    $submit_key = array_search('user_login_submit', $form['#submit']);
+    if ($submit_key !== FALSE) {
+      $form['#submit'][$submit_key] = 'crowd_login_form_submit';
+    }
+  }
+}
+
+
+/**
+ * Callback: Validation handler for the login form.
+ */
+function crowd_login_form_validate($form, &$form_state) {
+  // If there is already a user ID in the form state it probably means that
+  // some other validation handler (perhaps from another authentication module)
+  // has already processed the login. In this case, we probably should not do
+  // anything.
+  if (!empty($form_state['uid'])) {
+    return;
+  }
+  // If user 1 is logging in, we use the core Drupal validation.
+  if (db_query("SELECT uid FROM {users} WHERE name = :name AND uid = 1", array(':name' => $form_state['values']['name']))->fetchField()) {
+    user_login_authenticate_validate($form, $form_state);
+    return;
+  }
+  // Attempt to authenticate the user in Crowd. Note that we tell
+  // crowd_login_remote() to supress error messages if a local fallback will
+  // also be checked after this.
+  $local_fallback = variable_get('crowd_allow_local_logins', TRUE);
+  $crowd_user = crowd_login_remote($form_state['values']['name'], $form_state['values']['pass'], !$local_fallback);
+  if ($crowd_user) {
+    // Even though this is a validation handler we have to do the full local
+    // login process here. The core workflow requires a uid to be fetched during
+    // validation ($form_state['uid'] must get set), but because we authentcate
+    // remotely we can't get that uid until after we call
+    // user_external_login_register() (inside crowd_login_local()) which then
+    // triggers the rest of the login process. This feels odd, but it seems to
+    // be a standard pattern for external authentication modules. It also means
+    // that any validation handlers triggerd after this one basically have no
+    // effect.
+    crowd_login_local($crowd_user);
+    // If all was successful update the form state with the uid. This is
+    // Drupal's "signal" that we have successfully validated a login for a
+    // local user. We also set our own flag to indicate that things were
+    // validated by Crowd.
+    global $user;
+    if (!empty($user->uid)) {
+      $form_state['uid'] = $user->uid;
+      $form_state['crowd_validated'] = TRUE;
+    }
+  }
+  // If configured, we fallback on local authentication when crowd fails.
+  elseif ($local_fallback) {
+    user_login_authenticate_validate($form, $form_state);
+  }
+}
+
+
+/**
+ * Callback: Submit handler for the login form.
+ *
+ * This is a wrapper for the core user_login_submit() method that prevents
+ * it's logic from being redundantly fired if the Crowd validation methods
+ * already handled the local login process.
+ */
+function crowd_login_form_submit($form, &$form_state) {
+  // Check the form_state to see if the user was authenticated by Crowd. If so,
+  // don't need to (re)run the core submit logic.
+  if (empty($form_state['crowd_validated'])) {
+    user_login_submit($form, $form_state);
+  }
+}
+
+
+/**
+ * Factory to create a crowd connection.
+ *
+ * @param string $connection_class
+ *   The name of the connection class to load. This defaults to
+ *   'CrowdRestClient', but can be explicitly overwritten with this param.
+ *   Note that hook_crowd_client_connect_class_alter() can also be used to
+ *   designate a custom class, and for global overrides that is probably the
+ *   preferred option.
+ * @param boolean $reset
+ *   Whether-or-not to reset the connect values if they have previously been
+ *   loaded during this page request.
+ * @return CrowdServiceInterface
+ *   A Crowd connection object.
+ */
+function crowd_client_connect($connection_class = 'CrowdRestClient', $reset = FALSE) {
+  // For efficiency we maintain a static cache to ensure each connection is only
+  // loaded once. The connection class itself should not act like a singleton,
+  // but we can still try and re-use the same object when appropriate via this
+  // factory.
+  static $crowd_connections = array();
+  if (empty($crowd_connections[$connection_class]) || $reset) {
+    // Allow other modules to alter the connection class.
+    drupal_alter('crowd_client_connect_class', $connection_class);
+    if (class_exists($connection_class)) {
+      $crowd_connections[$connection_class] = new $connection_class();
+    }
+  }
+  // Return the object.
+  if (is_object($crowd_connections[$connection_class])) {
+    return $crowd_connections[$connection_class];
+  }
+  throw new Exception('Cound not instantiate a Crowd client connection of class' . check_plain($connection_class) . '.');
+}
+
+
+/**
+ * Helper function to log a user out of Crowd remotely.
+ *
+ * @see crowd_user_logout().
+ */
+function crowd_logout() {
+  // When logging out of Drupal we also want to invalidate any linked Crowd
+  // session info. The exception to this is if we are logging out due to a token
+  // mismatch. In this case we want to keep the remote session alive as it may
+  // mean there has simply been a user change. By doing this we can ensure the
+  // NEW session/user is automatically logged-in as soon as this logout process
+  // completes.
+  $auth_session_token = crowd_get_set_session_data();
+  if ($auth_session_token && empty($_SESSION['crowd']['crowd_token_mismatch'])) {
+    // Invalidate the token for this user for all application clients in Crowd
+    // (in case it has not been invalidated already).
+    try {
+      $result = crowd_client_connect()->logout($auth_session_token);
+      if ($result) {
+        watchdog('crowd', 'Successfully logged out of Crowd', array(), WATCHDOG_INFO);
+      }
+    }
+    catch (CrowdException $e) {
+      $e->logResponse();
+    }
+    // Cleanup by unsetting the crowd SSO cookie. Most other Crowd apps
+    // appear to do this, so we should too. Note however that this will only
+    // work if the cookie was either set by Drupal or if the Crowd application
+    // that set the cookie uses the exact same SSO domain settings.
+    $cookie_name_real = crowd_get_cookie_name(FALSE);
+    setcookie($cookie_name_real, '', time()-3600, '/', variable_get('crowd_cookie_sso_domain', ''));
+  }
+}
+
+
+/**
+ * Helper function to sync crowd account data with linked user account data
+ * in Drupal.
+ *
+ * @param array $crowd_user
+ *   Associative array containing user data from Crowd.
+ * @param object $account
+ *   A Drupal user account object.
+ */
+function crowd_sync_user_data($crowd_user, $account = NULL) {
+  // If we are not passed an account object use the current user.
+  if (empty($account)) {
+    global $user;
+    $account = $user;
+  }
+  // Don't do anything if working with anon user or if Crowd and Drupal
+  // usernames do not match.
+  if (!$account->uid || $crowd_user['username'] != $account->name) {
+    return;
+  }
+  // Allow modules to implement their own sync tasks or alter data that will
+  // be used by the native Crowd sync tasks that follow.
+  foreach (module_implements('crowd_presync_user_data') as $module) {
+    $function = $module . '_crowd_presync_user_data';
+    $function($crowd_user, $account);
+  }
+  // Map groups. Start by fetching the account's current roles.
+  $roles = $account->roles;
+  // Fetch roles from crowd and sync.
+  try {
+    $groups = crowd_client_connect()->getUserGroups($crowd_user['username']);
+    $group_map = variable_get('crowd_groups', array());
+    // If we are flushing roles then we just start with the base "authenticated
+    // user" value.
+    if (variable_get('crowd_flush_roles_on_update', FALSE)) {
+      $roles = array(DRUPAL_AUTHENTICATED_RID => 'authenticated user');
+    }
+    $roles_added = array();
+    $site_roles = user_roles();
+    // Loop thorugh the mappings and adjust the user's roles as needed.
+    if (!empty($group_map)) {
+      foreach ($group_map as $crowd_group => $drupal_role_id) {
+        // Check if we have a mapping set.
+        if (!empty($drupal_role_id)) {
+          // If this user is a member of the Crowd group that's defined in this
+          // mapping, add the mapped Drupal role.
+          if (in_array($crowd_group, $groups)) {
+            $roles[$drupal_role_id] = $site_roles[$drupal_role_id];
+            $roles_added[] = $drupal_role_id;
+          }
+          // If this user is NOT a group member of the Crowd group that's
+          // defined in this mapping, but they still have the mapped Drupal
+          // role, remove the mapped role. Note that mappings are OR'ed together
+          // so the removal only happens if the role was not also ADDED by
+          // another mapping.
+          if (!in_array($crowd_group, $groups) && array_key_exists($drupal_role_id, $roles) && !in_array($drupal_role_id, $roles_added)) {
+            unset($roles[$drupal_role_id]);
+          }
+        }
+      }
+    }
+  }
+  catch (CrowdException $e) {
+    $e->logResponse();
+  }
+  // Assign email address.
+  $mail = '';
+  if (!empty($crowd_user['email'])) {
+    $mail = $crowd_user['email'];
+  }
+  // Create the user information array
+  $info = array(
+    'mail' => $mail,
+    'roles' => $roles
+  );
+  // Update the user in Drupal
+  $account = user_save($account, $info, 'account');
+  if ($account != FALSE) {
+    watchdog('crowd', 'Updated user %name with data from Crowd User.', array('%name' => $crowd_user['username']), WATCHDOG_NOTICE);
+  }
+  else {
+    // There has been a problem saving the user, log it.
+    watchdog('crowd', 'Failed to save the user account information for %name', array('%name' => $crowd_user['username']), WATCHDOG_ERROR);
+  }
+}
+
+
+/**
+ * Helper function get or set the Crowd token based on cookie data.
+ *
+ * @return string
+ *   A Crowd token or NULL if one does not exist in the user's cookies.
+ */
+function crowd_get_set_cookie_data($token = NULL) {
+  $cookie_name = crowd_get_cookie_name();
+  if ($token) {
+    $_COOKIE[$cookie_name] = $token;
+    return $token;
+  }
+  return !empty($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : NULL;
+}
+
+
+/**
+ * Helper function get or set the Crowd token for the currently logged-in user
+ * based on local session storage data.
+ *
+ * If the current user started thier Drupal session by authenticating against
+ * Crowd, the returned value of this function represents the token they used
+ * INITIALLY. In certain situations this may be different from the token they
+ * have stored in a cookie (e.g. they logged in as a different user in another
+ * Crowd app after starting a local Drupal session).
+ *
+ * @return string
+ *   The Crowd token used to initially autenticate this user or NULL if the
+ *   user's session was not authenticated against Crowd.
+ */
+function crowd_get_set_session_data($token = NULL) {
+  if ($token) {
+    $_SESSION['crowd']['auth_token'] = $token;
+    return $token;
+  }
+  return !empty($_SESSION['crowd']['auth_token']) ? $_SESSION['crowd']['auth_token'] : NULL;
+}
+
+
+/**
+ * Helper function get the Crowd cookie name. This is really just a wrapper for
+ * variable_get('crowd_cookie_name').
+ *
+ * @param boolean $convert
+ *   Whether to convert the cookie name to a version that matches what php will
+ *   store in $_COOKIE (replacing '.' with '_').
+ * @return
+ *   The configured crowd cookie name.
+ */
+function crowd_get_cookie_name($convert = TRUE) {
+  $cookie_name = check_plain(trim(variable_get('crowd_cookie_name', 'crowd.token_key')));
+  if ($convert) {
+    $cookie_name = str_replace('.', '_', $cookie_name);
+  }
+  return $cookie_name;
+}
