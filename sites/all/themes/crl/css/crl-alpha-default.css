@@ -1,0 +1,167 @@
+/* This file will hold styles for all layouts using the alpha grid (i.e. not the mobile layout). */
+
+
+/* --------------------------------------------------------------------------
+   Header Styles - General
+   -------------------------------------------------------------------------- */
+
+#section-header { 
+  height: 250px;
+}
+#header-logo {
+  position: absolute;
+  right: 25px;
+  top: 0px;
+}
+.header-user-tools-back {
+  float: right;
+  width: 340px;
+  height: 250px;
+  background: url('../images/user-tools-bg.png') 0 0 repeat;
+}
+#header-user-tools {
+  position: absolute;
+  width: 300px;
+  right: 25px;
+  top: 100px;
+  text-align: left;
+}
+#header-typography {
+  text-align: left;
+  padding: 20px 0px 0px 15px;
+}
+h1.site-name, h2.site-name {
+	margin-top: 30px;
+  font-size: 400%;
+}
+p.site-slogan {
+  display: inline;
+  font-size: 110%;
+  font-weight: bold;
+}
+
+
+/* --------------------------------------------------------------------------
+   Header Styles - Menu
+   -------------------------------------------------------------------------- */
+
+#header-menus .main-menu, #header-menus .secondary-menu {
+  display: block;
+}
+form#ctools-jump-menu {
+  display: none;
+}
+#header-menus ul li {
+  display: inline-block;
+  float: left;
+  margin: 0px 5px 0px 0px;
+  padding: 0px;
+  text-align: center;
+}
+#header-menus ul li a {
+  display: block;
+  height: 29px;
+  padding: 5px 15px;
+  background-color: #1a1c35;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none !important;
+  border: 1px solid #000;
+  border-bottom-width: 0px;
+}
+#header-menus ul li a.active, #header-menus ul li a.active-trail {
+  color: #333 !important;
+  background-color: #fff !important;
+}
+#header-menus ul li a:hover {
+  color: #fff !important;
+  background-color: #8ca36b !important;
+}
+#header-menus .main-menu {
+  position: absolute;
+  bottom: 0px;
+  left: 15px;
+}
+#header-menus .secondary-menu {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+}
+#header-menus .secondary-menu {
+  width: 340px;
+}
+#header-menus .secondary-menu ul li {
+  width: 170px;
+  margin: 0px;
+  padding: 0px;
+}
+#header-menus .secondary-menu {
+  display: block;
+}
+#header-menus .secondary-menu ul li a {
+  width: 168px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+#header-menus .secondary-menu ul li.first a {
+  border-right: 1px solid #aaa;
+}
+
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+
+footer#section-footer #region-footer-first {
+  background: url('../images/footer-tools-bg.png') 0 0 repeat;
+  min-height: 250px;
+  text-align: right;
+}
+#zone-footer .region-inner {
+  padding: 75px 20px 20px 20px;
+}
+#zone-footer .region-footer-second-inner {
+  padding-left: 0px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Misc and Dashboard
+   -------------------------------------------------------------------------- */
+body.resources-dashboard #zone-preface .block-inner {
+  padding: 20px 50px;
+}
+
+.view-pp-resource-lists .views-field-value, .view-pp-resource-lists .views-field-value-1  {
+  min-width: 280px;
+}
+
+/* SPP vote */
+article form.shared-vote-input-form {
+  width: 275px;
+  float: right;
+  margin: 0px 0px 10px 20px;
+  padding-left: 20px;
+  border-left: 0px solid #E3E3E3;
+  border-bottom: none;
+}
+
+
+/* Handle long lists of checkboxes that can be spread-out horizontally. This
+should be safe to do in most cases where "field-widget-options-buttons" are
+used*/
+body.page-node-edit .field-widget-options-buttons .form-checkboxes .form-item {
+  float: left;
+  margin-right: 2em;
+  min-width: 25%;
+}
+/* One exception is the "CRL Status" checkbox selection, as the presentation
+order needs to be preserved there */
+body.page-node-edit .field-name-field-activity-crl-status.field-widget-options-buttons .form-checkboxes .form-item {
+  float: none;
+}
+body.page-node-edit .field-widget-options-buttons .form-checkboxes:after {
+  content: "";
+  display: table;
+  clear: both;
+}
