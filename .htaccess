@@ -140,4 +140,14 @@ DirectoryIndex index.php index.html index.htm
       Header append Vary Accept-Encoding
     </FilesMatch>
   </IfModule>
+
+  # When CSS/JS aggregation is on Drupal writes an aggregate version to a .gz
+  # file and then redirects to that via the directives above. However, we also
+  # want to enforce compression for non-aggregated files and the main request
+  # itself.
+  <IfModule mod_deflate.c>
+    <FilesMatch ".(js|css|html|)$">
+      SetOutputFilter DEFLATE
+    </FilesMatch>
+  </IfModule>
 </IfModule>
