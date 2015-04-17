@@ -652,7 +652,7 @@ function crl_resource_feat_field_default_field_instances() {
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 8,
       ),
       'type' => 'text_textarea',
       'weight' => 12,
@@ -852,7 +852,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 8,
       ),
       'type' => 'text_textarea',
       'weight' => 139,
@@ -944,7 +944,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 8,
       ),
       'type' => 'text_textarea',
       'weight' => 141,
@@ -1741,7 +1741,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 8,
       ),
       'type' => 'text_textarea',
       'weight' => 127,
@@ -1787,7 +1787,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 8,
       ),
       'type' => 'text_textarea',
       'weight' => 138,
@@ -1876,7 +1876,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 8,
       ),
       'type' => 'text_textarea',
       'weight' => 140,

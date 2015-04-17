@@ -635,7 +635,7 @@ function crl_helpers_feat_views_default_views() {
   $handler->display->display_options['fields']['status']['table'] = 'node';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['not'] = 0;
-  /* Field: Content: Last edited by */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['last_editor']['id'] = 'last_editor';
   $handler->display->display_options['fields']['last_editor']['table'] = 'node';
   $handler->display->display_options['fields']['last_editor']['field'] = 'last_editor';
@@ -995,7 +995,7 @@ function crl_helpers_feat_views_default_views() {
   $handler->display->display_options['fields']['status']['table'] = 'node';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['not'] = 0;
-  /* Field: Content: Last edited by */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['last_editor']['id'] = 'last_editor';
   $handler->display->display_options['fields']['last_editor']['table'] = 'node';
   $handler->display->display_options['fields']['last_editor']['field'] = 'last_editor';
@@ -1271,7 +1271,7 @@ function crl_helpers_feat_views_default_views() {
   $handler->display->display_options['fields']['status']['table'] = 'node';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['not'] = 0;
-  /* Field: Content: Last edited by */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['last_editor']['id'] = 'last_editor';
   $handler->display->display_options['fields']['last_editor']['table'] = 'node';
   $handler->display->display_options['fields']['last_editor']['field'] = 'last_editor';
@@ -1415,7 +1415,7 @@ function crl_helpers_feat_views_default_views() {
   $handler->display->display_options['fields']['status']['table'] = 'node';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['not'] = 0;
-  /* Field: Content: Last edited by */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['last_editor']['id'] = 'last_editor';
   $handler->display->display_options['fields']['last_editor']['table'] = 'node';
   $handler->display->display_options['fields']['last_editor']['field'] = 'last_editor';

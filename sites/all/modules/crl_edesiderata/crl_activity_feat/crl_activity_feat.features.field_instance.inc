@@ -98,7 +98,7 @@ function crl_activity_feat_field_default_field_instances() {
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 8,
       ),
       'type' => 'text_textarea',
       'weight' => 10,
@@ -234,13 +234,12 @@ function crl_activity_feat_field_default_field_instances() {
     'settings' => array(
       'text_processing' => 1,
       'user_register_form' => FALSE,
-      'wysiwyg_unload' => 0,
     ),
     'widget' => array(
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 8,
       ),
       'type' => 'text_textarea',
       'weight' => 6,
@@ -287,7 +286,7 @@ function crl_activity_feat_field_default_field_instances() {
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 8,
       ),
       'type' => 'text_textarea',
       'weight' => 7,
@@ -667,7 +666,7 @@ function crl_activity_feat_field_default_field_instances() {
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 8,
       ),
       'type' => 'text_textarea',
       'weight' => 6,
@@ -809,7 +808,7 @@ function crl_activity_feat_field_default_field_instances() {
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 8,
       ),
       'type' => 'text_textarea',
       'weight' => 8,
