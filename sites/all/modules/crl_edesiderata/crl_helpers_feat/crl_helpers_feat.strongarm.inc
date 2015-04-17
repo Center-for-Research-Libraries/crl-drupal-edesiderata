@@ -443,7 +443,6 @@ function crl_helpers_feat_strongarm() {
       'sites/all/modules/contrib/date/date_popup/themes/datepicker.1.7.css' => 0,
       'sites/all/modules/contrib/extlink/extlink.css' => 0,
       'modules/field/theme/field.css' => 0,
-      'sites/all/modules/contrib/mollom/mollom.css' => 0,
       'modules/node/node.css' => 0,
       'modules/search/search.css' => 0,
       'modules/user/user.css' => 0,
