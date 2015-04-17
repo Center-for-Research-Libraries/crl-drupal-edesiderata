@@ -462,7 +462,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 8,
       ),
       'type' => 'text_textarea',
       'weight' => 24,
@@ -508,7 +508,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 8,
       ),
       'type' => 'text_textarea',
       'weight' => 23,
@@ -650,6 +650,56 @@ function crl_pp_resource_feat_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 18,
+    ),
+  );
+
+  // Exported field_instance: 'node-pp_resource-field_pp_proposal_purchased'
+  $field_instances['node-pp_resource-field_pp_proposal_purchased'] = array(
+    'bundle' => 'pp_resource',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'default_value_function' => '',
+    'default_value_php' => '',
+    'deleted' => 0,
+    'description' => 'Check this box if this resource was purchased. This field will be used in historical reports.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 8,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 21,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_pp_proposal_purchased',
+    'label' => 'Proposal Purchased',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 33,
     ),
   );
 
@@ -927,54 +977,6 @@ function crl_pp_resource_feat_field_default_field_instances() {
       'settings' => array(),
       'type' => 'options_select',
       'weight' => 17,
-    ),
-  );
-
-  // Exported field_instance: 'node-pp_resource-field_pp_summary_comments'
-  $field_instances['node-pp_resource-field_pp_summary_comments'] = array(
-    'bundle' => 'pp_resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Enter summary of Comments from the Purchase Proposal that relates to this shared purchase.
-<b>This field will be used for Shared Purchase and will be hidden if not filled.</b>',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 1,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 5,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_pp_summary_comments',
-    'label' => 'Purchase Proposal Comments Summary',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-      'wysiwyg_unload' => 0,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 8,
     ),
   );
 
@@ -1405,7 +1407,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 8,
       ),
       'type' => 'text_textarea',
       'weight' => 24,
@@ -1451,7 +1453,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 8,
       ),
       'type' => 'text_textarea',
       'weight' => 23,
@@ -1912,13 +1914,12 @@ function crl_pp_resource_feat_field_default_field_instances() {
     'settings' => array(
       'text_processing' => 1,
       'user_register_form' => FALSE,
-      'wysiwyg_unload' => 0,
     ),
     'widget' => array(
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 5,
+        'rows' => 8,
       ),
       'type' => 'text_textarea',
       'weight' => 25,
