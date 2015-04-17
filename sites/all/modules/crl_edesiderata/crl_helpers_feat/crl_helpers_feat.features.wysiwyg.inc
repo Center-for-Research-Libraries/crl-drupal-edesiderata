@@ -42,6 +42,7 @@ function crl_helpers_feat_wysiwyg_default_profiles() {
           'Paste' => 1,
           'PasteText' => 1,
           'PasteFromWord' => 1,
+          'RemoveFormat' => 1,
           'Format' => 1,
           'Table' => 1,
           'CreateDiv' => 1,
