@@ -264,27 +264,6 @@ function crl_helpers_form_node_form_alter(&$form, &$form_state, $form_id) {
 
 
 /**
- * Implements hook_wysiwyg_editor_settings_alter().
- */
-function crl_helpers_wysiwyg_editor_settings_alter(&$settings, $context) {
-  if ($context['profile']->editor == 'ckeditor') {
-    // For some reason some parts of the toolbar do not inherit styles
-    // correctly unless the css file def does not have a starting "/". So strip.
-    if ($settings['contentsCss']) {
-      if (is_array($settings['contentsCss'])) {
-        foreach ($settings['contentsCss'] as $key => $def) {
-          $settings['contentsCss'][$key] = ltrim($settings['contentsCss'][$key], '/');
-        }
-      }
-      else {
-        $settings['contentsCss'] = ltrim($settings['contentsCss']);
-      }
-    }
-  }
-}
-
-
-/**
  * Implements hook_preprocess_delta_blocks_page_title().
  *
  * We display titles with delta blocks, so this provides a way to do some
