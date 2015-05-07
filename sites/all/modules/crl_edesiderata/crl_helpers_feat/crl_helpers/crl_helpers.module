@@ -157,7 +157,7 @@ function crl_helpers_block_info() {
   );
   // The "back to index" block shows a caclulated back link for navigation.
   $blocks['crl_helpers_back_to_index'] = array(
-    'info' => t('CRL Back to Index'), 
+    'info' => t('CRL Back to Index'),
     'cache' => DRUPAL_NO_CACHE,
   );
   // The common input block shows thumbs up/down vote options.
@@ -240,6 +240,25 @@ function crl_helpers_form_comment_form_alter(&$form, &$form_state, $form_id) {
   // help here, but that's overkill since we can do this in just a couple lines.
   if (empty($form['cid']['#value']) || empty($form['comment_body'][$form['comment_body']['#language']][0]['#format']) ) {
     $form['comment_body'][$form['comment_body']['#language']][0]['#format'] = filter_fallback_format();
+  }
+}
+
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function crl_helpers_form_node_form_alter(&$form, &$form_state, $form_id) {
+  // Hide text format options for most editors. This element may be confusing
+  // and should rarely be touched by non-admins who don't oversee formats. We do
+  // this with some conditional CSS, which is a bit lazy, but it's a whole lot
+  // cleaner than iterating over the various render array structures that may
+  // contain a "format" element. Also, we don't need to further limit what
+  // fitlers people can use, we just want to make a "best effort" to visually
+  // clean-up options they never touch.
+  if (!user_access('administer filters')) {
+    // Note that inline CSS is inefficient for CSS aggregation, but this only
+    // applies to node edit forms, so it's ok.
+    drupal_add_css('.node-form .filter-wrapper {display:none !important;}', array('type' => 'inline'));
   }
 }
 
@@ -476,7 +495,7 @@ function crl_helpers_country_list() {
 
 /**
  * Implements hook_entity_property_info_alter().
- * 
+ *
  * Define some "common" node properties. Note that most of these are just
  * meant to be used when displaying a single entity or for use in a Search API
  * index. None of these have a schema so they aren't meant for display with
@@ -513,7 +532,7 @@ function crl_helpers_entity_property_info_alter(&$info) {
 
 /**
  * Properties callback: get glossary value.
- * 
+ *
  * @see crl_helpers_entity_property_info_alter().
  */
 function crl_helpers_get_glossary_value($entity, array $options, $name, $type, $info) {
