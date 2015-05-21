@@ -113,6 +113,7 @@ features[field_instance][] = node-pp_resource-field_pp_purchase_status
 features[field_instance][] = node-pp_resource-field_pp_related
 features[field_instance][] = node-pp_resource-field_pp_sp_target_price
 features[field_instance][] = node-pp_resource-field_pp_subject_area
+features[field_instance][] = node-pp_resource-field_pp_summary_comments
 features[field_instance][] = node-pp_resource-field_title_sort
 features[field_instance][] = node-pp_resource-field_voting_results
 features[field_instance][] = node-spp_resource-body

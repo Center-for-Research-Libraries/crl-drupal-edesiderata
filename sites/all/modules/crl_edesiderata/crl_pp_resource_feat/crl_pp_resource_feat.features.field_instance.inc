@@ -45,7 +45,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_pp_resource-field_comment_privacy'
+  // Exported field_instance:
+  // 'comment-comment_node_pp_resource-field_comment_privacy'
   $field_instances['comment-comment_node_pp_resource-field_comment_privacy'] = array(
     'bundle' => 'comment_node_pp_resource',
     'default_value' => array(
@@ -116,7 +117,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_spp_resource-field_comment_privacy'
+  // Exported field_instance:
+  // 'comment-comment_node_spp_resource-field_comment_privacy'
   $field_instances['comment-comment_node_spp_resource-field_comment_privacy'] = array(
     'bundle' => 'comment_node_spp_resource',
     'default_value' => array(
@@ -150,7 +152,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-purchase_proposal_nomination-field_contact_email'
+  // Exported field_instance:
+  // 'entityform-purchase_proposal_nomination-field_contact_email'
   $field_instances['entityform-purchase_proposal_nomination-field_contact_email'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -183,7 +186,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-purchase_proposal_nomination-field_contact_name'
+  // Exported field_instance:
+  // 'entityform-purchase_proposal_nomination-field_contact_name'
   $field_instances['entityform-purchase_proposal_nomination-field_contact_name'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -217,7 +221,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-purchase_proposal_nomination-field_contacts'
+  // Exported field_instance:
+  // 'entityform-purchase_proposal_nomination-field_contacts'
   $field_instances['entityform-purchase_proposal_nomination-field_contacts'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -251,7 +256,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-purchase_proposal_nomination-field_further_description'
+  // Exported field_instance:
+  // 'entityform-purchase_proposal_nomination-field_further_description'
   $field_instances['entityform-purchase_proposal_nomination-field_further_description'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -287,7 +293,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-purchase_proposal_nomination-field_link'
+  // Exported field_instance:
+  // 'entityform-purchase_proposal_nomination-field_link'
   $field_instances['entityform-purchase_proposal_nomination-field_link'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -338,7 +345,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-purchase_proposal_nomination-field_pp_nomination_crl_holdings'
+  // Exported field_instance:
+  // 'entityform-purchase_proposal_nomination-field_pp_nomination_crl_holdings'
   $field_instances['entityform-purchase_proposal_nomination-field_pp_nomination_crl_holdings'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -369,7 +377,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-purchase_proposal_nomination-field_pp_nominator_comments'
+  // Exported field_instance:
+  // 'entityform-purchase_proposal_nomination-field_pp_nominator_comments'
   $field_instances['entityform-purchase_proposal_nomination-field_pp_nominator_comments'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -403,7 +412,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-purchase_proposal_nomination-field_pp_nominator_institution'
+  // Exported field_instance:
+  // 'entityform-purchase_proposal_nomination-field_pp_nominator_institution'
   $field_instances['entityform-purchase_proposal_nomination-field_pp_nominator_institution'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -437,7 +447,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-purchase_proposal_nomination-field_pp_notes'
+  // Exported field_instance:
+  // 'entityform-purchase_proposal_nomination-field_pp_notes'
   $field_instances['entityform-purchase_proposal_nomination-field_pp_notes'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -471,7 +482,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-purchase_proposal_nomination-field_pp_piece_count_and_pricing'
+  // Exported field_instance:
+  // 'entityform-purchase_proposal_nomination-field_pp_piece_count_and_pricing'
   $field_instances['entityform-purchase_proposal_nomination-field_pp_piece_count_and_pricing'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -505,7 +517,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-purchase_proposal_nomination-field_pp_publisher'
+  // Exported field_instance:
+  // 'entityform-purchase_proposal_nomination-field_pp_publisher'
   $field_instances['entityform-purchase_proposal_nomination-field_pp_publisher'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -539,7 +552,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-purchase_proposal_nomination-field_pp_related'
+  // Exported field_instance:
+  // 'entityform-purchase_proposal_nomination-field_pp_related'
   $field_instances['entityform-purchase_proposal_nomination-field_pp_related'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -576,7 +590,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-purchase_proposal_nomination-field_pp_subject_area'
+  // Exported field_instance:
+  // 'entityform-purchase_proposal_nomination-field_pp_subject_area'
   $field_instances['entityform-purchase_proposal_nomination-field_pp_subject_area'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -607,7 +622,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-purchase_proposal_nomination-field_title_sort'
+  // Exported field_instance:
+  // 'entityform-purchase_proposal_nomination-field_title_sort'
   $field_instances['entityform-purchase_proposal_nomination-field_title_sort'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -1206,7 +1222,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_piece_count_and_pricing'
+  // Exported field_instance:
+  // 'node-pp_resource-field_pp_piece_count_and_pricing'
   $field_instances['node-pp_resource-field_pp_piece_count_and_pricing'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -1249,56 +1266,6 @@ function crl_pp_resource_feat_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 19,
-    ),
-  );
-
-  // Exported field_instance: 'node-pp_resource-field_pp_proposal_purchased'
-  $field_instances['node-pp_resource-field_pp_proposal_purchased'] = array(
-    'bundle' => 'pp_resource',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
-    'default_value_function' => '',
-    'default_value_php' => '',
-    'deleted' => 0,
-    'description' => 'Check this box if this resource was purchased. This field will be used in historical reports.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 10,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 21,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_pp_proposal_purchased',
-    'label' => 'Proposal Purchased',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'display_label' => 1,
-      ),
-      'type' => 'options_onoff',
-      'weight' => 33,
     ),
   );
 
@@ -2247,7 +2214,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_pp_piece_count_and_pricing'
+  // Exported field_instance:
+  // 'node-spp_resource-field_pp_piece_count_and_pricing'
   $field_instances['node-spp_resource-field_pp_piece_count_and_pricing'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,

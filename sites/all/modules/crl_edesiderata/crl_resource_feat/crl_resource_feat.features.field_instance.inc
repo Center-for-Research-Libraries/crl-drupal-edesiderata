@@ -45,7 +45,8 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_resource-field_comment_privacy'
+  // Exported field_instance:
+  // 'comment-comment_node_resource-field_comment_privacy'
   $field_instances['comment-comment_node_resource-field_comment_privacy'] = array(
     'bundle' => 'comment_node_resource',
     'default_value' => array(
@@ -781,7 +782,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'module' => 'tablefield',
         'settings' => array(),
-        'type' => 'default',
+        'type' => 'tablefield_default',
         'weight' => 907,
       ),
       'embedded' => array(
@@ -979,7 +980,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'module' => 'tablefield',
         'settings' => array(),
-        'type' => 'default',
+        'type' => 'tablefield_default',
         'weight' => 78,
       ),
       'embedded' => array(
@@ -1670,7 +1671,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'module' => 'tablefield',
         'settings' => array(),
-        'type' => 'default',
+        'type' => 'tablefield_default',
         'weight' => 76,
       ),
       'embedded' => array(
@@ -1957,7 +1958,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'module' => 'tablefield',
         'settings' => array(),
-        'type' => 'default',
+        'type' => 'tablefield_default',
         'weight' => 77,
       ),
       'embedded' => array(
@@ -2063,7 +2064,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'module' => 'tablefield',
         'settings' => array(),
-        'type' => 'default',
+        'type' => 'tablefield_default',
         'weight' => 6,
       ),
       'embedded' => array(
