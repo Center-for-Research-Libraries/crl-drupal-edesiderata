@@ -928,7 +928,7 @@ textarea, select, input[type="date"], input[type="datetime"], input[type="dateti
   padding: 2px 3px;
 }
 textarea {
-	height: 5em;
+	height: inherit !important;
 }
 
 /* Fieldsets for custom-made sets (using fieldgroups on activity) as well as for

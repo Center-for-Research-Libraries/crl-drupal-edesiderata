@@ -6,6 +6,7 @@ sites/*/files
 sites/*/private
 
 /nbproject
+/nbproject/*
 
 # Ignore modules that are maintained in separate git repos
 sites/all/modules/shared_unofficial
