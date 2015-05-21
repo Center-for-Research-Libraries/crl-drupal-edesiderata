@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Code for the CRL PP Resource feature.
@@ -422,4 +423,17 @@ function crl_pp_resource_feat_page_build(&$vars) {
       $conf['menu_main_links_source'] = 'menu-pp-main-menu';
     }
   }
+}
+/**
+ * Implement hook_entityform_access_alter
+ * redirect to the login form if access is not available
+ */
+function crl_pp_resource_feat_entityform_access_alter(&$access, $op, $context) {
+    if($context["entityform"]->type == "purchase_proposal_nomination" && $op == "submit" && $access == FALSE) {
+        drupal_set_message("Access Denied: Please Login");
+        $dest = drupal_get_destination();
+        drupal_goto('user/login', array('query' => $dest)); 
+        
+    }
+   
 }

@@ -994,7 +994,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['label'] = 'type';
   $handler->display->display_options['fields']['nothing']['alter']['text'] = 'edes_resource';
-  /* Field: Content: Sorting Title */
+  /* Field: Field: Sorting Title */
   $handler->display->display_options['fields']['field_title_sort']['id'] = 'field_title_sort';
   $handler->display->display_options['fields']['field_title_sort']['table'] = 'field_data_field_title_sort';
   $handler->display->display_options['fields']['field_title_sort']['field'] = 'field_title_sort';
