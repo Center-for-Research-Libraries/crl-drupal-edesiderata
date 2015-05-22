@@ -224,6 +224,7 @@ function crl_pp_resource_feat_field_group_info() {
       2 => 'field_fy',
       3 => 'field_pp_purchase_status',
       4 => 'field_pp_proposal_purchased',
+      5 => 'field_pp_discounted_price',
     ),
     'format_type' => 'div',
     'format_settings' => array(

@@ -115,9 +115,6 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_pp_crl_comments',
-    'field_permissions' => array(
-      'type' => 0,
-    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -128,6 +125,24 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'settings' => array(),
     'translatable' => 0,
     'type' => 'text_long',
+  );
+
+  // Exported field_base: 'field_pp_discounted_price'
+  $field_bases['field_pp_discounted_price'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_pp_discounted_price',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'number_integer',
   );
 
   // Exported field_base: 'field_pp_nomination_crl_holdings'
