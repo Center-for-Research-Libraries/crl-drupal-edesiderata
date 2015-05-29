@@ -596,7 +596,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Please press CTRL+click to select multiple.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -2826,6 +2826,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   t('Please enter the Purchase Proposal Fiscal Year. ');
   t('Please enter the Shared Proposal Fiscal Year. ');
   t('Please include phone#, fax# if available');
+  t('Please press CTRL+click to select multiple.');
   t('Proposal Purchased');
   t('Provider');
   t('Provider Contact');

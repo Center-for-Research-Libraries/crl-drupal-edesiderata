@@ -431,7 +431,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_publisher']['id'] = 'field_pp_publisher';
   $handler->display->display_options['fields']['field_pp_publisher']['table'] = 'field_data_field_pp_publisher';
   $handler->display->display_options['fields']['field_pp_publisher']['field'] = 'field_pp_publisher';
-  /* Field: Field: Vendor Contact */
+  /* Field: Field: Provider Contact */
   $handler->display->display_options['fields']['field_contacts']['id'] = 'field_contacts';
   $handler->display->display_options['fields']['field_contacts']['table'] = 'field_data_field_contacts';
   $handler->display->display_options['fields']['field_contacts']['field'] = 'field_contacts';
@@ -471,11 +471,6 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_nomination_crl_holdings']['id'] = 'field_pp_nomination_crl_holdings';
   $handler->display->display_options['fields']['field_pp_nomination_crl_holdings']['table'] = 'field_data_field_pp_nomination_crl_holdings';
   $handler->display->display_options['fields']['field_pp_nomination_crl_holdings']['field'] = 'field_pp_nomination_crl_holdings';
-  /* Field: Broken/missing handler */
-  $handler->display->display_options['fields']['field_related_pp']['id'] = 'field_related_pp';
-  $handler->display->display_options['fields']['field_related_pp']['table'] = 'field_data_field_related_pp';
-  $handler->display->display_options['fields']['field_related_pp']['field'] = 'field_related_pp';
-  $handler->display->display_options['fields']['field_related_pp']['label'] = 'Related Purchase Proposal';
   /* Field: Entityform Submission: Rendered Entityform Submission */
   $handler->display->display_options['fields']['rendered_entity']['id'] = 'rendered_entity';
   $handler->display->display_options['fields']['rendered_entity']['table'] = 'views_entity_entityform';
