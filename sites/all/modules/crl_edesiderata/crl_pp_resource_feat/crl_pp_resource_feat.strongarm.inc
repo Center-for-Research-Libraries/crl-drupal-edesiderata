@@ -189,13 +189,13 @@ function crl_pp_resource_feat_strongarm() {
           'weight' => '7',
         ),
         'redirect' => array(
-          'weight' => '9',
+          'weight' => '8',
         ),
       ),
       'display' => array(
         'pseudo_field_pp_resource_source_notice' => array(
           'default' => array(
-            'weight' => '907',
+            'weight' => '908',
             'visible' => TRUE,
           ),
           'teaser' => array(
@@ -215,7 +215,7 @@ function crl_pp_resource_feat_strongarm() {
             'visible' => FALSE,
           ),
           'default' => array(
-            'weight' => '5',
+            'weight' => '8',
             'visible' => FALSE,
           ),
         ),

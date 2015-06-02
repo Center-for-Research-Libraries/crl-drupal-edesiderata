@@ -27,9 +27,9 @@ function crl_pp_resource_feat_field_group_info() {
       1 => 'field_pp_notes',
       2 => 'field_pp_piece_count_and_pricing',
       3 => 'field_pp_publisher',
-      4 => 'field_pp_publisher_url',
-      5 => 'field_pp_subject_area',
-      6 => 'field_pp_attachments',
+      4 => 'field_pp_subject_area',
+      5 => 'field_pp_attachments',
+      6 => 'field_link',
       7 => 'pseudo_field_pp_resource_source_notice',
     ),
     'format_type' => 'htab',
@@ -60,10 +60,11 @@ function crl_pp_resource_feat_field_group_info() {
       1 => 'field_pp_notes',
       2 => 'field_pp_piece_count_and_pricing',
       3 => 'field_pp_publisher',
-      4 => 'field_pp_publisher_url',
-      5 => 'field_pp_subject_area',
-      6 => 'field_pp_attachments',
-      7 => 'group_nominator',
+      4 => 'field_pp_subject_area',
+      5 => 'field_pp_attachments',
+      6 => 'field_contacts',
+      7 => 'field_link',
+      8 => 'group_nominator',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -156,7 +157,7 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group->parent_name = 'group_details';
   $field_group->data = array(
     'label' => 'Nominator',
-    'weight' => '21',
+    'weight' => '22',
     'children' => array(
       0 => 'field_pp_nominator_institution',
       1 => 'field_contact_email',
@@ -216,13 +217,14 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Administrative Fields',
-    'weight' => '3',
+    'weight' => '2',
     'children' => array(
-      0 => 'field_pp_proposal_purchased',
-      1 => 'field_pp_related',
-      2 => 'field_pp_sp_target_price',
-      3 => 'field_fy',
-      4 => 'field_pp_purchase_status',
+      0 => 'field_pp_related',
+      1 => 'field_pp_sp_target_price',
+      2 => 'field_fy',
+      3 => 'field_pp_purchase_status',
+      4 => 'field_pp_proposal_purchased',
+      5 => 'field_pp_discounted_price',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -402,7 +404,7 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'System Fields',
-    'weight' => '6',
+    'weight' => '5',
     'children' => array(
       0 => 'field_voting_results',
     ),
@@ -495,7 +497,7 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'tabbed',
-    'weight' => '4',
+    'weight' => '3',
     'children' => array(
       0 => 'group_details',
       1 => 'group_rationale',
