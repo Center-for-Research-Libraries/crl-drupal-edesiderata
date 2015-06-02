@@ -30,6 +30,28 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'number_float',
   );
 
+  // Exported field_base: 'field_further_description'
+  $field_bases['field_further_description'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_further_description',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'text_with_summary',
+  );
+
   // Exported field_base: 'field_fy'
   $field_bases['field_fy'] = array(
     'active' => 1,
@@ -108,6 +130,35 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
+  // Exported field_base: 'field_pp_nomination_crl_holdings'
+  $field_bases['field_pp_nomination_crl_holdings'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_pp_nomination_crl_holdings',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'Fills' => 'Yes, Fills in',
+        'Completes' => 'Yes, Completes',
+        'No' => 'No',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
   // Exported field_base: 'field_pp_nominator_comments'
   $field_bases['field_pp_nominator_comments'] = array(
     'active' => 1,
@@ -137,6 +188,9 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_pp_nominator_institution',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -158,6 +212,9 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_pp_notes',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -177,6 +234,9 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_pp_piece_count_and_pricing',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -225,6 +285,9 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_pp_publisher',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -246,6 +309,9 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_pp_publisher_url',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -297,7 +363,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'entity_types' => array(),
     'field_name' => 'field_pp_related',
     'field_permissions' => array(
-      'type' => 0,
+      'type' => 2,
     ),
     'indexes' => array(
       'target_id' => array(
@@ -351,6 +417,9 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_pp_subject_area',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
     'indexes' => array(
       'value' => array(
         0 => 'value',
