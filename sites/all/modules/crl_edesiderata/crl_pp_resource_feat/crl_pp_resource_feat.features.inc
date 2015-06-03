@@ -80,7 +80,7 @@ function crl_pp_resource_feat_default_entityform_type() {
       "resubmit_action" : "new",
       "redirect_path" : "",
       "instruction_pre" : {
-        "value" : "\\u003Cp\\u003EPlease feel out the below nomination form.\\u0026nbsp;Contact\\u0026nbsp;\\u003Ca href=\\u0022mailto:mwilke@crl.edu\\u0022\\u003EMary Wilke\\u003C\\/a\\u003E with questions or problems related to this form.\\u003C\\/p\\u003E\\r\\n",
+        "value" : "\\u003Cp\\u003EPlease feel out the below nomination form.\\u0026nbsp;Contact\\u0026nbsp;\\u003Ca href=\\u0022mailto:mwilke@crl.edu\\u0022\\u003EMary Wilke\\u003C\\/a\\u003E with questions or problems related to this form.\\u003C\\/p\\u003E\\r\\n\\r\\n\\u003Cp\\u003ERequired fields are with asterisks (*)\\u003C\\/p\\u003E\\r\\n",
         "format" : "full_html"
       }
     },
