@@ -424,16 +424,24 @@ function crl_pp_resource_feat_page_build(&$vars) {
     }
   }
 }
-/**
- * Implement hook_entityform_access_alter
- * redirect to the login form if access is not available
+
+/*
+ * Implement hook_from_FORM_ID_alter
  */
-function crl_pp_resource_feat_entityform_access_alter(&$access, $op, $context) {
-    if($context["entityform"]->type == "purchase_proposal_nomination" && $op == "submit" && $access == FALSE) {
-        drupal_set_message("Access Denied: Please Login");
-        $dest = drupal_get_destination();
-        drupal_goto('user/login', array('query' => $dest)); 
+
+function crl_pp_resource_feat_form_purchase_proposal_nomination_entityform_edit_form_alter(&$form, &$form_state, $form_id) {
+    //Revalidating Only for the purchase proposal nomination entiyform
+    if($form_id == "purchase_proposal_nomination_entityform_edit_form"){
+          //Get the information for logged in user
+          global $user;
+          $user_fields = user_load($user->uid);
+          $inst = crl_user_get_institution($user->uid, NULL);
+                    
+          //Setting the default values for nominator based on the logged in user
+          $form['field_contact_name'][LANGUAGE_NONE][0]['value']['#default_value'] = $user_fields->realname;  
+          $form['field_contact_email'][LANGUAGE_NONE][0]['email']['#default_value'] = $user_fields->mail;  
+          $form['field_pp_nominator_institution'][LANGUAGE_NONE][0]['value']['#default_value'] = $inst;  
         
     }
-   
+    
 }
