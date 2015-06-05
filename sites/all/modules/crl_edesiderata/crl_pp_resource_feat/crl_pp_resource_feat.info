@@ -124,6 +124,7 @@ features[field_instance][] = node-spp_resource-field_contact_email
 features[field_instance][] = node-spp_resource-field_contact_name
 features[field_instance][] = node-spp_resource-field_fy
 features[field_instance][] = node-spp_resource-field_internal_notes
+features[field_instance][] = node-spp_resource-field_link
 features[field_instance][] = node-spp_resource-field_pp_attachments
 features[field_instance][] = node-spp_resource-field_pp_crl_comments
 features[field_instance][] = node-spp_resource-field_pp_nominator_comments
