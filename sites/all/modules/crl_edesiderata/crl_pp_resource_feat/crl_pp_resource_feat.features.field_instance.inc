@@ -932,7 +932,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     'bundle' => 'pp_resource',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Enter the Provder\'s URL. This will be displayed in the detail page for the resource.',
+    'description' => 'Enter the Provider\'s URL. This will be displayed in the detail page for the resource.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1951,7 +1951,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1993,7 +1993,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2024,7 +2024,70 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 5,
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance: 'node-spp_resource-field_link'
+  $field_instances['node-spp_resource-field_link'] = array(
+    'bundle' => 'spp_resource',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Enter the Provider\'s URL. This will be displayed in the detail page for the resource.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'link',
+        'settings' => array(),
+        'type' => 'link_default',
+        'weight' => 7,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_link',
+    'label' => 'Provider URL',
+    'required' => 0,
+    'settings' => array(
+      'absolute_url' => 1,
+      'attributes' => array(
+        'class' => '',
+        'configurable_class' => 0,
+        'configurable_title' => 0,
+        'rel' => '',
+        'target' => '_blank',
+        'title' => '',
+      ),
+      'display' => array(
+        'url_cutoff' => 80,
+      ),
+      'enable_tokens' => 1,
+      'rel_remove' => 'default',
+      'title' => 'none',
+      'title_label_use_field_label' => 0,
+      'title_maxlength' => 128,
+      'title_value' => '',
+      'url' => 0,
+      'user_register_form' => FALSE,
+      'validate_url' => 1,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'link',
+      'settings' => array(),
+      'type' => 'link_field',
+      'weight' => 16,
     ),
   );
 
@@ -2179,7 +2242,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 9,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2324,7 +2387,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2413,10 +2476,9 @@ function crl_pp_resource_feat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 7,
+        'type' => 'hidden',
+        'weight' => 4,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2433,12 +2495,11 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_pp_publisher_url',
-    'label' => 'Provider URL',
+    'label' => 'Provider URL (OLD)',
     'required' => 0,
     'settings' => array(
       'text_processing' => 1,
       'user_register_form' => FALSE,
-      'wysiwyg_unload' => 1,
     ),
     'widget' => array(
       'active' => 1,
@@ -2447,7 +2508,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 16,
+      'weight' => 8,
     ),
   );
 
@@ -2462,7 +2523,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 10,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2508,7 +2569,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 11,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2807,6 +2868,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
 <b>This field will be used for Shared Purchase and will be hidden if not filled.</b>');
   t('Enter the Institution of nominator\'s institution. This will not be displayed in any user interface.');
   t('Enter the Provder\'s URL. This will be displayed in the detail page for the resource.');
+  t('Enter the Provider\'s URL. This will be displayed in the detail page for the resource.');
   t('Enter the Vendor or Provider\'s URL. ');
   t('Enter the email address of the individual who nominated this resource. This will not be displayed in any public pages.');
   t('Enter the email of the individual who nominated this resource. This will not be displayed in any public pages.');
