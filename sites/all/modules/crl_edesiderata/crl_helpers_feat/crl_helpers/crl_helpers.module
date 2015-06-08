@@ -287,8 +287,14 @@ function crl_helpers_preprocess_delta_blocks_page_title(&$vars) {
         break;
     }
   }
+  // Remove title from homepage.
   elseif (drupal_is_front_page()) {
     $vars['page_title'] = '';
+  }
+  // Special handling for 403 cases.
+  elseif ($vars['page_title'] == t('Access denied')) {
+    global $user;
+    $vars['page_title'] = empty($user->uid) ? t('Login Required') : t('Access Restricted');
   }
   else {
     // Also check for providers pages.
