@@ -16,6 +16,7 @@ function crl_search_feat_default_search_api_index() {
     "server" : "main_search_server",
     "item_type" : "node",
     "options" : {
+      "datasource" : { "bundles" : [] },
       "index_directly" : 1,
       "cron_limit" : "51",
       "fields" : {
