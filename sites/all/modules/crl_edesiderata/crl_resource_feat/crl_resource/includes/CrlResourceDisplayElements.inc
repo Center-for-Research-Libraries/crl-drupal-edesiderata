@@ -254,7 +254,7 @@ class CrlResourceDisplayElements {
       $source_text = t('CRL reviews are based on independent research. Information is researched by CRL staff and other specialists at CRL libraries. See CRL Review for additional source notes.');
     }
     elseif ($source_status == 'stub') {
-      $source_text = t('Information provided here drawn from from a number of sources, and may not yet be fully verified by CRL.');
+      $source_text = t('Information provided here is drawn from a number of sources, and may not yet have been fully verified by CRL.');
     }
     elseif ($source_status == 'jisc_only' && !empty($jisc_id)) {
       $source_text = t('Information has been sourced from a !sitelink entry, with additional edits by CRL.', array('!sitelink' => $this->jisc_link(t('JISC catalog'))));
