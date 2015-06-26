@@ -36,14 +36,18 @@ function crl_activity_node_view($node, $view_mode, $langcode) {
     // Add pseudo_field_activity_group_notice if it's visible in this mode.
     if (isset($extra_fields_display['pseudo_field_activity_group_notice']['visible']) && $extra_fields_display['pseudo_field_activity_group_notice']['visible']) {
       $entity_wrapper = entity_metadata_wrapper('node', $node);
-      $term = isset($entity_wrapper->field_activity_grouping) ? $entity_wrapper->field_activity_grouping->value() : NULL;
-      if ($term) {
-        // @todo: make some of the strings below configurable and maybe even
-        // multilingual friendly.
-        if (!empty($term->name) && $term->name != 'CRL Members') {
-          $message = t('The CRL activity posted here is on behalf of <strong>@group</strong> for the benefit of its members only. For inquiries about eligibility for participating in the offer, please contact Judy Alspach at jalspach@crl.edu.', array('@group' => $term->name));
-          $node->content['pseudo_field_activity_group_notice'] = array('#theme' => 'crl_activity_group_notice_field', '#message' => $message);
-        }
+      $terms = isset($entity_wrapper->field_activity_grouping) ? $entity_wrapper->field_activity_grouping->value() : NULL;
+      $groups = array();
+      $groups_text = '';
+      $i = 0;
+      foreach ($terms as $term) {
+        $groups[$term->tid] = $term->name;
+        $groups_text .= $i ? ', ' . $term->name : $term->name;
+        $i++;
+      }
+      if (!in_array('CRL Members', $groups)) {
+        $message = t('The CRL activity posted here is on behalf of <strong>@group</strong> for the benefit of its members only. For inquiries about eligibility for participating in the offer, please contact Judy Alspach at jalspach@crl.edu.', array('@group' => $groups_text));
+        $node->content['pseudo_field_activity_group_notice'] = array('#theme' => 'crl_activity_group_notice_field', '#message' => $message);
       }
     }
     // Alter the offer and trial duration field titles if we don't have an end
@@ -105,6 +109,10 @@ function crl_activity_form_activity_node_form_alter(&$form, &$form_state, $form_
   if (!empty($_GET['activity_title'])) {
     $form['title']['#default_value'] = rawurldecode($_GET['activity_title']);
   }
+  // Set the size of grouping element to show all items (in case we are not
+  // already using checkboxes for this).
+  $grouping_field_element = &$form['field_activity_grouping'][$form['field_activity_grouping']['#language']];
+  $grouping_field_element['#size'] = count($grouping_field_element['#options']);
 }
 
 

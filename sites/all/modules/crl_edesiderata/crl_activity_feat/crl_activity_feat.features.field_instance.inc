@@ -302,7 +302,7 @@ function crl_activity_feat_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => 'Select which CRL group this activity/offer applies to.',
+    'description' => 'Select which CRL group(s) this offer should be visible to. Use ctrl+click to choose multiple. Note that the "CRL Members" option is special in that deselecting it will not remove member view access (CRL members can always view <strong>all</strong> offers). However a special note will be displayed to clarify that the offer is group-exclusive when the "CRL Members" option is not selected.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -841,7 +841,7 @@ function crl_activity_feat_field_default_field_instances() {
   t('See');
   t('See Also');
   t('Select the status values that <em>currently</em> apply. Note that any "Offer Information" or "Trial Information" details entered below will not be displayed to users unless the respective status is enabled here.');
-  t('Select which CRL group this activity/offer applies to.');
+  t('Select which CRL group(s) this offer should be visible to. Use ctrl+click to choose multiple. Note that the "CRL Members" option is special in that deselecting it will not remove member view access (CRL members can always view <strong>all</strong> offers). However a special note will be displayed to clarify that the offer is group-exclusive when the "CRL Members" option is not selected.');
   t('This information is for internal use only and is not displayed to any site users.');
   t('Trial Duration');
   t('Trial URL');
