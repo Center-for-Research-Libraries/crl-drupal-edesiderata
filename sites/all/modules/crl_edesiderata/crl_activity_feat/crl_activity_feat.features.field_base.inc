@@ -153,10 +153,13 @@ function crl_activity_feat_field_default_field_bases() {
   // Exported field_base: 'field_activity_grouping'
   $field_bases['field_activity_grouping'] = array(
     'active' => 1,
-    'cardinality' => 1,
+    'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_activity_grouping',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
     'indexes' => array(
       'tid' => array(
         0 => 'tid',
