@@ -35,6 +35,33 @@ function crl_helpers_feat_user_default_permissions() {
     'module' => 'comment',
   );
 
+  // Exported permission: 'administer salesforce'.
+  $permissions['administer salesforce'] = array(
+    'name' => 'administer salesforce',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'salesforce',
+  );
+
+  // Exported permission: 'administer salesforce mapping'.
+  $permissions['administer salesforce mapping'] = array(
+    'name' => 'administer salesforce mapping',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'salesforce_mapping',
+  );
+
+  // Exported permission: 'create salesforce mapping object'.
+  $permissions['create salesforce mapping object'] = array(
+    'name' => 'create salesforce mapping object',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'salesforce_mapping',
+  );
+
   // Exported permission: 'crl access member features'.
   $permissions['crl access member features'] = array(
     'name' => 'crl access member features',
@@ -50,6 +77,15 @@ function crl_helpers_feat_user_default_permissions() {
     'module' => 'crl_helpers',
   );
 
+  // Exported permission: 'delete salesforce mapping object'.
+  $permissions['delete salesforce mapping object'] = array(
+    'name' => 'delete salesforce mapping object',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'salesforce_mapping',
+  );
+
   // Exported permission: 'edit own comments'.
   $permissions['edit own comments'] = array(
     'name' => 'edit own comments',
@@ -63,6 +99,15 @@ function crl_helpers_feat_user_default_permissions() {
       'member-crl' => 'member-crl',
     ),
     'module' => 'comment',
+  );
+
+  // Exported permission: 'edit salesforce mapping object'.
+  $permissions['edit salesforce mapping object'] = array(
+    'name' => 'edit salesforce mapping object',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'salesforce_mapping',
   );
 
   // Exported permission: 'post comments'.
@@ -108,6 +153,15 @@ function crl_helpers_feat_user_default_permissions() {
       'member-crl' => 'member-crl',
     ),
     'module' => 'comment',
+  );
+
+  // Exported permission: 'view salesforce mapping object'.
+  $permissions['view salesforce mapping object'] = array(
+    'name' => 'view salesforce mapping object',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'salesforce_mapping',
   );
 
   return $permissions;
