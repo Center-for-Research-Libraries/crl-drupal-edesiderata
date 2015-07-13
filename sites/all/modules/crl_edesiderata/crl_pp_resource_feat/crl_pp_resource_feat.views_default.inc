@@ -437,11 +437,10 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_contacts']['field'] = 'field_contacts';
   $handler->display->display_options['fields']['field_contacts']['type'] = 'text_plain';
   $handler->display->display_options['fields']['field_contacts']['delta_offset'] = '0';
-  /* Field: Field: Website */
+  /* Field: Field: Provider URL */
   $handler->display->display_options['fields']['field_link']['id'] = 'field_link';
   $handler->display->display_options['fields']['field_link']['table'] = 'field_data_field_link';
   $handler->display->display_options['fields']['field_link']['field'] = 'field_link';
-  $handler->display->display_options['fields']['field_link']['label'] = 'Provider URL';
   $handler->display->display_options['fields']['field_link']['click_sort_column'] = 'url';
   /* Field: Field: Piece Count and Pricing */
   $handler->display->display_options['fields']['field_pp_piece_count_and_pricing']['id'] = 'field_pp_piece_count_and_pricing';
@@ -549,7 +548,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_publisher']['id'] = 'field_pp_publisher';
   $handler->display->display_options['fields']['field_pp_publisher']['table'] = 'field_data_field_pp_publisher';
   $handler->display->display_options['fields']['field_pp_publisher']['field'] = 'field_pp_publisher';
-  /* Field: Content: Provider URL */
+  /* Field: Content: Provider URL (OLD) */
   $handler->display->display_options['fields']['field_pp_publisher_url']['id'] = 'field_pp_publisher_url';
   $handler->display->display_options['fields']['field_pp_publisher_url']['table'] = 'field_data_field_pp_publisher_url';
   $handler->display->display_options['fields']['field_pp_publisher_url']['field'] = 'field_pp_publisher_url';
@@ -650,7 +649,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_publisher']['element_label_type'] = 'strong';
   $handler->display->display_options['fields']['field_pp_publisher']['element_wrapper_type'] = 'div';
   $handler->display->display_options['fields']['field_pp_publisher']['hide_empty'] = TRUE;
-  /* Field: Content: Provider URL */
+  /* Field: Content: Provider URL (OLD) */
   $handler->display->display_options['fields']['field_pp_publisher_url']['id'] = 'field_pp_publisher_url';
   $handler->display->display_options['fields']['field_pp_publisher_url']['table'] = 'field_data_field_pp_publisher_url';
   $handler->display->display_options['fields']['field_pp_publisher_url']['field'] = 'field_pp_publisher_url';
@@ -966,6 +965,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'table';
@@ -1103,20 +1103,19 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'pp_resource' => 'pp_resource',
   );
-  /* Filter criterion: Content: Has taxonomy term */
-  $handler->display->display_options['filters']['tid']['id'] = 'tid';
-  $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
-  $handler->display->display_options['filters']['tid']['field'] = 'tid';
-  $handler->display->display_options['filters']['tid']['value'] = array(
+  /* Filter criterion: Content: Fiscal Year (field_fy) */
+  $handler->display->display_options['filters']['field_fy_tid']['id'] = 'field_fy_tid';
+  $handler->display->display_options['filters']['field_fy_tid']['table'] = 'field_data_field_fy';
+  $handler->display->display_options['filters']['field_fy_tid']['field'] = 'field_fy_tid';
+  $handler->display->display_options['filters']['field_fy_tid']['value'] = array(
     106 => '106',
   );
-  $handler->display->display_options['filters']['tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['tid']['expose']['operator_id'] = 'tid_op';
-  $handler->display->display_options['filters']['tid']['expose']['label'] = 'Fiscal Year';
-  $handler->display->display_options['filters']['tid']['expose']['operator'] = 'tid_op';
-  $handler->display->display_options['filters']['tid']['expose']['identifier'] = 'tid';
-  $handler->display->display_options['filters']['tid']['expose']['required'] = TRUE;
-  $handler->display->display_options['filters']['tid']['expose']['remember_roles'] = array(
+  $handler->display->display_options['filters']['field_fy_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['operator_id'] = 'field_fy_tid_op';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['label'] = 'Fiscal Year';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['operator'] = 'field_fy_tid_op';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['identifier'] = 'field_fy_tid';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
     3 => 0,
@@ -1141,8 +1140,8 @@ function crl_pp_resource_feat_views_default_views() {
     22 => 0,
     23 => 0,
   );
-  $handler->display->display_options['filters']['tid']['type'] = 'select';
-  $handler->display->display_options['filters']['tid']['vocabulary'] = 'fy';
+  $handler->display->display_options['filters']['field_fy_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_fy_tid']['vocabulary'] = 'fy';
 
   /* Display: PP Aggregate */
   $handler = $view->new_display('page', 'PP Aggregate', 'page_1');
@@ -1466,20 +1465,19 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'spp_resource' => 'spp_resource',
   );
-  /* Filter criterion: Content: Has taxonomy term */
-  $handler->display->display_options['filters']['tid']['id'] = 'tid';
-  $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
-  $handler->display->display_options['filters']['tid']['field'] = 'tid';
-  $handler->display->display_options['filters']['tid']['value'] = array(
+  /* Filter criterion: Content: Fiscal Year (field_fy) */
+  $handler->display->display_options['filters']['field_fy_tid']['id'] = 'field_fy_tid';
+  $handler->display->display_options['filters']['field_fy_tid']['table'] = 'field_data_field_fy';
+  $handler->display->display_options['filters']['field_fy_tid']['field'] = 'field_fy_tid';
+  $handler->display->display_options['filters']['field_fy_tid']['value'] = array(
     106 => '106',
   );
-  $handler->display->display_options['filters']['tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['tid']['expose']['operator_id'] = 'tid_op';
-  $handler->display->display_options['filters']['tid']['expose']['label'] = 'Fiscal Year';
-  $handler->display->display_options['filters']['tid']['expose']['operator'] = 'tid_op';
-  $handler->display->display_options['filters']['tid']['expose']['identifier'] = 'tid';
-  $handler->display->display_options['filters']['tid']['expose']['required'] = TRUE;
-  $handler->display->display_options['filters']['tid']['expose']['remember_roles'] = array(
+  $handler->display->display_options['filters']['field_fy_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['operator_id'] = 'field_fy_tid_op';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['label'] = 'Fiscal Year';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['operator'] = 'field_fy_tid_op';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['identifier'] = 'field_fy_tid';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
     3 => 0,
@@ -1504,8 +1502,8 @@ function crl_pp_resource_feat_views_default_views() {
     22 => 0,
     23 => 0,
   );
-  $handler->display->display_options['filters']['tid']['type'] = 'select';
-  $handler->display->display_options['filters']['tid']['vocabulary'] = 'fy';
+  $handler->display->display_options['filters']['field_fy_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_fy_tid']['vocabulary'] = 'fy';
   $handler->display->display_options['path'] = 'admin/pp/sp/aggregate';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'SPP Votes Aggregate';
@@ -1647,20 +1645,19 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'spp_resource' => 'spp_resource',
   );
-  /* Filter criterion: Content: Has taxonomy term */
-  $handler->display->display_options['filters']['tid']['id'] = 'tid';
-  $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
-  $handler->display->display_options['filters']['tid']['field'] = 'tid';
-  $handler->display->display_options['filters']['tid']['value'] = array(
+  /* Filter criterion: Content: Fiscal Year (field_fy) */
+  $handler->display->display_options['filters']['field_fy_tid']['id'] = 'field_fy_tid';
+  $handler->display->display_options['filters']['field_fy_tid']['table'] = 'field_data_field_fy';
+  $handler->display->display_options['filters']['field_fy_tid']['field'] = 'field_fy_tid';
+  $handler->display->display_options['filters']['field_fy_tid']['value'] = array(
     106 => '106',
   );
-  $handler->display->display_options['filters']['tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['tid']['expose']['operator_id'] = 'tid_op';
-  $handler->display->display_options['filters']['tid']['expose']['label'] = 'Fiscal Year';
-  $handler->display->display_options['filters']['tid']['expose']['operator'] = 'tid_op';
-  $handler->display->display_options['filters']['tid']['expose']['identifier'] = 'tid';
-  $handler->display->display_options['filters']['tid']['expose']['required'] = TRUE;
-  $handler->display->display_options['filters']['tid']['expose']['remember_roles'] = array(
+  $handler->display->display_options['filters']['field_fy_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['operator_id'] = 'field_fy_tid_op';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['label'] = 'Fiscal Year';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['operator'] = 'field_fy_tid_op';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['identifier'] = 'field_fy_tid';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
     3 => 0,
@@ -1685,8 +1682,8 @@ function crl_pp_resource_feat_views_default_views() {
     22 => 0,
     23 => 0,
   );
-  $handler->display->display_options['filters']['tid']['type'] = 'select';
-  $handler->display->display_options['filters']['tid']['vocabulary'] = 'fy';
+  $handler->display->display_options['filters']['field_fy_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_fy_tid']['vocabulary'] = 'fy';
   $handler->display->display_options['path'] = 'admin/pp/sp/aggregate/export';
   $handler->display->display_options['displays'] = array(
     'page_2' => 'page_2',
@@ -1772,6 +1769,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'table';
@@ -1968,21 +1966,20 @@ function crl_pp_resource_feat_views_default_views() {
     'spp_resource' => 'spp_resource',
   );
   $handler->display->display_options['filters']['type_1']['group'] = 1;
-  /* Filter criterion: Content: Has taxonomy term */
-  $handler->display->display_options['filters']['tid']['id'] = 'tid';
-  $handler->display->display_options['filters']['tid']['table'] = 'taxonomy_index';
-  $handler->display->display_options['filters']['tid']['field'] = 'tid';
-  $handler->display->display_options['filters']['tid']['value'] = array(
+  /* Filter criterion: Content: Fiscal Year (field_fy) */
+  $handler->display->display_options['filters']['field_fy_tid']['id'] = 'field_fy_tid';
+  $handler->display->display_options['filters']['field_fy_tid']['table'] = 'field_data_field_fy';
+  $handler->display->display_options['filters']['field_fy_tid']['field'] = 'field_fy_tid';
+  $handler->display->display_options['filters']['field_fy_tid']['value'] = array(
     106 => '106',
   );
-  $handler->display->display_options['filters']['tid']['group'] = 1;
-  $handler->display->display_options['filters']['tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['tid']['expose']['operator_id'] = 'tid_op';
-  $handler->display->display_options['filters']['tid']['expose']['label'] = 'Fiscal Year';
-  $handler->display->display_options['filters']['tid']['expose']['operator'] = 'tid_op';
-  $handler->display->display_options['filters']['tid']['expose']['identifier'] = 'tid';
-  $handler->display->display_options['filters']['tid']['expose']['required'] = TRUE;
-  $handler->display->display_options['filters']['tid']['expose']['remember_roles'] = array(
+  $handler->display->display_options['filters']['field_fy_tid']['group'] = 1;
+  $handler->display->display_options['filters']['field_fy_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['operator_id'] = 'field_fy_tid_op';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['label'] = 'Fiscal Year';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['operator'] = 'field_fy_tid_op';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['identifier'] = 'field_fy_tid';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
     3 => 0,
@@ -2007,8 +2004,8 @@ function crl_pp_resource_feat_views_default_views() {
     22 => 0,
     23 => 0,
   );
-  $handler->display->display_options['filters']['tid']['type'] = 'select';
-  $handler->display->display_options['filters']['tid']['vocabulary'] = 'fy';
+  $handler->display->display_options['filters']['field_fy_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_fy_tid']['vocabulary'] = 'fy';
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
