@@ -29,8 +29,10 @@ function crl_helpers_feat_filter_default_formats() {
         'weight' => -48,
         'status' => 1,
         'settings' => array(
-          'local_paths' => '/',
-          'protocol_style' => 'full',
+          'local_paths' => 'http://edesiderata.crl.edu
+https://edesiderata.crl.edu
+/',
+          'protocol_style' => 'proto-rel',
         ),
       ),
       'filter_html' => array(
@@ -84,8 +86,10 @@ function crl_helpers_feat_filter_default_formats() {
         'weight' => -48,
         'status' => 1,
         'settings' => array(
-          'local_paths' => '/',
-          'protocol_style' => 'path',
+          'local_paths' => 'http://edesiderata.crl.edu
+https://edesiderata.crl.edu
+/',
+          'protocol_style' => 'proto-rel',
         ),
       ),
       'filter_htmlcorrector' => array(
