@@ -128,7 +128,7 @@ function crl_helpers_page_build(&$page) {
       // If they did not pass the IP check then display a message and redirect
       // to the homepage.
       drupal_set_message(t('New account creation is limited to CRL members who are accessing this site either through an on-campus IP address or Proxy service.'), 'error');
-      watchdog('crl user', 'Registration access was denied because the user did not pass the member IP check');
+      watchdog('crl helpers', 'Registration access was denied because the user did not pass the member IP check');
       drupal_goto();
     }
   }
