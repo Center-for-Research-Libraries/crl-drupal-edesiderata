@@ -8,7 +8,7 @@
 
 /**
  * Implements hook_preprocess_views_view_fields__resource_lists().
- * 
+ *
  * Build custom variables for resource list rows.
  * @todo consider converting all this into pseudo fields on a teaser view mode.
  */
@@ -38,7 +38,7 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
     $vars['alert_active'] = isset($r_entity_wrapper->crl_resource_alert) ? $r_entity_wrapper->crl_resource_alert->value() : FALSE;
     // Get link.
     $vars['resource_title'] = isset($r_entity_wrapper->title) ? $r_entity_wrapper->title->value() : '';
-    $vars['resource_url'] = isset($r_entity_wrapper->url) ? $r_entity_wrapper->url->value() : ''; 
+    $vars['resource_url'] = isset($r_entity_wrapper->url) ? $r_entity_wrapper->url->value() : '';
     // Get summary.
     $body = isset($r_entity_wrapper->body) ? $r_entity_wrapper->body->value() : '';
     // Cleanup some formatting of our summary and make sure it's a reasonable
@@ -76,8 +76,8 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
 function theme_crl_resource_field_status_summary($vars) {
   $output = '';
   // Add editor link.
-  if (!empty($vars['edit_link'])) {
-    $output .= '<p style="text-align: right;"><strong>' . l(t('Edit CRL Offers & Status'), $vars['edit_link']['path'], $vars['edit_link']['options']) . '</a></strong></p>';
+  if (!empty($vars['action_links'])) {
+    $output .= render($vars['action_links']);
   }
   // Build the status display.
   $header = array('', t('Status'), t('Current'), t('Description'));
