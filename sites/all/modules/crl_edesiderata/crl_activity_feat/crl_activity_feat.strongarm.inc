@@ -89,6 +89,9 @@ function crl_activity_feat_strongarm() {
       'embedded' => array(
         'custom_settings' => TRUE,
       ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -97,6 +100,9 @@ function crl_activity_feat_strongarm() {
         ),
         'path' => array(
           'weight' => '14',
+        ),
+        'redirect' => array(
+          'weight' => '30',
         ),
       ),
       'display' => array(

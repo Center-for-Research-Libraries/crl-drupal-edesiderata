@@ -70,7 +70,7 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -154,6 +154,50 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-activity-field_activity_billing'
+  $field_instances['node-activity-field_activity_billing'] = array(
+    'bundle' => 'activity',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 15,
+      ),
+      'embedded' => array(
+        'label' => 'inline',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 1,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_activity_billing',
+    'label' => 'Billing',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 32,
+    ),
+  );
+
   // Exported field_instance: 'node-activity-field_activity_crl_status'
   $field_instances['node-activity-field_activity_crl_status'] = array(
     'bundle' => 'activity',
@@ -196,6 +240,53 @@ function crl_activity_feat_field_default_field_instances() {
       'settings' => array(),
       'type' => 'options_buttons',
       'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance: 'node-activity-field_activity_est_savings'
+  $field_instances['node-activity-field_activity_est_savings'] = array(
+    'bundle' => 'activity',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 17,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 3,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_activity_est_savings',
+    'label' => 'Estimated Savings',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 34,
     ),
   );
 
@@ -258,14 +349,14 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 6,
+        'weight' => 19,
       ),
       'embedded' => array(
         'label' => 'above',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 14,
+        'weight' => 6,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -289,7 +380,7 @@ function crl_activity_feat_field_default_field_instances() {
         'rows' => 8,
       ),
       'type' => 'text_textarea',
-      'weight' => 7,
+      'weight' => 36,
     ),
   );
 
@@ -350,14 +441,14 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 7,
+        'weight' => 20,
       ),
       'embedded' => array(
         'label' => 'above',
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 13,
+        'weight' => 5,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -384,7 +475,51 @@ function crl_activity_feat_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 8,
+      'weight' => 37,
+    ),
+  );
+
+  // Exported field_instance: 'node-activity-field_activity_licensing_type'
+  $field_instances['node-activity-field_activity_licensing_type'] = array(
+    'bundle' => 'activity',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 14,
+      ),
+      'embedded' => array(
+        'label' => 'inline',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_activity_licensing_type',
+    'label' => 'Licensing Type',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 31,
     ),
   );
 
@@ -405,7 +540,7 @@ function crl_activity_feat_field_default_field_instances() {
           'multiple_to' => '',
         ),
         'type' => 'date_default',
-        'weight' => 4,
+        'weight' => 16,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -418,7 +553,7 @@ function crl_activity_feat_field_default_field_instances() {
           'multiple_to' => '',
         ),
         'type' => 'date_default',
-        'weight' => 11,
+        'weight' => 2,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -451,7 +586,7 @@ function crl_activity_feat_field_default_field_instances() {
         'year_range' => '-3:+3',
       ),
       'type' => 'date_popup',
-      'weight' => 5,
+      'weight' => 33,
     ),
   );
 
@@ -469,7 +604,7 @@ function crl_activity_feat_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -521,7 +656,7 @@ function crl_activity_feat_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 9,
+        'weight' => 10,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -638,14 +773,14 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 5,
+        'weight' => 18,
       ),
       'embedded' => array(
         'label' => 'above',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 12,
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -669,7 +804,7 @@ function crl_activity_feat_field_default_field_instances() {
         'rows' => 8,
       ),
       'type' => 'text_textarea',
-      'weight' => 6,
+      'weight' => 35,
     ),
   );
 
@@ -684,7 +819,7 @@ function crl_activity_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 12,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -822,15 +957,18 @@ function crl_activity_feat_field_default_field_instances() {
   t('Add any general attachments that will only be visible to members, and will be shown independent of the CRL status.');
   t('Additional Notes');
   t('Attachments');
+  t('Billing');
   t('CRL Status');
   t('Enter a start and end date for this offer. If this offer should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.');
   t('Enter a start and end date for this trial. If this trial should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.');
+  t('Estimated Savings');
   t('General Offer and Status Notes');
   t('Grouping');
   t('How to Get Started');
   t('If this entry has relationships with other entries, add links to those entries here (one or more as needed).');
   t('If this entry represents an alias or derivative version of another one, add a link to the entry that should be considered the canonical (master) version. If you place a value in this field you will most likely leave almost all other fields blank for this entry.');
   t('Internal Notes');
+  t('Licensing Type');
   t('Multiple file attachments can be added here. The description value can be used to create a custom anchor (link) text for the file, otherwise the full filename will be shown.');
   t('Offer Details');
   t('Offer Duration');

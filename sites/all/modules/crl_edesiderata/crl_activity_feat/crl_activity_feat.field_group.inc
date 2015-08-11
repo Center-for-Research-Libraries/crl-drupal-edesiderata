@@ -27,6 +27,9 @@ function crl_activity_feat_field_group_info() {
       1 => 'field_activty_offer_terms',
       2 => 'field_activity_get_started',
       3 => 'field_activity_license_doc',
+      4 => 'field_activity_licensing_type',
+      5 => 'field_activity_billing',
+      6 => 'field_activity_est_savings',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -62,6 +65,9 @@ function crl_activity_feat_field_group_info() {
       1 => 'field_activty_offer_terms',
       2 => 'field_activity_get_started',
       3 => 'field_activity_license_doc',
+      4 => 'field_activity_licensing_type',
+      5 => 'field_activity_billing',
+      6 => 'field_activity_est_savings',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -97,6 +103,9 @@ function crl_activity_feat_field_group_info() {
       1 => 'field_activty_offer_terms',
       2 => 'field_activity_get_started',
       3 => 'field_activity_license_doc',
+      4 => 'field_activity_licensing_type',
+      5 => 'field_activity_billing',
+      6 => 'field_activity_est_savings',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -122,7 +131,7 @@ function crl_activity_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Trial Information',
-    'weight' => '6',
+    'weight' => '7',
     'children' => array(
       0 => 'field_activity_trial_duration',
       1 => 'field_trial_access_info',
