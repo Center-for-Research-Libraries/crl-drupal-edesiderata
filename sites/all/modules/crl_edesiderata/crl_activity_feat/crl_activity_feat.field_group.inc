@@ -30,6 +30,8 @@ function crl_activity_feat_field_group_info() {
       4 => 'field_activity_licensing_type',
       5 => 'field_activity_billing',
       6 => 'field_activity_est_savings',
+      7 => 'field_activity_license_duration',
+      8 => 'field_activity_pricing_type',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -68,6 +70,8 @@ function crl_activity_feat_field_group_info() {
       4 => 'field_activity_licensing_type',
       5 => 'field_activity_billing',
       6 => 'field_activity_est_savings',
+      7 => 'field_activity_license_duration',
+      8 => 'field_activity_pricing_type',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -106,6 +110,8 @@ function crl_activity_feat_field_group_info() {
       4 => 'field_activity_licensing_type',
       5 => 'field_activity_billing',
       6 => 'field_activity_est_savings',
+      7 => 'field_activity_license_duration',
+      8 => 'field_activity_pricing_type',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -229,7 +235,7 @@ function crl_activity_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'System Fields',
-    'weight' => '11',
+    'weight' => '12',
     'children' => array(),
     'format_type' => 'div',
     'format_settings' => array(

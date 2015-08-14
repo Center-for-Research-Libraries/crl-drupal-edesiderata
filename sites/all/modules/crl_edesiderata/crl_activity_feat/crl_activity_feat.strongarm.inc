@@ -102,7 +102,7 @@ function crl_activity_feat_strongarm() {
           'weight' => '14',
         ),
         'redirect' => array(
-          'weight' => '30',
+          'weight' => '15',
         ),
       ),
       'display' => array(

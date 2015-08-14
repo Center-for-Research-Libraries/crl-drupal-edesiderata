@@ -159,21 +159,21 @@ function crl_activity_feat_field_default_field_instances() {
     'bundle' => 'activity',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'The entity that will handle the billing for this offer.',
     'display' => array(
       'default' => array(
         'label' => 'inline',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 15,
+        'weight' => 21,
       ),
       'embedded' => array(
         'label' => 'inline',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 1,
+        'weight' => 7,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -194,7 +194,7 @@ function crl_activity_feat_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 32,
+      'weight' => 38,
     ),
   );
 
@@ -255,14 +255,14 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 17,
+        'weight' => 20,
       ),
       'embedded' => array(
         'label' => 'above',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 3,
+        'weight' => 6,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -286,7 +286,7 @@ function crl_activity_feat_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 34,
+      'weight' => 37,
     ),
   );
 
@@ -349,14 +349,14 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 19,
+        'weight' => 23,
       ),
       'embedded' => array(
         'label' => 'above',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 6,
+        'weight' => 10,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -380,7 +380,7 @@ function crl_activity_feat_field_default_field_instances() {
         'rows' => 8,
       ),
       'type' => 'text_textarea',
-      'weight' => 36,
+      'weight' => 40,
     ),
   );
 
@@ -441,14 +441,14 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 20,
+        'weight' => 24,
       ),
       'embedded' => array(
         'label' => 'above',
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 5,
+        'weight' => 9,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -475,7 +475,74 @@ function crl_activity_feat_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 37,
+      'weight' => 41,
+    ),
+  );
+
+  // Exported field_instance: 'node-activity-field_activity_license_duration'
+  $field_instances['node-activity-field_activity_license_duration'] = array(
+    'bundle' => 'activity',
+    'deleted' => 0,
+    'description' => 'If the license related to this offer has a specific duration associated with it, and that duration is universally applicable, enter it here. This could be left blank for offers that do not follow a specific time-frame (once-off purchases, subscriptions with variable start and end dates, etc.).',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'date',
+        'settings' => array(
+          'format_type' => 'long',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+        ),
+        'type' => 'date_default',
+        'weight' => 18,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'module' => 'date',
+        'settings' => array(
+          'format_type' => 'long',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+        ),
+        'type' => 'date_default',
+        'weight' => 4,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_activity_license_duration',
+    'label' => 'Licensing Duration',
+    'required' => 0,
+    'settings' => array(
+      'default_value' => 'now',
+      'default_value2' => 'same',
+      'default_value_code' => '',
+      'default_value_code2' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'date',
+      'settings' => array(
+        'display_all_day' => 0,
+        'increment' => 15,
+        'input_format' => 'Y-m-d H:i:s',
+        'input_format_custom' => '',
+        'label_position' => 'above',
+        'text_parts' => array(),
+        'year_range' => '-3:+3',
+      ),
+      'type' => 'date_popup',
+      'weight' => 35,
     ),
   );
 
@@ -487,18 +554,18 @@ function crl_activity_feat_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'inline',
+        'label' => 'above',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 14,
+        'weight' => 17,
       ),
       'embedded' => array(
-        'label' => 'inline',
+        'label' => 'above',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 0,
+        'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -509,7 +576,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_activity_licensing_type',
-    'label' => 'Licensing Type',
+    'label' => 'Licensing Type(s)',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -519,7 +586,7 @@ function crl_activity_feat_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 31,
+      'weight' => 34,
     ),
   );
 
@@ -527,7 +594,7 @@ function crl_activity_feat_field_default_field_instances() {
   $field_instances['node-activity-field_activity_offer_duration'] = array(
     'bundle' => 'activity',
     'deleted' => 0,
-    'description' => 'Enter a start and end date for this offer. If this offer should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.',
+    'description' => 'Enter a start and end date during which this offer is open for enrollment (active). If this offer should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -587,6 +654,50 @@ function crl_activity_feat_field_default_field_instances() {
       ),
       'type' => 'date_popup',
       'weight' => 33,
+    ),
+  );
+
+  // Exported field_instance: 'node-activity-field_activity_pricing_type'
+  $field_instances['node-activity-field_activity_pricing_type'] = array(
+    'bundle' => 'activity',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 19,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 5,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_activity_pricing_type',
+    'label' => 'Pricing Type(s)',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 36,
     ),
   );
 
@@ -773,14 +884,14 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 18,
+        'weight' => 22,
       ),
       'embedded' => array(
         'label' => 'above',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 4,
+        'weight' => 8,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -804,7 +915,7 @@ function crl_activity_feat_field_default_field_instances() {
         'rows' => 8,
       ),
       'type' => 'text_textarea',
-      'weight' => 35,
+      'weight' => 39,
     ),
   );
 
@@ -850,7 +961,7 @@ function crl_activity_feat_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 12,
+      'weight' => 13,
     ),
   );
 
@@ -959,20 +1070,23 @@ function crl_activity_feat_field_default_field_instances() {
   t('Attachments');
   t('Billing');
   t('CRL Status');
-  t('Enter a start and end date for this offer. If this offer should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.');
+  t('Enter a start and end date during which this offer is open for enrollment (active). If this offer should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.');
   t('Enter a start and end date for this trial. If this trial should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.');
   t('Estimated Savings');
   t('General Offer and Status Notes');
   t('Grouping');
   t('How to Get Started');
+  t('If the license related to this offer has a specific duration associated with it, and that duration is universally applicable, enter it here. This could be left blank for offers that do not follow a specific time-frame (once-off purchases, subscriptions with variable start and end dates, etc.).');
   t('If this entry has relationships with other entries, add links to those entries here (one or more as needed).');
   t('If this entry represents an alias or derivative version of another one, add a link to the entry that should be considered the canonical (master) version. If you place a value in this field you will most likely leave almost all other fields blank for this entry.');
   t('Internal Notes');
-  t('Licensing Type');
+  t('Licensing Duration');
+  t('Licensing Type(s)');
   t('Multiple file attachments can be added here. The description value can be used to create a custom anchor (link) text for the file, otherwise the full filename will be shown.');
   t('Offer Details');
   t('Offer Duration');
   t('Offer and License Document(s)');
+  t('Pricing Type(s)');
   t('Provide some brief notes about what users should do to take advantage of this offer (who to contact, etc).');
   t('Provide the full text of the trial URL (e.g. http://www.trial.com/trial?id=123). If you enter a valid URL it will be automatically converted into a link when shown to users.');
   t('Related resource');
@@ -980,6 +1094,7 @@ function crl_activity_feat_field_default_field_instances() {
   t('See Also');
   t('Select the status values that <em>currently</em> apply. Note that any "Offer Information" or "Trial Information" details entered below will not be displayed to users unless the respective status is enabled here.');
   t('Select which CRL group(s) this offer should be visible to. Use ctrl+click to choose multiple. Note that the "CRL Members" option is special in that deselecting it will not remove member view access (CRL members can always view <strong>all</strong> offers). However a special note will be displayed to clarify that the offer is group-exclusive when the "CRL Members" option is not selected.');
+  t('The entity that will handle the billing for this offer.');
   t('This information is for internal use only and is not displayed to any site users.');
   t('Trial Duration');
   t('Trial URL');

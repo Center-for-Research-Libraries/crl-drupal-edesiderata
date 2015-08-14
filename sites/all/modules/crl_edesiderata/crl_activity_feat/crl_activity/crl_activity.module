@@ -127,7 +127,7 @@ function crl_activity_date_combo_process_alter(&$element, $form_state, $context)
   // end date match, it should hide the end date. This makes good sense, but
   // when the field is empty we want to override this behavior so that the end
   // date option is always shown by default.
-  if (($element['#field_name'] == 'field_activity_offer_duration' || $element['#field_name'] == 'field_activity_trial_duration') &&
+  if (($element['#field_name'] == 'field_activity_offer_duration' || $element['#field_name'] == 'field_activity_trial_duration' || $element['#field_name'] == 'field_activity_license_duration') &&
       (empty($element['#default_value']['value']) && empty($element['#default_value']['value2']))) {
     $element['show_todate']['#default_value'] = TRUE;
   }
