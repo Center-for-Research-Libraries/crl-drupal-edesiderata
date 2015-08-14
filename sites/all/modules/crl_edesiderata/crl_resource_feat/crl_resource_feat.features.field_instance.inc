@@ -568,6 +568,91 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-resource-field_resource_activity_history'
+  $field_instances['node-resource-field_resource_activity_history'] = array(
+    'bundle' => 'resource',
+    'default_value' => array(
+      0 => array(
+        'vname' => 'activity_history|default',
+        'vargs' => '[node:nid]',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'viewfield',
+        'settings' => array(),
+        'type' => 'viewfield_default',
+        'weight' => 1001,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_resource_activity_history',
+    'label' => 'Offer History',
+    'required' => 0,
+    'settings' => array(
+      'allowed_views' => array(
+        'activity_history' => 'activity_history',
+        'admin_votes' => 0,
+        'comment_summary' => 0,
+        'content_summary' => 0,
+        'crl_messages' => 0,
+        'crl_staff' => 0,
+        'csv_exports' => 0,
+        'entityform_type_list' => 0,
+        'entityforms' => 0,
+        'feeds_log' => 0,
+        'institution_admin_lists' => 0,
+        'message' => 0,
+        'mydes_lists' => 0,
+        'mydes_saved_searches' => 0,
+        'pp_nominations' => 0,
+        'pp_resource_export' => 0,
+        'pp_resource_lists' => 0,
+        'pp_resource_votes_admin' => 0,
+        'pp_resource_votes_admin_details_' => 0,
+        'provider_lists' => 0,
+        'resource_dashboard' => 0,
+        'resource_lists' => 0,
+        'resource_votes_admin' => 0,
+        'resource_votes_admin_details_' => 0,
+        'reviews_export' => 0,
+        'subscribe_node' => 0,
+        'subscribe_node_email' => 0,
+        'subscribe_taxonomy_term' => 0,
+        'subscribe_taxonomy_term_email' => 0,
+        'subscribe_user' => 0,
+        'subscribe_user_email' => 0,
+        'temp_provider_contact_list' => 0,
+        'temp_provider_contacts' => 0,
+        'user_entityforms' => 0,
+      ),
+      'force_default' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'viewfield',
+      'settings' => array(),
+      'type' => 'viewfield_select',
+      'weight' => 108,
+    ),
+  );
+
   // Exported field_instance: 'node-resource-field_resource_analysis_notes'
   $field_instances['node-resource-field_resource_analysis_notes'] = array(
     'bundle' => 'resource',
@@ -2596,6 +2681,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('Marc Records');
   t('Metadata');
   t('Metadata Standards');
+  t('Offer History');
   t('Overview');
   t('Personalisation');
   t('Platform and user interface');
