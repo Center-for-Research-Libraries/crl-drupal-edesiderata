@@ -49,30 +49,18 @@ function crl_activity_feat_views_default_views() {
       'empty_column' => 0,
     ),
   );
-  /* Field: Content: Post date */
-  $handler->display->display_options['fields']['created']['id'] = 'created';
-  $handler->display->display_options['fields']['created']['table'] = 'node';
-  $handler->display->display_options['fields']['created']['field'] = 'created';
-  $handler->display->display_options['fields']['created']['label'] = 'Offer posted';
-  $handler->display->display_options['fields']['created']['date_format'] = 'medium_no_time';
-  $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
   /* Field: Content: Offer Duration */
   $handler->display->display_options['fields']['field_activity_offer_duration']['id'] = 'field_activity_offer_duration';
   $handler->display->display_options['fields']['field_activity_offer_duration']['table'] = 'field_data_field_activity_offer_duration';
   $handler->display->display_options['fields']['field_activity_offer_duration']['field'] = 'field_activity_offer_duration';
+  $handler->display->display_options['fields']['field_activity_offer_duration']['label'] = 'Offer Ended';
   $handler->display->display_options['fields']['field_activity_offer_duration']['settings'] = array(
     'format_type' => 'medium_no_time',
-    'fromto' => 'both',
+    'fromto' => 'value2',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  /* Field: Field: CRL Status */
-  $handler->display->display_options['fields']['field_activity_crl_status']['id'] = 'field_activity_crl_status';
-  $handler->display->display_options['fields']['field_activity_crl_status']['table'] = 'field_data_field_activity_crl_status';
-  $handler->display->display_options['fields']['field_activity_crl_status']['field'] = 'field_activity_crl_status';
-  $handler->display->display_options['fields']['field_activity_crl_status']['label'] = 'Final Status';
-  $handler->display->display_options['fields']['field_activity_crl_status']['delta_offset'] = '0';
   /* Field: Content: Grouping */
   $handler->display->display_options['fields']['field_activity_grouping']['id'] = 'field_activity_grouping';
   $handler->display->display_options['fields']['field_activity_grouping']['table'] = 'field_data_field_activity_grouping';
@@ -133,7 +121,6 @@ function crl_activity_feat_views_default_views() {
   $handler->display->display_options['filters']['field_activity_crl_status_value']['field'] = 'field_activity_crl_status_value';
   $handler->display->display_options['filters']['field_activity_crl_status_value']['value'] = array(
     'past_license_offer' => 'past_license_offer',
-    'inactive_declined' => 'inactive_declined',
   );
   $export['activity_history'] = $view;
 
