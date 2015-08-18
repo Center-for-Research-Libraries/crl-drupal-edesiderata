@@ -158,7 +158,7 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'CRL Offers & Status',
       'instance_settings' => array(
-        'id' => '',
+        'id' => 'crl-offers-status',
         'classes' => ' group-crl-details field-group-htab',
         'description' => '',
       ),

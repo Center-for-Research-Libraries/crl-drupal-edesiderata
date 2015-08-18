@@ -2,7 +2,7 @@
 
 
 // Define the fragment (anchor) for a resoruce activity tab
-define('CRL_ACTIVITY_RESOURCE_ACTIVITY_FRAGMENT', 'node_resource_full_group_crl_details');
+define('CRL_ACTIVITY_RESOURCE_ACTIVITY_FRAGMENT', 'crl-offers-status');
 
 
 /**

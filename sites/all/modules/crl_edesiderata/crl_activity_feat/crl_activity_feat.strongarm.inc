@@ -87,7 +87,7 @@ function crl_activity_feat_strongarm() {
         'custom_settings' => FALSE,
       ),
       'embedded' => array(
-        'custom_settings' => TRUE,
+        'custom_settings' => FALSE,
       ),
       'print' => array(
         'custom_settings' => FALSE,

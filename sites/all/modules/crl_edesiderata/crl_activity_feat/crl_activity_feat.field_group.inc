@@ -21,7 +21,7 @@ function crl_activity_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Offer Information',
-    'weight' => '5',
+    'weight' => '4',
     'children' => array(
       0 => 'field_activity_offer_duration',
       1 => 'field_activty_offer_terms',
@@ -137,7 +137,7 @@ function crl_activity_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Trial Information',
-    'weight' => '7',
+    'weight' => '5',
     'children' => array(
       0 => 'field_activity_trial_duration',
       1 => 'field_trial_access_info',

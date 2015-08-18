@@ -526,7 +526,7 @@ img.from-provider-icon {
 
 /* Fieldgroups need some extra whitespace */
 .field-group-div {
-  padding-bottom: 2em;
+  padding-bottom: 1em;
 }
 
 /* Styles for the "publisher provided" source legend */
@@ -973,6 +973,12 @@ body.page-node-edit .end-date-wrapper .form-item label {
   float: left;
   padding-right: 20px;
   padding-top: 0px;
+}
+
+/* Fieldset legends, used mostly on edit screens, should be bold to better
+match normal field labels */
+.fieldset-legend {
+  font-weight: bold;
 }
 
 
