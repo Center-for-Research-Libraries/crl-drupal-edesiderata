@@ -623,33 +623,32 @@ function crl_resource_activity_get_action_links($entity) {
   $wrappers = crl_resource_get_wrappers($entity);
   $r_wrapper = $wrappers['r_entity_wrapper'];
   if (!empty($wrappers['a_entity_wrappers'])) {
-    // Activity already exists. Grab the first activty entry if the current
-    // user has edit access to it.
+    // Activity already exists. Grab the first activty entry and its status.
     $a_wrapper = reset($wrappers['a_entity_wrappers']);
+    $status = isset($a_wrapper->field_activity_crl_status) ? $a_wrapper->field_activity_crl_status->value() : array();
+    $inactive = array_intersect($status, array('past_license_offer', 'inactive_declined')) ? TRUE : FALSE;
+    // If the current user has access to edit the most recent activity, we add
+    // an edit link.
     if (entity_access('update', 'node', $a_wrapper->value())) {
       $links[] = array(
-        'title' => t('Edit Current Offer & Status'),
+        'title' => $inactive ? t('Edit or Re-open Closed Offer') : t('Edit Current Offer'),
         'href' => 'node/' . $a_wrapper->value()->nid . '/edit',
         'localized_options' => array('query' => array('activity_title' => rawurlencode('CRL Activity: ' . check_plain($r_wrapper->value()->title)))),
       );
     }
-    // Also see if the most current activity is active. If not we can add a
-    // create link.
-    $status = isset($a_wrapper->field_activity_crl_status) ? $a_wrapper->field_activity_crl_status->value() : array();
-    $inactive_status = array('past_license_offer', 'inactive_declined');
-    if ($status && array_intersect($status, $inactive_status)) {
+    // If the most current activity is inactive we can also add a create link.
+    if ($inactive) {
       $allow_new = TRUE;
     }
   }
+  // If no activity exists we can add a create link.
   else {
     $allow_new = TRUE;
   }
   // If a create link is allowed, add it if the user has create rights.
   if ($allow_new && entity_access('create', 'node')) {
-    // If new activity is allowed and the user has rights to create some, we
-    // build an appropriate add content link.
     $links[] = array(
-      'title' => t('+ Create New Offer & Status'),
+      'title' => t('+ Create New Offer'),
       'href' => 'node/add/activity',
       'localized_options' => array('query' => array('activity_title' => rawurlencode('CRL Activity: ' . check_plain($r_wrapper->value()->title)), 'resource_id' => $r_wrapper->value()->nid)),
     );
