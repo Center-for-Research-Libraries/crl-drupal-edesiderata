@@ -5,3 +5,57 @@
  * Install, update and uninstall functions for the crl_activity module.
  */
 
+
+/**
+ * Capture data from field_access_trial_url in new field_access_trial_link and
+ * from field_trial_access_info in field_activity_trial_access.
+ */
+function crl_activity_update_7100() {
+  $query = new EntityFieldQuery();
+  $query
+      ->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'activity')
+      ->addTag('DANGEROUS_ACCESS_CHECK_OPT_OUT'); // Needed for drush/cron execution.
+  $result = $query->execute();
+  if (!empty($result['node'])) {
+    $count_url_change = 0;
+    $count_acccess_info_change = 0;
+    foreach ($result['node'] as $data) {
+      $node = node_load($data->nid);
+      $save = FALSE;
+      // Try to preserve the original updated timestamp.
+      // @see crl_common_node_presave()
+      if (isset($node->changed)) {
+        $node->manual_changed_timestamp = $node->changed;
+      }
+      $wrapper = entity_metadata_wrapper('node', $node);
+      // Handle trail URL as needed.
+      if (isset($wrapper->field_access_trial_url) && $wrapper->field_access_trial_url->value()) {
+        $url = $wrapper->field_access_trial_url->raw();
+        // We need to do our best to process the free-markup data into a
+        // raw URL.
+        $url = strip_tags($url['value']);
+        $url = htmlspecialchars_decode($url);
+        $link = array(
+          'url' => $url,
+          'title' => '',
+          'attributes' => array()
+        );
+        $wrapper->field_activity_trial_link->set($link);
+        $save = TRUE;
+        $count_url_change++;
+      }
+      // Handle access info field as needed.
+      if (isset($wrapper->field_trial_access_info) && $wrapper->field_trial_access_info->value()) {
+        $wrapper->field_activity_trial_access->set($wrapper->field_trial_access_info->value());
+        $save = TRUE;
+        $count_acccess_info_change++;
+      }
+      if ($save) {
+        $wrapper->save();
+      }
+    }
+    watchdog('crl activity', 'Copied field_access_trial_url value to field_access_trial_link for @count records.', array('@count' => $count_url_change));
+    watchdog('crl activity', 'Copied field_trial_access_info value to field_trial_access_info for @count records.', array('@count' => $count_acccess_info_change));
+  }
+}
