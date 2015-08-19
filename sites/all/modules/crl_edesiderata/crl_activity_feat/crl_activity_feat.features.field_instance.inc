@@ -10,53 +10,6 @@
 function crl_activity_feat_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-activity-field_access_trial_url'
-  $field_instances['node-activity-field_access_trial_url'] = array(
-    'bundle' => 'activity',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Provide the full text of the trial URL (e.g. http://www.trial.com/trial?id=123). If you enter a valid URL it will be automatically converted into a link when shown to users.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 8,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 14,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_access_trial_url',
-    'label' => 'Trial URL',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-      'wysiwyg_unload' => 1,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 1,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 11,
-    ),
-  );
-
   // Exported field_instance: 'node-activity-field_activity_add_notes'
   $field_instances['node-activity-field_activity_add_notes'] = array(
     'bundle' => 'activity',
@@ -1106,52 +1059,6 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_trial_access_info'
-  $field_instances['node-activity-field_trial_access_info'] = array(
-    'bundle' => 'activity',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 9,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 13,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_trial_access_info',
-    'label' => 'Access Information',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 8,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 12,
-    ),
-  );
-
   // Translatables
   // Included for use with string extractors like potx.
   t('<strong>This field will be visible to member users.</strong> It can be used to show general notes about CRL work that are not specifically linked to an offer or trial. The content entered here will always display no matter what status values are set above.');
@@ -1180,7 +1087,6 @@ function crl_activity_feat_field_default_field_instances() {
   t('Pricing Type(s)');
   t('Provide some brief notes about what users should do to take advantage of this offer (who to contact, etc).');
   t('Provide the full text of the trial URL (e.g. http://www.trial.com/trial?id=123).');
-  t('Provide the full text of the trial URL (e.g. http://www.trial.com/trial?id=123). If you enter a valid URL it will be automatically converted into a link when shown to users.');
   t('Related resource');
   t('See');
   t('See Also');
@@ -1190,7 +1096,6 @@ function crl_activity_feat_field_default_field_instances() {
   t('This information is for internal use only and is not displayed to any site users.');
   t('Trial Duration');
   t('Trial Link');
-  t('Trial URL');
   t('Typically this value will be auto-filled for you.');
   t('Use this space to add any general notes that are not specific to the offer or trial information above, and should be shown at the end of the page.');
 
