@@ -19,10 +19,9 @@ function crl_activity_feat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 7,
+        'type' => 'hidden',
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -54,7 +53,7 @@ function crl_activity_feat_field_default_field_instances() {
         'rows' => 1,
       ),
       'type' => 'text_textarea',
-      'weight' => 9,
+      'weight' => 11,
     ),
   );
 
@@ -70,7 +69,7 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 6,
+        'weight' => 5,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -116,7 +115,7 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 3,
+        'weight' => 2,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -211,7 +210,7 @@ function crl_activity_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 11,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -301,7 +300,7 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 2,
+        'weight' => 1,
       ),
       'embedded' => array(
         'label' => 'hidden',
@@ -398,7 +397,7 @@ function crl_activity_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 13,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -714,7 +713,7 @@ function crl_activity_feat_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 7,
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -766,7 +765,7 @@ function crl_activity_feat_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 8,
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -801,6 +800,46 @@ function crl_activity_feat_field_default_field_instances() {
       ),
       'type' => 'entityreference_autocomplete',
       'weight' => 5,
+    ),
+  );
+
+  // Exported field_instance: 'node-activity-field_activity_trial_access'
+  $field_instances['node-activity-field_activity_trial_access'] = array(
+    'bundle' => 'activity',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 6,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_activity_trial_access',
+    'label' => 'Access Information',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 9,
     ),
   );
 
@@ -871,6 +910,63 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-activity-field_activity_trial_link'
+  $field_instances['node-activity-field_activity_trial_link'] = array(
+    'bundle' => 'activity',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Provide the full text of the trial URL (e.g. http://www.trial.com/trial?id=123).',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'link',
+        'settings' => array(),
+        'type' => 'link_default',
+        'weight' => 8,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_activity_trial_link',
+    'label' => 'Trial Link',
+    'required' => 0,
+    'settings' => array(
+      'absolute_url' => 1,
+      'attributes' => array(
+        'class' => '',
+        'configurable_class' => 0,
+        'configurable_title' => 0,
+        'rel' => '',
+        'target' => 'default',
+        'title' => '',
+      ),
+      'display' => array(
+        'url_cutoff' => 80,
+      ),
+      'enable_tokens' => 1,
+      'rel_remove' => 'default',
+      'title' => 'none',
+      'title_label_use_field_label' => 0,
+      'title_maxlength' => 128,
+      'title_value' => '',
+      'url' => 0,
+      'user_register_form' => FALSE,
+      'validate_url' => 1,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'link',
+      'settings' => array(),
+      'type' => 'link_field',
+      'weight' => 10,
+    ),
+  );
+
   // Exported field_instance: 'node-activity-field_activty_offer_terms'
   $field_instances['node-activity-field_activty_offer_terms'] = array(
     'bundle' => 'activity',
@@ -929,7 +1025,7 @@ function crl_activity_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 12,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -960,7 +1056,7 @@ function crl_activity_feat_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 13,
+      'weight' => 12,
     ),
   );
 
@@ -975,7 +1071,7 @@ function crl_activity_feat_field_default_field_instances() {
         'label' => 'inline',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 1,
+        'weight' => 10,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1019,10 +1115,9 @@ function crl_activity_feat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 6,
+        'type' => 'hidden',
+        'weight' => 9,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1053,7 +1148,7 @@ function crl_activity_feat_field_default_field_instances() {
         'rows' => 8,
       ),
       'type' => 'text_textarea',
-      'weight' => 8,
+      'weight' => 12,
     ),
   );
 
@@ -1084,6 +1179,7 @@ function crl_activity_feat_field_default_field_instances() {
   t('Offer and License Document(s)');
   t('Pricing Type(s)');
   t('Provide some brief notes about what users should do to take advantage of this offer (who to contact, etc).');
+  t('Provide the full text of the trial URL (e.g. http://www.trial.com/trial?id=123).');
   t('Provide the full text of the trial URL (e.g. http://www.trial.com/trial?id=123). If you enter a valid URL it will be automatically converted into a link when shown to users.');
   t('Related resource');
   t('See');
@@ -1093,6 +1189,7 @@ function crl_activity_feat_field_default_field_instances() {
   t('The entity that will handle the billing for this offer.');
   t('This information is for internal use only and is not displayed to any site users.');
   t('Trial Duration');
+  t('Trial Link');
   t('Trial URL');
   t('Typically this value will be auto-filled for you.');
   t('Use this space to add any general notes that are not specific to the offer or trial information above, and should be shown at the end of the page.');
