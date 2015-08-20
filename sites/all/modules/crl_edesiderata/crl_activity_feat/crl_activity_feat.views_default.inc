@@ -53,9 +53,9 @@ function crl_activity_feat_views_default_views() {
   $handler->display->display_options['fields']['field_activity_offer_duration']['id'] = 'field_activity_offer_duration';
   $handler->display->display_options['fields']['field_activity_offer_duration']['table'] = 'field_data_field_activity_offer_duration';
   $handler->display->display_options['fields']['field_activity_offer_duration']['field'] = 'field_activity_offer_duration';
-  $handler->display->display_options['fields']['field_activity_offer_duration']['label'] = 'Offer Ended';
+  $handler->display->display_options['fields']['field_activity_offer_duration']['label'] = 'Offer End';
   $handler->display->display_options['fields']['field_activity_offer_duration']['settings'] = array(
-    'format_type' => 'medium_no_time',
+    'format_type' => 'medium',
     'fromto' => 'value2',
     'multiple_number' => '',
     'multiple_from' => '',
@@ -72,10 +72,11 @@ function crl_activity_feat_views_default_views() {
   $handler->display->display_options['fields']['field_activity_est_savings']['id'] = 'field_activity_est_savings';
   $handler->display->display_options['fields']['field_activity_est_savings']['table'] = 'field_data_field_activity_est_savings';
   $handler->display->display_options['fields']['field_activity_est_savings']['field'] = 'field_activity_est_savings';
-  /* Field: Content: Billing */
+  /* Field: Content: Billing Handling */
   $handler->display->display_options['fields']['field_activity_billing']['id'] = 'field_activity_billing';
   $handler->display->display_options['fields']['field_activity_billing']['table'] = 'field_data_field_activity_billing';
   $handler->display->display_options['fields']['field_activity_billing']['field'] = 'field_activity_billing';
+  $handler->display->display_options['fields']['field_activity_billing']['label'] = 'Billing';
   /* Field: Content: Offer and License Document(s) */
   $handler->display->display_options['fields']['field_activity_license_doc']['id'] = 'field_activity_license_doc';
   $handler->display->display_options['fields']['field_activity_license_doc']['table'] = 'field_data_field_activity_license_doc';

@@ -29,7 +29,7 @@ function crl_activity_feat_views_api($module = NULL, $api = NULL) {
 function crl_activity_feat_node_info() {
   $items = array(
     'activity' => array(
-      'name' => t('Offer Cycle'),
+      'name' => t('Licensing Cycle'),
       'base' => 'node_content',
       'description' => t('This is a container for CRL offer, status and offer information that relates to a specific resource entry. <strong>You will typically not create new content of this type from the "add content" page and should instead navigate to the related resource and click on the "Edit offer & status details" link</strong>.'),
       'has_title' => '1',
