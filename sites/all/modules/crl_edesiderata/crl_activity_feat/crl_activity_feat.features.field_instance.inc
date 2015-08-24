@@ -552,7 +552,7 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'date',
         'settings' => array(
           'format_type' => 'medium',
-          'fromto' => 'both',
+          'fromto' => 'value2',
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
@@ -807,7 +807,7 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'date',
         'settings' => array(
           'format_type' => 'medium',
-          'fromto' => 'both',
+          'fromto' => 'value2',
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
