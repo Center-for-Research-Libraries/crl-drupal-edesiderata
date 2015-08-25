@@ -87,7 +87,7 @@ function crl_activity_feat_strongarm() {
         'custom_settings' => FALSE,
       ),
       'embedded' => array(
-        'custom_settings' => FALSE,
+        'custom_settings' => TRUE,
       ),
       'print' => array(
         'custom_settings' => FALSE,
@@ -108,7 +108,7 @@ function crl_activity_feat_strongarm() {
       'display' => array(
         'pseudo_field_activity_group_notice' => array(
           'default' => array(
-            'weight' => '0',
+            'weight' => '2',
             'visible' => TRUE,
           ),
           'embedded' => array(

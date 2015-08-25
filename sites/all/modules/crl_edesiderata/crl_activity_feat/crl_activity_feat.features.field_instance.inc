@@ -22,7 +22,7 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -68,7 +68,7 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 2,
+        'weight' => 4,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -160,16 +160,17 @@ function crl_activity_feat_field_default_field_instances() {
     'description' => 'Select the status values that <em>currently</em> apply. Note that any "Offer Information" or "Trial Information" details entered below will not be displayed to users unless the respective status is enabled here.',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
+        'module' => 'list',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 11,
+        'type' => 'list_default',
+        'weight' => 1,
       ),
       'embedded' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 11,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -253,7 +254,7 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 1,
+        'weight' => 3,
       ),
       'embedded' => array(
         'label' => 'hidden',
@@ -297,10 +298,9 @@ function crl_activity_feat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 25,
+        'type' => 'hidden',
+        'weight' => 9,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -350,13 +350,13 @@ function crl_activity_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 15,
       ),
       'embedded' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 12,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -389,10 +389,9 @@ function crl_activity_feat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'file',
         'settings' => array(),
-        'type' => 'file_default',
-        'weight' => 26,
+        'type' => 'hidden',
+        'weight' => 10,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -453,7 +452,7 @@ function crl_activity_feat_field_default_field_instances() {
         'label' => 'above',
         'module' => 'date',
         'settings' => array(
-          'format_type' => 'long',
+          'format_type' => 'medium',
           'fromto' => 'both',
           'multiple_from' => '',
           'multiple_number' => '',
@@ -564,8 +563,8 @@ function crl_activity_feat_field_default_field_instances() {
         'label' => 'above',
         'module' => 'date',
         'settings' => array(
-          'format_type' => 'long',
-          'fromto' => 'both',
+          'format_type' => 'medium',
+          'fromto' => 'value2',
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
@@ -666,7 +665,7 @@ function crl_activity_feat_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 6,
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -718,7 +717,7 @@ function crl_activity_feat_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -765,10 +764,15 @@ function crl_activity_feat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
+        'type' => 'hidden',
         'weight' => 6,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 8,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -804,23 +808,16 @@ function crl_activity_feat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'date',
-        'settings' => array(
-          'format_type' => 'medium',
-          'fromto' => 'value2',
-          'multiple_from' => '',
-          'multiple_number' => '',
-          'multiple_to' => '',
-        ),
-        'type' => 'date_default',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 5,
       ),
       'embedded' => array(
         'label' => 'above',
         'module' => 'date',
         'settings' => array(
-          'format_type' => 'long',
-          'fromto' => 'both',
+          'format_type' => 'medium',
+          'fromto' => 'value2',
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
@@ -872,10 +869,15 @@ function crl_activity_feat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'link',
         'settings' => array(),
-        'type' => 'link_default',
+        'type' => 'hidden',
         'weight' => 8,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 9,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -978,13 +980,13 @@ function crl_activity_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 14,
       ),
       'embedded' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 10,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1022,15 +1024,18 @@ function crl_activity_feat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'inline',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 10,
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => 1,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 0,
       ),
       'embedded' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 13,
       ),
       'teaser' => array(
         'label' => 'above',

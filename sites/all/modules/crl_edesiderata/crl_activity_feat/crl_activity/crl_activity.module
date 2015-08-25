@@ -55,7 +55,7 @@ function crl_activity_node_view($node, $view_mode, $langcode) {
       if (!empty($node->content[$field])) {
         // First set the base label that we'll use for public display. This
         // will typically just show the end date part of the duration.
-        $word = t('Ends');
+        $word = t('End');
         $items = field_get_items('node', $node, $field);
         // Matching value and value2 signifies no end date. In this case change
         // "Offer End" to "Offer Start".
@@ -205,26 +205,28 @@ function crl_activity_activity_node_form_validate(&$form, &$form_state) {
 function crl_activity_node_view_alter(&$build) {
   // Checks for activity nodes.
   if ($build['#bundle'] == 'activity') {
-    $entity_wrapper = entity_metadata_wrapper('node', $build['#node']);
-    $status_array = isset($entity_wrapper->field_activity_crl_status) ? $entity_wrapper->field_activity_crl_status->value() : array();
-    // Our hide logic is based on fieldgroups. This means that any view modes
-    // that don't nest the fields we want to hide within a fieldgroup will NOT
-    // be altered (the fields may still be shown).
-    $hide_groups = array();
-    if (array_search('license_available', $status_array) === FALSE) {
-      $hide_groups[] = 'group_activity_offer';
-    }
-    if (array_search('trial_access_available', $status_array) === FALSE) {
-      $hide_groups[] = 'group_activity_trial';
-    }
-    // Lookup the children within the fieldgroups to hide, and set the #access
-    // flag to FALSE for each respective field. This should ensure the
-    // appropriate fields are hidden without needing to change anything
-    // structurally.
-    foreach ($hide_groups as $group_to_hide) {
-      if (!empty($build['#fieldgroups'][$group_to_hide])) {
-        foreach ($build['#fieldgroups'][$group_to_hide]->children as $field) {
-          $build[$field]['#access'] = FALSE;
+    if ($build['#view_mode'] == 'embedded') {
+      $entity_wrapper = entity_metadata_wrapper('node', $build['#node']);
+      $status_array = isset($entity_wrapper->field_activity_crl_status) ? $entity_wrapper->field_activity_crl_status->value() : array();
+      // Our hide logic is based on fieldgroups. This means that any view modes
+      // that don't nest the fields we want to hide within a fieldgroup will NOT
+      // be altered (the fields may still be shown).
+      $hide_groups = array();
+      if (array_search('license_available', $status_array) === FALSE) {
+        $hide_groups[] = 'group_activity_offer';
+      }
+      if (array_search('trial_access_available', $status_array) === FALSE) {
+        $hide_groups[] = 'group_activity_trial';
+      }
+      // Lookup the children within the fieldgroups to hide, and set the #access
+      // flag to FALSE for each respective field. This should ensure the
+      // appropriate fields are hidden without needing to change anything
+      // structurally.
+      foreach ($hide_groups as $group_to_hide) {
+        if (!empty($build['#fieldgroups'][$group_to_hide])) {
+          foreach ($build['#fieldgroups'][$group_to_hide]->children as $field) {
+            $build[$field]['#access'] = FALSE;
+          }
         }
       }
     }
