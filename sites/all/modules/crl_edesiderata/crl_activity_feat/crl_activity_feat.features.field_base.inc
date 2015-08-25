@@ -108,7 +108,7 @@ function crl_activity_feat_field_default_field_bases() {
         'license_renewal_available' => 'License renewal available',
         'trial_access_available' => 'Trial access available',
       ),
-      'allowed_values_function' => 'crl_resource_activity_status_property_oplist',
+      'allowed_values_function' => 'crl_activity_status_property_oplist',
       'allowed_values_php' => '',
     ),
     'translatable' => 0,

@@ -503,20 +503,13 @@ function crl_resource_get_wrappers($entity) {
 
 
 /**
- * Properties callback: centrally define the key|value pairs used for the
- * various CRL status options.
+ * Properties callback: centrally define the key|value pairs used for all
+ * CRL status options that may be associated with a resource.
  *
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_activity_status_property_oplist() {
-  return array(
-    'crl_desiderata' => t('CRL Flagged'),
-    'license_under_consideration' => t('Offer Pending'),
-    'license_available' => t('Active Offer'),
-    'trial_access_available' => t('Trial Access'),
-    'license_renewal_available' => t('Renewal Offer'),
-    'past_license_offer' => t('Expired Offer'),
-    'inactive_declined' => t('Inactive / Declined'),
+  return crl_activity_status_property_oplist() + array(
     'crl_review_available' => t('Reviewed by CRL'),
   );
 }
@@ -626,7 +619,7 @@ function crl_resource_activity_get_action_links($entity) {
     // Activity already exists. Grab the first activty entry and its status.
     $a_wrapper = reset($wrappers['a_entity_wrappers']);
     $status = isset($a_wrapper->field_activity_crl_status) ? $a_wrapper->field_activity_crl_status->value() : array();
-    $inactive = array_intersect($status, array('past_license_offer', 'inactive_declined')) ? TRUE : FALSE;
+    $inactive = array_intersect($status, crl_activity_status_inactive()) ? TRUE : FALSE;
     // If the current user has access to edit the most recent activity, we add
     // an edit link.
     if (entity_access('update', 'node', $a_wrapper->value())) {
