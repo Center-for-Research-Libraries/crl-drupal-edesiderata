@@ -220,7 +220,7 @@ h1.site-name, h2.site-name {
 }
 /* Title registered trademark */
 .site-name .rtm {
-  font-size: 35%;
+  font-size: 30%;
   vertical-align: super;
 }
 p.site-slogan {

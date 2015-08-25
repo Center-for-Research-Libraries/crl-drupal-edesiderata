@@ -15,9 +15,9 @@
       <hgroup>        
         <?php if ($site_name): ?>
         <?php if ($is_front): ?>        
-        <h1 class="site-name"><?php print '<a href="' . url('<front>') . '">' . $site_name . '</a>' ?></h1>
+        <h1 class="site-name"><?php print '<a href="' . url('<front>') . '">' . $site_name . '<span class="rtm">&reg;</span></a>' ?></h1>
         <?php else: ?>
-        <h2 class="site-name"><?php print '<a href="' . url('<front>') . '">' . $site_name . '</a>' ?></h2>
+        <h2 class="site-name"><?php print '<a href="' . url('<front>') . '">' . $site_name . '<span class="rtm">&reg;</span></a>' ?></h2>
         <?php endif; ?>
         <?php endif; ?>
         <?php if ($site_slogan): ?>
