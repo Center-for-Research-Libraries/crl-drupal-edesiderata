@@ -31,29 +31,66 @@ function crl_activity_feat_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
-    'title' => 'title',
-    'field_activity_crl_status' => 'field_activity_crl_status',
+    'field_activity_offer_duration' => 'field_activity_offer_duration',
+    'field_activity_grouping' => 'field_activity_grouping',
+    'field_activity_est_savings' => 'field_activity_est_savings',
+    'field_activity_billing' => 'field_activity_billing',
+    'edit_node' => 'view_node',
+    'view_node' => 'view_node',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
-    'title' => array(
+    'field_activity_offer_duration' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_activity_crl_status' => array(
+    'field_activity_grouping' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
+    'field_activity_est_savings' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_activity_billing' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'edit_node' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'view_node' => array(
+      'align' => '',
+      'separator' => '&nbsp;&nbsp;',
+      'empty_column' => 0,
+    ),
   );
+  /* Field: Content: Path */
+  $handler->display->display_options['fields']['path']['id'] = 'path';
+  $handler->display->display_options['fields']['path']['table'] = 'node';
+  $handler->display->display_options['fields']['path']['field'] = 'path';
+  $handler->display->display_options['fields']['path']['label'] = '';
+  $handler->display->display_options['fields']['path']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['path']['element_label_colon'] = FALSE;
   /* Field: Content: Offer Duration */
   $handler->display->display_options['fields']['field_activity_offer_duration']['id'] = 'field_activity_offer_duration';
   $handler->display->display_options['fields']['field_activity_offer_duration']['table'] = 'field_data_field_activity_offer_duration';
   $handler->display->display_options['fields']['field_activity_offer_duration']['field'] = 'field_activity_offer_duration';
   $handler->display->display_options['fields']['field_activity_offer_duration']['label'] = 'Offer End';
+  $handler->display->display_options['fields']['field_activity_offer_duration']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_activity_offer_duration']['alter']['path'] = '[path]';
   $handler->display->display_options['fields']['field_activity_offer_duration']['settings'] = array(
     'format_type' => 'medium',
     'fromto' => 'value2',
@@ -77,12 +114,12 @@ function crl_activity_feat_views_default_views() {
   $handler->display->display_options['fields']['field_activity_billing']['table'] = 'field_data_field_activity_billing';
   $handler->display->display_options['fields']['field_activity_billing']['field'] = 'field_activity_billing';
   $handler->display->display_options['fields']['field_activity_billing']['label'] = 'Billing';
-  /* Field: Content: Offer and License Document(s) */
-  $handler->display->display_options['fields']['field_activity_license_doc']['id'] = 'field_activity_license_doc';
-  $handler->display->display_options['fields']['field_activity_license_doc']['table'] = 'field_data_field_activity_license_doc';
-  $handler->display->display_options['fields']['field_activity_license_doc']['field'] = 'field_activity_license_doc';
-  $handler->display->display_options['fields']['field_activity_license_doc']['click_sort_column'] = 'fid';
-  $handler->display->display_options['fields']['field_activity_license_doc']['delta_offset'] = '0';
+  /* Field: Content: Link */
+  $handler->display->display_options['fields']['view_node']['id'] = 'view_node';
+  $handler->display->display_options['fields']['view_node']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['view_node']['field'] = 'view_node';
+  $handler->display->display_options['fields']['view_node']['label'] = '';
+  $handler->display->display_options['fields']['view_node']['element_label_colon'] = FALSE;
   /* Field: Content: Edit link */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
