@@ -247,14 +247,15 @@ function crl_activity_page_build(&$page) {
   // See if we are about to display an activity page. If so, redirect to the
   // related resource page (we only want to see activity in the context of the
   // resoruce that it's "attached" to).
-  $args = arg();
-  if (drupal_match_path(current_path(), 'node/*') && is_numeric($args[1]) && !isset($args[2])) {
-    $node = node_load($args[1]); // Will be in static cache.
-    if (isset($node->type) && $node->type == 'activity' && isset($node->nid) && $node->nid == $args[1]) {
-      $entity_wrapper = entity_metadata_wrapper('node', $node);
-      $resource_node = isset($entity_wrapper->field_resource_reference) ? $entity_wrapper->field_resource_reference->value() : NULL;
-      if (!empty($resource_node)) {
-        $url = entity_uri('node', $resource_node);
+  $router = menu_get_item();
+  if ($router['path'] = 'node/%') {
+    $node = menu_get_object();
+    if (isset($node->type) && $node->type == 'activity') {
+      $wrappers = crl_resource_get_wrappers($node);
+      $resource_node = $wrappers['r_entity_wrapper'];
+      $current_activity = reset($wrappers['a_entity_wrappers']);
+      if ($node->nid == $current_activity->getIdentifier() && !empty($resource_node)) {
+        $url = entity_uri('node', $resource_node->value());
         if (!empty($url)) {
           $url['options']['fragment'] = CRL_ACTIVITY_RESOURCE_ACTIVITY_FRAGMENT;
           drupal_goto($url['path'], $url['options']);
