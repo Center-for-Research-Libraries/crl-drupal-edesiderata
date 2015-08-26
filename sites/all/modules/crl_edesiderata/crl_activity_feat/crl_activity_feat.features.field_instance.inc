@@ -22,7 +22,7 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 6,
+        'weight' => 4,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -61,21 +61,21 @@ function crl_activity_feat_field_default_field_instances() {
   $field_instances['node-activity-field_activity_attachments'] = array(
     'bundle' => 'activity',
     'deleted' => 0,
-    'description' => 'Add any general attachments that will only be visible to members, and will be shown independent of the CRL status.',
+    'description' => 'Related documents will be shown along with the offer while it is active and in the offer history once the offer expires. Documents like agreement forms (which need to be available for reference indefinitely) should be included here, but documents like pricing schedules (which are only applicable while the offer is active) should <strong>not</strong> be placed here.',
     'display' => array(
       'default' => array(
         'label' => 'above',
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 4,
+        'weight' => 18,
       ),
       'embedded' => array(
         'label' => 'above',
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 2,
+        'weight' => 5,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -86,7 +86,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_activity_attachments',
-    'label' => 'Attachments',
+    'label' => 'Related Documents',
     'required' => 0,
     'settings' => array(
       'description_field' => 1,
@@ -102,7 +102,7 @@ function crl_activity_feat_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 7,
+      'weight' => 43,
     ),
   );
 
@@ -118,14 +118,14 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 23,
+        'weight' => 24,
       ),
       'embedded' => array(
         'label' => 'inline',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 7,
+        'weight' => 24,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -207,14 +207,14 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 22,
+        'weight' => 23,
       ),
       'embedded' => array(
         'label' => 'above',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 6,
+        'weight' => 23,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -247,14 +247,13 @@ function crl_activity_feat_field_default_field_instances() {
     'bundle' => 'activity',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '<strong>This field will be visible to member users.</strong> It can be used to show general notes about CRL work that are not specifically linked to an offer or trial. The content entered here will always display no matter what status values are set above.',
+    'description' => 'This field will only be visible to member users before an offer is active (CRL status "Flagged", "Pending" or "Declined"). It can be used to show general notes about CRL work that is not yet officially tied to a specific offer or trial.',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 3,
+        'type' => 'hidden',
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'hidden',
@@ -272,7 +271,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_activity_gen_notes',
-    'label' => 'General Offer and Status Notes',
+    'label' => 'Pre-Offer Notes',
     'required' => 0,
     'settings' => array(
       'text_processing' => 1,
@@ -300,14 +299,14 @@ function crl_activity_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 10,
+        'weight' => 26,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -350,7 +349,7 @@ function crl_activity_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 15,
+        'weight' => 14,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -385,20 +384,20 @@ function crl_activity_feat_field_default_field_instances() {
   $field_instances['node-activity-field_activity_license_doc'] = array(
     'bundle' => 'activity',
     'deleted' => 0,
-    'description' => 'Multiple file attachments can be added here. The description value can be used to create a custom anchor (link) text for the file, otherwise the full filename will be shown.',
+    'description' => 'Offer documents will be shown along with the offer while it is active but will <strong>not</strong> be available in the offer history once the offer expires. Documents like pricing schedules (which are only applicable while the offer is active) should be included here, but documents like agreement forms (which need to be available for reference indefinitely) should <strong>not</strong> be included here.',
     'display' => array(
       'default' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 9,
       ),
       'embedded' => array(
         'label' => 'above',
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 9,
+        'weight' => 6,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -409,7 +408,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_activity_license_doc',
-    'label' => 'Offer and License Document(s)',
+    'label' => 'Offer Documents',
     'required' => 0,
     'settings' => array(
       'description_field' => 1,
@@ -425,7 +424,7 @@ function crl_activity_feat_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 43,
+      'weight' => 44,
     ),
   );
 
@@ -446,7 +445,7 @@ function crl_activity_feat_field_default_field_instances() {
           'multiple_to' => '',
         ),
         'type' => 'date_default',
-        'weight' => 20,
+        'weight' => 21,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -459,7 +458,7 @@ function crl_activity_feat_field_default_field_instances() {
           'multiple_to' => '',
         ),
         'type' => 'date_default',
-        'weight' => 4,
+        'weight' => 21,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -508,14 +507,14 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 19,
+        'weight' => 20,
       ),
       'embedded' => array(
         'label' => 'above',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 3,
+        'weight' => 20,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -557,7 +556,7 @@ function crl_activity_feat_field_default_field_instances() {
           'multiple_to' => '',
         ),
         'type' => 'date_default',
-        'weight' => 18,
+        'weight' => 19,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -570,7 +569,7 @@ function crl_activity_feat_field_default_field_instances() {
           'multiple_to' => '',
         ),
         'type' => 'date_default',
-        'weight' => 2,
+        'weight' => 19,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -619,14 +618,14 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 21,
+        'weight' => 22,
       ),
       'embedded' => array(
         'label' => 'above',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 5,
+        'weight' => 22,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -665,7 +664,7 @@ function crl_activity_feat_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 7,
+        'weight' => 5,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -717,7 +716,7 @@ function crl_activity_feat_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 8,
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -934,14 +933,14 @@ function crl_activity_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 24,
+        'weight' => 25,
       ),
       'embedded' => array(
         'label' => 'above',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 8,
+        'weight' => 25,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -980,7 +979,7 @@ function crl_activity_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 13,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1066,17 +1065,13 @@ function crl_activity_feat_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('<strong>This field will be visible to member users.</strong> It can be used to show general notes about CRL work that are not specifically linked to an offer or trial. The content entered here will always display no matter what status values are set above.');
   t('Access Information');
-  t('Add any general attachments that will only be visible to members, and will be shown independent of the CRL status.');
   t('Additional Notes');
-  t('Attachments');
   t('Billing Handling');
   t('CRL Status');
   t('Enter a start and end date during which this offer is open for enrollment (active). If this offer should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.');
   t('Enter a start and end date for this trial. If this trial should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.');
   t('Estimated Savings');
-  t('General Offer and Status Notes');
   t('Grouping');
   t('How to Get Started');
   t('If the license related to this offer has a specific subscription duration associated with it, and that duration is universally applicable, enter it here. This should be left blank for offers that do not follow a specific time-frame (once-off purchases, subscriptions with variable start and end dates, etc.).');
@@ -1084,13 +1079,16 @@ function crl_activity_feat_field_default_field_instances() {
   t('If this entry represents an alias or derivative version of another one, add a link to the entry that should be considered the canonical (master) version. If you place a value in this field you will most likely leave almost all other fields blank for this entry.');
   t('Internal Notes');
   t('Licensing Type(s)');
-  t('Multiple file attachments can be added here. The description value can be used to create a custom anchor (link) text for the file, otherwise the full filename will be shown.');
   t('Offer Details');
+  t('Offer Documents');
   t('Offer Duration');
-  t('Offer and License Document(s)');
+  t('Offer documents will be shown along with the offer while it is active but will <strong>not</strong> be available in the offer history once the offer expires. Documents like pricing schedules (which are only applicable while the offer is active) should be included here, but documents like agreement forms (which need to be available for reference indefinitely) should <strong>not</strong> be included here.');
+  t('Pre-Offer Notes');
   t('Pricing Type(s)');
   t('Provide some brief notes about what users should do to take advantage of this offer (who to contact, etc).');
   t('Provide the full text of the trial URL (e.g. http://www.trial.com/trial?id=123).');
+  t('Related Documents');
+  t('Related documents will be shown along with the offer while it is active and in the offer history once the offer expires. Documents like agreement forms (which need to be available for reference indefinitely) should be included here, but documents like pricing schedules (which are only applicable while the offer is active) should <strong>not</strong> be placed here.');
   t('Related resource');
   t('See');
   t('See Also');
@@ -1098,6 +1096,7 @@ function crl_activity_feat_field_default_field_instances() {
   t('Select which CRL group(s) this offer should be visible to. Use ctrl+click to choose multiple. Note that the "CRL Members" option is special in that deselecting it will not remove member view access (CRL members can always view <strong>all</strong> offers). However a special note will be displayed to clarify that the offer is group-exclusive when the "CRL Members" option is not selected.');
   t('Subscription Period');
   t('The entity that will handle the billing for this offer.');
+  t('This field will only be visible to member users before an offer is active (CRL status "Flagged", "Pending" or "Declined"). It can be used to show general notes about CRL work that is not yet officially tied to a specific offer or trial.');
   t('This information is for internal use only and is not displayed to any site users.');
   t('Trial Duration');
   t('Trial Link');

@@ -661,7 +661,7 @@ function crl_resource_activity_get_action_links($entity) {
     // an edit link.
     if (entity_access('update', 'node', $a_wrapper->value())) {
       $links[] = array(
-        'title' => $inactive ? t('Edit Previous Offer Cycle') : t('Edit Current Offer Cycle'),
+        'title' => $inactive ? t('Edit Previous Licensing Cycle') : t('Edit Current Licensing Cycle'),
         'href' => 'node/' . $a_wrapper->value()->nid . '/edit',
         'localized_options' => array('query' => array('activity_title' => rawurlencode('CRL Activity: ' . check_plain($r_wrapper->value()->title)))),
       );
@@ -678,7 +678,7 @@ function crl_resource_activity_get_action_links($entity) {
   // If a create link is allowed, add it if the user has create rights.
   if ($allow_new && entity_access('create', 'node')) {
     $links[] = array(
-      'title' => t('+ Create New Offer Cycle'),
+      'title' => t('+ Create New Licensing Cycle'),
       'href' => 'node/add/activity',
       'localized_options' => array('query' => array('activity_title' => rawurlencode('CRL Activity: ' . check_plain($r_wrapper->value()->title)), 'resource_id' => $r_wrapper->value()->nid)),
     );

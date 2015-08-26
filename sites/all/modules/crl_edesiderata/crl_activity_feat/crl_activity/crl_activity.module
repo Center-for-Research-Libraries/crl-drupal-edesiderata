@@ -70,10 +70,10 @@ function crl_activity_node_view_alter(&$build) {
         // First set the base label that we'll use for public display. This
         // will typically just show the end date part of the duration.
         $word = t('End');
-        // Matching value and value2 signifies no end date. In this case change
-        // "Offer End" to "Offer Start".
+        // Matching value and value2 signifies no end date. In this case
+        // the field will only show the start date, so we adjust accordingly.
         if ($entity_wrapper->{$field}->value->value() == $entity_wrapper->{$field}->value2->value()) {
-          $word = t('Started');
+          $word = t('Start');
         }
         $build[$field]['#title'] = str_replace(t('Duration'), $word, $build[$field]['#title']);
       }
@@ -86,6 +86,7 @@ function crl_activity_node_view_alter(&$build) {
       $hide_groups = array();
       if (array_search('license_available', $status_array) === FALSE) {
         $hide_groups[] = 'group_activity_offer';
+        $hide_groups[] = 'group_activity_documents';
       }
       if (array_search('trial_access_available', $status_array) === FALSE) {
         $hide_groups[] = 'group_activity_trial';
@@ -100,6 +101,11 @@ function crl_activity_node_view_alter(&$build) {
             $build[$field]['#access'] = FALSE;
           }
         }
+      }
+      // Also handle the conditional visibility of the "pre-offer notes" which
+      // should only appear for certain status values.
+      if (isset($build['field_activity_gen_notes']) && !empty($status_array) && !array_intersect($status_array, crl_activity_status_preoffer())) {
+        unset($build['field_activity_gen_notes']);
       }
     }
     // If this is not the embedded view mode, it's the full page display and
@@ -320,6 +326,19 @@ function crl_activity_status_property_oplist() {
  */
 function crl_activity_status_inactive() {
   return array('past_license_offer', 'inactive_declined');
+}
+
+
+/**
+ * Helper to define which status are considered "pre-offer".
+ *
+ * @return array
+ *   An indexed list of activity status keys that are considered pre-offer.
+ *
+ * @see crl_activity_status_property_oplist().
+ */
+function crl_activity_status_preoffer() {
+  return array('crl_desiderata', 'license_under_consideration', 'inactive_declined');
 }
 
 

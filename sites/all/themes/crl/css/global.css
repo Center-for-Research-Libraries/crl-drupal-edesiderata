@@ -1620,3 +1620,14 @@ span.provider {
   -webkit-box-shadow: 0px 0px 2px 2px #ddd;
   box-shadow: 0px 0px 2px 2px #ddd;
 }
+
+
+
+aside#activity-documents {
+  background-color: #eee;
+  padding: 15px;
+  padding-top: 0px;
+  float: right;
+  margin: 0px 0px 10px 10px;
+  width: 40%;
+}

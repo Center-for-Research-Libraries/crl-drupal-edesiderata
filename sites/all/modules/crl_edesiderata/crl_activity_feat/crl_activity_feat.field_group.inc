@@ -13,6 +13,61 @@ function crl_activity_feat_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_activity_documents|node|activity|default';
+  $field_group->group_name = 'group_activity_documents';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'activity';
+  $field_group->mode = 'default';
+  $field_group->parent_name = 'group_activity_offer';
+  $field_group->data = array(
+    'label' => 'Documents',
+    'weight' => '18',
+    'children' => array(
+      0 => 'field_activity_attachments',
+    ),
+    'format_type' => 'html5',
+    'format_settings' => array(
+      'label' => 'Documents',
+      'instance_settings' => array(
+        'id' => 'activity-documents',
+        'classes' => 'group-activity-documents field-group-html5',
+        'wrapper' => 'aside',
+      ),
+    ),
+  );
+  $export['group_activity_documents|node|activity|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_activity_documents|node|activity|embedded';
+  $field_group->group_name = 'group_activity_documents';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'activity';
+  $field_group->mode = 'embedded';
+  $field_group->parent_name = 'group_activity_offer';
+  $field_group->data = array(
+    'label' => 'Documents',
+    'weight' => '17',
+    'children' => array(
+      0 => 'field_activity_license_doc',
+      1 => 'field_activity_attachments',
+    ),
+    'format_type' => 'html5',
+    'format_settings' => array(
+      'label' => 'Documents',
+      'instance_settings' => array(
+        'id' => 'activity-documents',
+        'classes' => 'group-activity-documents field-group-html5',
+        'wrapper' => 'aside',
+      ),
+    ),
+  );
+  $export['group_activity_documents|node|activity|embedded'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_activity_offer|node|activity|default';
   $field_group->group_name = 'group_activity_offer';
   $field_group->entity_type = 'node';
@@ -21,7 +76,7 @@ function crl_activity_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Offer Information',
-    'weight' => '5',
+    'weight' => '3',
     'children' => array(
       0 => 'field_activity_offer_duration',
       1 => 'field_activty_offer_terms',
@@ -30,6 +85,7 @@ function crl_activity_feat_field_group_info() {
       4 => 'field_activity_est_savings',
       5 => 'field_activity_license_duration',
       6 => 'field_activity_pricing_type',
+      7 => 'group_activity_documents',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -64,12 +120,12 @@ function crl_activity_feat_field_group_info() {
       0 => 'field_activity_offer_duration',
       1 => 'field_activty_offer_terms',
       2 => 'field_activity_get_started',
-      3 => 'field_activity_license_doc',
-      4 => 'field_activity_licensing_type',
-      5 => 'field_activity_billing',
-      6 => 'field_activity_est_savings',
-      7 => 'field_activity_license_duration',
-      8 => 'field_activity_pricing_type',
+      3 => 'field_activity_licensing_type',
+      4 => 'field_activity_billing',
+      5 => 'field_activity_est_savings',
+      6 => 'field_activity_license_duration',
+      7 => 'field_activity_pricing_type',
+      8 => 'group_activity_documents',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -105,11 +161,12 @@ function crl_activity_feat_field_group_info() {
       1 => 'field_activty_offer_terms',
       2 => 'field_activity_get_started',
       3 => 'field_activity_license_doc',
-      4 => 'field_activity_licensing_type',
-      5 => 'field_activity_billing',
-      6 => 'field_activity_est_savings',
-      7 => 'field_activity_license_duration',
-      8 => 'field_activity_pricing_type',
+      4 => 'field_activity_attachments',
+      5 => 'field_activity_licensing_type',
+      6 => 'field_activity_billing',
+      7 => 'field_activity_est_savings',
+      8 => 'field_activity_license_duration',
+      9 => 'field_activity_pricing_type',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -135,7 +192,7 @@ function crl_activity_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Trial Information',
-    'weight' => '11',
+    'weight' => '10',
     'children' => array(
       0 => 'field_activity_trial_duration',
       1 => 'field_activity_trial_link',
