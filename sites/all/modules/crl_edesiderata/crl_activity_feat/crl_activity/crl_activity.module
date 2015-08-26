@@ -50,19 +50,89 @@ function crl_activity_node_view($node, $view_mode, $langcode) {
         $node->content['pseudo_field_activity_group_notice'] = array('#theme' => 'crl_activity_group_notice_field', '#message' => $message);
       }
     }
+  }
+}
+
+
+/**
+ * Implements hook_node_view_alter().
+ *
+ * Add custom show/hide display logic on activity nodes. This fires after
+ * fieldgroup has done it's initial alterations, so any modifications to those
+ * groups can happen here (and not earlier).
+ */
+function crl_activity_node_view_alter(&$build) {
+  if ($build['#bundle'] == 'activity') {
+    $entity_wrapper = entity_metadata_wrapper('node', $build['#node']);
     // Alter the offer and trial duration field titles.
     foreach(array('field_activity_offer_duration', 'field_activity_trial_duration') as $field) {
-      if (!empty($node->content[$field])) {
+      if (isset($entity_wrapper->{$field}) && $entity_wrapper->{$field}->value()) {
         // First set the base label that we'll use for public display. This
         // will typically just show the end date part of the duration.
         $word = t('End');
-        $items = field_get_items('node', $node, $field);
         // Matching value and value2 signifies no end date. In this case change
         // "Offer End" to "Offer Start".
-        if ($items[0]['value'] == $items[0]['value2']) {
+        if ($entity_wrapper->{$field}->value->value() == $entity_wrapper->{$field}->value2->value()) {
           $word = t('Started');
         }
-        $node->content[$field]['#title'] = str_replace(t('Duration'), $word, $node->content[$field]['#title']);
+        $build[$field]['#title'] = str_replace(t('Duration'), $word, $build[$field]['#title']);
+      }
+    }
+    if ($build['#view_mode'] == 'embedded') {
+      $status_array = isset($entity_wrapper->field_activity_crl_status) ? $entity_wrapper->field_activity_crl_status->value() : array();
+      // Our hide logic is based on fieldgroups. This means that any view modes
+      // that don't nest the fields we want to hide within a fieldgroup will NOT
+      // be altered (the fields may still be shown).
+      $hide_groups = array();
+      if (array_search('license_available', $status_array) === FALSE) {
+        $hide_groups[] = 'group_activity_offer';
+      }
+      if (array_search('trial_access_available', $status_array) === FALSE) {
+        $hide_groups[] = 'group_activity_trial';
+      }
+      // Lookup the children within the fieldgroups to hide, and set the #access
+      // flag to FALSE for each respective field. This should ensure the
+      // appropriate fields are hidden without needing to change anything
+      // structurally.
+      foreach ($hide_groups as $group_to_hide) {
+        if (!empty($build['#fieldgroups'][$group_to_hide])) {
+          foreach ($build['#fieldgroups'][$group_to_hide]->children as $field) {
+            $build[$field]['#access'] = FALSE;
+          }
+        }
+      }
+    }
+    // If this is not the embedded view mode, it's the full page display and
+    // we need to put up some warnings about this being potentially outdated
+    // information.
+    // @todo: This logic should probably be moved to something like
+    // hook_page_build(), but we may not have control of the title there.
+    else {
+      $resource_node = isset($entity_wrapper->field_resource_reference) ? $entity_wrapper->field_resource_reference->value() : NULL;
+      if ($resource_node) {
+        $resource_url = entity_uri('node', $resource_node);
+        drupal_set_title(t('Previous Offer: ') . $resource_node->title);
+        drupal_set_message(t('The information shown here is from a previous CRL licensing cycle and may no longer be valid. For the most recent CRL licensing activty and status information please see the !resoruce_link.', array('!resoruce_link' => l(t('related resource entry'), $resource_url['path'], array('fragment' => CRL_ACTIVITY_RESOURCE_ACTIVITY_FRAGMENT)))), 'warning', FALSE);
+      }
+    }
+  }
+}
+
+
+function crl_activity_page_build(&$page) {
+  // See if we are about to display an activity page.
+  $router = menu_get_item();
+  if ($router['path'] == 'node/%') {
+    $node = menu_get_object();
+    if (isset($node->type) && $node->type == 'activity') {
+      $entity_wrapper = entity_metadata_wrapper('node', $node);
+      $activity_status = isset($entity_wrapper->field_activity_crl_status) ? $entity_wrapper->field_activity_crl_status->value() : array();
+      $resource_node = isset($entity_wrapper->field_resource_reference) ? $entity_wrapper->field_resource_reference->value() : NULL;
+      if ($resource_node) {
+        $resource_url = entity_uri('node', $resource_node);
+        if (array_intersect($activity_status, crl_activity_status_inactive())) {
+          // Potentially do stuff here.
+        }
       }
     }
   }
@@ -190,44 +260,6 @@ function crl_activity_activity_node_form_validate(&$form, &$form_state) {
       }
       if ($start != $end && $end < $today) {
         form_set_error($field, t('"@' . $status . '" cannot be set while the related expiration date is in the past.', $oplist));
-      }
-    }
-  }
-}
-
-
-/**
- * Implements hook_node_view_alter().
- *
- * Add custom show/hide display logic on activity nodes. This fires when a node
- * is built even if its embedded with in another one (or a view).
- */
-function crl_activity_node_view_alter(&$build) {
-  // Checks for activity nodes.
-  if ($build['#bundle'] == 'activity') {
-    if ($build['#view_mode'] == 'embedded') {
-      $entity_wrapper = entity_metadata_wrapper('node', $build['#node']);
-      $status_array = isset($entity_wrapper->field_activity_crl_status) ? $entity_wrapper->field_activity_crl_status->value() : array();
-      // Our hide logic is based on fieldgroups. This means that any view modes
-      // that don't nest the fields we want to hide within a fieldgroup will NOT
-      // be altered (the fields may still be shown).
-      $hide_groups = array();
-      if (array_search('license_available', $status_array) === FALSE) {
-        $hide_groups[] = 'group_activity_offer';
-      }
-      if (array_search('trial_access_available', $status_array) === FALSE) {
-        $hide_groups[] = 'group_activity_trial';
-      }
-      // Lookup the children within the fieldgroups to hide, and set the #access
-      // flag to FALSE for each respective field. This should ensure the
-      // appropriate fields are hidden without needing to change anything
-      // structurally.
-      foreach ($hide_groups as $group_to_hide) {
-        if (!empty($build['#fieldgroups'][$group_to_hide])) {
-          foreach ($build['#fieldgroups'][$group_to_hide]->children as $field) {
-            $build[$field]['#access'] = FALSE;
-          }
-        }
       }
     }
   }
