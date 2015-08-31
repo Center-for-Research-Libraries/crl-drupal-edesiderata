@@ -136,7 +136,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_activity_billing',
-    'label' => 'Billing Handling',
+    'label' => 'Bill Handling',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -1067,7 +1067,7 @@ function crl_activity_feat_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Access Information');
   t('Additional Notes');
-  t('Billing Handling');
+  t('Bill Handling');
   t('CRL Status');
   t('Enter a start and end date during which this offer is open for enrollment (active). If this offer should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.');
   t('Enter a start and end date for this trial. If this trial should never expire automatically you may unchecked the "Use End Date" option to remove the 2nd (end) date field.');

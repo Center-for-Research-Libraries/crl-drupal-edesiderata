@@ -505,7 +505,7 @@ function crl_helpers_feat_strongarm() {
     'alpha_toggle_action_links' => 1,
     'alpha_toggle_tabs' => 1,
     'alpha_toggle_breadcrumb' => 0,
-    'alpha_toggle_page_title' => 0,
+    'alpha_toggle_page_title' => 1,
     'alpha_toggle_feed_icons' => 1,
     'alpha_hidden_title' => 0,
     'alpha_hidden_site_name' => 0,

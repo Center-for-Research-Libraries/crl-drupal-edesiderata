@@ -603,43 +603,6 @@ function crl_resource_block_view($delta = '') {
 
 
 /**
- * Implements hook_page_build().
- *
- * This only fires for the whole page once (unlike hook_node_view_alter() which
- * can fire multiple times per page).
- */
-function crl_resource_page_build(&$page) {
-  // See if we are about to display an activity page. If so, redirect to the
-  // related resource page (the resource page can generally "take over" the
-  // activity display). The exception to this is when we are viewing "old"
-  // offers/activity.
-  $router = menu_get_item();
-  if ($router['path'] == 'node/%') {
-    $node = menu_get_object();
-    if (isset($node->type) && $node->type == 'activity') {
-      $wrappers = crl_resource_get_wrappers($node);
-      $resource_node = $wrappers['r_entity_wrapper'];
-      $current_activity = reset($wrappers['a_entity_wrappers']);
-      $current_activity_status = isset($current_activity->field_activity_crl_status) ? $current_activity->field_activity_crl_status->value() : array();
-      // Only redirect if we are about to display the most recent activity
-      // entry for the resource and if it's not "inactive" activity (we want
-      // users to be able to view the full entry if it's inactive no matter
-      // how recent the entry is).
-      if ($node->nid == $current_activity->getIdentifier()
-          && !array_intersect($current_activity_status, crl_activity_status_inactive())
-          && !empty($resource_node)) {
-        $url = entity_uri('node', $resource_node->value());
-        if (!empty($url)) {
-          $url['options']['fragment'] = CRL_ACTIVITY_RESOURCE_ACTIVITY_FRAGMENT;
-          drupal_goto($url['path'], $url['options']);
-        }
-      }
-    }
-  }
-}
-
-
-/**
  * Helper to get activity action links based on related resource info.
  *
  * @param object $entity

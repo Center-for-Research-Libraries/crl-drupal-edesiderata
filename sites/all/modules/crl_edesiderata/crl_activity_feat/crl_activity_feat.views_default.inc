@@ -109,11 +109,10 @@ function crl_activity_feat_views_default_views() {
   $handler->display->display_options['fields']['field_activity_est_savings']['id'] = 'field_activity_est_savings';
   $handler->display->display_options['fields']['field_activity_est_savings']['table'] = 'field_data_field_activity_est_savings';
   $handler->display->display_options['fields']['field_activity_est_savings']['field'] = 'field_activity_est_savings';
-  /* Field: Content: Billing Handling */
+  /* Field: Content: Bill Handling */
   $handler->display->display_options['fields']['field_activity_billing']['id'] = 'field_activity_billing';
   $handler->display->display_options['fields']['field_activity_billing']['table'] = 'field_data_field_activity_billing';
   $handler->display->display_options['fields']['field_activity_billing']['field'] = 'field_activity_billing';
-  $handler->display->display_options['fields']['field_activity_billing']['label'] = 'Billing';
   /* Field: Content: Link */
   $handler->display->display_options['fields']['view_node']['id'] = 'view_node';
   $handler->display->display_options['fields']['view_node']['table'] = 'views_entity_node';
