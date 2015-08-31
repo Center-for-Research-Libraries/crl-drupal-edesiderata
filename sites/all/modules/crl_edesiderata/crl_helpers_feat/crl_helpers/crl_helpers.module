@@ -131,39 +131,7 @@ function crl_helpers_page_build(&$page) {
       watchdog('crl helpers', 'Registration access was denied because the user did not pass the member IP check');
       drupal_goto();
     }
-  }
-
-  $query = drupal_get_query_parameters();
-  $title = $title_orig = drupal_get_title();
-  if (!empty($query['f'][0])) {
-    switch ($query['f'][0]) {
-      case 'crl_resource_status_backref:crl_review_available':
-        $title = t('Resources - CRL Reviews');
-        break;
-      case 'crl_resource_status_backref:license_available':
-        $title = t('Resources - CRL Offers');
-        break;
-      case 'crl_resource_status_backref:crl_desiderata':
-        $title = t('Resources - CRL Pipeline');
-        break;
-      case 'crl_provider_status:crl_profile':
-        $title = t('Providers - CRL Profiles');
-        break;
-    }
-  }
-  else {
-    // Also check for providers pages.
-    $menu_item = menu_get_item();
-    if ($menu_item['path'] == 'node/%') {
-      $node = menu_get_object();
-      if (!empty($node) && $node->type == 'provider') {
-        $title = '<span title="Provider" class="provider">' . 'P' . '</span>' . $title;
-      }
-    }
-  }
-  if ($title != $title_orig) {
-    drupal_set_title($title, PASS_THROUGH);
-  }
+  } 
 }
 
 

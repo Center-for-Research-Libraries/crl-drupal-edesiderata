@@ -165,3 +165,14 @@ body.page-node-edit .field-widget-options-buttons .form-checkboxes:after {
   display: table;
   clear: both;
 }
+
+/* Special styling for activity docs fieldgroup */
+aside#activity-documents {
+  background-color: #eee;
+  padding: 15px;
+  padding-top: 0px;
+  float: right;
+  margin: 0px 0px 10px 10px;
+  width: 40%;
+  border: 1px solid #ddd;
+}

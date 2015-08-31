@@ -111,6 +111,29 @@ function crl_resource_node_view_alter(&$build) {
 
 
 /**
+ * Implements hook_page_build().
+ */
+function crl_resource_page_build(&$page) {
+  // Do some custom title alterations for resource lists when select filter
+  // combinations are active.
+  $query = drupal_get_query_parameters();
+  if (!empty($query['f'][0])) {
+    switch ($query['f'][0]) {
+      case 'crl_resource_status_backref:crl_review_available':
+        drupal_set_title(t('Resources - CRL Reviews'));
+        break;
+      case 'crl_resource_status_backref:license_available':
+        drupal_set_title(t('Resources - CRL Offers'));
+        break;
+      case 'crl_resource_status_backref:crl_desiderata':
+        drupal_set_title(t('Resources - CRL Pipeline'));
+        break;
+    }
+  }
+}
+
+
+/**
  * Implements hook_theme().
  */
 function crl_resource_theme() {
