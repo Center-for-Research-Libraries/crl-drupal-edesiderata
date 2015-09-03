@@ -152,12 +152,13 @@ function crl_resource_feat_field_group_info() {
     'children' => array(
       0 => 'pseudo_field_resource_status_summary',
       1 => 'pseudo_field_resource_activity',
+      2 => 'group_history',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
       'label' => 'CRL Offers & Status',
       'instance_settings' => array(
-        'id' => '',
+        'id' => 'crl-offers-status',
         'classes' => ' group-crl-details field-group-htab',
         'description' => '',
       ),
@@ -333,6 +334,38 @@ function crl_resource_feat_field_group_info() {
     ),
   );
   $export['group_details|node|title_review|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_history|node|resource|default';
+  $field_group->group_name = 'group_history';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'resource';
+  $field_group->mode = 'default';
+  $field_group->parent_name = 'group_crl_details';
+  $field_group->data = array(
+    'label' => 'Previous Offer History',
+    'weight' => '1002',
+    'children' => array(
+      0 => 'field_resource_activity_history',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'Previous Offer History',
+      'instance_settings' => array(
+        'id' => '',
+        'classes' => 'group-history field-group-div',
+        'description' => '',
+        'show_label' => '1',
+        'label_element' => 'h2',
+        'effect' => 'none',
+        'speed' => 'fast',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $export['group_history|node|resource|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -624,6 +657,7 @@ function crl_resource_feat_field_group_info() {
       0 => 'field_platform_and_user_interfac',
       1 => 'field_content_scope_and_complete',
       2 => 'field_cost_and_price_structure',
+      3 => 'field_resource_activity_history',
     ),
     'format_type' => 'div',
     'format_settings' => array(
