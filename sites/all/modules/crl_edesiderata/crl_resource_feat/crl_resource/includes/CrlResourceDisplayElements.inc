@@ -7,14 +7,14 @@
  * logic a lot easier.
  */
 class CrlResourceDisplayElements {
-  
+
   /**
    * Define our base properties.
    */
   protected $entity;
   protected $entity_wrapper;
   protected $source_status;
-  
+
   /**
    * Constructor
    */
@@ -23,7 +23,7 @@ class CrlResourceDisplayElements {
     $this->entity_wrapper = entity_metadata_wrapper('node', $this->entity);
     $this->source_status = isset($this->entity_wrapper->field_resource_source_status) ? $this->entity_wrapper->field_resource_source_status->value() : NULL;
   }
-  
+
   /**
    * Common public build method that calls specific protected build method.
    */
@@ -33,24 +33,28 @@ class CrlResourceDisplayElements {
     }
     return array();
   }
-  
+
   /**
    * Build custom field: pseudo_field_resource_status_summary
    */
   protected function build_pseudo_field_resource_status_summary() {
     $built = NULL;
-    // Calculate editor link and backref status details.
-    $edit_link = crl_resource_activity_edit_link($this->entity_wrapper);
+    // Calculate editor links and backref status details.
+    $action_links = crl_resource_activity_get_action_links($this->entity_wrapper);
+    $action_links_list = array();
+    foreach ($action_links as $link) {
+      $action_links_list[] = l($link['title'], $link['href'], $link['localized_options']);
+    }
     $backref_status = isset($this->entity_wrapper->crl_resource_status_backref) ? $this->entity_wrapper->crl_resource_status_backref->value() : array();
     // See if we have any activity entries. If we do we want to be sure to
     // display the status summary table (as empty) even if there are not status
     // values to report.
     $backref_entities = isset($this->entity_wrapper->crl_resource_backref) ? $this->entity_wrapper->crl_resource_backref->value() : array();
     // If we have anything to output, create render array.
-    if (!empty($edit_link) || !empty($backref_status) || !empty($backref_entities)) {
+    if (!empty($action_links) || !empty($backref_status) || !empty($backref_entities)) {
       $built = array(
         '#theme' => 'crl_resource_field_status_summary',
-        '#edit_link' => $edit_link,
+        '#action_links' => array('#theme' => 'item_list', '#items' => $action_links_list),
         '#status' => $backref_status,
         '#status_options' => crl_resource_activity_status_property_oplist(),
         '#status_descriptions' => $this->get_status_descriptions()
@@ -58,7 +62,7 @@ class CrlResourceDisplayElements {
     }
     return $built;
   }
-  
+
   /**
    * Build custom field: pseudo_field_resource_all_jisc_details
    */
@@ -109,7 +113,7 @@ class CrlResourceDisplayElements {
     }
     return array();
   }
-  
+
   /**
    * Build custom field: pseudo_field_resource_activity
    */
@@ -137,7 +141,7 @@ class CrlResourceDisplayElements {
     }
     return $built;
   }
-  
+
   /**
    * Build custom field: pseudo_field_resource_coll_content_tax
    */
@@ -151,7 +155,7 @@ class CrlResourceDisplayElements {
     }
     return $built;
   }
-  
+
   /**
    * Build custom field: pseudo_field_resource_source_summary
    */
@@ -163,7 +167,7 @@ class CrlResourceDisplayElements {
     }
     return $built;
   }
-  
+
   /**
    * Build custom field: pseudo_field_resource_table_sources
    */
@@ -174,7 +178,7 @@ class CrlResourceDisplayElements {
     }
     return $built;
   }
-  
+
   /**
    * Build custom field: pseudo_field_resource_review_source
    */
@@ -185,21 +189,21 @@ class CrlResourceDisplayElements {
     }
     return $built;
   }
-  
+
   /**
    * Build custom field: pseudo_field_resource_added
    */
   protected function build_pseudo_field_resource_added() {
     return array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('Posted'), '#output' => format_date($this->entity_wrapper->created->value(), 'short'), '#inline' => TRUE);
   }
-  
+
   /**
    * Build custom field: pseudo_field_resource_updated
    */
   protected function build_pseudo_field_resource_updated() {
     return array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('Updated'), '#output' => format_date($this->entity_wrapper->crl_resource_master_update_timestamp->value(), 'short'), '#inline' => TRUE);
   }
-  
+
   /**
    * Build custom field: pseudo_field_resource_alerts
    */
@@ -225,7 +229,7 @@ class CrlResourceDisplayElements {
     }
     return $built;
   }
-  
+
   /**
    * Helper to centrally define description values to associate with each CRL
    * status option.
@@ -242,7 +246,7 @@ class CrlResourceDisplayElements {
       'crl_review_available' => t('Evaluation available by CRL and community'),
     );
   }
-  
+
   /**
    * Helper to generate fixed "source" text based on resoruce status.
    */
@@ -264,10 +268,10 @@ class CrlResourceDisplayElements {
     }
     return $source_text;
   }
-  
+
   /**
    * Helper to build a link to a JISC resource.
-   * 
+   *
    * @param string $anchor
    *   The anchor text to use in the link.
    * @param int $jisc_id
@@ -276,7 +280,7 @@ class CrlResourceDisplayElements {
    *   the link will point to the JISC homepage.
    * @param string $sub_path
    *   The sub-path, or tab, of a resource to point to. Only applies for a
-   *   non-zero JISC id. 
+   *   non-zero JISC id.
    * @return string
    *   A formatted link to JISC.
    */

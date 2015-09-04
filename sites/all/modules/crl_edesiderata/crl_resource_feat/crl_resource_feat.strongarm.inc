@@ -150,7 +150,7 @@ function crl_resource_feat_strongarm() {
         ),
         'pseudo_field_resource_activity' => array(
           'default' => array(
-            'weight' => '1001',
+            'weight' => '1000',
             'visible' => TRUE,
           ),
           'teaser' => array(
