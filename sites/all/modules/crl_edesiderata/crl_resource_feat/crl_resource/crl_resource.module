@@ -111,6 +111,29 @@ function crl_resource_node_view_alter(&$build) {
 
 
 /**
+ * Implements hook_page_build().
+ */
+function crl_resource_page_build(&$page) {
+  // Do some custom title alterations for resource lists when select filter
+  // combinations are active.
+  $query = drupal_get_query_parameters();
+  if (!empty($query['f'][0])) {
+    switch ($query['f'][0]) {
+      case 'crl_resource_status_backref:crl_review_available':
+        drupal_set_title(t('Resources - CRL Reviews'));
+        break;
+      case 'crl_resource_status_backref:license_available':
+        drupal_set_title(t('Resources - CRL Offers'));
+        break;
+      case 'crl_resource_status_backref:crl_desiderata':
+        drupal_set_title(t('Resources - CRL Pipeline'));
+        break;
+    }
+  }
+}
+
+
+/**
  * Implements hook_theme().
  */
 function crl_resource_theme() {
@@ -118,7 +141,7 @@ function crl_resource_theme() {
     // Theme hook to generate a resource status summary field (used at top of
     // the activity tab within a resource).
     'crl_resource_field_status_summary' => array(
-      'variables' => array('edit_link' => '', 'status' => array(), 'status_options' => array(), 'status_descriptions' => array()),
+      'variables' => array('action_links' => '', 'status' => array(), 'status_options' => array(), 'status_descriptions' => array()),
     ),
     // Theme hook to generate a publisher legend field.
     'crl_resource_publisher_legend' => array(
@@ -260,7 +283,8 @@ function crl_resource_get_backref($entity, array $options, $name, $type, $info) 
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node', '=')
           ->entityCondition('bundle', 'activity')
-          ->fieldCondition('field_resource_reference', 'target_id', $entity->nid, '=');
+          ->fieldCondition('field_resource_reference', 'target_id', $entity->nid, '=')
+          ->propertyOrderBy('created', 'DESC');
     // Force query to run without access checks. If we remove the tag below then
     // status values will reflect the current user's access permissions (status
     // values will not appear for activity entries they do not have access to)
@@ -295,6 +319,11 @@ function crl_resource_get_status_backref($entity, array $options, $name, $type, 
   $r_entity_wrapper = $wrappers['r_entity_wrapper'];
   $a_entity_wrappers = $wrappers['a_entity_wrappers'];
   $computed_status = array();
+  // This function has the captity to AGGREGATE all status from ALL activty.
+  // However, we currently only want to grab the status from the most RECENT
+  // activity entry, so we only grab that value from the array. The alternative
+  // (aggregate) behavior could be re-activied by commenting-out the line below.
+  $a_entity_wrappers = array(reset($a_entity_wrappers)); // Comment-out for alt AGGREGATE bahavior.
   foreach ($a_entity_wrappers as $a_entity_wrapper) {
     // Get the raw status values set on the activity entity and
     // aggregate them directly into our computed result.
@@ -497,20 +526,13 @@ function crl_resource_get_wrappers($entity) {
 
 
 /**
- * Properties callback: centrally define the key|value pairs used for the
- * various CRL status options.
+ * Properties callback: centrally define the key|value pairs used for all
+ * CRL status options that may be associated with a resource.
  *
  * @see crl_resource_entity_property_info_alter().
  */
 function crl_resource_activity_status_property_oplist() {
-  return array(
-    'crl_desiderata' => t('CRL Flagged'),
-    'license_under_consideration' => t('Offer Pending'),
-    'license_available' => t('Active Offer'),
-    'trial_access_available' => t('Trial Access'),
-    'license_renewal_available' => t('Renewal Offer'),
-    'past_license_offer' => t('Expired Offer'),
-    'inactive_declined' => t('Inactive / Declined'),
+  return crl_activity_status_property_oplist() + array(
     'crl_review_available' => t('Reviewed by CRL'),
   );
 }
@@ -604,33 +626,50 @@ function crl_resource_block_view($delta = '') {
 
 
 /**
- * Helper to an edit link for an activity based on related resource info.
+ * Helper to get activity action links based on related resource info.
  *
  * @param object $entity
  *   A resource entity (or related entity wrapper).
  * @return array
- *   An associative array describing the link including:
- *   - path: The path to edit the activity.
- *   - options: A set of link options as used in l().
+ *   An associative array describing the links.
  */
-function crl_resource_activity_edit_link($entity) {
-  $edit_link = array();
+function crl_resource_activity_get_action_links($entity) {
+  $links = array();
+  $allow_new = FALSE;
   $wrappers = crl_resource_get_wrappers($entity);
   $r_wrapper = $wrappers['r_entity_wrapper'];
   if (!empty($wrappers['a_entity_wrappers'])) {
-    // Activity already exists. Grab the first activty entry if the current
-    // user has edit access to it.
+    // Activity already exists. Grab the first activty entry and its status.
     $a_wrapper = reset($wrappers['a_entity_wrappers']);
+    $status = isset($a_wrapper->field_activity_crl_status) ? $a_wrapper->field_activity_crl_status->value() : array();
+    $inactive = array_intersect($status, crl_activity_status_inactive()) ? TRUE : FALSE;
+    // If the current user has access to edit the most recent activity, we add
+    // an edit link.
     if (entity_access('update', 'node', $a_wrapper->value())) {
-      $edit_link = array('path' => 'node/' . $a_wrapper->value()->nid . '/edit', 'options' => array('query' => array('activity_title' => rawurlencode('CRL Activity: ' . check_plain($r_wrapper->value()->title)))));
+      $links[] = array(
+        'title' => $inactive ? t('Edit Previous Licensing Cycle') : t('Edit Current Licensing Cycle'),
+        'href' => 'node/' . $a_wrapper->value()->nid . '/edit',
+        'localized_options' => array('query' => array('activity_title' => rawurlencode('CRL Activity: ' . check_plain($r_wrapper->value()->title)))),
+      );
+    }
+    // If the most current activity is inactive we can also add a create link.
+    if ($inactive) {
+      $allow_new = TRUE;
     }
   }
-  elseif (entity_access('create', 'node')) {
-    // If no activity data exists, but the user has rights to create some, we
-    // build an appropriate add content link.
-    $edit_link = array('path' => 'node/add/activity', 'options' => array('query' => array('activity_title' => rawurlencode('CRL Activity: ' . check_plain($r_wrapper->value()->title)), 'resource_id' => $r_wrapper->value()->nid)));
+  // If no activity exists we can add a create link.
+  else {
+    $allow_new = TRUE;
   }
-  return $edit_link;
+  // If a create link is allowed, add it if the user has create rights.
+  if ($allow_new && entity_access('create', 'node')) {
+    $links[] = array(
+      'title' => t('+ Create New Licensing Cycle'),
+      'href' => 'node/add/activity',
+      'localized_options' => array('query' => array('activity_title' => rawurlencode('CRL Activity: ' . check_plain($r_wrapper->value()->title)), 'resource_id' => $r_wrapper->value()->nid)),
+    );
+  }
+  return array_reverse($links);
 }
 
 
@@ -640,20 +679,33 @@ function crl_resource_activity_edit_link($entity) {
  * Manually adjust some tabs and action links on resources.
  */
 function crl_resource_menu_local_tasks_alter(&$data, $router_item, $root_path) {
-  if (!empty($router_item['map'][1]->type) && $router_item['map'][1]->type == 'resource') {
+  if ($router_item['page_callback'] == 'node_page_edit' && !empty($router_item['map'][1]->type) && $router_item['map'][1]->type == 'resource') {
     $resource_entity = $router_item['map'][1];
-    $edit_link = crl_resource_activity_edit_link($resource_entity);
-    if ($edit_link) {
-      // Add an edit action link to jump to edit mode for the related activity.
-      $data['actions']['output'][] = array(
-        '#theme' => 'menu_local_task',
-        '#link' => array(
-          'title' => t('Edit CRL Offers & Status details for this resource'),
-          'href' => $edit_link['path'],
-          'localized_options' => $edit_link['options'],
-        ),
-      );
-      $data['actions']['count'] = $data['actions']['count'] + 1;
+    // See if we have action links, and if so, add them as tabs.
+    $action_links = crl_resource_activity_get_action_links($resource_entity);
+    if ($action_links) {
+      // Add a "default" tab for the regular resource edit page that we are
+      // currently on. This is only needed if there are not already any sub-tabs
+      // defined.
+      if (empty($data['tabs'][1]['output'])) {
+        $data['tabs'][1]['output'][] = array(
+          '#theme' => 'menu_local_task',
+          '#link' => array(
+            'title' => t('Edit Resource'),
+            'href' => $router_item['href'],
+            'localized_options' => array(),
+          ),
+        );
+        $data['tabs'][1]['count']++;
+      }
+      // Add each calculated action link as a new tab.
+      foreach ($action_links as $link) {
+        $data['tabs'][1]['output'][] = array(
+          '#theme' => 'menu_local_task',
+          '#link' => $link,
+        );
+        $data['tabs'][1]['count']++;
+      }
     }
   }
 }

@@ -17,12 +17,19 @@ function crl_activity_feat_ctools_plugin_api($module = NULL, $api = NULL) {
 }
 
 /**
+ * Implements hook_views_api().
+ */
+function crl_activity_feat_views_api($module = NULL, $api = NULL) {
+  return array("api" => "3.0");
+}
+
+/**
  * Implements hook_node_info().
  */
 function crl_activity_feat_node_info() {
   $items = array(
     'activity' => array(
-      'name' => t('Resource Offer and Status Details'),
+      'name' => t('Licensing Cycle'),
       'base' => 'node_content',
       'description' => t('This is a container for CRL offer, status and offer information that relates to a specific resource entry. <strong>You will typically not create new content of this type from the "add content" page and should instead navigate to the related resource and click on the "Edit offer & status details" link</strong>.'),
       'has_title' => '1',

@@ -131,7 +131,7 @@ function crl_helpers_page_build(&$page) {
       watchdog('crl helpers', 'Registration access was denied because the user did not pass the member IP check');
       drupal_goto();
     }
-  }
+  } 
 }
 
 
@@ -253,59 +253,12 @@ function crl_helpers_form_node_form_alter(&$form, &$form_state, $form_id) {
   // this with some conditional CSS, which is a bit lazy, but it's a whole lot
   // cleaner than iterating over the various render array structures that may
   // contain a "format" element. Also, we don't need to further limit what
-  // fitlers people can use, we just want to make a "best effort" to visually
+  // filters people can use, we just want to make a "best effort" to visually
   // clean-up options they never touch.
   if (!user_access('administer filters')) {
     // Note that inline CSS is inefficient for CSS aggregation, but this only
     // applies to node edit forms, so it's ok.
     drupal_add_css('.node-form .filter-wrapper {display:none !important;}', array('type' => 'inline'));
-  }
-}
-
-
-/**
- * Implements hook_preprocess_delta_blocks_page_title().
- *
- * We display titles with delta blocks, so this provides a way to do some
- * special title alterations at the last min. This is a bit of a hack.
- */
-function crl_helpers_preprocess_delta_blocks_page_title(&$vars) {
-  $query = drupal_get_query_parameters();
-  if (!empty($query['f'][0])) {
-    switch ($query['f'][0]) {
-      case 'crl_resource_status_backref:crl_review_available':
-        $vars['page_title'] = t('Resources - CRL Reviews');
-        break;
-      case 'crl_resource_status_backref:license_available':
-        $vars['page_title'] = t('Resources - CRL Offers');
-        break;
-      case 'crl_resource_status_backref:crl_desiderata':
-        $vars['page_title'] = t('Resources - CRL Pipeline');
-        break;
-      case 'crl_provider_status:crl_profile':
-        $vars['page_title'] = t('Providers - CRL Profiles');
-        break;
-    }
-  }
-  // Remove title from homepage.
-  elseif (drupal_is_front_page()) {
-    $vars['page_title'] = '';
-  }
-  // Special handling for 403 cases.
-  elseif ($vars['page_title'] == t('Access denied')) {
-    global $user;
-    $vars['page_title'] = empty($user->uid) ? t('Login Required') : t('Access Restricted');
-  }
-  else {
-    // Also check for providers pages.
-    $menu_item = menu_get_item();
-    if ($menu_item['path'] == 'node/%') {
-      $nid = arg(1);
-      $node = node_load($nid);
-      if (!empty($node) && $node->type == 'provider') {
-        $vars['page_title'] = '<span title="Provider" class="provider">' . 'P' . '</span>' . $vars['page_title'];
-      }
-    }
   }
 }
 
