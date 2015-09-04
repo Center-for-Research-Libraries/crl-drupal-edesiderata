@@ -130,7 +130,7 @@ function crl_activity_page_build(&$page) {
         $resource_url = entity_uri('node', $resource_node);
         if (array_intersect($activity_status, crl_activity_status_inactive())) {
           drupal_set_title(t('Previous Offer: ') . $resource_node->title);
-          drupal_set_message(t('The information shown here is from a previous CRL licensing cycle and may no longer be valid. For the most recent CRL licensing activty and status information please see the !resoruce_link.', array('!resoruce_link' => l(t('related resource entry'), $resource_url['path'], array('fragment' => CRL_ACTIVITY_RESOURCE_ACTIVITY_FRAGMENT)))), 'warning', FALSE);
+          drupal_set_message(t('The information shown here is from a previous CRL licensing cycle and may no longer be valid. For the most recent CRL licensing activty and status information please see the !resoruce_link.', array('!resoruce_link' => l(t('resource entry'), $resource_url['path'], array('fragment' => CRL_ACTIVITY_RESOURCE_ACTIVITY_FRAGMENT)))), 'warning', FALSE);
         }
         // If this is not inactive activity then we need to redirect the user
         // to the resource page, as all current activity should be displayed

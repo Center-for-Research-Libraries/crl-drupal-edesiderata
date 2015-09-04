@@ -769,9 +769,10 @@ function crl_activity_feat_field_default_field_instances() {
       ),
       'embedded' => array(
         'label' => 'above',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 8,
+        'type' => 'text_default',
+        'weight' => 13,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -874,9 +875,10 @@ function crl_activity_feat_field_default_field_instances() {
       ),
       'embedded' => array(
         'label' => 'above',
+        'module' => 'link',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 9,
+        'type' => 'link_default',
+        'weight' => 14,
       ),
       'teaser' => array(
         'label' => 'above',
