@@ -961,15 +961,18 @@ body.page-node-add fieldset.form-tablefield > legend > span.fieldset-legend {
 }
 
 /* Date inputs should be side-by-side. See: https://www.drupal.org/node/1248720 */
-body.page-node-edit .date-padding, body.page-node-edit .date-padding div, body.page-node-edit .date-padding label {
+body.page-node-edit .date-padding, body.page-node-edit .date-padding div, body.page-node-edit .date-padding label,
+body.page-node-add .date-padding, body.page-node-add .date-padding div, body.page-node-add .date-padding label{
   padding:0px !important;
 }
-body.page-node-edit .date-no-float {
+body.page-node-edit .date-no-float,
+body.page-node-add .date-no-float {
   clear:none;
   float:left;
   width:auto;
 }
-body.page-node-edit .end-date-wrapper .form-item label {
+body.page-node-edit .end-date-wrapper .form-item label,
+body.page-node-add .end-date-wrapper .form-item label {
   float: left;
   padding-right: 20px;
   padding-top: 0px;
