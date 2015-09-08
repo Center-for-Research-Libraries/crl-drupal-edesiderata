@@ -84,8 +84,7 @@ function crl_activity_feat_field_group_info() {
       3 => 'field_activity_billing',
       4 => 'field_activity_est_savings',
       5 => 'field_activity_license_duration',
-      6 => 'field_activity_pricing_type',
-      7 => 'group_activity_documents',
+      6 => 'group_activity_documents',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -124,8 +123,7 @@ function crl_activity_feat_field_group_info() {
       4 => 'field_activity_billing',
       5 => 'field_activity_est_savings',
       6 => 'field_activity_license_duration',
-      7 => 'field_activity_pricing_type',
-      8 => 'group_activity_documents',
+      7 => 'group_activity_documents',
     ),
     'format_type' => 'div',
     'format_settings' => array(

@@ -31,7 +31,7 @@ function crl_activity_feat_node_info() {
     'activity' => array(
       'name' => t('Licensing Cycle'),
       'base' => 'node_content',
-      'description' => t('This is a container for CRL offer, status and offer information that relates to a specific resource entry. <strong>You will typically not create new content of this type from the "add content" page and should instead navigate to the related resource and click on the "Edit offer & status details" link</strong>.'),
+      'description' => t('This is a container for CRL offer, status and offer information that relates to a specific resource entry. <strong>You will typically not create new content of this type from the "add content" page and should instead navigate to the resource and click on the related edit link for a new or current licensing cycle</strong>.'),
       'has_title' => '1',
       'title_label' => t('Title'),
       'help' => '',

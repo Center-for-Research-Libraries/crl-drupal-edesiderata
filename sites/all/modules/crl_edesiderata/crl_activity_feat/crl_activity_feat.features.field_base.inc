@@ -294,8 +294,7 @@ function crl_activity_feat_field_default_field_bases() {
     'settings' => array(
       'allowed_values' => array(
         'one_time' => 'One-time purchase',
-        'sub_perp' => 'Subscription - with perpetual access',
-        'sub_no_perp' => 'Subscription - without perpetual access',
+        'sub' => 'Subscription',
         'other' => 'Other (see offer details)',
       ),
       'allowed_values_function' => '',
