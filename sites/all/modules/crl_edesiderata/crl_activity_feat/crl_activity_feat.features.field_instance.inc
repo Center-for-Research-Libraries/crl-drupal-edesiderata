@@ -114,14 +114,14 @@ function crl_activity_feat_field_default_field_instances() {
     'description' => 'The entity that will handle the billing for this offer.',
     'display' => array(
       'default' => array(
-        'label' => 'inline',
+        'label' => 'above',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
         'weight' => 24,
       ),
       'embedded' => array(
-        'label' => 'inline',
+        'label' => 'above',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
