@@ -240,11 +240,11 @@ function crl_activity_activity_node_form_validate(&$form, &$form_state) {
   if (in_array('license_available', $set_status) && !empty($dissallow_with_offer)) {
     form_set_error('field_activity_crl_status', t('"@license_available" cannot be set while "@crl_desiderata" or "@license_under_consideration" or "@past_license_offer" are also set.', $oplist));
   }
-  // Handle case where an offer is passed-up while another status is set that is
+  // Handle case where an offer is inactive while another status is set that is
   // mutually exclusive.
-  $dissallow_with_passed = array_intersect($set_status, array('crl_desiderata', 'license_under_consideration', 'license_available'));
-  if (in_array('inactive_declined', $set_status) && !empty($dissallow_with_passed)) {
-    form_set_error('field_activity_crl_status', t('"inactive_declined" cannot be set while "@crl_desiderata" or "@license_under_consideration" or "@license_available" are also set.', $oplist));
+  $dissallow_with_inactive = array_intersect($set_status, array('crl_desiderata', 'license_under_consideration', 'license_available'));
+  if (array_intersect($set_status, crl_activity_status_inactive()) && !empty($dissallow_with_inactive)) {
+    form_set_error('field_activity_crl_status', t('"@past_license_offer" and "@inactive_declined" cannot be set while "@crl_desiderata" or "@license_under_consideration" or "@license_available" are also set.', $oplist));
   }
   // Handle case where "License renewal available" is set without "License
   // available"
@@ -257,7 +257,7 @@ function crl_activity_activity_node_form_validate(&$form, &$form_state) {
   }
   // Ensure the start and end dates set make sense.
   $to_check = array('license_available' => 'field_activity_offer_duration', 'trial_access_available' => 'field_activity_trial_duration');
-  foreach($to_check as $status => $field) {
+  foreach ($to_check as $status => $field) {
     if (in_array($status, $set_status)) {
       // Force dates with no timestamps for even comparisons.
       $today = date('Y-m-d 00:00:00'); // Ensure matching format to value/value2
