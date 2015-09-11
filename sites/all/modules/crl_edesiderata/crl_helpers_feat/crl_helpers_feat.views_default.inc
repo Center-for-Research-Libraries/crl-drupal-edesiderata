@@ -635,10 +635,6 @@ function crl_helpers_feat_views_default_views() {
   $handler->display->display_options['fields']['status']['table'] = 'node';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['not'] = 0;
-  /* Field: Broken/missing handler */
-  $handler->display->display_options['fields']['last_editor']['id'] = 'last_editor';
-  $handler->display->display_options['fields']['last_editor']['table'] = 'node';
-  $handler->display->display_options['fields']['last_editor']['field'] = 'last_editor';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -697,7 +693,7 @@ function crl_helpers_feat_views_default_views() {
   $handler->display->display_options['footer']['area']['id'] = 'area';
   $handler->display->display_options['footer']['area']['table'] = 'views';
   $handler->display->display_options['footer']['area']['field'] = 'area';
-  $handler->display->display_options['footer']['area']['content'] = '<p><strong><a href="/admin/content-summary/all">View All</a></strong><br/>Reports for individual content types are also available: <strong><a href="/admin/content-summary/activity">Activity</a> | <a href="/admin/content-summary/resources">Resources</a> | <a href="/admin/content-summary/providers">Providers</a></strong></p>';
+  $handler->display->display_options['footer']['area']['content'] = '<p><strong><a href="/admin/content-summary/all">View All</a></strong><br/>Reports for individual content types are also available: <strong><a href="/admin/content-summary/activity">Licensing Cycles</a> | <a href="/admin/content-summary/resources">Resources</a> | <a href="/admin/content-summary/providers">Providers</a></strong></p>';
   $handler->display->display_options['footer']['area']['format'] = 'full_html';
   $handler->display->display_options['footer']['area']['tokenize'] = TRUE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
@@ -838,10 +834,10 @@ function crl_helpers_feat_views_default_views() {
   $handler->display->display_options['tab_options']['title'] = 'Content Summary';
   $handler->display->display_options['tab_options']['weight'] = '0';
 
-  /* Display: Page - Activity */
-  $handler = $view->new_display('page', 'Page - Activity', 'page_3');
+  /* Display: Page - Licensing Cycles */
+  $handler = $view->new_display('page', 'Page - Licensing Cycles', 'page_3');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Activity';
+  $handler->display->display_options['title'] = 'Licensing Cycles';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
@@ -995,10 +991,6 @@ function crl_helpers_feat_views_default_views() {
   $handler->display->display_options['fields']['status']['table'] = 'node';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['not'] = 0;
-  /* Field: Broken/missing handler */
-  $handler->display->display_options['fields']['last_editor']['id'] = 'last_editor';
-  $handler->display->display_options['fields']['last_editor']['table'] = 'node';
-  $handler->display->display_options['fields']['last_editor']['field'] = 'last_editor';
   /* Field: Content: Nid */
   $handler->display->display_options['fields']['nid_1']['id'] = 'nid_1';
   $handler->display->display_options['fields']['nid_1']['table'] = 'node';
@@ -1271,10 +1263,6 @@ function crl_helpers_feat_views_default_views() {
   $handler->display->display_options['fields']['status']['table'] = 'node';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['not'] = 0;
-  /* Field: Broken/missing handler */
-  $handler->display->display_options['fields']['last_editor']['id'] = 'last_editor';
-  $handler->display->display_options['fields']['last_editor']['table'] = 'node';
-  $handler->display->display_options['fields']['last_editor']['field'] = 'last_editor';
   /* Field: Content: Nid */
   $handler->display->display_options['fields']['nid_1']['id'] = 'nid_1';
   $handler->display->display_options['fields']['nid_1']['table'] = 'node';
@@ -1415,10 +1403,6 @@ function crl_helpers_feat_views_default_views() {
   $handler->display->display_options['fields']['status']['table'] = 'node';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['not'] = 0;
-  /* Field: Broken/missing handler */
-  $handler->display->display_options['fields']['last_editor']['id'] = 'last_editor';
-  $handler->display->display_options['fields']['last_editor']['table'] = 'node';
-  $handler->display->display_options['fields']['last_editor']['field'] = 'last_editor';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
