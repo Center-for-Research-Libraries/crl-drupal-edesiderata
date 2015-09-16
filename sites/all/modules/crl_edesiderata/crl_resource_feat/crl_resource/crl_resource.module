@@ -684,6 +684,7 @@ function crl_resource_menu_local_tasks_alter(&$data, $router_item, $root_path) {
     // See if we have action links, and if so, add them as tabs.
     $action_links = crl_resource_activity_get_action_links($resource_entity);
     if ($action_links) {
+      $data['tabs'][1]['count'] = isset($data['tabs'][1]['count']) ? $data['tabs'][1]['count'] : 0;
       // Add a "default" tab for the regular resource edit page that we are
       // currently on. This is only needed if there are not already any sub-tabs
       // defined.
