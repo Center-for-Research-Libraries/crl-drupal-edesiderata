@@ -658,6 +658,7 @@ function crl_resource_feat_field_group_info() {
       1 => 'field_content_scope_and_complete',
       2 => 'field_cost_and_price_structure',
       3 => 'field_resource_activity_history',
+      4 => 'field_source_guid',
     ),
     'format_type' => 'div',
     'format_settings' => array(

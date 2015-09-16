@@ -160,6 +160,7 @@ features[field_instance][] = node-resource-field_resource_title_lists
 features[field_instance][] = node-resource-field_resource_type
 features[field_instance][] = node-resource-field_see
 features[field_instance][] = node-resource-field_see_also
+features[field_instance][] = node-resource-field_source_guid
 features[field_instance][] = node-resource-field_subject_area
 features[field_instance][] = node-resource-field_temp_subjects_covered
 features[field_instance][] = node-resource-field_temp_topics_from_review

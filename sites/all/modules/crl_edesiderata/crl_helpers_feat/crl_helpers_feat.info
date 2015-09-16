@@ -50,6 +50,7 @@ features[field_base][] = field_contacts_group
 features[field_base][] = field_facets
 features[field_base][] = field_internal_notes
 features[field_base][] = field_link
+features[field_base][] = field_source_guid
 features[field_base][] = field_title_alt
 features[field_base][] = field_title_prior
 features[field_base][] = field_title_sort

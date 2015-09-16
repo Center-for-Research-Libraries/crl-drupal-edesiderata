@@ -184,7 +184,7 @@ function crl_resource_feat_field_default_field_instances() {
       'module' => 'fivestar',
       'settings' => array(),
       'type' => 'exposed',
-      'weight' => 107,
+      'weight' => 147,
     ),
   );
 
@@ -239,7 +239,7 @@ function crl_resource_feat_field_default_field_instances() {
       'module' => 'fivestar',
       'settings' => array(),
       'type' => 'exposed',
-      'weight' => 105,
+      'weight' => 145,
     ),
   );
 
@@ -519,7 +519,7 @@ function crl_resource_feat_field_default_field_instances() {
       'module' => 'fivestar',
       'settings' => array(),
       'type' => 'exposed',
-      'weight' => 106,
+      'weight' => 146,
     ),
   );
 
@@ -649,7 +649,7 @@ function crl_resource_feat_field_default_field_instances() {
       'module' => 'viewfield',
       'settings' => array(),
       'type' => 'viewfield_select',
-      'weight' => 108,
+      'weight' => 144,
     ),
   );
 
@@ -2370,6 +2370,52 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
+  // Exported field_instance: 'node-resource-field_source_guid'
+  $field_instances['node-resource-field_source_guid'] = array(
+    'bundle' => 'resource',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1002,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_source_guid',
+    'label' => 'Source GUID',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 143,
+    ),
+  );
+
   // Exported field_instance: 'node-resource-field_subject_area'
   $field_instances['node-resource-field_subject_area'] = array(
     'bundle' => 'resource',
@@ -2698,6 +2744,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('Select the option that best represents where this entry was sourced from. This selection may affect the way some fields of data are presented to the user.');
   t('Select the provider that this resource should be associated with.<br/><strong class="important">If the provider value does not yet exist in the system please create it before working with this resource entry</strong>.');
   t('Sorting Title');
+  t('Source GUID');
   t('Source status');
   t('Standards Compliance Notes');
   t('Strengths and Weaknesses');

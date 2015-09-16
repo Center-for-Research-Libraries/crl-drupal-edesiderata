@@ -26,6 +26,38 @@ function crl_resource_update_7100() {
 
 
 /**
+ * Copy resource JISC GUIDs into general field_source_guid.
+ */
+function crl_resource_update_7101() {
+  $query = new EntityFieldQuery();
+  $query
+      ->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'resource')
+      ->addTag('DANGEROUS_ACCESS_CHECK_OPT_OUT'); // Needed for drush/cron execution.
+  $result = $query->execute();
+  if (!empty($result['node'])) {
+    $count = 0;
+    foreach ($result['node'] as $data) {
+      $node = node_load($data->nid);
+      $save = FALSE;
+      // Try to preserve the original updated timestamp.
+      // @see crl_common_node_presave()
+      if (isset($node->changed)) {
+        $node->manual_changed_timestamp = $node->changed;
+      }
+      $wrapper = entity_metadata_wrapper('node', $node);
+      if (isset($wrapper->field_jisc_guid) && $wrapper->field_jisc_guid->value()) {
+        $wrapper->field_source_guid->set($wrapper->field_jisc_guid->value());
+        $wrapper->save();
+        $count++;
+      }
+    }
+    watchdog('crl resource', 'Copied field_jisc_guid value to field_source_guid for @count resource records.', array('@count' => $count));
+  }
+}
+
+
+/**
  * Helper to associate a custom oplist function with a field.
  */
 function crl_resource_set_oplist_function($field_name, $function_name) {
