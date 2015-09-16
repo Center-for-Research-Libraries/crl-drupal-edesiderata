@@ -260,8 +260,11 @@ class CrlResourceDisplayElements {
     elseif ($source_status == 'stub') {
       $source_text = t('Information provided here is drawn from a number of sources, and may not yet have been fully verified by CRL.');
     }
-    elseif ($source_status == 'jisc_only' && !empty($jisc_id)) {
+    elseif ($source_status == 'jisc_only') {
       $source_text = t('Information has been sourced from a !sitelink entry, with additional edits by CRL.', array('!sitelink' => $this->jisc_link(t('JISC catalog'))));
+    }
+    elseif ($source_status == 'adat_only') {
+      $source_text = t('Information has been sourced from an ADAT entry, with additional edits by CRL.');
     }
     else {
       $source_text = t('Source details are unknown for this entry.');

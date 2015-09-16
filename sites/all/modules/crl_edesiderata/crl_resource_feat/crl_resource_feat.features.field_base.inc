@@ -698,6 +698,9 @@ function crl_resource_feat_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_resource_source_status',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
     'indexes' => array(
       'value' => array(
         0 => 'value',
@@ -709,6 +712,7 @@ function crl_resource_feat_field_default_field_bases() {
       'allowed_values' => array(
         'crl_review' => 'CRL Review',
         'jisc_only' => 'JISC Entry',
+        'adat_only' => 'ADAT Entry',
         'stub' => 'Stub',
       ),
       'allowed_values_function' => '',
