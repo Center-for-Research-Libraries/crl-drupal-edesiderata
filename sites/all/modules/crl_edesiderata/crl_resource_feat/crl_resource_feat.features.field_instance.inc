@@ -254,7 +254,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 4,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -296,7 +296,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -342,7 +342,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 13,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -387,7 +387,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 12,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -433,7 +433,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 14,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -565,6 +565,52 @@ function crl_resource_feat_field_default_field_instances() {
       'settings' => array(),
       'type' => 'options_select',
       'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance: 'node-resource-field_resourc_free_specs'
+  $field_instances['node-resource-field_resourc_free_specs'] = array(
+    'bundle' => 'resource',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Use this space to list specifications that cannot be structured with other fields on the resource entry. The structure for this field is completely at the editors discretion. Various sections should be broken-up with 3rd-level headings.',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 79,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_resourc_free_specs',
+    'label' => 'Free-form Specifications',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 20,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 127,
     ),
   );
 
@@ -1830,7 +1876,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'rows' => 8,
       ),
       'type' => 'text_textarea',
-      'weight' => 127,
+      'weight' => 128,
     ),
   );
 
@@ -1887,13 +1933,13 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     'default_value_function' => '',
     'default_value_php' => '',
     'deleted' => 0,
-    'description' => 'Select the option that best represents where this entry was sourced from. This selection may affect the way some fields of data are presented to the user.',
+    'description' => 'Select the option that best represents where this entry was sourced from.',
     'display' => array(
       'default' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 11,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1935,7 +1981,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 15,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2379,10 +2425,9 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 1002,
+        'type' => 'hidden',
+        'weight' => 3,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2470,7 +2515,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 10,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2515,7 +2560,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2560,7 +2605,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 5,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2604,7 +2649,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2658,7 +2703,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2715,6 +2760,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('Facets');
   t('Federated Searching');
   t('Flag this item with an "update alert" until this date.');
+  t('Free-form Specifications');
   t('Full Text Linking');
   t('If this entry has relationships with other entries, add links to those entries here (one or more as needed).');
   t('If this entry represents an alias or derivative version of another one, add a link to the entry that should be considered the canonical (master) version. If you place a value in this field you will most likely leave almost all other fields blank for this entry.');
@@ -2741,7 +2787,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('See');
   t('See also');
   t('Select any subjects/facets that apply to this resource. These will be used for dynamic linking relationships with the main CRL website.');
-  t('Select the option that best represents where this entry was sourced from. This selection may affect the way some fields of data are presented to the user.');
+  t('Select the option that best represents where this entry was sourced from.');
   t('Select the provider that this resource should be associated with.<br/><strong class="important">If the provider value does not yet exist in the system please create it before working with this resource entry</strong>.');
   t('Sorting Title');
   t('Source GUID');
@@ -2763,6 +2809,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('Update Alert Expiration');
   t('Update Alert Message');
   t('Usage Statistics');
+  t('Use this space to list specifications that cannot be structured with other fields on the resource entry. The structure for this field is completely at the editors discretion. Various sections should be broken-up with 3rd-level headings.');
 
   return $field_instances;
 }
