@@ -253,7 +253,6 @@ function crl_resource_feat_field_group_info() {
       1 => 'field_resource_tech_platform_tb',
       2 => 'field_resource_interf_tools_tb',
       3 => 'field_resourc_free_specs',
-      4 => 'pseudo_field_resource_all_jisc_details',
     ),
     'format_type' => 'div',
     'format_settings' => array(

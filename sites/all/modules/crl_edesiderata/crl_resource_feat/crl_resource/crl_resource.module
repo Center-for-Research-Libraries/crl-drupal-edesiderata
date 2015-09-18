@@ -14,11 +14,6 @@ function crl_resource_field_extra_fields() {
         'description' => t('A resoruce status summary table.'),
         'weight' => 900,
       ),
-      'pseudo_field_resource_all_jisc_details' => array(
-        'label' => t('Resource JISC Details'),
-        'description' => t('All JISC details fields that should be displayed.'),
-        'weight' => 901,
-      ),
       'pseudo_field_resource_provider_details' => array(
         'label' => t('Resource Provider Details - Embedded'),
         'description' => t('An "embedded" display of the providers details that are related to the resource'),

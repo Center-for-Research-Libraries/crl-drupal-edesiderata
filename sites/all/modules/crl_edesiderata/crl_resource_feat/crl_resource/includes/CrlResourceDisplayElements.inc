@@ -63,29 +63,6 @@ class CrlResourceDisplayElements {
     return $built;
   }
 
-  /**
-   * Build custom field: pseudo_field_resource_all_jisc_details
-   */
-  protected function build_pseudo_field_resource_all_jisc_details() {
-    $built = NULL;
-    $jisc_id = isset($this->entity_wrapper->field_jisc_id) ? $this->entity_wrapper->field_jisc_id->value() : NULL;
-    // If the status flags this as a JISC display, and we have a JISC ID, then
-    // display the JISC details fields.
-    if (($this->source_status == 'jisc_only') && !empty($jisc_id)) {
-      $output = '';
-      $fields_array = array('field_resource_jisc_full_text', 'field_resource_jisc_federated', 'field_resource_jisc_metadata_std', 'field_resource_jisc_marc', 'field_resource_jisc_search', 'field_resource_jisc_post_search', 'field_resource_jisc_usage_stat', 'field_resource_jisc_auth', 'field_resource_jisc_access');
-      foreach ($fields_array as $fieldname) {
-        // Explicitly redner each JISC field. We can't render the values right
-        // off the $entity->content array as many of these values are not
-        // visible there (hidden fields in default display).
-        $output .= drupal_render(field_view_field('node', $this->entity, $fieldname));
-      }
-      if (!empty($output)) {
-        $built = array('#markup' => $output);
-      }
-    }
-    return $built;
-  }
 
   /**
    * Build custom field: pseudo_field_resource_provider_details
