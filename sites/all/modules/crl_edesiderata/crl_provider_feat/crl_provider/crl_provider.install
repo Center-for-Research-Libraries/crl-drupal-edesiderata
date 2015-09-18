@@ -25,6 +25,38 @@ function crl_provider_update_7100() {
 
 
 /**
+ * Copy provider JISC GUIDs into general field_source_guid.
+ */
+function crl_provider_update_7101() {
+  $query = new EntityFieldQuery();
+  $query
+      ->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'provider')
+      ->addTag('DANGEROUS_ACCESS_CHECK_OPT_OUT'); // Needed for drush/cron execution.
+  $result = $query->execute();
+  if (!empty($result['node'])) {
+    $count = 0;
+    foreach ($result['node'] as $data) {
+      $node = node_load($data->nid);
+      $save = FALSE;
+      // Try to preserve the original updated timestamp.
+      // @see crl_common_node_presave()
+      if (isset($node->changed)) {
+        $node->manual_changed_timestamp = $node->changed;
+      }
+      $wrapper = entity_metadata_wrapper('node', $node);
+      if (isset($wrapper->field_jisc_guid) && $wrapper->field_jisc_guid->value()) {
+        $wrapper->field_source_guid->set($wrapper->field_jisc_guid->value());
+        $wrapper->save();
+        $count++;
+      }
+    }
+    watchdog('crl provider', 'Copied field_jisc_guid value to field_source_guid for @count provider records.', array('@count' => $count));
+  }
+}
+
+
+/**
  * Helper to buk prep provider data for new structures.
  * 
  * This function assumes that there are not too many providers (<100) in the

@@ -184,7 +184,7 @@ function crl_resource_feat_field_default_field_instances() {
       'module' => 'fivestar',
       'settings' => array(),
       'type' => 'exposed',
-      'weight' => 107,
+      'weight' => 147,
     ),
   );
 
@@ -239,7 +239,7 @@ function crl_resource_feat_field_default_field_instances() {
       'module' => 'fivestar',
       'settings' => array(),
       'type' => 'exposed',
-      'weight' => 105,
+      'weight' => 145,
     ),
   );
 
@@ -254,7 +254,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 4,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -296,7 +296,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -328,143 +328,6 @@ function crl_resource_feat_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 6,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_jisc_guid'
-  $field_instances['node-resource-field_jisc_guid'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 12,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 49,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 42,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_jisc_guid',
-    'label' => 'JISC GUID',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 7,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_jisc_id'
-  $field_instances['node-resource-field_jisc_id'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 11,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 42,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 41,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_jisc_id',
-    'label' => 'JISC ID',
-    'required' => 0,
-    'settings' => array(
-      'max' => '',
-      'min' => '',
-      'prefix' => '',
-      'suffix' => '',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'number',
-      'settings' => array(),
-      'type' => 'number',
-      'weight' => 6,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_jisc_import_batch'
-  $field_instances['node-resource-field_jisc_import_batch'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 13,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 61,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 60,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_jisc_import_batch',
-    'label' => 'JISC Import Batch',
-    'required' => 0,
-    'settings' => array(
-      'max' => '',
-      'min' => '',
-      'prefix' => '',
-      'suffix' => '',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'number',
-      'settings' => array(),
-      'type' => 'number',
-      'weight' => 8,
     ),
   );
 
@@ -519,7 +382,7 @@ function crl_resource_feat_field_default_field_instances() {
       'module' => 'fivestar',
       'settings' => array(),
       'type' => 'exposed',
-      'weight' => 106,
+      'weight' => 146,
     ),
   );
 
@@ -565,6 +428,52 @@ function crl_resource_feat_field_default_field_instances() {
       'settings' => array(),
       'type' => 'options_select',
       'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance: 'node-resource-field_resourc_free_specs'
+  $field_instances['node-resource-field_resourc_free_specs'] = array(
+    'bundle' => 'resource',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Use this space to list specifications that cannot be structured with other fields on the resource entry. The structure for this field is completely at the editors discretion. Various sections should be broken-up with 3rd-level headings.',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 79,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_resourc_free_specs',
+    'label' => 'Free-form Specifications',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 20,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 127,
     ),
   );
 
@@ -649,7 +558,7 @@ function crl_resource_feat_field_default_field_instances() {
       'module' => 'viewfield',
       'settings' => array(),
       'type' => 'viewfield_select',
-      'weight' => 108,
+      'weight' => 144,
     ),
   );
 
@@ -1097,591 +1006,6 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_jisc_access'
-  $field_instances['node-resource-field_resource_jisc_access'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 63,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 21,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 21,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_jisc_access',
-    'label' => 'Accessibility',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 66,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_jisc_auth'
-  $field_instances['node-resource-field_resource_jisc_auth'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 61,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 20,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 20,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_jisc_auth',
-    'label' => 'Authentication',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 64,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_jisc_description'
-  $field_instances['node-resource-field_resource_jisc_description'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 40,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 58,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 50,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_jisc_description',
-    'label' => 'Description',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 10,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_jisc_federated'
-  $field_instances['node-resource-field_resource_jisc_federated'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 54,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 54,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 53,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_jisc_federated',
-    'label' => 'Federated Searching',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 57,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_jisc_full_text'
-  $field_instances['node-resource-field_resource_jisc_full_text'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 55,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 55,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 54,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_jisc_full_text',
-    'label' => 'Full Text Linking',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 58,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_jisc_marc'
-  $field_instances['node-resource-field_resource_jisc_marc'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 57,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 37,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 55,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_jisc_marc',
-    'label' => 'Marc Records',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 60,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_jisc_metadata_std'
-  $field_instances['node-resource-field_resource_jisc_metadata_std'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 56,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 34,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 34,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_jisc_metadata_std',
-    'label' => 'Metadata Standards',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 59,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_jisc_overview'
-  $field_instances['node-resource-field_resource_jisc_overview'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 39,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 50,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 49,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_jisc_overview',
-    'label' => 'Overview',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 9,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_jisc_person'
-  $field_instances['node-resource-field_resource_jisc_person'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 62,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 17,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 18,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_jisc_person',
-    'label' => 'Personalisation',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 65,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_jisc_post_search'
-  $field_instances['node-resource-field_resource_jisc_post_search'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 59,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 19,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 36,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_jisc_post_search',
-    'label' => 'Post Search Options',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 62,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_jisc_sc_notes'
-  $field_instances['node-resource-field_resource_jisc_sc_notes'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 64,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 16,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 17,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_jisc_sc_notes',
-    'label' => 'Standards Compliance Notes',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 67,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_jisc_search'
-  $field_instances['node-resource-field_resource_jisc_search'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 58,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 36,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 37,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_jisc_search',
-    'label' => 'Search Options',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 61,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_jisc_usage_stat'
-  $field_instances['node-resource-field_resource_jisc_usage_stat'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 60,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 18,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 19,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_jisc_usage_stat',
-    'label' => 'Usage Statistics',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 63,
-    ),
-  );
-
   // Exported field_instance: 'node-resource-field_resource_languages'
   $field_instances['node-resource-field_resource_languages'] = array(
     'bundle' => 'resource',
@@ -1830,7 +1154,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'rows' => 8,
       ),
       'type' => 'text_textarea',
-      'weight' => 127,
+      'weight' => 128,
     ),
   );
 
@@ -1887,13 +1211,13 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     'default_value_function' => '',
     'default_value_php' => '',
     'deleted' => 0,
-    'description' => 'Select the option that best represents where this entry was sourced from. This selection may affect the way some fields of data are presented to the user.',
+    'description' => 'Select the option that best represents where this entry was sourced from.',
     'display' => array(
       'default' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 11,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1935,7 +1259,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 15,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2370,6 +1694,51 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
+  // Exported field_instance: 'node-resource-field_source_guid'
+  $field_instances['node-resource-field_source_guid'] = array(
+    'bundle' => 'resource',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_source_guid',
+    'label' => 'Source GUID',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 143,
+    ),
+  );
+
   // Exported field_instance: 'node-resource-field_subject_area'
   $field_instances['node-resource-field_subject_area'] = array(
     'bundle' => 'resource',
@@ -2424,7 +1793,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 10,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2469,7 +1838,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2514,7 +1883,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 5,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2558,7 +1927,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2612,7 +1981,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2650,11 +2019,9 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   // Translatables
   // Included for use with string extractors like potx.
   t('Abstract');
-  t('Accessibility');
   t('Additional Reviews in Other Sources');
   t('Appendix Notes');
   t('Attachments');
-  t('Authentication');
   t('Collection Content');
   t('Comment');
   t('Comment Privacy Setting');
@@ -2663,43 +2030,32 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('Contributors');
   t('Cost and price-structure');
   t('Delivery');
-  t('Description');
   t('Endnotes');
   t('Enter any special <em>resource-specific</em> notes that relate to the provider. These notes will be shown near the other provider information that\'s taken from the provider\'s profile.');
   t('Facets');
-  t('Federated Searching');
   t('Flag this item with an "update alert" until this date.');
-  t('Full Text Linking');
+  t('Free-form Specifications');
   t('If this entry has relationships with other entries, add links to those entries here (one or more as needed).');
   t('If this entry represents an alias or derivative version of another one, add a link to the entry that should be considered the canonical (master) version. If you place a value in this field you will most likely leave almost all other fields blank for this entry.');
   t('Interface Tools');
   t('Internal Notes');
-  t('JISC GUID');
-  t('JISC ID');
-  t('JISC Import Batch');
   t('Major Languages');
-  t('Marc Records');
   t('Metadata');
-  t('Metadata Standards');
   t('Offer History');
-  t('Overview');
-  t('Personalisation');
   t('Platform and user interface');
   t('Please select all that apply.');
-  t('Post Search Options');
   t('Provider');
   t('Provider Notes');
   t('Resource Types');
   t('Reviewers');
-  t('Search Options');
   t('See');
   t('See also');
   t('Select any subjects/facets that apply to this resource. These will be used for dynamic linking relationships with the main CRL website.');
-  t('Select the option that best represents where this entry was sourced from. This selection may affect the way some fields of data are presented to the user.');
+  t('Select the option that best represents where this entry was sourced from.');
   t('Select the provider that this resource should be associated with.<br/><strong class="important">If the provider value does not yet exist in the system please create it before working with this resource entry</strong>.');
   t('Sorting Title');
+  t('Source GUID');
   t('Source status');
-  t('Standards Compliance Notes');
   t('Strengths and Weaknesses');
   t('Subject Areas');
   t('TEMP - Subjects Covered from Review');
@@ -2715,7 +2071,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('Title List');
   t('Update Alert Expiration');
   t('Update Alert Message');
-  t('Usage Statistics');
+  t('Use this space to list specifications that cannot be structured with other fields on the resource entry. The structure for this field is completely at the editors discretion. Various sections should be broken-up with 3rd-level headings.');
 
   return $field_instances;
 }

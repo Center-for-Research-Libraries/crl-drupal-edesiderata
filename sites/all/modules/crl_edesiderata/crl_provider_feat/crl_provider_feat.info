@@ -95,6 +95,7 @@ features[field_instance][] = node-provider-field_provider_sources
 features[field_instance][] = node-provider-field_provider_tech_info
 features[field_instance][] = node-provider-field_provider_type
 features[field_instance][] = node-provider-field_resource_type
+features[field_instance][] = node-provider-field_source_guid
 features[field_instance][] = node-provider-field_subject_area
 features[field_instance][] = node-provider-field_title_alt
 features[field_instance][] = node-provider-field_title_prior

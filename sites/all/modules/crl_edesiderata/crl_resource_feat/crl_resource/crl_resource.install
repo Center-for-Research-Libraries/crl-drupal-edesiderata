@@ -26,6 +26,88 @@ function crl_resource_update_7100() {
 
 
 /**
+ * Copy resource JISC GUIDs into general field_source_guid.
+ */
+function crl_resource_update_7101() {
+  $query = new EntityFieldQuery();
+  $query
+      ->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'resource')
+      ->addTag('DANGEROUS_ACCESS_CHECK_OPT_OUT'); // Needed for drush/cron execution.
+  $result = $query->execute();
+  if (!empty($result['node'])) {
+    $count = 0;
+    foreach ($result['node'] as $data) {
+      $node = node_load($data->nid);
+      $save = FALSE;
+      // Try to preserve the original updated timestamp.
+      // @see crl_common_node_presave()
+      if (isset($node->changed)) {
+        $node->manual_changed_timestamp = $node->changed;
+      }
+      $wrapper = entity_metadata_wrapper('node', $node);
+      if (isset($wrapper->field_jisc_guid) && $wrapper->field_jisc_guid->value()) {
+        $wrapper->field_source_guid->set($wrapper->field_jisc_guid->value());
+        $wrapper->save();
+        $count++;
+      }
+    }
+    watchdog('crl resource', 'Copied field_jisc_guid value to field_source_guid for @count resource records.', array('@count' => $count));
+  }
+}
+
+
+/**
+ * Refactor JISC fields into field_resourc_free_specs.
+ */
+function crl_resource_update_7102() {
+  $query = new EntityFieldQuery();
+  $query
+      ->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'resource')
+      ->addTag('DANGEROUS_ACCESS_CHECK_OPT_OUT'); // Needed for drush/cron execution.
+  $result = $query->execute();
+  if (!empty($result['node'])) {
+    $count = 0;
+    foreach ($result['node'] as $data) {
+      $node = node_load($data->nid);
+      // Try to preserve the original updated timestamp.
+      // @see crl_common_node_presave()
+      if (isset($node->changed)) {
+        $node->manual_changed_timestamp = $node->changed;
+      }
+      $wrapper = entity_metadata_wrapper('node', $node);
+      $source_status = isset($wrapper->field_resource_source_status) ? $wrapper->field_resource_source_status->value() : NULL;
+      $jisc_id = isset($wrapper->field_jisc_id) ? $wrapper->field_jisc_id->value() : NULL;
+      if (($source_status == 'jisc_only') && !empty($jisc_id)) {
+        $save = FALSE;
+        $output = '';
+        $fields_array = array('field_resource_jisc_full_text', 'field_resource_jisc_federated', 'field_resource_jisc_metadata_std', 'field_resource_jisc_marc', 'field_resource_jisc_search', 'field_resource_jisc_post_search', 'field_resource_jisc_usage_stat', 'field_resource_jisc_auth', 'field_resource_jisc_access');
+        foreach ($fields_array as $fieldname) {
+          if (isset($wrapper->{$fieldname}) && $wrapper->{$fieldname}->value()) {
+            $save = TRUE;
+            $info = field_info_instance('node', $fieldname, 'resource');
+            $label = $info['label'];
+            $value = $wrapper->{$fieldname}->value();
+            $output .= '<h3>' .  $label . "</h3>\n" . $value['value'] . "\n";
+          }
+        }
+        if ($save) {
+          $wrapper->field_resourc_free_specs->set(array('value' => $output, 'format' => 'full_html'));
+          $wrapper->save();
+          $count++;
+        }
+        else {
+          watchdog('crl resource', 'Resource @resource was sourced from JISC but it has no dispayable JISC fields.', array('@resource' => $node->title));
+        }
+      }
+    }
+    watchdog('crl resource', 'Refactored JISC fields into field_resourc_free_specs for @count resource records.', array('@count' => $count));
+  }
+}
+
+
+/**
  * Helper to associate a custom oplist function with a field.
  */
 function crl_resource_set_oplist_function($field_name, $function_name) {

@@ -14,11 +14,6 @@ function crl_resource_field_extra_fields() {
         'description' => t('A resoruce status summary table.'),
         'weight' => 900,
       ),
-      'pseudo_field_resource_all_jisc_details' => array(
-        'label' => t('Resource JISC Details'),
-        'description' => t('All JISC details fields that should be displayed.'),
-        'weight' => 901,
-      ),
       'pseudo_field_resource_provider_details' => array(
         'label' => t('Resource Provider Details - Embedded'),
         'description' => t('An "embedded" display of the providers details that are related to the resource'),
@@ -684,6 +679,7 @@ function crl_resource_menu_local_tasks_alter(&$data, $router_item, $root_path) {
     // See if we have action links, and if so, add them as tabs.
     $action_links = crl_resource_activity_get_action_links($resource_entity);
     if ($action_links) {
+      $data['tabs'][1]['count'] = isset($data['tabs'][1]['count']) ? $data['tabs'][1]['count'] : 0;
       // Add a "default" tab for the regular resource edit page that we are
       // currently on. This is only needed if there are not already any sub-tabs
       // defined.

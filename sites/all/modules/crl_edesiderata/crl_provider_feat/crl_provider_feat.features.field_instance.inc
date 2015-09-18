@@ -43,7 +43,8 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_provider-field_comment_privacy'
+  // Exported field_instance:
+  // 'comment-comment_node_provider-field_comment_privacy'
   $field_instances['comment-comment_node_provider-field_comment_privacy'] = array(
     'bundle' => 'comment_node_provider',
     'default_value' => array(
@@ -77,7 +78,8 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'field_collection_item-field_contacts_group-field_contact_email'
+  // Exported field_instance:
+  // 'field_collection_item-field_contacts_group-field_contact_email'
   $field_instances['field_collection_item-field_contacts_group-field_contact_email'] = array(
     'bundle' => 'field_contacts_group',
     'default_value' => NULL,
@@ -110,7 +112,8 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'field_collection_item-field_contacts_group-field_contact_fax'
+  // Exported field_instance:
+  // 'field_collection_item-field_contacts_group-field_contact_fax'
   $field_instances['field_collection_item-field_contacts_group-field_contact_fax'] = array(
     'bundle' => 'field_contacts_group',
     'default_value' => NULL,
@@ -144,7 +147,8 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'field_collection_item-field_contacts_group-field_contact_name'
+  // Exported field_instance:
+  // 'field_collection_item-field_contacts_group-field_contact_name'
   $field_instances['field_collection_item-field_contacts_group-field_contact_name'] = array(
     'bundle' => 'field_contacts_group',
     'default_value' => NULL,
@@ -178,7 +182,8 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'field_collection_item-field_contacts_group-field_contact_phone'
+  // Exported field_instance:
+  // 'field_collection_item-field_contacts_group-field_contact_phone'
   $field_instances['field_collection_item-field_contacts_group-field_contact_phone'] = array(
     'bundle' => 'field_contacts_group',
     'default_value' => NULL,
@@ -212,7 +217,8 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'field_collection_item-field_contacts_group-field_contact_title'
+  // Exported field_instance:
+  // 'field_collection_item-field_contacts_group-field_contact_title'
   $field_instances['field_collection_item-field_contacts_group-field_contact_title'] = array(
     'bundle' => 'field_contacts_group',
     'default_value' => NULL,
@@ -246,7 +252,8 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'field_collection_item-field_contacts_group-field_link'
+  // Exported field_instance:
+  // 'field_collection_item-field_contacts_group-field_link'
   $field_instances['field_collection_item-field_contacts_group-field_link'] = array(
     'bundle' => 'field_contacts_group',
     'default_value' => NULL,
@@ -591,7 +598,7 @@ function crl_provider_feat_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 24,
+      'weight' => 40,
     ),
   );
 
@@ -637,7 +644,7 @@ function crl_provider_feat_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 25,
+      'weight' => 41,
     ),
   );
 
@@ -683,7 +690,7 @@ function crl_provider_feat_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 23,
+      'weight' => 39,
     ),
   );
 
@@ -1481,7 +1488,53 @@ function crl_provider_feat_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 22,
+      'weight' => 38,
+    ),
+  );
+
+  // Exported field_instance: 'node-provider-field_source_guid'
+  $field_instances['node-provider-field_source_guid'] = array(
+    'bundle' => 'provider',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 47,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_source_guid',
+    'label' => 'Source GUID',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 36,
     ),
   );
 
@@ -1524,7 +1577,7 @@ function crl_provider_feat_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 21,
+      'weight' => 37,
     ),
   );
 
@@ -1707,6 +1760,7 @@ function crl_provider_feat_field_default_field_instances() {
   t('See Also');
   t('Some values set here are aggregated automatically from all the resources that are related to this provider. Any aggregated values cannot be unset, but new values can be added.');
   t('Sorting Name');
+  t('Source GUID');
   t('Sources');
   t('Specify the workflow status for this provider if a profile will apply. <strong>All fields in the profile/analysis tab will be hidden from the public until a "Published" status is selected here.</strong>');
   t('Still in Operation');
