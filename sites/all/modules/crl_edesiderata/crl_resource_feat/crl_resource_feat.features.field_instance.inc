@@ -436,7 +436,7 @@ function crl_resource_feat_field_default_field_instances() {
     'bundle' => 'resource',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Use this space to list specifications that cannot be structured with other fields on the resource entry. The structure for this field is completely at the editors discretion. Various sections should be broken-up with 3rd-level headings.',
+    'description' => 'Use this space to list specifications that cannot be structured within other resource fields or in the data tables below. The structure for this field is completely at the editors discretion and if multiple sections are required they should be separated by 3rd-level headings. No label will be shown for this field.',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -460,7 +460,7 @@ function crl_resource_feat_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_resourc_free_specs',
-    'label' => 'Free-form Specifications',
+    'label' => 'General Specifications',
     'required' => 0,
     'settings' => array(
       'text_processing' => 1,
@@ -473,7 +473,7 @@ function crl_resource_feat_field_default_field_instances() {
         'rows' => 20,
       ),
       'type' => 'text_textarea',
-      'weight' => 127,
+      'weight' => 122,
     ),
   );
 
@@ -804,7 +804,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'tablefield',
       'settings' => array(),
       'type' => 'tablefield',
-      'weight' => 122,
+      'weight' => 123,
     ),
   );
 
@@ -975,7 +975,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'module' => 'tablefield',
         'settings' => array(),
         'type' => 'tablefield_default',
-        'weight' => 78,
+        'weight' => 82,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1002,7 +1002,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'tablefield',
       'settings' => array(),
       'type' => 'tablefield',
-      'weight' => 125,
+      'weight' => 126,
     ),
   );
 
@@ -1081,7 +1081,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'module' => 'tablefield',
         'settings' => array(),
         'type' => 'tablefield_default',
-        'weight' => 76,
+        'weight' => 80,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1108,7 +1108,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'tablefield',
       'settings' => array(),
       'type' => 'tablefield',
-      'weight' => 123,
+      'weight' => 124,
     ),
   );
 
@@ -1368,7 +1368,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'module' => 'tablefield',
         'settings' => array(),
         'type' => 'tablefield_default',
-        'weight' => 77,
+        'weight' => 81,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1395,7 +1395,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'tablefield',
       'settings' => array(),
       'type' => 'tablefield',
-      'weight' => 124,
+      'weight' => 125,
     ),
   );
 
@@ -1501,7 +1501,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'tablefield',
       'settings' => array(),
       'type' => 'tablefield',
-      'weight' => 126,
+      'weight' => 127,
     ),
   );
 
@@ -2034,7 +2034,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('Enter any special <em>resource-specific</em> notes that relate to the provider. These notes will be shown near the other provider information that\'s taken from the provider\'s profile.');
   t('Facets');
   t('Flag this item with an "update alert" until this date.');
-  t('Free-form Specifications');
+  t('General Specifications');
   t('If this entry has relationships with other entries, add links to those entries here (one or more as needed).');
   t('If this entry represents an alias or derivative version of another one, add a link to the entry that should be considered the canonical (master) version. If you place a value in this field you will most likely leave almost all other fields blank for this entry.');
   t('Interface Tools');
@@ -2071,7 +2071,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('Title List');
   t('Update Alert Expiration');
   t('Update Alert Message');
-  t('Use this space to list specifications that cannot be structured with other fields on the resource entry. The structure for this field is completely at the editors discretion. Various sections should be broken-up with 3rd-level headings.');
+  t('Use this space to list specifications that cannot be structured within other resource fields or in the data tables below. The structure for this field is completely at the editors discretion and if multiple sections are required they should be separated by 3rd-level headings. No label will be shown for this field.');
 
   return $field_instances;
 }
