@@ -262,6 +262,7 @@ function crl_provider_feat_field_group_info() {
       2 => 'field_jisc_import_batch',
       3 => 'field_resource_type',
       4 => 'field_subject_area',
+      5 => 'field_source_guid',
     ),
     'format_type' => 'div',
     'format_settings' => array(

@@ -252,7 +252,7 @@ function crl_resource_feat_field_group_info() {
       0 => 'field_resource_metadata_tb',
       1 => 'field_resource_tech_platform_tb',
       2 => 'field_resource_interf_tools_tb',
-      3 => 'pseudo_field_resource_all_jisc_details',
+      3 => 'field_resourc_free_specs',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -322,6 +322,7 @@ function crl_resource_feat_field_group_info() {
       6 => 'field_resource_provider_notes',
       7 => 'field_temp_subjects_covered',
       8 => 'field_temp_topics_from_review',
+      9 => 'field_resourc_free_specs',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -378,7 +379,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Jisc Data',
-    'weight' => '15',
+    'weight' => '16',
     'children' => array(
       0 => 'field_resource_jisc_overview',
       1 => 'field_resource_jisc_description',
@@ -658,6 +659,7 @@ function crl_resource_feat_field_group_info() {
       1 => 'field_content_scope_and_complete',
       2 => 'field_cost_and_price_structure',
       3 => 'field_resource_activity_history',
+      4 => 'field_source_guid',
     ),
     'format_type' => 'div',
     'format_settings' => array(
