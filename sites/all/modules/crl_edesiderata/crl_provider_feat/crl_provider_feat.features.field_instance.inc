@@ -557,143 +557,6 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_jisc_guid'
-  $field_instances['node-provider-field_jisc_guid'] = array(
-    'bundle' => 'provider',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 6,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 29,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 30,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_jisc_guid',
-    'label' => 'JISC GUID',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 40,
-    ),
-  );
-
-  // Exported field_instance: 'node-provider-field_jisc_id'
-  $field_instances['node-provider-field_jisc_id'] = array(
-    'bundle' => 'provider',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 5,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 30,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 23,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_jisc_id',
-    'label' => 'JISC ID',
-    'required' => 0,
-    'settings' => array(
-      'max' => '',
-      'min' => '',
-      'prefix' => '',
-      'suffix' => '',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'number',
-      'settings' => array(),
-      'type' => 'number',
-      'weight' => 41,
-    ),
-  );
-
-  // Exported field_instance: 'node-provider-field_jisc_import_batch'
-  $field_instances['node-provider-field_jisc_import_batch'] = array(
-    'bundle' => 'provider',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 7,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 28,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 22,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_jisc_import_batch',
-    'label' => 'JISC Import Batch',
-    'required' => 0,
-    'settings' => array(
-      'max' => '',
-      'min' => '',
-      'prefix' => '',
-      'suffix' => '',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'number',
-      'settings' => array(),
-      'type' => 'number',
-      'weight' => 39,
-    ),
-  );
-
   // Exported field_instance: 'node-provider-field_link'
   $field_instances['node-provider-field_link'] = array(
     'bundle' => 'provider',
@@ -1501,9 +1364,8 @@ function crl_provider_feat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
+        'type' => 'hidden',
         'weight' => 47,
       ),
       'embedded' => array(
@@ -1743,9 +1605,6 @@ function crl_provider_feat_field_default_field_instances() {
   t('History');
   t('Include version, and a link to website and date version was harvested.');
   t('Internal Notes');
-  t('JISC GUID');
-  t('JISC ID');
-  t('JISC Import Batch');
   t('Legal Information');
   t('Links to organizational charts, link to bylaws, link to list of board members, link to recent job advertisements, link to board page.');
   t('Main Address');
