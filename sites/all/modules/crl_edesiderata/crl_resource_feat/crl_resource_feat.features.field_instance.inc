@@ -1289,7 +1289,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'rows' => 8,
       ),
       'type' => 'text_textarea',
-      'weight' => 140,
+      'weight' => 150,
     ),
   );
 
@@ -1823,7 +1823,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 120,
+      'weight' => 148,
     ),
   );
 
@@ -1868,7 +1868,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 119,
+      'weight' => 149,
     ),
   );
 
