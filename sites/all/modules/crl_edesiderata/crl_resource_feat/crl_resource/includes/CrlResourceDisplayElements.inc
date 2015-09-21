@@ -241,7 +241,7 @@ class CrlResourceDisplayElements {
       $source_text = t('Information has been sourced from a !sitelink entry, with additional edits by CRL.', array('!sitelink' => $this->jisc_link(t('JISC catalog'))));
     }
     elseif ($source_status == 'adat_only') {
-      $source_text = t('Information has been sourced from an ADAT entry, with additional edits by CRL.');
+      $source_text = t('This entry is sourced from the Jisc Academic Database Assessment Tool (ADAT). Much of that information was originally provided to ADAT by the database vendor as of November 2012. CRL is not responsible for, nor does it make any claim as to, the accuracy of the information.');
     }
     else {
       $source_text = t('Source details are unknown for this entry.');
