@@ -108,9 +108,9 @@ function crl_pp_resource_feat_default_rules_configuration() {
       "ON" : { "entityform_insert" : [] },
       "IF" : [
         { "entity_is_of_bundle" : {
-            "entity" : [ "entityform:type" ],
-            "type" : "entityform_type",
-            "bundle" : { "value" : { "entityform_type" : "entityform_type" } }
+            "entity" : [ "entityform" ],
+            "type" : "entityform",
+            "bundle" : { "value" : { "purchase_proposal_nomination" : "purchase_proposal_nomination" } }
           }
         }
       ],
