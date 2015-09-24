@@ -173,12 +173,19 @@ function uniqueness_form_alter(&$form, $form_state, $form_id) {
         $values['nid'] = $form['nid']['#value'];
       }
       // Store the title.
-      if (!empty($form['title'])) {
+      if (!empty($form['title']['#default_value'])) {
         $values['title'] = strip_tags($form['title']['#default_value']);
+        if (variable_get('uniqueness_scope', UNIQUENESS_SCOPE_CONTENT_TYPE) == UNIQUENESS_SCOPE_CONTENT_TYPE) {
+           $values['type'] = $type;
+        }
       }
       // Store the tags.
-      if (!empty($values['taxonomy']['tags'][1])) {
-        $values['tags'] = strip_tags($form['taxonomy']['tags'][1]['#default_value']);
+      $langcode = field_language('node', $form['#node'], 'field_tags');
+      if (!empty($form['#node']->field_tags[$langcode])) {
+          foreach($form['#node']->field_tags[$langcode] as $term){         
+              $terms[] = $term['name'];
+            }
+       $values['tags'] = implode(' ', $terms);
       }
       _uniqueness_store($values);
 
@@ -440,11 +447,13 @@ function _uniqueness_content_drupalsearch($values) {
     drupal_set_message(t('Search module not found. Please enable the search module or select a different search mode on the uniqueness configuration page.'), 'warning');
     return array();
   }
-
   // build search string
   $searchstring = array_key_exists('type', $values) ? ' type:' . $values['type'] . ' ' : '';
+  if(!empty($values['tags'])){
+    $searchstring .= join(' OR ', explode(' ', $values['tags'])) . ' OR ';
+  }
   $searchstring .= join(' OR ', explode(' ', $values['title']));
-  $search_results = node_search('search', $searchstring);
+  $search_results = node_search_execute($searchstring);
 
   // node_search is automatically limited to max. 10 results, but in case we
   // want even less we need to further reduce the number of results.

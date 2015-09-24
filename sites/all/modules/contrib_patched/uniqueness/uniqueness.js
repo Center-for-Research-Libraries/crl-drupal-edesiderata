@@ -12,7 +12,7 @@
       }
       // Search off title.
       $('#edit-title', context).once('uniqueness', function() {
-        $(this).keyup(function() {
+        $(this).bind("keyup input propertychange", function() {
           input = this.value;
           if (input.length >= uniqueness.minCharacters) {
             uniqueness.search('title', input);
@@ -23,7 +23,7 @@
         });
       });
       // Search off tags.
-      $('#edit-taxonomy-tags-1').once('uniqueness', function() {
+      $('#edit-field-tags input:text').once('uniqueness', function() {
         $(this).blur(function() {
           input = this.value;
           // Some tags set.
