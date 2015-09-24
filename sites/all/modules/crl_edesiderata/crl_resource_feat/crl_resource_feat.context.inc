@@ -68,6 +68,12 @@ function crl_resource_feat_context_default_contexts() {
           'region' => 'sidebar_first',
           'weight' => '-6',
         ),
+        'block-12' => array(
+          'module' => 'block',
+          'delta' => '12',
+          'region' => 'sidebar_first',
+          'weight' => '-5',
+        ),
         'block-32' => array(
           'module' => 'block',
           'delta' => '32',
@@ -119,18 +125,7 @@ function crl_resource_feat_context_default_contexts() {
       ),
     ),
   );
-  $context->reactions = array(
-    'block' => array(
-      'blocks' => array(
-        'block-12' => array(
-          'module' => 'block',
-          'delta' => '12',
-          'region' => 'sidebar_first',
-          'weight' => '10',
-        ),
-      ),
-    ),
-  );
+  $context->reactions = array();
   $context->condition_mode = 1;
 
   // Translatables
