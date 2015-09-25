@@ -151,7 +151,8 @@ article form.shared-vote-input-form {
 should be safe to do in most cases where "field-widget-options-buttons" are
 used*/
 body.page-node-edit .field-widget-options-buttons .form-checkboxes .form-item,
-body.page-node-add .field-widget-options-buttons .form-checkboxes .form-item {
+body.page-node-add .field-widget-options-buttons .form-checkboxes .form-item,
+body.page-eform-submit .field-widget-options-buttons .form-checkboxes .form-item {
   float: left;
   margin-right: 2em;
   min-width: 25%;
@@ -159,11 +160,13 @@ body.page-node-add .field-widget-options-buttons .form-checkboxes .form-item {
 /* One exception is the "CRL Status" checkbox selection, as the presentation
 order needs to be preserved there */
 body.page-node-edit .field-name-field-activity-crl-status.field-widget-options-buttons .form-checkboxes .form-item,
-body.page-node-add .field-name-field-activity-crl-status.field-widget-options-buttons .form-checkboxes .form-item {
+body.page-node-add .field-name-field-activity-crl-status.field-widget-options-buttons .form-checkboxes .form-item,
+body.page-eform-submit .field-name-field-activity-crl-status.field-widget-options-buttons .form-checkboxes .form-item {
   float: none;
 }
 body.page-node-edit .field-widget-options-buttons .form-checkboxes:after,
-body.page-node-add .field-widget-options-buttons .form-checkboxes:after {
+body.page-node-add .field-widget-options-buttons .form-checkboxes:after,
+body.page-eform-submit .field-widget-options-buttons .form-checkboxes:after {
   content: "";
   display: table;
   clear: both;
