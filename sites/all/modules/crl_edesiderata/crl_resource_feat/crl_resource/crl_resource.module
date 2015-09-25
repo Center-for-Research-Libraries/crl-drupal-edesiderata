@@ -708,7 +708,8 @@ function crl_resource_menu_local_tasks_alter(&$data, $router_item, $root_path) {
 
 
 function crl_resource_form_resource_suggestion_entityform_edit_form_alter(&$form, &$form_state, $form_id) {
-  if (!empty($form['#entity']) && !empty($form['#entity']->is_new)) {
+  if (module_exists('uniqueness') && !empty($form['#entity']) && !empty($form['#entity']->is_new)) {
+    $form['field_title_sort']['#access'] = $form['field_title_sort']['#required'] = FALSE;
     $form['title'] = array(
       '#type' => 'textfield',
       '#title' => t('Title'),
@@ -718,16 +719,11 @@ function crl_resource_form_resource_suggestion_entityform_edit_form_alter(&$form
     );
     $type = 'resource';
     $op = UNIQUENESS_ADD_NODE;
-    // Save the content type and operation for later use
-    _uniqueness_widget_store(array('type' => $type, 'op' => $op));
     if (user_access('use uniqueness widget') && in_array($op, variable_get('uniqueness_type_' . $type, array()))) {
       // Add our javascript.
       $form['uniqueness']['#attached']['js'] = array(
         drupal_get_path('module', 'uniqueness') . '/uniqueness.js',
-        array(
-          'data' => array('uniqueness' => _uniqueness_get_js_settings($type, $form['nid']['#value'])),
-          'type' => 'setting',
-        )
+        array('data' => array('uniqueness' => _uniqueness_get_js_settings($type, NULL)), 'type' => 'setting',)
       );
     }
     // Embed inline widget if enabled.
