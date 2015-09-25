@@ -250,13 +250,13 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['field_provider']['settings'] = array(
     'link' => 0,
   );
-  /* Field: Content: Subject Areas */
+  /* Field: Field: Subject Areas */
   $handler->display->display_options['fields']['field_subject_area']['id'] = 'field_subject_area';
   $handler->display->display_options['fields']['field_subject_area']['table'] = 'field_data_field_subject_area';
   $handler->display->display_options['fields']['field_subject_area']['field'] = 'field_subject_area';
   $handler->display->display_options['fields']['field_subject_area']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['fields']['field_subject_area']['delta_offset'] = '0';
-  /* Field: Content: Resource Types */
+  /* Field: Field: Resource Types */
   $handler->display->display_options['fields']['field_resource_type']['id'] = 'field_resource_type';
   $handler->display->display_options['fields']['field_resource_type']['table'] = 'field_data_field_resource_type';
   $handler->display->display_options['fields']['field_resource_type']['field'] = 'field_resource_type';
