@@ -54,6 +54,7 @@ features[field_base][] = field_source_guid
 features[field_base][] = field_title_alt
 features[field_base][] = field_title_prior
 features[field_base][] = field_title_sort
+features[filter][] = external_display
 features[filter][] = filtered_html
 features[filter][] = full_html
 features[filter][] = literal
