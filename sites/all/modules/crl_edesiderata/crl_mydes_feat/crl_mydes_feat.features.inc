@@ -102,7 +102,7 @@ function crl_mydes_feat_default_search_api_saved_searches_settings() {
           "title" : "[[site:name]] New results for your watchsets",
           "body" : "\\u003Cp\\u003EThere are new results for your watchsets on [site:name]:\\u003C\\/p\\u003E\\r\\n\\r\\n[search-api-saved-searches:results]\\r\\n\\r\\n\\u003Cp\\u003EYou can add and remove your watchsets by logging-in to \\u003Ca href=\\u0022[site:url]\\/me\\u0022\\u003EmeDesiderata\\u003C\\/a\\u003E\\u003C\\/p\\u003E",
           "results" : "\\u003Cp\\u003ENew results for search \\u0022[search-api-saved-search:name]\\u0022:\\u003C\\/p\\u003E\\r\\n\\u003Cul\\u003E[search-api-saved-search:items]\\u003C\\/ul\\u003E\\r\\n[search-api-saved-search:results-capped]",
-          "result" : "\\u003Cli\\u003E[search-api-saved-search-result:label] ([search-api-saved-search-result:url])\\u003C\\/li\\u003E",
+          "result" : "\\u003Cli\\u003E\\u003Ca href=\\u0022[search-api-saved-search-result:url]\\u0022\\u003E[search-api-saved-search-result:label]\\u003C\\/a\\u003E\\u003C\\/li\\u003E",
           "max_results" : "0",
           "results_capped" : "\\u2026\\r\\nView all results: [search-api-saved-search:view-url]"
         }

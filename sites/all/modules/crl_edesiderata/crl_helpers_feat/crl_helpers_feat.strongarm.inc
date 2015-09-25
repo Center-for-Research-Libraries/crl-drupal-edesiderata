@@ -64,7 +64,7 @@ function crl_helpers_feat_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'mimemail_format';
-  $strongarm->value = 'full_html';
+  $strongarm->value = 'external_display';
   $export['mimemail_format'] = $strongarm;
 
   $strongarm = new stdClass();
