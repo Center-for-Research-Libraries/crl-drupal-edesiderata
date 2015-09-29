@@ -252,6 +252,7 @@ function crl_resource_feat_field_group_info() {
       1 => 'field_resource_tech_platform_tb',
       2 => 'field_resource_interf_tools_tb',
       3 => 'field_resourc_free_specs',
+      4 => 'field_resource_gen_specs',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -320,6 +321,7 @@ function crl_resource_feat_field_group_info() {
       5 => 'field_resource_languages',
       6 => 'field_resource_provider_notes',
       7 => 'field_resourc_free_specs',
+      8 => 'field_resource_gen_specs',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
