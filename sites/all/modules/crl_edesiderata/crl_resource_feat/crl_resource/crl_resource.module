@@ -725,6 +725,9 @@ function crl_resource_form_resource_suggestion_entityform_edit_form_alter(&$form
       '#maxlength' => 255,
       '#weight' => -10,
     );
+    // Set submit handler that will later process the data from the temporary
+    // title field into the formal title storage.
+    array_unshift($form['actions']['submit']['#submit'], 'crl_resource_resource_suggestion_entityform_submit');
     // Implement the relevant logic from uniqueness_form_alter() in order to
     // make our entity form uniqueness enabled.
     $form['uniqueness']['#attached']['js'] = array(
@@ -747,4 +750,16 @@ function crl_resource_form_resource_suggestion_entityform_edit_form_alter(&$form
       '#markup' => $content,
     );
   }
+}
+
+
+/**
+ * Submit callback for resource suggestion entity form.
+ * 
+ * @see crl_resource_form_resource_suggestion_entityform_edit_form_alter()
+ */
+function crl_resource_resource_suggestion_entityform_submit($form, &$form_state) {
+  // Capture the title in the formal title storage for the submission.
+  $lang = $form['field_title_sort']['#language'];
+  $form_state['values']['field_title_sort'][$lang][0]['value'] = $form_state['values']['title'];
 }
