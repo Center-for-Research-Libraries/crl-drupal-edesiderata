@@ -251,8 +251,7 @@ function crl_resource_feat_field_group_info() {
       0 => 'field_resource_metadata_tb',
       1 => 'field_resource_tech_platform_tb',
       2 => 'field_resource_interf_tools_tb',
-      3 => 'field_resourc_free_specs',
-      4 => 'field_resource_gen_specs',
+      3 => 'field_resource_gen_specs',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -320,8 +319,7 @@ function crl_resource_feat_field_group_info() {
       4 => 'field_resource_terms_tb',
       5 => 'field_resource_languages',
       6 => 'field_resource_provider_notes',
-      7 => 'field_resourc_free_specs',
-      8 => 'field_resource_gen_specs',
+      7 => 'field_resource_gen_specs',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -413,7 +411,8 @@ function crl_resource_feat_field_group_info() {
       2 => 'field_resource_jisc_overview',
       3 => 'field_resource_jisc_description',
       4 => 'field_jisc_import_batch',
-      5 => 'group_jisc_standards_compliance',
+      5 => 'field_resourc_free_specs',
+      6 => 'group_jisc_standards_compliance',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -481,7 +480,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = 'group_jisc_data';
   $field_group->data = array(
     'label' => 'Standards Compliance',
-    'weight' => '11',
+    'weight' => '12',
     'children' => array(
       0 => 'field_resource_jisc_federated',
       1 => 'field_resource_jisc_full_text',
