@@ -58,7 +58,7 @@ function crl_resource_update_7101() {
 
 
 /**
- * Refactor JISC fields into field_resourc_free_specs.
+ * Refactor JISC fields into field_resource_gen_specs.
  */
 function crl_resource_update_7102() {
   $query = new EntityFieldQuery();
@@ -93,7 +93,7 @@ function crl_resource_update_7102() {
           }
         }
         if ($save) {
-          $wrapper->field_resourc_free_specs->set(array('value' => $output, 'format' => 'full_html'));
+          $wrapper->field_resource_gen_specs->set(array('value' => $output, 'format' => 'full_html'));
           $wrapper->save();
           $count++;
         }
@@ -102,7 +102,39 @@ function crl_resource_update_7102() {
         }
       }
     }
-    watchdog('crl resource', 'Refactored JISC fields into field_resourc_free_specs for @count resource records.', array('@count' => $count));
+    watchdog('crl resource', 'Refactored JISC fields into field_resource_gen_specs for @count resource records.', array('@count' => $count));
+  }
+}
+
+
+/**
+ * Move field_resourc_free_specs data into field_resource_gen_specs if needed.
+ */
+function crl_resource_update_7103() {
+  $query = new EntityFieldQuery();
+  $query
+      ->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'resource')
+      ->addTag('DANGEROUS_ACCESS_CHECK_OPT_OUT'); // Needed for drush/cron execution.
+  $result = $query->execute();
+  if (!empty($result['node'])) {
+    $count = 0;
+    foreach ($result['node'] as $data) {
+      $node = node_load($data->nid);
+      // Try to preserve the original updated timestamp.
+      // @see crl_common_node_presave()
+      if (isset($node->changed)) {
+        $node->manual_changed_timestamp = $node->changed;
+      }
+      $wrapper = entity_metadata_wrapper('node', $node);
+      if (isset($wrapper->field_resourc_free_specs) && $wrapper->field_resourc_free_specs->value()) {
+        $value = $wrapper->field_resourc_free_specs->value();
+        $wrapper->field_resource_gen_specs->set($value);
+        $wrapper->save();
+        $count++;
+      }
+    }
+    watchdog('crl resource', 'Copied data from field_resourc_free_specs into field_resource_gen_specs for @count resource records.', array('@count' => $count));
   }
 }
 
