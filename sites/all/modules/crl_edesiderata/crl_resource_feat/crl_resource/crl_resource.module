@@ -707,46 +707,44 @@ function crl_resource_menu_local_tasks_alter(&$data, $router_item, $root_path) {
 }
 
 
+/**
+ * Implements hook_form_resource_suggestion_entityform_edit_form_alter().
+ */
 function crl_resource_form_resource_suggestion_entityform_edit_form_alter(&$form, &$form_state, $form_id) {
-  if (module_exists('uniqueness') && !empty($form['#entity']) && !empty($form['#entity']->is_new)) {
+  // If this user has access to the uniqueness widget and this is a new
+  // submission we make some alterations to add "related" suggestions.
+  if (module_exists('uniqueness') && user_access('use uniqueness widget')
+      && !empty($form['#entity']) && !empty($form['#entity']->is_new)) {
+    // Disable the formal title storage and add a temporary field to the form
+    // that is compatible with uniqueness lookups.
     $form['field_title_sort']['#access'] = $form['field_title_sort']['#required'] = FALSE;
-    $form['title'] = array(
+    $form['title'] = array( // 'title' key creates a form id that work with uniqueness JS
       '#type' => 'textfield',
       '#title' => t('Title'),
       '#required' => TRUE,
       '#maxlength' => 255,
       '#weight' => -10,
     );
-    $type = 'resource';
-    $op = UNIQUENESS_ADD_NODE;
-    if (user_access('use uniqueness widget') && in_array($op, variable_get('uniqueness_type_' . $type, array()))) {
-      // Add our javascript.
-      $form['uniqueness']['#attached']['js'] = array(
-        drupal_get_path('module', 'uniqueness') . '/uniqueness.js',
-        array('data' => array('uniqueness' => _uniqueness_get_js_settings($type, NULL)), 'type' => 'setting',)
-      );
-    }
-    // Embed inline widget if enabled.
-    if (uniqueness_widget_enabled(UNIQUENESS_WIDGET_INLINE)) {
-      // Get rendered list of results.
-      $count = 0;
-      $content = uniqueness_widget_content($count);
-      // Only add the inline uniqueness widget if it has not been defined
-      // already. This makes it possible for other modules to customize the
-      // form element in their own hook_form_alter() implementation.
-      $form['uniqueness'] += array(
-        '#type' => 'fieldset',
-        '#title' => filter_xss_admin(variable_get('uniqueness_default_title', t('Related content'))),
-        '#collapsible' => 1,
-        '#collapsed' => ($count == 0),
-        '#weight' => -9, // Place underneath title.
-        'uniqueness_type' => array(),
-      );
-      $form['uniqueness']['uniqueness_type'] += array(
-        '#type' => 'item',
-        '#title' => '',
-        '#markup' => $content,
-      );
-    }
+    // Implement the relevant logic from uniqueness_form_alter() in order to
+    // make our entity form uniqueness enabled.
+    $form['uniqueness']['#attached']['js'] = array(
+      drupal_get_path('module', 'uniqueness') . '/uniqueness.js',
+      array('data' => array('uniqueness' => _uniqueness_get_js_settings('resource', NULL)), 'type' => 'setting',)
+    );
+    $count = 0;
+    $content = uniqueness_widget_content($count);
+    $form['uniqueness'] += array(
+      '#type' => 'fieldset',
+      '#title' => filter_xss_admin(variable_get('uniqueness_default_title', t('Related content'))),
+      '#collapsible' => 1,
+      '#collapsed' => ($count == 0),
+      '#weight' => -9, // Place underneath title.
+      'uniqueness_type' => array(),
+    );
+    $form['uniqueness']['uniqueness_type'] += array(
+      '#type' => 'item',
+      '#title' => '',
+      '#markup' => $content,
+    );
   }
 }
