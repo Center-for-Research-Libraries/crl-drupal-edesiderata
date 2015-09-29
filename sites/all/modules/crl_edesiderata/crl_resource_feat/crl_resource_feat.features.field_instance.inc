@@ -431,52 +431,6 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resourc_free_specs'
-  $field_instances['node-resource-field_resourc_free_specs'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Use this space to list specifications that cannot be structured within other resource fields or in the data tables below. The structure for this field is completely at the editors discretion and if multiple sections are required they should be separated by 3rd-level headings. No label will be shown for this field.',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 1003,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resourc_free_specs',
-    'label' => 'General Specifications',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 20,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 123,
-    ),
-  );
-
   // Exported field_instance: 'node-resource-field_resource_activity_history'
   $field_instances['node-resource-field_resource_activity_history'] = array(
     'bundle' => 'resource',
