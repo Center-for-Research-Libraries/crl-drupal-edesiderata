@@ -715,12 +715,13 @@ function crl_resource_form_resource_suggestion_entityform_edit_form_alter(&$form
   // submission we make some alterations to add "related" suggestions.
   if (module_exists('uniqueness') && user_access('use uniqueness widget')
       && !empty($form['#entity']) && !empty($form['#entity']->is_new)) {
+    $title_field_info = field_info_instance('entityform', 'field_title_sort', 'resource_suggestion');
     // Disable the formal title storage and add a temporary field to the form
     // that is compatible with uniqueness lookups.
     $form['field_title_sort']['#access'] = $form['field_title_sort']['#required'] = FALSE;
     $form['title'] = array( // 'title' key creates a form id that work with uniqueness JS
       '#type' => 'textfield',
-      '#title' => t('Title'),
+      '#title' => $title_field_info['label'],
       '#required' => TRUE,
       '#maxlength' => 255,
       '#weight' => -10,
