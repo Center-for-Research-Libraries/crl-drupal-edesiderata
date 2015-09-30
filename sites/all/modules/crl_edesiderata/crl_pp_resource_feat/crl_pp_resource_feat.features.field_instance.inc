@@ -572,7 +572,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
     'entity_type' => 'entityform',
     'field_name' => 'field_pp_related',
-    'label' => 'Related Purchase Proposal Title',
+    'label' => 'Converted Purchase Proposal Title',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -586,7 +586,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 16,
+      'weight' => 14,
     ),
   );
 
@@ -2858,6 +2858,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   t('Comment');
   t('Comment Privacy Setting');
   t('Comments');
+  t('Converted Purchase Proposal Title');
   t('Currency');
   t('Discounted Price');
   t('Does it fill in or complete CRL holdings?');
