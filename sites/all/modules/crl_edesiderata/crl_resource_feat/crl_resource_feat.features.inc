@@ -30,6 +30,71 @@ function crl_resource_feat_views_api($module = NULL, $api = NULL) {
 }
 
 /**
+ * Implements hook_default_entityform_type().
+ */
+function crl_resource_feat_default_entityform_type() {
+  $items = array();
+  $items['resource_suggestion'] = entity_import('entityform_type', '{
+    "type" : "resource_suggestion",
+    "label" : "Resource Suggestion",
+    "data" : {
+      "draftable" : 0,
+      "draft_redirect_path" : "",
+      "draft_button_text" : "",
+      "draft_save_text" : { "value" : "", "format" : "full_html" },
+      "submit_button_text" : "",
+      "submit_confirm_msg" : "",
+      "your_submissions" : "",
+      "disallow_resubmit_msg" : "",
+      "delete_confirm_msg" : "",
+      "page_title_view" : "",
+      "preview_page" : 0,
+      "submission_page_title" : "",
+      "submission_text" : { "value" : "", "format" : "full_html" },
+      "submission_show_submitted" : 0,
+      "submissions_view" : "default",
+      "user_submissions_view" : "default",
+      "form_status" : "ENTITYFORM_OPEN",
+      "roles" : {
+        "3" : "3",
+        "4" : "4",
+        "5" : "5",
+        "9" : "9",
+        "1" : 0,
+        "2" : 0,
+        "6" : 0,
+        "7" : 0,
+        "8" : 0,
+        "10" : 0,
+        "11" : 0,
+        "12" : 0,
+        "13" : 0,
+        "14" : 0,
+        "15" : 0,
+        "16" : 0,
+        "17" : 0,
+        "18" : 0,
+        "19" : 0,
+        "20" : 0,
+        "21" : 0,
+        "22" : 0,
+        "23" : 0
+      },
+      "resubmit_action" : "new",
+      "redirect_path" : "",
+      "instruction_pre" : {
+        "value" : "\\u003Cp\\u003EUse the form below to submit a resource suggestion for inclusion in the A-Z Resource index. Submissions will be reviewed by CRL staff before being included in the index.\\u003C\\/p\\u003E\\r\\n",
+        "format" : "full_html"
+      }
+    },
+    "weight" : "0",
+    "rdf_mapping" : [],
+    "paths" : []
+  }');
+  return $items;
+}
+
+/**
  * Implements hook_node_info().
  */
 function crl_resource_feat_node_info() {
