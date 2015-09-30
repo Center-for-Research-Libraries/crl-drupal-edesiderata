@@ -117,7 +117,6 @@ features[variable][] = node_submitted_provider
 features[views_view][] = provider_lists
 features_exclude[field_base][field_title_sort] = field_title_sort
 features_exclude[field_base][field_title_alt] = field_title_alt
-features_exclude[field_base][field_postal_code] = field_postal_code
 features_exclude[field_base][field_country] = field_country
 features_exclude[field_base][field_link] = field_link
 features_exclude[field_base][field_contacts] = field_contacts
