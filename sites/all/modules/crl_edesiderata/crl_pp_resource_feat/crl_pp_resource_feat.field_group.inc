@@ -207,6 +207,34 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_official|entityform|purchase_proposal_nomination|form';
+  $field_group->group_name = 'group_official';
+  $field_group->entity_type = 'entityform';
+  $field_group->bundle = 'purchase_proposal_nomination';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Offical Use Only',
+    'weight' => '13',
+    'children' => array(
+      0 => 'field_pp_related',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Offical Use Only',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'classes' => 'group-official field-group-fieldset',
+        'description' => '',
+      ),
+      'formatter' => 'collapsed',
+    ),
+  );
+  $export['group_official|entityform|purchase_proposal_nomination|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_pp_admin|node|pp_resource|form';
   $field_group->group_name = 'group_pp_admin';
   $field_group->entity_type = 'node';
