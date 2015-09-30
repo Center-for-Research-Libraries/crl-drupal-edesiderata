@@ -57,8 +57,23 @@ function crl_provider_update_7101() {
 
 
 /**
+ * Cleanup old DB data for field_postal_code.
+ */
+function crl_provider_update_7102() {
+  // Somehow the base data for field_postal_code was left behind despite it not
+  // having any instances. This is probably related to an issue with Field
+  // Collections.
+  $field = field_info_field('field_postal_code');
+  // Be real sure the field base exists without instances, then delete.
+  if ($field && empty($field['bundles'])) {
+    field_delete_field('field_postal_code');
+  }
+}
+
+
+/**
  * Helper to buk prep provider data for new structures.
- * 
+ *
  * This function assumes that there are not too many providers (<100) in the
  * system as it is not run via a batch.
  */
