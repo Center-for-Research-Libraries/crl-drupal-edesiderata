@@ -316,14 +316,15 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group->mode = 'default';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Process Entry',
-    'weight' => '16',
+    'label' => 'Entry Processing',
+    'weight' => '14',
     'children' => array(
-      0 => 'flag_entityform_pp_convert',
+      0 => 'field_pp_related',
+      1 => 'flag_entityform_pp_convert',
     ),
     'format_type' => 'div',
     'format_settings' => array(
-      'label' => 'Process Entry',
+      'label' => 'Entry Processing',
       'instance_settings' => array(
         'id' => '',
         'classes' => 'group-process field-group-div',

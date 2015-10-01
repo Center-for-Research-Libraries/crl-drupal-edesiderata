@@ -77,6 +77,7 @@ function crl_pp_resource_feat_user_default_permissions() {
     'name' => 'view own field_pp_related',
     'roles' => array(
       'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
       'editor basic' => 'editor basic',
       'editor power' => 'editor power',
     ),
