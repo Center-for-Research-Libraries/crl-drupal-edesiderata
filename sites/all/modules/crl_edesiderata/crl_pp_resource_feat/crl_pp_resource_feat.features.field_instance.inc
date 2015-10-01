@@ -358,7 +358,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 13,
+        'weight' => 12,
       ),
     ),
     'entity_type' => 'entityform',
@@ -567,12 +567,12 @@ function crl_pp_resource_feat_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 14,
+        'weight' => 15,
       ),
     ),
     'entity_type' => 'entityform',
     'field_name' => 'field_pp_related',
-    'label' => 'Related Purchase Proposal Title',
+    'label' => 'Converted Purchase Proposal Title',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -586,7 +586,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 16,
+      'weight' => 14,
     ),
   );
 
@@ -1453,7 +1453,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 10,
+      'weight' => 26,
     ),
   );
 
@@ -2508,7 +2508,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 8,
+      'weight' => 26,
     ),
   );
 
@@ -2858,6 +2858,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   t('Comment');
   t('Comment Privacy Setting');
   t('Comments');
+  t('Converted Purchase Proposal Title');
   t('Currency');
   t('Discounted Price');
   t('Does it fill in or complete CRL holdings?');

@@ -109,7 +109,7 @@ function crl_pp_resource_feat_flag_default_flags() {
     'types' => array(
       0 => 'purchase_proposal_nomination',
     ),
-    'flag_short' => 'Convert',
+    'flag_short' => 'Convert to PP Resource',
     'flag_long' => 'Convert the submission to a Purchase Proposal Resource',
     'flag_message' => 'The submission has been converted to the Purchase Proposal Resource. Please review and edit the node before publishing.',
     'unflag_short' => 'Remove',
@@ -119,7 +119,7 @@ function crl_pp_resource_feat_flag_default_flags() {
     'link_type' => 'confirm',
     'weight' => 0,
     'show_in_links' => array(
-      'full' => 'full',
+      'full' => 0,
       'email' => 0,
       'confirmation' => 0,
       'download' => 0,
@@ -128,7 +128,7 @@ function crl_pp_resource_feat_flag_default_flags() {
       'diff_standard' => 0,
       'token' => 0,
     ),
-    'show_as_field' => 0,
+    'show_as_field' => 1,
     'show_on_form' => 0,
     'access_author' => '',
     'show_contextual_link' => 0,

@@ -254,7 +254,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 3,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -296,7 +296,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -428,52 +428,6 @@ function crl_resource_feat_field_default_field_instances() {
       'settings' => array(),
       'type' => 'options_select',
       'weight' => 3,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resourc_free_specs'
-  $field_instances['node-resource-field_resourc_free_specs'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Use this space to list specifications that cannot be structured within other resource fields or in the data tables below. The structure for this field is completely at the editors discretion and if multiple sections are required they should be separated by 3rd-level headings. No label will be shown for this field.',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 79,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resourc_free_specs',
-    'label' => 'General Specifications',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 20,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 122,
     ),
   );
 
@@ -804,7 +758,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'tablefield',
       'settings' => array(),
       'type' => 'tablefield',
-      'weight' => 123,
+      'weight' => 124,
     ),
   );
 
@@ -946,6 +900,52 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
+  // Exported field_instance: 'node-resource-field_resource_gen_specs'
+  $field_instances['node-resource-field_resource_gen_specs'] = array(
+    'bundle' => 'resource',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Use this space to list specifications that cannot be structured within other resource fields or in the data tables below. The structure for this field is completely at the editors discretion and if multiple sections are required they should be separated by 3rd-level headings. No label will be shown for this field.',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1002,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_resource_gen_specs',
+    'label' => 'General Specifications',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 20,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 122,
+    ),
+  );
+
   // Exported field_instance: 'node-resource-field_resource_interf_tools_tb'
   $field_instances['node-resource-field_resource_interf_tools_tb'] = array(
     'bundle' => 'resource',
@@ -975,7 +975,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'module' => 'tablefield',
         'settings' => array(),
         'type' => 'tablefield_default',
-        'weight' => 82,
+        'weight' => 1006,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1002,7 +1002,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'tablefield',
       'settings' => array(),
       'type' => 'tablefield',
-      'weight' => 126,
+      'weight' => 127,
     ),
   );
 
@@ -1081,7 +1081,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'module' => 'tablefield',
         'settings' => array(),
         'type' => 'tablefield_default',
-        'weight' => 80,
+        'weight' => 1004,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1108,7 +1108,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'tablefield',
       'settings' => array(),
       'type' => 'tablefield',
-      'weight' => 124,
+      'weight' => 125,
     ),
   );
 
@@ -1154,7 +1154,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'rows' => 8,
       ),
       'type' => 'text_textarea',
-      'weight' => 128,
+      'weight' => 129,
     ),
   );
 
@@ -1217,7 +1217,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 10,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1368,7 +1368,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'module' => 'tablefield',
         'settings' => array(),
         'type' => 'tablefield_default',
-        'weight' => 81,
+        'weight' => 1005,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1395,7 +1395,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'tablefield',
       'settings' => array(),
       'type' => 'tablefield',
-      'weight' => 125,
+      'weight' => 126,
     ),
   );
 
@@ -1501,7 +1501,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'tablefield',
       'settings' => array(),
       'type' => 'tablefield',
-      'weight' => 127,
+      'weight' => 128,
     ),
   );
 
@@ -1705,7 +1705,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 2,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1793,7 +1793,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 9,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1838,7 +1838,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1883,7 +1883,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 4,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1927,7 +1927,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1981,7 +1981,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 5,
       ),
       'embedded' => array(
         'label' => 'above',
