@@ -35,6 +35,15 @@ function crl_helpers_feat_user_default_permissions() {
     'module' => 'comment',
   );
 
+  // Exported permission: 'administer entityform types'.
+  $permissions['administer entityform types'] = array(
+    'name' => 'administer entityform types',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'entityform',
+  );
+
   // Exported permission: 'administer salesforce'.
   $permissions['administer salesforce'] = array(
     'name' => 'administer salesforce',
@@ -77,6 +86,28 @@ function crl_helpers_feat_user_default_permissions() {
     'module' => 'crl_helpers',
   );
 
+  // Exported permission: 'delete any entityform'.
+  $permissions['delete any entityform'] = array(
+    'name' => 'delete any entityform',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
+      'editor power' => 'editor power',
+    ),
+    'module' => 'entityform',
+  );
+
+  // Exported permission: 'delete own entityform'.
+  $permissions['delete own entityform'] = array(
+    'name' => 'delete own entityform',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
+      'editor power' => 'editor power',
+    ),
+    'module' => 'entityform',
+  );
+
   // Exported permission: 'delete salesforce mapping object'.
   $permissions['delete salesforce mapping object'] = array(
     'name' => 'delete salesforce mapping object',
@@ -84,6 +115,16 @@ function crl_helpers_feat_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'salesforce_mapping',
+  );
+
+  // Exported permission: 'edit any entityform'.
+  $permissions['edit any entityform'] = array(
+    'name' => 'edit any entityform',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor power' => 'editor power',
+    ),
+    'module' => 'entityform',
   );
 
   // Exported permission: 'edit own comments'.
@@ -99,6 +140,17 @@ function crl_helpers_feat_user_default_permissions() {
       'member-crl' => 'member-crl',
     ),
     'module' => 'comment',
+  );
+
+  // Exported permission: 'edit own entityform'.
+  $permissions['edit own entityform'] = array(
+    'name' => 'edit own entityform',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
+      'editor power' => 'editor power',
+    ),
+    'module' => 'entityform',
   );
 
   // Exported permission: 'edit salesforce mapping object'.
@@ -153,6 +205,29 @@ function crl_helpers_feat_user_default_permissions() {
       'member-crl' => 'member-crl',
     ),
     'module' => 'comment',
+  );
+
+  // Exported permission: 'view any entityform'.
+  $permissions['view any entityform'] = array(
+    'name' => 'view any entityform',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
+      'editor power' => 'editor power',
+    ),
+    'module' => 'entityform',
+  );
+
+  // Exported permission: 'view own entityform'.
+  $permissions['view own entityform'] = array(
+    'name' => 'view own entityform',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
+      'editor power' => 'editor power',
+      'member-crl' => 'member-crl',
+    ),
+    'module' => 'entityform',
   );
 
   // Exported permission: 'view salesforce mapping object'.
