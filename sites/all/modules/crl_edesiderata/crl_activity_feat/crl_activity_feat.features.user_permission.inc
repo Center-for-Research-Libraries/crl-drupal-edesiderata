@@ -59,6 +59,7 @@ function crl_activity_feat_user_default_permissions() {
     'name' => 'view own field_resource_reference',
     'roles' => array(
       'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
       'editor basic' => 'editor basic',
       'editor power' => 'editor power',
     ),
