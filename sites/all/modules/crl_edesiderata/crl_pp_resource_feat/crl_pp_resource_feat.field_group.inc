@@ -309,6 +309,38 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_process|entityform|purchase_proposal_nomination|default';
+  $field_group->group_name = 'group_process';
+  $field_group->entity_type = 'entityform';
+  $field_group->bundle = 'purchase_proposal_nomination';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Process Entry',
+    'weight' => '16',
+    'children' => array(
+      0 => 'flag_entityform_pp_convert',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'Process Entry',
+      'instance_settings' => array(
+        'id' => '',
+        'classes' => 'group-process field-group-div',
+        'description' => '',
+        'show_label' => '1',
+        'label_element' => 'h2',
+        'effect' => 'none',
+        'speed' => 'fast',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $export['group_process|entityform|purchase_proposal_nomination|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_rationale|node|pp_resource|default';
   $field_group->group_name = 'group_rationale';
   $field_group->entity_type = 'node';

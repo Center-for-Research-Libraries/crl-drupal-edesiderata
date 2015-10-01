@@ -65,6 +65,7 @@ features[field_group][] = group_nominator|node|spp_resource|form
 features[field_group][] = group_official|entityform|purchase_proposal_nomination|form
 features[field_group][] = group_pp_admin|node|pp_resource|form
 features[field_group][] = group_pp_admin|node|spp_resource|form
+features[field_group][] = group_process|entityform|purchase_proposal_nomination|default
 features[field_group][] = group_rationale|node|pp_resource|default
 features[field_group][] = group_rationale|node|pp_resource|form
 features[field_group][] = group_rationale|node|spp_resource|default
