@@ -240,7 +240,7 @@ function crl_resource_feat_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 7,
+        'weight' => 11,
       ),
     ),
     'entity_type' => 'entityform',

@@ -603,6 +603,39 @@ function crl_resource_feat_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_process|entityform|resource_suggestion|default';
+  $field_group->group_name = 'group_process';
+  $field_group->entity_type = 'entityform';
+  $field_group->bundle = 'resource_suggestion';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Entry Processing',
+    'weight' => '10',
+    'children' => array(
+      0 => 'field_resource_reference',
+      1 => 'flag_resource_suggestion_convert_',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'Entry Processing',
+      'instance_settings' => array(
+        'id' => '',
+        'classes' => 'group-process field-group-div',
+        'description' => '',
+        'show_label' => '1',
+        'label_element' => 'h2',
+        'effect' => 'none',
+        'speed' => 'fast',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $export['group_process|entityform|resource_suggestion|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_ratings|node|title_review|default';
   $field_group->group_name = 'group_ratings';
   $field_group->entity_type = 'node';

@@ -95,6 +95,7 @@ features[field_group][] = group_jisc_standards_compliance|node|resource|form
 features[field_group][] = group_official|entityform|resource_suggestion|form
 features[field_group][] = group_overview|node|title_review|default
 features[field_group][] = group_overview|node|title_review|form
+features[field_group][] = group_process|entityform|resource_suggestion|default
 features[field_group][] = group_ratings|node|title_review|default
 features[field_group][] = group_sources|node|resource|default
 features[field_group][] = group_system_fields|node|resource|form
