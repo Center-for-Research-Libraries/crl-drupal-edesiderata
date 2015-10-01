@@ -331,7 +331,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_publisher']['id'] = 'field_pp_publisher';
   $handler->display->display_options['fields']['field_pp_publisher']['table'] = 'field_data_field_pp_publisher';
   $handler->display->display_options['fields']['field_pp_publisher']['field'] = 'field_pp_publisher';
-  /* Field: Field: Provider Contact */
+  /* Field: Field: Vendor Contact */
   $handler->display->display_options['fields']['field_contacts']['id'] = 'field_contacts';
   $handler->display->display_options['fields']['field_contacts']['table'] = 'field_data_field_contacts';
   $handler->display->display_options['fields']['field_contacts']['field'] = 'field_contacts';

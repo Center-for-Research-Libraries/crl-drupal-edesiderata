@@ -245,11 +245,11 @@ function crl_pp_resource_feat_field_group_info() {
     'label' => 'Administrative Fields',
     'weight' => '2',
     'children' => array(
-      0 => 'field_pp_related',
-      1 => 'field_pp_sp_target_price',
-      2 => 'field_fy',
-      3 => 'field_pp_purchase_status',
-      4 => 'field_pp_proposal_purchased',
+      0 => 'field_pp_proposal_purchased',
+      1 => 'field_pp_related',
+      2 => 'field_pp_sp_target_price',
+      3 => 'field_fy',
+      4 => 'field_pp_purchase_status',
       5 => 'field_pp_discounted_price',
     ),
     'format_type' => 'div',
@@ -305,6 +305,39 @@ function crl_pp_resource_feat_field_group_info() {
     ),
   );
   $export['group_pp_admin|node|spp_resource|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_process|entityform|purchase_proposal_nomination|default';
+  $field_group->group_name = 'group_process';
+  $field_group->entity_type = 'entityform';
+  $field_group->bundle = 'purchase_proposal_nomination';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Entry Processing',
+    'weight' => '14',
+    'children' => array(
+      0 => 'field_pp_related',
+      1 => 'flag_entityform_pp_convert',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'Entry Processing',
+      'instance_settings' => array(
+        'id' => '',
+        'classes' => 'group-process field-group-div',
+        'description' => '',
+        'show_label' => '1',
+        'label_element' => 'h2',
+        'effect' => 'none',
+        'speed' => 'fast',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $export['group_process|entityform|purchase_proposal_nomination|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -432,7 +465,8 @@ function crl_pp_resource_feat_field_group_info() {
     'label' => 'System Fields',
     'weight' => '5',
     'children' => array(
-      0 => 'field_voting_results',
+      0 => 'field_pp_publisher_url',
+      1 => 'field_voting_results',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -465,7 +499,8 @@ function crl_pp_resource_feat_field_group_info() {
     'label' => 'System Fields',
     'weight' => '5',
     'children' => array(
-      0 => 'field_voting_results',
+      0 => 'field_pp_publisher_url',
+      1 => 'field_voting_results',
     ),
     'format_type' => 'div',
     'format_settings' => array(
