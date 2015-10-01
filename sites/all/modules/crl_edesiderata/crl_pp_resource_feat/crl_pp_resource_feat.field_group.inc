@@ -245,11 +245,11 @@ function crl_pp_resource_feat_field_group_info() {
     'label' => 'Administrative Fields',
     'weight' => '2',
     'children' => array(
-      0 => 'field_pp_related',
-      1 => 'field_pp_sp_target_price',
-      2 => 'field_fy',
-      3 => 'field_pp_purchase_status',
-      4 => 'field_pp_proposal_purchased',
+      0 => 'field_pp_proposal_purchased',
+      1 => 'field_pp_related',
+      2 => 'field_pp_sp_target_price',
+      3 => 'field_fy',
+      4 => 'field_pp_purchase_status',
       5 => 'field_pp_discounted_price',
     ),
     'format_type' => 'div',
@@ -465,7 +465,8 @@ function crl_pp_resource_feat_field_group_info() {
     'label' => 'System Fields',
     'weight' => '5',
     'children' => array(
-      0 => 'field_voting_results',
+      0 => 'field_pp_publisher_url',
+      1 => 'field_voting_results',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -498,7 +499,8 @@ function crl_pp_resource_feat_field_group_info() {
     'label' => 'System Fields',
     'weight' => '5',
     'children' => array(
-      0 => 'field_voting_results',
+      0 => 'field_pp_publisher_url',
+      1 => 'field_voting_results',
     ),
     'format_type' => 'div',
     'format_settings' => array(

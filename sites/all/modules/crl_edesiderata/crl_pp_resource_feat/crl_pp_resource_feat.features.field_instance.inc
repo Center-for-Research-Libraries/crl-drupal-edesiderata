@@ -1453,7 +1453,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 10,
+      'weight' => 26,
     ),
   );
 
@@ -2508,7 +2508,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 8,
+      'weight' => 26,
     ),
   );
 
