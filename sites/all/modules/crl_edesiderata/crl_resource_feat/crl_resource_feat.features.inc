@@ -95,6 +95,54 @@ function crl_resource_feat_default_entityform_type() {
 }
 
 /**
+ * Implements hook_flag_default_flags().
+ */
+function crl_resource_feat_flag_default_flags() {
+  $flags = array();
+  // Exported flag: "Resource Suggestion Convert".
+  $flags['resource_suggestion_convert_'] = array(
+    'entity_type' => 'entityform',
+    'title' => 'Resource Suggestion Convert',
+    'global' => 1,
+    'types' => array(
+      0 => 'resource_suggestion',
+    ),
+    'flag_short' => 'Convert to Stub',
+    'flag_long' => 'Convert the submission to a Stub Resource',
+    'flag_message' => 'The submission has been converted to a Stub Resource. Please review and edit the node before publishing.',
+    'unflag_short' => 'Remove',
+    'unflag_long' => 'This will not remove the converted Resource. ',
+    'unflag_message' => 'Removed the flag',
+    'unflag_denied_text' => 'Converted',
+    'link_type' => 'confirm',
+    'weight' => 0,
+    'show_in_links' => array(
+      'full' => 0,
+      'email' => 0,
+      'confirmation' => 0,
+      'download' => 0,
+      'table' => 0,
+      'review' => 0,
+      'diff_standard' => 0,
+      'token' => 0,
+    ),
+    'show_as_field' => 1,
+    'show_on_form' => 0,
+    'access_author' => '',
+    'show_contextual_link' => 0,
+    'flag_confirmation' => 'Are you sure you want to convert this submission to a Stub Resource?',
+    'unflag_confirmation' => 'This is active for test purpose only!!!',
+    'api_version' => 3,
+    'module' => 'crl_resource_feat',
+    'locked' => array(
+      0 => 'name',
+    ),
+  );
+  return $flags;
+
+}
+
+/**
  * Implements hook_node_info().
  */
 function crl_resource_feat_node_info() {
