@@ -112,6 +112,7 @@ features[field_instance][] = entityform-resource_suggestion-field_resource_refer
 features[field_instance][] = entityform-resource_suggestion-field_resource_type
 features[field_instance][] = entityform-resource_suggestion-field_subject_area
 features[field_instance][] = entityform-resource_suggestion-field_title_sort
+features[field_instance][] = flagging-resource_suggestion_convert-field_provider
 features[field_instance][] = node-resource-body
 features[field_instance][] = node-resource-field_content_scope_and_complete
 features[field_instance][] = node-resource-field_cost_and_price_structure

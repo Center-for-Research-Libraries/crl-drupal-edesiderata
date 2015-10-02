@@ -132,11 +132,11 @@ function crl_resource_feat_flag_default_flags() {
     'show_contextual_link' => 0,
     'flag_confirmation' => 'Are you sure you want to convert this submission to a Stub Resource?',
     'unflag_confirmation' => 'This is active for test purpose only!!!',
-    'api_version' => 3,
     'module' => 'crl_resource_feat',
     'locked' => array(
       0 => 'name',
     ),
+    'api_version' => 3,
   );
   return $flags;
 

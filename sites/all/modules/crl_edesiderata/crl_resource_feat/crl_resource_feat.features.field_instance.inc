@@ -361,6 +361,40 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'flagging-resource_suggestion_convert-field_provider'
+  $field_instances['flagging-resource_suggestion_convert-field_provider'] = array(
+    'bundle' => 'resource_suggestion_convert',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Select the provider that this resource should be associated with.<br/><strong class="important">If the provider value does not yet exist in the system please create it before continuing</strong>.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'flagging',
+    'field_name' => 'field_provider',
+    'label' => 'Provider',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 2,
+    ),
+  );
+
   // Exported field_instance: 'node-resource-body'
   $field_instances['node-resource-body'] = array(
     'bundle' => 'resource',
@@ -2339,6 +2373,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('See also');
   t('Select any subjects/facets that apply to this resource. These will be used for dynamic linking relationships with the main CRL website.');
   t('Select the option that best represents where this entry was sourced from.');
+  t('Select the provider that this resource should be associated with.<br/><strong class="important">If the provider value does not yet exist in the system please create it before continuing</strong>.');
   t('Select the provider that this resource should be associated with.<br/><strong class="important">If the provider value does not yet exist in the system please create it before working with this resource entry</strong>.');
   t('Sorting Title');
   t('Source GUID');
