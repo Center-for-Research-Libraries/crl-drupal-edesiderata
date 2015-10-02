@@ -337,7 +337,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_contacts']['field'] = 'field_contacts';
   $handler->display->display_options['fields']['field_contacts']['type'] = 'text_plain';
   $handler->display->display_options['fields']['field_contacts']['delta_offset'] = '0';
-  /* Field: Field: Provider URL */
+  /* Field: Field: Website */
   $handler->display->display_options['fields']['field_link']['id'] = 'field_link';
   $handler->display->display_options['fields']['field_link']['table'] = 'field_data_field_link';
   $handler->display->display_options['fields']['field_link']['field'] = 'field_link';

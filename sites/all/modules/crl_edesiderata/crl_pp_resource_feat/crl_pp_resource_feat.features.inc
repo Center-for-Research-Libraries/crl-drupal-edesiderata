@@ -109,9 +109,9 @@ function crl_pp_resource_feat_flag_default_flags() {
     'types' => array(
       0 => 'purchase_proposal_nomination',
     ),
-    'flag_short' => 'Convert to PP Resource',
-    'flag_long' => 'Convert the submission to a Purchase Proposal Resource',
-    'flag_message' => 'The submission has been converted to the Purchase Proposal Resource. Please review and edit the node before publishing.',
+    'flag_short' => 'Copy to new PP Resource',
+    'flag_long' => 'Copy the submission to a new Purchase Proposal Resource',
+    'flag_message' => 'The submission has been copied to a new Purchase Proposal Resource. Please review and edit the node before publishing.',
     'unflag_short' => 'Remove',
     'unflag_long' => 'This will not delete the Purchase Proposal Resource. ',
     'unflag_message' => 'Removed the flag',
