@@ -198,5 +198,42 @@ function crl_resource_feat_context_default_contexts() {
   $context->condition_mode = 1;
   $export['resource_page'] = $context;
 
+  $context = new stdClass();
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'resource_suggestions';
+  $context->description = '';
+  $context->tag = '';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        'resources/suggestions' => 'resources/suggestions',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views-resource_suggestions-block_1' => array(
+          'module' => 'views',
+          'delta' => 'resource_suggestions-block_1',
+          'region' => 'user_first',
+          'weight' => '-10',
+        ),
+        'views-resource_suggestions-block_2' => array(
+          'module' => 'views',
+          'delta' => 'resource_suggestions-block_2',
+          'region' => 'user_first',
+          'weight' => '-9',
+        ),
+      ),
+    ),
+    'theme_html' => array(
+      'class' => 'dashboard',
+    ),
+  );
+  $context->condition_mode = 0;
+  $export['resource_suggestions'] = $context;
+
   return $export;
 }

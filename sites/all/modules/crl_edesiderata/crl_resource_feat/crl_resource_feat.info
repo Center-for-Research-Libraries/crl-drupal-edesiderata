@@ -28,6 +28,7 @@ dependencies[] = views_data_export
 features[context][] = resource_index
 features[context][] = resource_index_auth
 features[context][] = resource_page
+features[context][] = resource_suggestions
 features[ctools][] = context:context:3
 features[ctools][] = facetapi:facetapi_defaults:1
 features[ctools][] = field_group:field_group:1
