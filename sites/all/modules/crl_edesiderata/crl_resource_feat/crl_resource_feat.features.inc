@@ -107,9 +107,9 @@ function crl_resource_feat_flag_default_flags() {
     'types' => array(
       0 => 'resource_suggestion',
     ),
-    'flag_short' => 'Convert to Stub',
-    'flag_long' => 'Convert the submission to a Stub Resource',
-    'flag_message' => 'The submission has been converted to a Stub Resource. Please review and edit the node before publishing.',
+    'flag_short' => 'Copy to new stub Resource',
+    'flag_long' => 'Copy the submission to a new stub Resource',
+    'flag_message' => 'The submission has been copied to a stub Resource. Please review and edit the node before publishing.',
     'unflag_short' => 'Remove',
     'unflag_long' => 'This will not remove the converted Resource. ',
     'unflag_message' => 'Removed the flag',
@@ -132,11 +132,11 @@ function crl_resource_feat_flag_default_flags() {
     'show_contextual_link' => 0,
     'flag_confirmation' => 'Are you sure you want to convert this submission to a Stub Resource?',
     'unflag_confirmation' => 'This is active for test purpose only!!!',
+    'api_version' => 3,
     'module' => 'crl_resource_feat',
     'locked' => array(
       0 => 'name',
     ),
-    'api_version' => 3,
   );
   return $flags;
 
