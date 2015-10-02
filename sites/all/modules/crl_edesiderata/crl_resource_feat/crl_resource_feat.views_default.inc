@@ -458,7 +458,8 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = 'You have suggested the following resources for inclusion in the A-Z index.';
+  $handler->display->display_options['header']['area']['content'] = '<p>You have suggested the following resources for inclusion in the A-Z index.</p>
+<p><a href="/eform/submit/resource-suggestion"><button>+ Suggest resource</button></a></p>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   /* Footer: Global: Text area */
@@ -474,7 +475,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = '<p>You have not submitted any resource suggestions yet.</p>
-<p><a href="/eform/submit/resource-suggestion">Suggest a new resource</a></p>
+<p><a href="/eform/submit/resource-suggestion"><button>+ Suggest resource</button></a></p>
 ';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['fields'] = FALSE;
