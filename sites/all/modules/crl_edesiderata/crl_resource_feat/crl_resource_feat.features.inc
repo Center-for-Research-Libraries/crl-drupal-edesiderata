@@ -100,7 +100,7 @@ function crl_resource_feat_default_entityform_type() {
 function crl_resource_feat_flag_default_flags() {
   $flags = array();
   // Exported flag: "Resource Suggestion Convert".
-  $flags['resource_suggestion_convert_'] = array(
+  $flags['resource_suggestion_convert'] = array(
     'entity_type' => 'entityform',
     'title' => 'Resource Suggestion Convert',
     'global' => 1,
