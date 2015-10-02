@@ -38,11 +38,17 @@ function crl_mydes_feat_context_default_contexts() {
           'region' => 'preface_first',
           'weight' => '-9',
         ),
+        'views-resource_suggestions-block_3' => array(
+          'module' => 'views',
+          'delta' => 'resource_suggestions-block_3',
+          'region' => 'preface_first',
+          'weight' => '-8',
+        ),
         'crl_mydes_feat-crl_mydes_email_settings' => array(
           'module' => 'crl_mydes_feat',
           'delta' => 'crl_mydes_email_settings',
           'region' => 'preface_first',
-          'weight' => '-8',
+          'weight' => '-7',
         ),
       ),
     ),

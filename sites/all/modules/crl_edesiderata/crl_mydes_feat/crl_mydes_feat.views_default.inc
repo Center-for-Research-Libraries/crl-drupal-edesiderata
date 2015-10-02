@@ -144,7 +144,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['title_1']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['title_1']['alter']['text'] = '[title] [crl_resource_alert]';
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
-  /* Field: Content: Provider */
+  /* Field: Field: Provider */
   $handler->display->display_options['fields']['field_provider']['id'] = 'field_provider';
   $handler->display->display_options['fields']['field_provider']['table'] = 'field_data_field_provider';
   $handler->display->display_options['fields']['field_provider']['field'] = 'field_provider';
@@ -243,7 +243,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['path']['field'] = 'path';
   $handler->display->display_options['fields']['path']['label'] = 'eDesiderata URL';
   $handler->display->display_options['fields']['path']['absolute'] = TRUE;
-  /* Field: Content: Provider */
+  /* Field: Field: Provider */
   $handler->display->display_options['fields']['field_provider']['id'] = 'field_provider';
   $handler->display->display_options['fields']['field_provider']['table'] = 'field_data_field_provider';
   $handler->display->display_options['fields']['field_provider']['field'] = 'field_provider';
@@ -376,7 +376,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
   $handler->display->display_options['header']['area']['content'] = '<p>You can select sets of resources to track by designated category such as resource type, provider, CRL licensing status, or any combination of filters in the <a href="/resources/main">A-Z index</a>. Email alerts about new additions to your watchsets can be sent to you.</p>
-<p><a class="button" href="/resources/main" onclick="return window.confirm(\'You will be directed to the A-Z resource listings. To create a new watchset, first input some personalized filter criteria and then click the \\\'Watch this Resource Set\\\' option that appears at the top of the results page.\');"></span><b>+</b>&nbsp;&nbsp;Create</a>';
+<p><a class="button" href="/resources/main" onclick="return window.confirm(\'You will be directed to the A-Z resource listings. To create a new watchset, first input some personalized filter criteria and then click the \\\'Watch this Resource Set\\\' option that appears at the top of the results page.\');"></span><b>+</b>&nbsp;&nbsp;Create</a></p>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['header']['area']['tokenize'] = TRUE;
   /* No results behavior: Global: Text area */
