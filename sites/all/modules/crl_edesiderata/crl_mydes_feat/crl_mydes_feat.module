@@ -85,13 +85,16 @@ function crl_mydes_feat_block_view($delta = '') {
   $block = array();
   switch ($delta) {
     case 'crl_mydes_feat_flag':
-      global $user;
-      $nid = arg(1);
-      $node = node_load($nid);
-      // Make sure block should be visible
-      if (isset($node->type) && $node->type == 'resource' && user_access('crl access member features')) {
-        $block['subject'] = t('Watch this Resource');
-        $block['content'] = array('#markup' => crl_mydes_feat_generate_widget($node));
+      // This block logic only applies to nodes.
+      $menu_item = menu_get_item();
+      if ($menu_item['path'] == 'node/%') {
+        global $user;
+        $node = menu_get_object();
+        // Make sure the block should be visible.
+        if (isset($node->type) && $node->type == 'resource' && user_access('crl access member features')) {
+          $block['subject'] = t('Watch this Resource');
+          $block['content'] = array('#markup' => crl_mydes_feat_generate_widget($node));
+        }
       }
       break;
     case 'crl_mydes_email_settings':

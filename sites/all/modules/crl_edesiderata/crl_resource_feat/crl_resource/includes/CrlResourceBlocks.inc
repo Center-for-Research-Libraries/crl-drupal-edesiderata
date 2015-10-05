@@ -23,8 +23,7 @@ class CrlResourceBlocks {
     // Our block logic only applies to nodes.
     $menu_item = menu_get_item();
     if ($menu_item['path'] == 'node/%') {
-      $nid = arg(1);
-      $node = node_load($nid);
+      $node = menu_get_object();
       if (!empty($node) && $node->type == 'resource') {
         $entity_wrapper = entity_metadata_wrapper('node', $node);
         $status_options = crl_resource_activity_status_property_oplist();

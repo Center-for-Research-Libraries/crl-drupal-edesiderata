@@ -654,13 +654,13 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Community Ratings',
       'instance_settings' => array(
+        'id' => 'node_resource_full_group_ratings',
         'classes' => 'rating-wrapper group-ratings field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h2',
         'effect' => 'none',
         'speed' => 'fast',
-        'id' => 'node_resource_full_group_ratings',
       ),
       'formatter' => 'open',
     ),
