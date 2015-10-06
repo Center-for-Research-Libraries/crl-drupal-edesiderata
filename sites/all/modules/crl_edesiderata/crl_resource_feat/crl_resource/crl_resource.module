@@ -59,6 +59,11 @@ function crl_resource_field_extra_fields() {
         'description' => t('Show any resource alert details.'),
         'weight' => 910,
       ),
+      'pseudo_field_resource_improve_widget' => array(
+        'label' => t('Improve this Resource'),
+        'description' => t('Widget with options to sumbit corrections and improvements for a resoruce.'),
+        'weight' => 911,
+      ),
     ),
   );
   return $extra;
