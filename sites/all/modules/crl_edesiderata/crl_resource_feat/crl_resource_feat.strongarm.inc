@@ -266,6 +266,12 @@ function crl_resource_feat_strongarm() {
             'visible' => FALSE,
           ),
         ),
+        'pseudo_field_resource_improve_widget' => array(
+          'default' => array(
+            'weight' => '911',
+            'visible' => TRUE,
+          ),
+        ),
       ),
     ),
   );

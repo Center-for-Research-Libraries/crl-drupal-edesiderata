@@ -376,7 +376,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Jisc Data',
-    'weight' => '16',
+    'weight' => '17',
     'children' => array(
       0 => 'field_resource_jisc_overview',
       1 => 'field_resource_jisc_description',
@@ -644,7 +644,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Community Ratings',
-    'weight' => '1',
+    'weight' => '2',
     'children' => array(
       0 => 'field_platform_and_user_interfac',
       1 => 'field_content_scope_and_complete',
