@@ -20,6 +20,5 @@ function crl_pp_resource_feat_menu_default_menu_custom() {
   // Included for use with string extractors like potx.
   t('PP Main menu');
 
-
   return $menus;
 }

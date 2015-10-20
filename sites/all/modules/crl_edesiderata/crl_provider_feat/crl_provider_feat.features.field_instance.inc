@@ -10,7 +10,7 @@
 function crl_provider_feat_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'comment-comment_node_provider-comment_body'
+  // Exported field_instance: 'comment-comment_node_provider-comment_body'.
   $field_instances['comment-comment_node_provider-comment_body'] = array(
     'bundle' => 'comment_node_provider',
     'default_value' => NULL,
@@ -44,7 +44,7 @@ function crl_provider_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'comment-comment_node_provider-field_comment_privacy'
+  // 'comment-comment_node_provider-field_comment_privacy'.
   $field_instances['comment-comment_node_provider-field_comment_privacy'] = array(
     'bundle' => 'comment_node_provider',
     'default_value' => array(
@@ -79,7 +79,7 @@ function crl_provider_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_contacts_group-field_contact_email'
+  // 'field_collection_item-field_contacts_group-field_contact_email'.
   $field_instances['field_collection_item-field_contacts_group-field_contact_email'] = array(
     'bundle' => 'field_contacts_group',
     'default_value' => NULL,
@@ -113,7 +113,7 @@ function crl_provider_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_contacts_group-field_contact_fax'
+  // 'field_collection_item-field_contacts_group-field_contact_fax'.
   $field_instances['field_collection_item-field_contacts_group-field_contact_fax'] = array(
     'bundle' => 'field_contacts_group',
     'default_value' => NULL,
@@ -148,7 +148,7 @@ function crl_provider_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_contacts_group-field_contact_name'
+  // 'field_collection_item-field_contacts_group-field_contact_name'.
   $field_instances['field_collection_item-field_contacts_group-field_contact_name'] = array(
     'bundle' => 'field_contacts_group',
     'default_value' => NULL,
@@ -183,7 +183,7 @@ function crl_provider_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_contacts_group-field_contact_phone'
+  // 'field_collection_item-field_contacts_group-field_contact_phone'.
   $field_instances['field_collection_item-field_contacts_group-field_contact_phone'] = array(
     'bundle' => 'field_contacts_group',
     'default_value' => NULL,
@@ -218,7 +218,7 @@ function crl_provider_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_contacts_group-field_contact_title'
+  // 'field_collection_item-field_contacts_group-field_contact_title'.
   $field_instances['field_collection_item-field_contacts_group-field_contact_title'] = array(
     'bundle' => 'field_contacts_group',
     'default_value' => NULL,
@@ -253,7 +253,7 @@ function crl_provider_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_contacts_group-field_link'
+  // 'field_collection_item-field_contacts_group-field_link'.
   $field_instances['field_collection_item-field_contacts_group-field_link'] = array(
     'bundle' => 'field_contacts_group',
     'default_value' => NULL,
@@ -303,7 +303,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-body'
+  // Exported field_instance: 'node-provider-body'.
   $field_instances['node-provider-body'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -354,7 +354,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_address'
+  // Exported field_instance: 'node-provider-field_address'.
   $field_instances['node-provider-field_address'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -418,7 +418,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_contacts'
+  // Exported field_instance: 'node-provider-field_contacts'.
   $field_instances['node-provider-field_contacts'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -463,7 +463,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_contacts_group'
+  // Exported field_instance: 'node-provider-field_contacts_group'.
   $field_instances['node-provider-field_contacts_group'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -512,7 +512,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_internal_notes'
+  // Exported field_instance: 'node-provider-field_internal_notes'.
   $field_instances['node-provider-field_internal_notes'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -557,7 +557,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_link'
+  // Exported field_instance: 'node-provider-field_link'.
   $field_instances['node-provider-field_link'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -620,7 +620,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_provider_access'
+  // Exported field_instance: 'node-provider-field_provider_access'.
   $field_instances['node-provider-field_provider_access'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -666,7 +666,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_provider_established'
+  // Exported field_instance: 'node-provider-field_provider_established'.
   $field_instances['node-provider-field_provider_established'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -718,7 +718,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_provider_financial_info'
+  // Exported field_instance: 'node-provider-field_provider_financial_info'.
   $field_instances['node-provider-field_provider_financial_info'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -764,7 +764,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_provider_governance'
+  // Exported field_instance: 'node-provider-field_provider_governance'.
   $field_instances['node-provider-field_provider_governance'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -810,7 +810,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_provider_history'
+  // Exported field_instance: 'node-provider-field_provider_history'.
   $field_instances['node-provider-field_provider_history'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -856,7 +856,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_provider_in_operation'
+  // Exported field_instance: 'node-provider-field_provider_in_operation'.
   $field_instances['node-provider-field_provider_in_operation'] = array(
     'bundle' => 'provider',
     'default_value' => array(
@@ -905,7 +905,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_provider_legal_info'
+  // Exported field_instance: 'node-provider-field_provider_legal_info'.
   $field_instances['node-provider-field_provider_legal_info'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -951,7 +951,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_provider_mission_statement'
+  // Exported field_instance: 'node-provider-field_provider_mission_statement'.
   $field_instances['node-provider-field_provider_mission_statement'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -997,7 +997,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_provider_parent'
+  // Exported field_instance: 'node-provider-field_provider_parent'.
   $field_instances['node-provider-field_provider_parent'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -1043,7 +1043,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_provider_profile_status'
+  // Exported field_instance: 'node-provider-field_provider_profile_status'.
   $field_instances['node-provider-field_provider_profile_status'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -1085,7 +1085,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_provider_publisher_type'
+  // Exported field_instance: 'node-provider-field_provider_publisher_type'.
   $field_instances['node-provider-field_provider_publisher_type'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -1128,7 +1128,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_provider_see_also'
+  // Exported field_instance: 'node-provider-field_provider_see_also'.
   $field_instances['node-provider-field_provider_see_also'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -1177,7 +1177,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_provider_sources'
+  // Exported field_instance: 'node-provider-field_provider_sources'.
   $field_instances['node-provider-field_provider_sources'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -1223,7 +1223,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_provider_tech_info'
+  // Exported field_instance: 'node-provider-field_provider_tech_info'.
   $field_instances['node-provider-field_provider_tech_info'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -1269,7 +1269,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_provider_type'
+  // Exported field_instance: 'node-provider-field_provider_type'.
   $field_instances['node-provider-field_provider_type'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -1312,7 +1312,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_resource_type'
+  // Exported field_instance: 'node-provider-field_resource_type'.
   $field_instances['node-provider-field_resource_type'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -1355,7 +1355,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_source_guid'
+  // Exported field_instance: 'node-provider-field_source_guid'.
   $field_instances['node-provider-field_source_guid'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -1400,7 +1400,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_subject_area'
+  // Exported field_instance: 'node-provider-field_subject_area'.
   $field_instances['node-provider-field_subject_area'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -1443,7 +1443,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_title_alt'
+  // Exported field_instance: 'node-provider-field_title_alt'.
   $field_instances['node-provider-field_title_alt'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -1489,7 +1489,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_title_prior'
+  // Exported field_instance: 'node-provider-field_title_prior'.
   $field_instances['node-provider-field_title_prior'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,
@@ -1535,7 +1535,7 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_title_sort'
+  // Exported field_instance: 'node-provider-field_title_sort'.
   $field_instances['node-provider-field_title_sort'] = array(
     'bundle' => 'provider',
     'default_value' => NULL,

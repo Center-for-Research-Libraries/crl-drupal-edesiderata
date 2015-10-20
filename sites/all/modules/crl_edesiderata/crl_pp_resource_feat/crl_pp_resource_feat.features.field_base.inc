@@ -10,7 +10,7 @@
 function crl_pp_resource_feat_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_currency_cad_usd'
+  // Exported field_base: 'field_currency_cad_usd'.
   $field_bases['field_currency_cad_usd'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -30,7 +30,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_pp_attachments'
+  // Exported field_base: 'field_pp_attachments'.
   $field_bases['field_pp_attachments'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -56,7 +56,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'file',
   );
 
-  // Exported field_base: 'field_pp_crl_comments'
+  // Exported field_base: 'field_pp_crl_comments'.
   $field_bases['field_pp_crl_comments'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -78,7 +78,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_pp_discounted_price'
+  // Exported field_base: 'field_pp_discounted_price'.
   $field_bases['field_pp_discounted_price'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -96,7 +96,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_pp_nomination_crl_holdings'
+  // Exported field_base: 'field_pp_nomination_crl_holdings'.
   $field_bases['field_pp_nomination_crl_holdings'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -125,7 +125,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_pp_nominator_comments'
+  // Exported field_base: 'field_pp_nominator_comments'.
   $field_bases['field_pp_nominator_comments'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -147,7 +147,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_pp_nominator_institution'
+  // Exported field_base: 'field_pp_nominator_institution'.
   $field_bases['field_pp_nominator_institution'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -171,7 +171,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_pp_notes'
+  // Exported field_base: 'field_pp_notes'.
   $field_bases['field_pp_notes'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -193,7 +193,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_pp_piece_count_and_pricing'
+  // Exported field_base: 'field_pp_piece_count_and_pricing'.
   $field_bases['field_pp_piece_count_and_pricing'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -215,7 +215,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_pp_proposal_purchased'
+  // Exported field_base: 'field_pp_proposal_purchased'.
   $field_bases['field_pp_proposal_purchased'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -244,7 +244,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_pp_publisher'
+  // Exported field_base: 'field_pp_publisher'.
   $field_bases['field_pp_publisher'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -268,7 +268,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_pp_publisher_url'
+  // Exported field_base: 'field_pp_publisher_url'.
   $field_bases['field_pp_publisher_url'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -292,7 +292,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_pp_purchase_status'
+  // Exported field_base: 'field_pp_purchase_status'.
   $field_bases['field_pp_purchase_status'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -321,7 +321,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_pp_related'
+  // Exported field_base: 'field_pp_related'.
   $field_bases['field_pp_related'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -358,7 +358,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_pp_sp_target_price'
+  // Exported field_base: 'field_pp_sp_target_price'.
   $field_bases['field_pp_sp_target_price'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -376,7 +376,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_pp_subject_area'
+  // Exported field_base: 'field_pp_subject_area'.
   $field_bases['field_pp_subject_area'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -500,7 +500,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_pp_summary_comments'
+  // Exported field_base: 'field_pp_summary_comments'.
   $field_bases['field_pp_summary_comments'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -522,7 +522,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_voting_results'
+  // Exported field_base: 'field_voting_results'.
   $field_bases['field_voting_results'] = array(
     'active' => 1,
     'cardinality' => 1,

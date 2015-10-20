@@ -963,7 +963,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['path_1']['field'] = 'path';
   $handler->display->display_options['fields']['path_1']['label'] = 'url';
   $handler->display->display_options['fields']['path_1']['absolute'] = TRUE;
-  /* Field: Content: Provider */
+  /* Field: Field: Provider */
   $handler->display->display_options['fields']['field_provider']['id'] = 'field_provider';
   $handler->display->display_options['fields']['field_provider']['table'] = 'field_data_field_provider';
   $handler->display->display_options['fields']['field_provider']['field'] = 'field_provider';

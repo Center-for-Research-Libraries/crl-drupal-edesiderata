@@ -356,7 +356,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_subject_area']['table'] = 'field_data_field_pp_subject_area';
   $handler->display->display_options['fields']['field_pp_subject_area']['field'] = 'field_pp_subject_area';
   $handler->display->display_options['fields']['field_pp_subject_area']['delta_offset'] = '0';
-  /* Field: Entityform Submission: Description */
+  /* Field: Entityform Submission: Background Information */
   $handler->display->display_options['fields']['field_further_description']['id'] = 'field_further_description';
   $handler->display->display_options['fields']['field_further_description']['table'] = 'field_data_field_further_description';
   $handler->display->display_options['fields']['field_further_description']['field'] = 'field_further_description';
