@@ -140,14 +140,20 @@ DirectoryIndex index.php index.html index.htm
       Header append Vary Accept-Encoding
     </FilesMatch>
   </IfModule>
+</IfModule>
 
-  # When CSS/JS aggregation is on Drupal writes an aggregate version to a .gz
-  # file and then redirects to that via the directives above. However, we also
-  # want to enforce compression for non-aggregated files and the main request
-  # itself.
-  <IfModule mod_deflate.c>
-    <FilesMatch ".(js|css|html|)$">
-      SetOutputFilter DEFLATE
-    </FilesMatch>
-  </IfModule>
+# Add headers to all responses.
+<IfModule mod_headers.c>
+  # Disable content sniffing, since it's an attack vector.
+  Header always set X-Content-Type-Options nosniff
+</IfModule>
+
+# When CSS/JS aggregation is on Drupal writes an aggregate version to a .gz
+# file and then redirects to that via the directives above. However, we also
+# want to enforce compression for non-aggregated files and the main request
+# itself.
+<IfModule mod_deflate.c>
+  <FilesMatch ".(js|css|html|)$">
+    SetOutputFilter DEFLATE
+  </FilesMatch>
 </IfModule>

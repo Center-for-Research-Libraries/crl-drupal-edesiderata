@@ -10,7 +10,7 @@
 function crl_activity_feat_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-activity-field_activity_add_notes'
+  // Exported field_instance: 'node-activity-field_activity_add_notes'.
   $field_instances['node-activity-field_activity_add_notes'] = array(
     'bundle' => 'activity',
     'default_value' => NULL,
@@ -57,7 +57,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_attachments'
+  // Exported field_instance: 'node-activity-field_activity_attachments'.
   $field_instances['node-activity-field_activity_attachments'] = array(
     'bundle' => 'activity',
     'deleted' => 0,
@@ -106,7 +106,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_billing'
+  // Exported field_instance: 'node-activity-field_activity_billing'.
   $field_instances['node-activity-field_activity_billing'] = array(
     'bundle' => 'activity',
     'default_value' => NULL,
@@ -150,7 +150,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_crl_status'
+  // Exported field_instance: 'node-activity-field_activity_crl_status'.
   $field_instances['node-activity-field_activity_crl_status'] = array(
     'bundle' => 'activity',
     'default_value' => NULL,
@@ -195,7 +195,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_est_savings'
+  // Exported field_instance: 'node-activity-field_activity_est_savings'.
   $field_instances['node-activity-field_activity_est_savings'] = array(
     'bundle' => 'activity',
     'default_value' => NULL,
@@ -242,7 +242,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_gen_notes'
+  // Exported field_instance: 'node-activity-field_activity_gen_notes'.
   $field_instances['node-activity-field_activity_gen_notes'] = array(
     'bundle' => 'activity',
     'default_value' => NULL,
@@ -288,7 +288,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_get_started'
+  // Exported field_instance: 'node-activity-field_activity_get_started'.
   $field_instances['node-activity-field_activity_get_started'] = array(
     'bundle' => 'activity',
     'default_value' => NULL,
@@ -334,7 +334,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_grouping'
+  // Exported field_instance: 'node-activity-field_activity_grouping'.
   $field_instances['node-activity-field_activity_grouping'] = array(
     'bundle' => 'activity',
     'default_value' => array(
@@ -380,7 +380,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_license_doc'
+  // Exported field_instance: 'node-activity-field_activity_license_doc'.
   $field_instances['node-activity-field_activity_license_doc'] = array(
     'bundle' => 'activity',
     'deleted' => 0,
@@ -428,7 +428,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_license_duration'
+  // Exported field_instance: 'node-activity-field_activity_license_duration'.
   $field_instances['node-activity-field_activity_license_duration'] = array(
     'bundle' => 'activity',
     'deleted' => 0,
@@ -443,6 +443,7 @@ function crl_activity_feat_field_default_field_instances() {
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
+          'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
         'weight' => 21,
@@ -456,6 +457,7 @@ function crl_activity_feat_field_default_field_instances() {
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
+          'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
         'weight' => 21,
@@ -495,7 +497,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_licensing_type'
+  // Exported field_instance: 'node-activity-field_activity_licensing_type'.
   $field_instances['node-activity-field_activity_licensing_type'] = array(
     'bundle' => 'activity',
     'default_value' => NULL,
@@ -539,7 +541,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_offer_duration'
+  // Exported field_instance: 'node-activity-field_activity_offer_duration'.
   $field_instances['node-activity-field_activity_offer_duration'] = array(
     'bundle' => 'activity',
     'deleted' => 0,
@@ -554,6 +556,7 @@ function crl_activity_feat_field_default_field_instances() {
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
+          'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
         'weight' => 19,
@@ -567,6 +570,7 @@ function crl_activity_feat_field_default_field_instances() {
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
+          'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
         'weight' => 19,
@@ -606,7 +610,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_pricing_type'
+  // Exported field_instance: 'node-activity-field_activity_pricing_type'.
   $field_instances['node-activity-field_activity_pricing_type'] = array(
     'bundle' => 'activity',
     'default_value' => NULL,
@@ -648,7 +652,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_see'
+  // Exported field_instance: 'node-activity-field_activity_see'.
   $field_instances['node-activity-field_activity_see'] = array(
     'bundle' => 'activity',
     'default_value' => NULL,
@@ -700,7 +704,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_see_also'
+  // Exported field_instance: 'node-activity-field_activity_see_also'.
   $field_instances['node-activity-field_activity_see_also'] = array(
     'bundle' => 'activity',
     'default_value' => NULL,
@@ -752,7 +756,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_trial_access'
+  // Exported field_instance: 'node-activity-field_activity_trial_access'.
   $field_instances['node-activity-field_activity_trial_access'] = array(
     'bundle' => 'activity',
     'default_value' => NULL,
@@ -798,7 +802,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_trial_duration'
+  // Exported field_instance: 'node-activity-field_activity_trial_duration'.
   $field_instances['node-activity-field_activity_trial_duration'] = array(
     'bundle' => 'activity',
     'deleted' => 0,
@@ -819,6 +823,7 @@ function crl_activity_feat_field_default_field_instances() {
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
+          'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
         'weight' => 12,
@@ -858,7 +863,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activity_trial_link'
+  // Exported field_instance: 'node-activity-field_activity_trial_link'.
   $field_instances['node-activity-field_activity_trial_link'] = array(
     'bundle' => 'activity',
     'default_value' => NULL,
@@ -921,7 +926,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_activty_offer_terms'
+  // Exported field_instance: 'node-activity-field_activty_offer_terms'.
   $field_instances['node-activity-field_activty_offer_terms'] = array(
     'bundle' => 'activity',
     'default_value' => NULL,
@@ -968,7 +973,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_internal_notes'
+  // Exported field_instance: 'node-activity-field_internal_notes'.
   $field_instances['node-activity-field_internal_notes'] = array(
     'bundle' => 'activity',
     'default_value' => NULL,
@@ -1014,7 +1019,7 @@ function crl_activity_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-activity-field_resource_reference'
+  // Exported field_instance: 'node-activity-field_resource_reference'.
   $field_instances['node-activity-field_resource_reference'] = array(
     'bundle' => 'activity',
     'default_value' => NULL,

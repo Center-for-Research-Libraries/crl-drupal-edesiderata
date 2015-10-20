@@ -357,36 +357,70 @@ function crl_provider_status_property_oplist() {
 
 /**
  * Implements hook_node_presave().
- *
- * When saving resources and providers, aggregate updated taxonomy information
- * from resouces to providers.
  */
 function crl_provider_node_presave($node) {
-  $wrapper = entity_metadata_wrapper('node', $node);
-  // If we are saving a provider entry we just need to add the aggregate term
-  // info to the node before finishing the save.
+  // If we are saving a provider entry we add the aggregate term info to the
+  // node before finishing the save.
   if ($node->type == 'provider') {
+    $wrapper = entity_metadata_wrapper('node', $node);
     crl_provider_add_backref_terms($wrapper);
   }
-  // If we are saving a resource entry we need to get the related provider,
-  // aggregate the term info, and then trigger a separate save.
-  elseif ($node->type == 'resource') {
-    $p_wrapper = entity_metadata_wrapper('node', $wrapper->field_provider->value());
-    crl_provider_add_backref_terms($wrapper);
-    $p_wrapper->save();
+}
+
+
+/**
+ * Implements hook_node_update().
+ */
+function crl_provider_node_update($node) {
+  // When saving a resource we need to check if the term changes there will
+  // modify the aggregate term info on the related provider.
+  if ($node->type == 'resource') {
+    $wrapper = entity_metadata_wrapper('node', $node);
+    $p_node = $wrapper->field_provider->value();
+    $p_wrapper = entity_metadata_wrapper('node', $p_node);
+    // Since we are inside a node update hook any saves that we call on OTHER
+    // data that references this node (via entityref) may not be fresh unless we
+    // reset the cache.
+    // @see https://api.drupal.org/comment/22873#comment-22873
+    entity_get_controller('node')->resetCache(array($node->nid));
+    // See if any aggregated terms change, and if so trigger a save on the
+    // provider. Note that the provider save action will again trigger
+    // crl_provider_add_backref_terms(), making the call below redundant, but
+    // it's still the easiest way to avoid the save if no terms will change.
+    if (crl_provider_add_backref_terms($p_wrapper)) {
+      watchdog('crl provider', 'Term changes on resource @resource require aggregate term updates on provider @provider. Updating provider entry accordingly', array('@resource' => $node->title, '@provider' => $p_node->title));
+      // Try to preserve the original updated timestamp.
+      // @see crl_helpers_node_presave()
+      if (isset($p_node->changed)) {
+        $p_node->manual_changed_timestamp = $p_node->changed;
+      }
+      $p_wrapper->save();
+    }
   }
 }
 
 
 /**
  * Aggregate some term info from backreferenced resources into a provider entry.
+ * Changes made here are to the wrapper only, as the entity itself is not saved.
  *
  * @param EntityDrupalWrapper $p_wrapper
  *   A provider entity that's already wrapped with an entity metadata wrapper.
+ * @return int
+ *   A count of the number of NEW terms that were detected and added to the
+ *   term ref fields on the provider wrapper.
  */
 function crl_provider_add_backref_terms($p_wrapper) {
-  $merged_subject_areas = array_unique(array_merge((array) $p_wrapper->field_subject_area->raw(), (array) $p_wrapper->crl_provider_backref_subject_area->raw()));
+  $changed = 0;
+  // Process subject areas.
+  $orig_p_subject_areas = $p_wrapper->field_subject_area->raw();
+  $merged_subject_areas = array_unique(array_merge((array) $orig_p_subject_areas, (array) $p_wrapper->crl_provider_backref_subject_area->raw()));
   $p_wrapper->field_subject_area->set($merged_subject_areas);
-  $merged_resource_types = array_unique(array_merge((array) $p_wrapper->field_resource_type->raw(), (array) $p_wrapper->crl_provider_backref_resource_type->raw()));
+  $changed = $changed + count($merged_subject_areas) - count($orig_p_subject_areas);
+  // Process resource types.
+  $orig_p_resource_types = $p_wrapper->field_resource_type->raw();
+  $merged_resource_types = array_unique(array_merge((array) $orig_p_resource_types, (array) $p_wrapper->crl_provider_backref_resource_type->raw()));
   $p_wrapper->field_resource_type->set($merged_resource_types);
+  $changed = $changed + count($merged_resource_types) - count($orig_p_resource_types);
+  return $changed;
 }

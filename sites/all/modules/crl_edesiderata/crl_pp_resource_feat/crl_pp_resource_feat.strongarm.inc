@@ -374,5 +374,19 @@ function crl_pp_resource_feat_strongarm() {
   $strongarm->value = 0;
   $export['node_submitted_spp_resource'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_pp_resource_pattern';
+  $strongarm->value = 'pp/[node:title]';
+  $export['pathauto_node_pp_resource_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_spp_resource_pattern';
+  $strongarm->value = 'spp/[node:title]';
+  $export['pathauto_node_spp_resource_pattern'] = $strongarm;
+
   return $export;
 }

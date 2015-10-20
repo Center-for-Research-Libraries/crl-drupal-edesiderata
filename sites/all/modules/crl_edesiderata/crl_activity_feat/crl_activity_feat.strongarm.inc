@@ -159,5 +159,19 @@ function crl_activity_feat_strongarm() {
   $strongarm->value = 0;
   $export['node_submitted_activity'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_activity_pattern';
+  $strongarm->value = 'activity/[node:title]';
+  $export['pathauto_node_activity_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_grouping_pattern';
+  $strongarm->value = '';
+  $export['pathauto_taxonomy_term_grouping_pattern'] = $strongarm;
+
   return $export;
 }
