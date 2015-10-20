@@ -10,7 +10,7 @@
 function crl_helpers_feat_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'body'
+  // Exported field_base: 'body'.
   $field_bases['body'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -34,7 +34,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'text_with_summary',
   );
 
-  // Exported field_base: 'comment_body'
+  // Exported field_base: 'comment_body'.
   $field_bases['comment_body'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -58,7 +58,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_address'
+  // Exported field_base: 'field_address'.
   $field_bases['field_address'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -76,7 +76,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'addressfield',
   );
 
-  // Exported field_base: 'field_comment_privacy'
+  // Exported field_base: 'field_comment_privacy'.
   $field_bases['field_comment_privacy'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -106,7 +106,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_contact_email'
+  // Exported field_base: 'field_contact_email'.
   $field_bases['field_contact_email'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -124,7 +124,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'email',
   );
 
-  // Exported field_base: 'field_contact_fax'
+  // Exported field_base: 'field_contact_fax'.
   $field_bases['field_contact_fax'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -148,7 +148,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_contact_name'
+  // Exported field_base: 'field_contact_name'.
   $field_bases['field_contact_name'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -172,7 +172,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_contact_phone'
+  // Exported field_base: 'field_contact_phone'.
   $field_bases['field_contact_phone'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -196,7 +196,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_contact_title'
+  // Exported field_base: 'field_contact_title'.
   $field_bases['field_contact_title'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -220,7 +220,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_contacts'
+  // Exported field_base: 'field_contacts'.
   $field_bases['field_contacts'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -242,7 +242,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_contacts_group'
+  // Exported field_base: 'field_contacts_group'.
   $field_bases['field_contacts_group'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -267,7 +267,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'field_collection',
   );
 
-  // Exported field_base: 'field_facets'
+  // Exported field_base: 'field_facets'.
   $field_bases['field_facets'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -297,7 +297,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_further_description'
+  // Exported field_base: 'field_further_description'.
   $field_bases['field_further_description'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -319,7 +319,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'text_with_summary',
   );
 
-  // Exported field_base: 'field_fy'
+  // Exported field_base: 'field_fy'.
   $field_bases['field_fy'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -349,7 +349,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_internal_notes'
+  // Exported field_base: 'field_internal_notes'.
   $field_bases['field_internal_notes'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -371,7 +371,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_link'
+  // Exported field_base: 'field_link'.
   $field_bases['field_link'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -425,7 +425,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_source_guid'
+  // Exported field_base: 'field_source_guid'.
   $field_bases['field_source_guid'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -449,7 +449,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_title_alt'
+  // Exported field_base: 'field_title_alt'.
   $field_bases['field_title_alt'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -473,7 +473,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_title_prior'
+  // Exported field_base: 'field_title_prior'.
   $field_bases['field_title_prior'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -497,7 +497,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_title_sort'
+  // Exported field_base: 'field_title_sort'.
   $field_bases['field_title_sort'] = array(
     'active' => 1,
     'cardinality' => 1,

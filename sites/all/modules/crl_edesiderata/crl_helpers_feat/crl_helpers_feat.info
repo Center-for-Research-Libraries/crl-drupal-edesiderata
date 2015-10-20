@@ -96,6 +96,7 @@ features[variable][] = mimemail_name
 features[variable][] = mimemail_simple_address
 features[variable][] = mimemail_sitestyle
 features[variable][] = mimemail_textonly
+features[variable][] = pathauto_taxonomy_term_fy_pattern
 features[variable][] = rate_widgets
 features[variable][] = theme_crl_settings
 features[views_view][] = comment_summary

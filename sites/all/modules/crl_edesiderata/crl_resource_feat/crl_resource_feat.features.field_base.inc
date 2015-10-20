@@ -10,7 +10,7 @@
 function crl_resource_feat_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_content_scope_and_complete'
+  // Exported field_base: 'field_content_scope_and_complete'.
   $field_bases['field_content_scope_and_complete'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -27,7 +27,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'fivestar',
   );
 
-  // Exported field_base: 'field_cost_and_price_structure'
+  // Exported field_base: 'field_cost_and_price_structure'.
   $field_bases['field_cost_and_price_structure'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -44,7 +44,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'fivestar',
   );
 
-  // Exported field_base: 'field_platform_and_user_interfac'
+  // Exported field_base: 'field_platform_and_user_interfac'.
   $field_bases['field_platform_and_user_interfac'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -61,7 +61,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'fivestar',
   );
 
-  // Exported field_base: 'field_provider'
+  // Exported field_base: 'field_provider'.
   $field_bases['field_provider'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -101,7 +101,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_resource_activity_history'
+  // Exported field_base: 'field_resource_activity_history'.
   $field_bases['field_resource_activity_history'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -119,7 +119,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'viewfield',
   );
 
-  // Exported field_base: 'field_resource_analysis_notes'
+  // Exported field_base: 'field_resource_analysis_notes'.
   $field_bases['field_resource_analysis_notes'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -138,7 +138,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_resource_appendix_notes'
+  // Exported field_base: 'field_resource_appendix_notes'.
   $field_bases['field_resource_appendix_notes'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -160,7 +160,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_resource_attachments'
+  // Exported field_base: 'field_resource_attachments'.
   $field_bases['field_resource_attachments'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -186,7 +186,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'file',
   );
 
-  // Exported field_base: 'field_resource_coll_content'
+  // Exported field_base: 'field_resource_coll_content'.
   $field_bases['field_resource_coll_content'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -205,7 +205,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_resource_coll_content_tb'
+  // Exported field_base: 'field_resource_coll_content_tb'.
   $field_bases['field_resource_coll_content_tb'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -228,7 +228,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'tablefield',
   );
 
-  // Exported field_base: 'field_resource_contributors'
+  // Exported field_base: 'field_resource_contributors'.
   $field_bases['field_resource_contributors'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -250,7 +250,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_resource_delivery'
+  // Exported field_base: 'field_resource_delivery'.
   $field_bases['field_resource_delivery'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -269,7 +269,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_resource_external_reviews'
+  // Exported field_base: 'field_resource_external_reviews'.
   $field_bases['field_resource_external_reviews'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -291,7 +291,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_resource_gen_specs'
+  // Exported field_base: 'field_resource_gen_specs'.
   $field_bases['field_resource_gen_specs'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -313,7 +313,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_resource_interf_tools_tb'
+  // Exported field_base: 'field_resource_interf_tools_tb'.
   $field_bases['field_resource_interf_tools_tb'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -336,7 +336,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'tablefield',
   );
 
-  // Exported field_base: 'field_resource_languages'
+  // Exported field_base: 'field_resource_languages'.
   $field_bases['field_resource_languages'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -363,7 +363,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_resource_metadata_tb'
+  // Exported field_base: 'field_resource_metadata_tb'.
   $field_bases['field_resource_metadata_tb'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -386,7 +386,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'tablefield',
   );
 
-  // Exported field_base: 'field_resource_provider_notes'
+  // Exported field_base: 'field_resource_provider_notes'.
   $field_bases['field_resource_provider_notes'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -432,7 +432,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_resource_reviewers'
+  // Exported field_base: 'field_resource_reviewers'.
   $field_bases['field_resource_reviewers'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -454,7 +454,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_resource_source_status'
+  // Exported field_base: 'field_resource_source_status'.
   $field_bases['field_resource_source_status'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -485,7 +485,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_resource_sources'
+  // Exported field_base: 'field_resource_sources'.
   $field_bases['field_resource_sources'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -507,7 +507,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_resource_strength_weak'
+  // Exported field_base: 'field_resource_strength_weak'.
   $field_bases['field_resource_strength_weak'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -526,7 +526,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_resource_tech_platform_tb'
+  // Exported field_base: 'field_resource_tech_platform_tb'.
   $field_bases['field_resource_tech_platform_tb'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -549,7 +549,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'tablefield',
   );
 
-  // Exported field_base: 'field_resource_terms'
+  // Exported field_base: 'field_resource_terms'.
   $field_bases['field_resource_terms'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -568,7 +568,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_resource_terms_tb'
+  // Exported field_base: 'field_resource_terms_tb'.
   $field_bases['field_resource_terms_tb'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -591,7 +591,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'tablefield',
   );
 
-  // Exported field_base: 'field_resource_title_lists'
+  // Exported field_base: 'field_resource_title_lists'.
   $field_bases['field_resource_title_lists'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -614,7 +614,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'file',
   );
 
-  // Exported field_base: 'field_resource_type'
+  // Exported field_base: 'field_resource_type'.
   $field_bases['field_resource_type'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -644,7 +644,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_see'
+  // Exported field_base: 'field_see'.
   $field_bases['field_see'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -679,7 +679,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_see_also'
+  // Exported field_base: 'field_see_also'.
   $field_bases['field_see_also'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -714,7 +714,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_subject_area'
+  // Exported field_base: 'field_subject_area'.
   $field_bases['field_subject_area'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -744,7 +744,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_temp_subjects_covered'
+  // Exported field_base: 'field_temp_subjects_covered'.
   $field_bases['field_temp_subjects_covered'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -765,7 +765,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_temp_topics_from_review'
+  // Exported field_base: 'field_temp_topics_from_review'.
   $field_bases['field_temp_topics_from_review'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -784,7 +784,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_update_alert_message'
+  // Exported field_base: 'field_update_alert_message'.
   $field_bases['field_update_alert_message'] = array(
     'active' => 1,
     'cardinality' => 1,

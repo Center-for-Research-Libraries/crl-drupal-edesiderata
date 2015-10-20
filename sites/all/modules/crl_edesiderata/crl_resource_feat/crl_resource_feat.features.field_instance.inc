@@ -10,7 +10,7 @@
 function crl_resource_feat_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'comment-comment_node_resource-comment_body'
+  // Exported field_instance: 'comment-comment_node_resource-comment_body'.
   $field_instances['comment-comment_node_resource-comment_body'] = array(
     'bundle' => 'comment_node_resource',
     'default_value' => NULL,
@@ -46,7 +46,7 @@ function crl_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'comment-comment_node_resource-field_comment_privacy'
+  // 'comment-comment_node_resource-field_comment_privacy'.
   $field_instances['comment-comment_node_resource-field_comment_privacy'] = array(
     'bundle' => 'comment_node_resource',
     'default_value' => array(
@@ -395,7 +395,7 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-body'
+  // Exported field_instance: 'node-resource-body'.
   $field_instances['node-resource-body'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -446,7 +446,7 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_content_scope_and_complete'
+  // Exported field_instance: 'node-resource-field_content_scope_and_complete'.
   $field_instances['node-resource-field_content_scope_and_complete'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -501,7 +501,7 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_cost_and_price_structure'
+  // Exported field_instance: 'node-resource-field_cost_and_price_structure'.
   $field_instances['node-resource-field_cost_and_price_structure'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -556,7 +556,7 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_facets'
+  // Exported field_instance: 'node-resource-field_facets'.
   $field_instances['node-resource-field_facets'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -598,7 +598,7 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_internal_notes'
+  // Exported field_instance: 'node-resource-field_internal_notes'.
   $field_instances['node-resource-field_internal_notes'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -644,7 +644,7 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_platform_and_user_interfac'
+  // Exported field_instance: 'node-resource-field_platform_and_user_interfac'.
   $field_instances['node-resource-field_platform_and_user_interfac'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -699,7 +699,7 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_provider'
+  // Exported field_instance: 'node-resource-field_provider'.
   $field_instances['node-resource-field_provider'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -744,7 +744,7 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_activity_history'
+  // Exported field_instance: 'node-resource-field_resource_activity_history'.
   $field_instances['node-resource-field_resource_activity_history'] = array(
     'bundle' => 'resource',
     'default_value' => array(
@@ -829,7 +829,7 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_analysis_notes'
+  // Exported field_instance: 'node-resource-field_resource_analysis_notes'.
   $field_instances['node-resource-field_resource_analysis_notes'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -875,7 +875,7 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_appendix_notes'
+  // Exported field_instance: 'node-resource-field_resource_appendix_notes'.
   $field_instances['node-resource-field_resource_appendix_notes'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -921,7 +921,7 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_attachments'
+  // Exported field_instance: 'node-resource-field_resource_attachments'.
   $field_instances['node-resource-field_resource_attachments'] = array(
     'bundle' => 'resource',
     'deleted' => 0,
@@ -969,7 +969,7 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_coll_content'
+  // Exported field_instance: 'node-resource-field_resource_coll_content'.
   $field_instances['node-resource-field_resource_coll_content'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -1015,7 +1015,7 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_coll_content_tb'
+  // Exported field_instance: 'node-resource-field_resource_coll_content_tb'.
   $field_instances['node-resource-field_resource_coll_content_tb'] = array(
     'bundle' => 'resource',
     'default_value' => array(
@@ -1075,7 +1075,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_contributors'
+  // Exported field_instance: 'node-resource-field_resource_contributors'.
   $field_instances['node-resource-field_resource_contributors'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -1121,7 +1121,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_delivery'
+  // Exported field_instance: 'node-resource-field_resource_delivery'.
   $field_instances['node-resource-field_resource_delivery'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -1167,7 +1167,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_external_reviews'
+  // Exported field_instance: 'node-resource-field_resource_external_reviews'.
   $field_instances['node-resource-field_resource_external_reviews'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -1213,7 +1213,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_gen_specs'
+  // Exported field_instance: 'node-resource-field_resource_gen_specs'.
   $field_instances['node-resource-field_resource_gen_specs'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -1259,7 +1259,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_interf_tools_tb'
+  // Exported field_instance: 'node-resource-field_resource_interf_tools_tb'.
   $field_instances['node-resource-field_resource_interf_tools_tb'] = array(
     'bundle' => 'resource',
     'default_value' => array(
@@ -1319,7 +1319,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_languages'
+  // Exported field_instance: 'node-resource-field_resource_languages'.
   $field_instances['node-resource-field_resource_languages'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -1365,7 +1365,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_metadata_tb'
+  // Exported field_instance: 'node-resource-field_resource_metadata_tb'.
   $field_instances['node-resource-field_resource_metadata_tb'] = array(
     'bundle' => 'resource',
     'default_value' => array(
@@ -1425,7 +1425,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_provider_notes'
+  // Exported field_instance: 'node-resource-field_resource_provider_notes'.
   $field_instances['node-resource-field_resource_provider_notes'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -1471,7 +1471,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_reviewers'
+  // Exported field_instance: 'node-resource-field_resource_reviewers'.
   $field_instances['node-resource-field_resource_reviewers'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -1517,7 +1517,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_source_status'
+  // Exported field_instance: 'node-resource-field_resource_source_status'.
   $field_instances['node-resource-field_resource_source_status'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -1561,7 +1561,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_sources'
+  // Exported field_instance: 'node-resource-field_resource_sources'.
   $field_instances['node-resource-field_resource_sources'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -1606,7 +1606,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_strength_weak'
+  // Exported field_instance: 'node-resource-field_resource_strength_weak'.
   $field_instances['node-resource-field_resource_strength_weak'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -1652,7 +1652,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_tech_platform_tb'
+  // Exported field_instance: 'node-resource-field_resource_tech_platform_tb'.
   $field_instances['node-resource-field_resource_tech_platform_tb'] = array(
     'bundle' => 'resource',
     'default_value' => array(
@@ -1712,7 +1712,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_terms'
+  // Exported field_instance: 'node-resource-field_resource_terms'.
   $field_instances['node-resource-field_resource_terms'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -1758,7 +1758,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_terms_tb'
+  // Exported field_instance: 'node-resource-field_resource_terms_tb'.
   $field_instances['node-resource-field_resource_terms_tb'] = array(
     'bundle' => 'resource',
     'default_value' => array(
@@ -1818,7 +1818,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_title_lists'
+  // Exported field_instance: 'node-resource-field_resource_title_lists'.
   $field_instances['node-resource-field_resource_title_lists'] = array(
     'bundle' => 'resource',
     'deleted' => 0,
@@ -1866,7 +1866,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_resource_type'
+  // Exported field_instance: 'node-resource-field_resource_type'.
   $field_instances['node-resource-field_resource_type'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -1909,7 +1909,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_see'
+  // Exported field_instance: 'node-resource-field_see'.
   $field_instances['node-resource-field_see'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -1958,7 +1958,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_see_also'
+  // Exported field_instance: 'node-resource-field_see_also'.
   $field_instances['node-resource-field_see_also'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -2007,7 +2007,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_source_guid'
+  // Exported field_instance: 'node-resource-field_source_guid'.
   $field_instances['node-resource-field_source_guid'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -2052,7 +2052,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_subject_area'
+  // Exported field_instance: 'node-resource-field_subject_area'.
   $field_instances['node-resource-field_subject_area'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -2095,7 +2095,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_temp_subjects_covered'
+  // Exported field_instance: 'node-resource-field_temp_subjects_covered'.
   $field_instances['node-resource-field_temp_subjects_covered'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -2140,7 +2140,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_temp_topics_from_review'
+  // Exported field_instance: 'node-resource-field_temp_topics_from_review'.
   $field_instances['node-resource-field_temp_topics_from_review'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -2185,7 +2185,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_title_sort'
+  // Exported field_instance: 'node-resource-field_title_sort'.
   $field_instances['node-resource-field_title_sort'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,
@@ -2230,7 +2230,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_update_alert'
+  // Exported field_instance: 'node-resource-field_update_alert'.
   $field_instances['node-resource-field_update_alert'] = array(
     'bundle' => 'resource',
     'deleted' => 0,
@@ -2283,7 +2283,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     ),
   );
 
-  // Exported field_instance: 'node-resource-field_update_alert_message'
+  // Exported field_instance: 'node-resource-field_update_alert_message'.
   $field_instances['node-resource-field_update_alert_message'] = array(
     'bundle' => 'resource',
     'default_value' => NULL,

@@ -10,7 +10,7 @@
 function crl_provider_feat_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_provider_access'
+  // Exported field_base: 'field_provider_access'.
   $field_bases['field_provider_access'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -32,7 +32,7 @@ function crl_provider_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_provider_established'
+  // Exported field_base: 'field_provider_established'.
   $field_bases['field_provider_established'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -50,7 +50,7 @@ function crl_provider_feat_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_provider_financial_info'
+  // Exported field_base: 'field_provider_financial_info'.
   $field_bases['field_provider_financial_info'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -72,7 +72,7 @@ function crl_provider_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_provider_governance'
+  // Exported field_base: 'field_provider_governance'.
   $field_bases['field_provider_governance'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -94,7 +94,7 @@ function crl_provider_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_provider_history'
+  // Exported field_base: 'field_provider_history'.
   $field_bases['field_provider_history'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -116,7 +116,7 @@ function crl_provider_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_provider_in_operation'
+  // Exported field_base: 'field_provider_in_operation'.
   $field_bases['field_provider_in_operation'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -144,7 +144,7 @@ function crl_provider_feat_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_provider_legal_info'
+  // Exported field_base: 'field_provider_legal_info'.
   $field_bases['field_provider_legal_info'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -166,7 +166,7 @@ function crl_provider_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_provider_mission_statement'
+  // Exported field_base: 'field_provider_mission_statement'.
   $field_bases['field_provider_mission_statement'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -188,7 +188,7 @@ function crl_provider_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_provider_parent'
+  // Exported field_base: 'field_provider_parent'.
   $field_bases['field_provider_parent'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -212,7 +212,7 @@ function crl_provider_feat_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_provider_profile_status'
+  // Exported field_base: 'field_provider_profile_status'.
   $field_bases['field_provider_profile_status'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -240,7 +240,7 @@ function crl_provider_feat_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_provider_publisher_type'
+  // Exported field_base: 'field_provider_publisher_type'.
   $field_bases['field_provider_publisher_type'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -270,7 +270,7 @@ function crl_provider_feat_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_provider_see_also'
+  // Exported field_base: 'field_provider_see_also'.
   $field_bases['field_provider_see_also'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -308,7 +308,7 @@ function crl_provider_feat_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_provider_sources'
+  // Exported field_base: 'field_provider_sources'.
   $field_bases['field_provider_sources'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -330,7 +330,7 @@ function crl_provider_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_provider_tech_info'
+  // Exported field_base: 'field_provider_tech_info'.
   $field_bases['field_provider_tech_info'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -352,7 +352,7 @@ function crl_provider_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_provider_type'
+  // Exported field_base: 'field_provider_type'.
   $field_bases['field_provider_type'] = array(
     'active' => 1,
     'cardinality' => -1,
