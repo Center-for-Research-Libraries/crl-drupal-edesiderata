@@ -408,7 +408,7 @@ function crl_resource_feat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_resource_provider_text'
+  // Exported field_base: 'field_resource_provider_text'.
   $field_bases['field_resource_provider_text'] = array(
     'active' => 1,
     'cardinality' => 1,

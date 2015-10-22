@@ -44,12 +44,6 @@ function crl_mydes_feat_menu() {
  */
 function crl_mydes_feat_theme() {
   return array(
-    // Theme hook to generate a collapsable saved search box.
-    'crl_mydes_feat_save_search_form' => array(
-      'variables' => array('block' => array()),
-      'path' => drupal_get_path('module', 'crl_mydes_feat') . '/themes',
-      'file' => 'crl_mydes_feat.theme.inc',
-    ),
     // Theme hook to generate a thumbnail to the highlight meDes video.
     'crl_mydes_feat_video_link' => array(
       'variables' => array('video_path' => 'me/about-video', 'text' => t('Learn more about meDesiderata'), 'thumb' => TRUE, 'thumb_uri' => 'public://images/meDes_video_thumb.png'),
@@ -133,15 +127,23 @@ function crl_mydes_feat_generate_widget($node) {
  *   Returns markup for the collapsible form.
  */
 function crl_mydes_feat_build_saved_search_form() {
-  $output = '';
+  $output = array();
   if (user_access('crl access member features')) {
     // Add the saved search block.
     $saved_searches = search_api_saved_searches_settings_load_multiple(FALSE, array('enabled' => TRUE));
     if (!empty($saved_searches)) {
       $saved_search = reset($saved_searches);
-      $block = module_invoke('search_api_saved_searches', 'block_view', $saved_search->delta);
-      drupal_add_js(drupal_get_path('module', 'crl_mydes_feat') .'/js/crl_mydes_feat.js', 'file');
-      $output .= theme('crl_mydes_feat_save_search_form', array('block' => $block));
+      drupal_add_library('system', 'drupal.collapse');
+      $block_saved_search = module_invoke('search_api_saved_searches', 'block_view', $saved_search->delta);
+      $output['saved_this_search'] = array(
+        '#theme' => 'fieldset',
+        '#attributes' => array('class' => array('collapsible', 'collapsed')),
+        '#title' => t('Watch this Resource Set'),
+        '#description' => '',
+        '#children' => drupal_render($block_saved_search),
+      );
+      // drupal_add_js(drupal_get_path('module', 'crl_mydes_feat') .'/js/crl_mydes_feat.js', 'file');
+      // $output .= theme('crl_mydes_feat_save_search_form', array('block' => $block));
     }
   }
   return $output;
@@ -161,7 +163,7 @@ function crl_mydes_feat_form_alter(&$form, &$form_state, $form_id) {
       '#weight' => -20,
     );
     $form['top_note'] = array(
-      '#markup' => '<hr/><p>' . t('You can save this filter selection as a watchset and track future additions to these results. Manage your watchsets and email notification options in meDesiderata.') . '</p>',
+      '#markup' => '<p>' . t('You can save this filter selection as a watchset and track future additions to these results. Manage your watchsets and email notification options in meDesiderata.') . '</p>',
       '#weight' => -10,
     );
     $form['name']['#default_value'] = '';

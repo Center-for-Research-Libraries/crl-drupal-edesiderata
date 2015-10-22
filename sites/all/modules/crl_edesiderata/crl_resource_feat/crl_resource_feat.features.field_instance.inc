@@ -83,7 +83,7 @@ function crl_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-resource_suggestion-field_further_description'
+  // 'entityform-resource_suggestion-field_further_description'.
   $field_instances['entityform-resource_suggestion-field_further_description'] = array(
     'bundle' => 'resource_suggestion',
     'default_value' => NULL,
@@ -119,7 +119,7 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-resource_suggestion-field_misc_notes'
+  // Exported field_instance: 'entityform-resource_suggestion-field_misc_notes'.
   $field_instances['entityform-resource_suggestion-field_misc_notes'] = array(
     'bundle' => 'resource_suggestion',
     'default_value' => NULL,
@@ -154,7 +154,7 @@ function crl_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-resource_suggestion-field_resource_attachments'
+  // 'entityform-resource_suggestion-field_resource_attachments'.
   $field_instances['entityform-resource_suggestion-field_resource_attachments'] = array(
     'bundle' => 'resource_suggestion',
     'deleted' => 0,
@@ -191,7 +191,7 @@ function crl_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-resource_suggestion-field_resource_provider_text'
+  // 'entityform-resource_suggestion-field_resource_provider_text'.
   $field_instances['entityform-resource_suggestion-field_resource_provider_text'] = array(
     'bundle' => 'resource_suggestion',
     'default_value' => NULL,
@@ -226,7 +226,7 @@ function crl_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-resource_suggestion-field_resource_reference'
+  // 'entityform-resource_suggestion-field_resource_reference'.
   $field_instances['entityform-resource_suggestion-field_resource_reference'] = array(
     'bundle' => 'resource_suggestion',
     'default_value' => NULL,
@@ -264,7 +264,7 @@ function crl_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-resource_suggestion-field_resource_type'
+  // 'entityform-resource_suggestion-field_resource_type'.
   $field_instances['entityform-resource_suggestion-field_resource_type'] = array(
     'bundle' => 'resource_suggestion',
     'default_value' => NULL,
@@ -296,7 +296,7 @@ function crl_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-resource_suggestion-field_subject_area'
+  // 'entityform-resource_suggestion-field_subject_area'.
   $field_instances['entityform-resource_suggestion-field_subject_area'] = array(
     'bundle' => 'resource_suggestion',
     'default_value' => NULL,
@@ -327,7 +327,7 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'entityform-resource_suggestion-field_title_sort'
+  // Exported field_instance: 'entityform-resource_suggestion-field_title_sort'.
   $field_instances['entityform-resource_suggestion-field_title_sort'] = array(
     'bundle' => 'resource_suggestion',
     'default_value' => NULL,
@@ -362,7 +362,7 @@ function crl_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'flagging-resource_suggestion_convert-field_provider'
+  // 'flagging-resource_suggestion_convert-field_provider'.
   $field_instances['flagging-resource_suggestion_convert-field_provider'] = array(
     'bundle' => 'resource_suggestion_convert',
     'default_value' => NULL,
