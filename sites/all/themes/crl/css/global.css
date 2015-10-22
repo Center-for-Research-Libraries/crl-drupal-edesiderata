@@ -889,6 +889,7 @@ button, .button, input[type="reset"], input[type="submit"], input[type="button"]
   outline: 0 none;
   overflow: visible;
   padding: 5px 10px 5px;
+  margin: 0px 5px 5px 0px !important;
   text-shadow: none;
   width: auto;
   text-decoration: none !important;

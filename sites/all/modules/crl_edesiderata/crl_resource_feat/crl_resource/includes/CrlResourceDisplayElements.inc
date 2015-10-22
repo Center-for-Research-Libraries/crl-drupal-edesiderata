@@ -180,13 +180,7 @@ class CrlResourceDisplayElements {
   protected function build_pseudo_field_resource_updated() {
     return array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('Updated'), '#output' => format_date($this->entity_wrapper->crl_resource_master_update_timestamp->value(), 'short'), '#inline' => TRUE);
   }
-  
-  
-  protected function build_pseudo_field_resource_improve_widget() {
-    $output = '<br/><p>' . t('I would like to submit minor corrections or updates to the information listed in this entry.') . '</p>';
-    $output .= '<p>' . l('<button>' . t('Submit Corrections') . '</button>', '<front>', array('html' => TRUE)) . '</p>';
-    return array('#markup' => $output);
-  }
+
 
   /**
    * Build custom field: pseudo_field_resource_alerts
