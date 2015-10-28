@@ -245,25 +245,6 @@ function crl_helpers_form_comment_form_alter(&$form, &$form_state, $form_id) {
 
 
 /**
- * Implements hook_form_BASE_FORM_ID_alter().
- */
-function crl_helpers_form_node_form_alter(&$form, &$form_state, $form_id) {
-  // Hide text format options for most editors. This element may be confusing
-  // and should rarely be touched by non-admins who don't oversee formats. We do
-  // this with some conditional CSS, which is a bit lazy, but it's a whole lot
-  // cleaner than iterating over the various render array structures that may
-  // contain a "format" element. Also, we don't need to further limit what
-  // filters people can use, we just want to make a "best effort" to visually
-  // clean-up options they never touch.
-  if (!user_access('administer filters')) {
-    // Note that inline CSS is inefficient for CSS aggregation, but this only
-    // applies to node edit forms, so it's ok.
-    drupal_add_css('.node-form .filter-wrapper {display:none !important;}', array('type' => 'inline'));
-  }
-}
-
-
-/**
  * Implements hook_preprocess_comment().
  *
  * Alter some comment variables before they are themed. Used primarily to

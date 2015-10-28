@@ -192,6 +192,17 @@ function crl_helpers_feat_user_default_permissions() {
     'module' => 'fivestar',
   );
 
+  // Exported permission: 'show text format dropdown'.
+  $permissions['show text format dropdown'] = array(
+    'name' => 'show text format dropdown',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
+      'editor power' => 'editor power',
+    ),
+    'module' => 'hide_formats',
+  );
+
   // Exported permission: 'skip comment approval'.
   $permissions['skip comment approval'] = array(
     'name' => 'skip comment approval',
