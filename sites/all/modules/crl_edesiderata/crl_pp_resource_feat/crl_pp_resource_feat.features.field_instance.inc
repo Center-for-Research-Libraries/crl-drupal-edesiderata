@@ -10,7 +10,7 @@
 function crl_pp_resource_feat_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'comment-comment_node_pp_resource-comment_body'
+  // Exported field_instance: 'comment-comment_node_pp_resource-comment_body'.
   $field_instances['comment-comment_node_pp_resource-comment_body'] = array(
     'bundle' => 'comment_node_pp_resource',
     'default_value' => NULL,
@@ -46,7 +46,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'comment-comment_node_pp_resource-field_comment_privacy'
+  // 'comment-comment_node_pp_resource-field_comment_privacy'.
   $field_instances['comment-comment_node_pp_resource-field_comment_privacy'] = array(
     'bundle' => 'comment_node_pp_resource',
     'default_value' => array(
@@ -82,7 +82,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'comment-comment_node_spp_resource-comment_body'
+  // Exported field_instance: 'comment-comment_node_spp_resource-comment_body'.
   $field_instances['comment-comment_node_spp_resource-comment_body'] = array(
     'bundle' => 'comment_node_spp_resource',
     'default_value' => NULL,
@@ -118,7 +118,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'comment-comment_node_spp_resource-field_comment_privacy'
+  // 'comment-comment_node_spp_resource-field_comment_privacy'.
   $field_instances['comment-comment_node_spp_resource-field_comment_privacy'] = array(
     'bundle' => 'comment_node_spp_resource',
     'default_value' => array(
@@ -153,7 +153,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-purchase_proposal_nomination-field_contact_email'
+  // 'entityform-purchase_proposal_nomination-field_contact_email'.
   $field_instances['entityform-purchase_proposal_nomination-field_contact_email'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -187,7 +187,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-purchase_proposal_nomination-field_contact_name'
+  // 'entityform-purchase_proposal_nomination-field_contact_name'.
   $field_instances['entityform-purchase_proposal_nomination-field_contact_name'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -222,7 +222,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-purchase_proposal_nomination-field_contacts'
+  // 'entityform-purchase_proposal_nomination-field_contacts'.
   $field_instances['entityform-purchase_proposal_nomination-field_contacts'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -257,7 +257,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-purchase_proposal_nomination-field_further_description'
+  // 'entityform-purchase_proposal_nomination-field_further_description'.
   $field_instances['entityform-purchase_proposal_nomination-field_further_description'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -294,7 +294,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-purchase_proposal_nomination-field_link'
+  // 'entityform-purchase_proposal_nomination-field_link'.
   $field_instances['entityform-purchase_proposal_nomination-field_link'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -346,7 +346,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-purchase_proposal_nomination-field_pp_nomination_crl_holdings'
+  // 'entityform-purchase_proposal_nomination-field_pp_nomination_crl_holdings'.
   $field_instances['entityform-purchase_proposal_nomination-field_pp_nomination_crl_holdings'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -378,7 +378,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-purchase_proposal_nomination-field_pp_nominator_comments'
+  // 'entityform-purchase_proposal_nomination-field_pp_nominator_comments'.
   $field_instances['entityform-purchase_proposal_nomination-field_pp_nominator_comments'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -413,7 +413,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-purchase_proposal_nomination-field_pp_nominator_institution'
+  // 'entityform-purchase_proposal_nomination-field_pp_nominator_institution'.
   $field_instances['entityform-purchase_proposal_nomination-field_pp_nominator_institution'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -448,7 +448,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-purchase_proposal_nomination-field_pp_notes'
+  // 'entityform-purchase_proposal_nomination-field_pp_notes'.
   $field_instances['entityform-purchase_proposal_nomination-field_pp_notes'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -483,7 +483,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-purchase_proposal_nomination-field_pp_piece_count_and_pricing'
+  // 'entityform-purchase_proposal_nomination-field_pp_piece_count_and_pricing'.
   $field_instances['entityform-purchase_proposal_nomination-field_pp_piece_count_and_pricing'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -518,7 +518,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-purchase_proposal_nomination-field_pp_publisher'
+  // 'entityform-purchase_proposal_nomination-field_pp_publisher'.
   $field_instances['entityform-purchase_proposal_nomination-field_pp_publisher'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -553,7 +553,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-purchase_proposal_nomination-field_pp_related'
+  // 'entityform-purchase_proposal_nomination-field_pp_related'.
   $field_instances['entityform-purchase_proposal_nomination-field_pp_related'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -591,7 +591,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-purchase_proposal_nomination-field_pp_subject_area'
+  // 'entityform-purchase_proposal_nomination-field_pp_subject_area'.
   $field_instances['entityform-purchase_proposal_nomination-field_pp_subject_area'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -623,7 +623,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'entityform-purchase_proposal_nomination-field_title_sort'
+  // 'entityform-purchase_proposal_nomination-field_title_sort'.
   $field_instances['entityform-purchase_proposal_nomination-field_title_sort'] = array(
     'bundle' => 'purchase_proposal_nomination',
     'default_value' => NULL,
@@ -657,7 +657,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-body'
+  // Exported field_instance: 'node-pp_resource-body'.
   $field_instances['node-pp_resource-body'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -705,7 +705,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_contact_email'
+  // Exported field_instance: 'node-pp_resource-field_contact_email'.
   $field_instances['node-pp_resource-field_contact_email'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -749,7 +749,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_contact_name'
+  // Exported field_instance: 'node-pp_resource-field_contact_name'.
   $field_instances['node-pp_resource-field_contact_name'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -794,7 +794,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_contacts'
+  // Exported field_instance: 'node-pp_resource-field_contacts'.
   $field_instances['node-pp_resource-field_contacts'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -839,7 +839,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_fy'
+  // Exported field_instance: 'node-pp_resource-field_fy'.
   $field_instances['node-pp_resource-field_fy'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -881,7 +881,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_internal_notes'
+  // Exported field_instance: 'node-pp_resource-field_internal_notes'.
   $field_instances['node-pp_resource-field_internal_notes'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -927,7 +927,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_link'
+  // Exported field_instance: 'node-pp_resource-field_link'.
   $field_instances['node-pp_resource-field_link'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -990,7 +990,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_attachments'
+  // Exported field_instance: 'node-pp_resource-field_pp_attachments'.
   $field_instances['node-pp_resource-field_pp_attachments'] = array(
     'bundle' => 'pp_resource',
     'deleted' => 0,
@@ -1038,7 +1038,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_crl_comments'
+  // Exported field_instance: 'node-pp_resource-field_pp_crl_comments'.
   $field_instances['node-pp_resource-field_pp_crl_comments'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -1084,7 +1084,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_discounted_price'
+  // Exported field_instance: 'node-pp_resource-field_pp_discounted_price'.
   $field_instances['node-pp_resource-field_pp_discounted_price'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -1130,7 +1130,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_nominator_comments'
+  // Exported field_instance: 'node-pp_resource-field_pp_nominator_comments'.
   $field_instances['node-pp_resource-field_pp_nominator_comments'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -1176,7 +1176,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_nominator_institution'
+  // Exported field_instance: 'node-pp_resource-field_pp_nominator_institution'.
   $field_instances['node-pp_resource-field_pp_nominator_institution'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -1221,7 +1221,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_notes'
+  // Exported field_instance: 'node-pp_resource-field_pp_notes'.
   $field_instances['node-pp_resource-field_pp_notes'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -1269,7 +1269,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-pp_resource-field_pp_piece_count_and_pricing'
+  // 'node-pp_resource-field_pp_piece_count_and_pricing'.
   $field_instances['node-pp_resource-field_pp_piece_count_and_pricing'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -1315,7 +1315,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_proposal_purchased'
+  // Exported field_instance: 'node-pp_resource-field_pp_proposal_purchased'.
   $field_instances['node-pp_resource-field_pp_proposal_purchased'] = array(
     'bundle' => 'pp_resource',
     'default_value' => array(
@@ -1365,7 +1365,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_publisher'
+  // Exported field_instance: 'node-pp_resource-field_pp_publisher'.
   $field_instances['node-pp_resource-field_pp_publisher'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -1412,7 +1412,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_publisher_url'
+  // Exported field_instance: 'node-pp_resource-field_pp_publisher_url'.
   $field_instances['node-pp_resource-field_pp_publisher_url'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -1457,7 +1457,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_purchase_status'
+  // Exported field_instance: 'node-pp_resource-field_pp_purchase_status'.
   $field_instances['node-pp_resource-field_pp_purchase_status'] = array(
     'bundle' => 'pp_resource',
     'default_value' => array(
@@ -1503,7 +1503,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_related'
+  // Exported field_instance: 'node-pp_resource-field_pp_related'.
   $field_instances['node-pp_resource-field_pp_related'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -1549,7 +1549,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_sp_target_price'
+  // Exported field_instance: 'node-pp_resource-field_pp_sp_target_price'.
   $field_instances['node-pp_resource-field_pp_sp_target_price'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -1595,7 +1595,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_subject_area'
+  // Exported field_instance: 'node-pp_resource-field_pp_subject_area'.
   $field_instances['node-pp_resource-field_pp_subject_area'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -1640,7 +1640,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_summary_comments'
+  // Exported field_instance: 'node-pp_resource-field_pp_summary_comments'.
   $field_instances['node-pp_resource-field_pp_summary_comments'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -1688,7 +1688,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_title_sort'
+  // Exported field_instance: 'node-pp_resource-field_title_sort'.
   $field_instances['node-pp_resource-field_title_sort'] = array(
     'bundle' => 'pp_resource',
     'default_value' => NULL,
@@ -1733,7 +1733,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_voting_results'
+  // Exported field_instance: 'node-pp_resource-field_voting_results'.
   $field_instances['node-pp_resource-field_voting_results'] = array(
     'bundle' => 'pp_resource',
     'default_value' => array(
@@ -1800,7 +1800,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-body'
+  // Exported field_instance: 'node-spp_resource-body'.
   $field_instances['node-spp_resource-body'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -1851,7 +1851,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_contact_email'
+  // Exported field_instance: 'node-spp_resource-field_contact_email'.
   $field_instances['node-spp_resource-field_contact_email'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -1895,7 +1895,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_contact_name'
+  // Exported field_instance: 'node-spp_resource-field_contact_name'.
   $field_instances['node-spp_resource-field_contact_name'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -1940,7 +1940,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_fy'
+  // Exported field_instance: 'node-spp_resource-field_fy'.
   $field_instances['node-spp_resource-field_fy'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -1982,7 +1982,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_internal_notes'
+  // Exported field_instance: 'node-spp_resource-field_internal_notes'.
   $field_instances['node-spp_resource-field_internal_notes'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -2028,7 +2028,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_link'
+  // Exported field_instance: 'node-spp_resource-field_link'.
   $field_instances['node-spp_resource-field_link'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -2091,7 +2091,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_pp_attachments'
+  // Exported field_instance: 'node-spp_resource-field_pp_attachments'.
   $field_instances['node-spp_resource-field_pp_attachments'] = array(
     'bundle' => 'spp_resource',
     'deleted' => 0,
@@ -2139,7 +2139,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_pp_crl_comments'
+  // Exported field_instance: 'node-spp_resource-field_pp_crl_comments'.
   $field_instances['node-spp_resource-field_pp_crl_comments'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -2185,7 +2185,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_pp_nominator_comments'
+  // Exported field_instance: 'node-spp_resource-field_pp_nominator_comments'.
   $field_instances['node-spp_resource-field_pp_nominator_comments'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -2231,7 +2231,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_pp_nominator_institution'
+  // Exported field_instance:
+  // 'node-spp_resource-field_pp_nominator_institution'.
   $field_instances['node-spp_resource-field_pp_nominator_institution'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -2276,7 +2277,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_pp_notes'
+  // Exported field_instance: 'node-spp_resource-field_pp_notes'.
   $field_instances['node-spp_resource-field_pp_notes'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -2324,7 +2325,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-spp_resource-field_pp_piece_count_and_pricing'
+  // 'node-spp_resource-field_pp_piece_count_and_pricing'.
   $field_instances['node-spp_resource-field_pp_piece_count_and_pricing'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -2370,7 +2371,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_pp_proposal_purchased'
+  // Exported field_instance: 'node-spp_resource-field_pp_proposal_purchased'.
   $field_instances['node-spp_resource-field_pp_proposal_purchased'] = array(
     'bundle' => 'spp_resource',
     'default_value' => array(
@@ -2420,7 +2421,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_pp_publisher'
+  // Exported field_instance: 'node-spp_resource-field_pp_publisher'.
   $field_instances['node-spp_resource-field_pp_publisher'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -2467,7 +2468,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_pp_publisher_url'
+  // Exported field_instance: 'node-spp_resource-field_pp_publisher_url'.
   $field_instances['node-spp_resource-field_pp_publisher_url'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -2512,7 +2513,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_pp_related'
+  // Exported field_instance: 'node-spp_resource-field_pp_related'.
   $field_instances['node-spp_resource-field_pp_related'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -2558,7 +2559,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_pp_sp_target_price'
+  // Exported field_instance: 'node-spp_resource-field_pp_sp_target_price'.
   $field_instances['node-spp_resource-field_pp_sp_target_price'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -2604,7 +2605,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_pp_subject_area'
+  // Exported field_instance: 'node-spp_resource-field_pp_subject_area'.
   $field_instances['node-spp_resource-field_pp_subject_area'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -2649,7 +2650,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_pp_summary_comments'
+  // Exported field_instance: 'node-spp_resource-field_pp_summary_comments'.
   $field_instances['node-spp_resource-field_pp_summary_comments'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -2696,7 +2697,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_title_sort'
+  // Exported field_instance: 'node-spp_resource-field_title_sort'.
   $field_instances['node-spp_resource-field_title_sort'] = array(
     'bundle' => 'spp_resource',
     'default_value' => NULL,
@@ -2741,7 +2742,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_voting_results'
+  // Exported field_instance: 'node-spp_resource-field_voting_results'.
   $field_instances['node-spp_resource-field_voting_results'] = array(
     'bundle' => 'spp_resource',
     'default_value' => array(
@@ -2808,7 +2809,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'taxonomy_term-fy-field_currency_cad_usd'
+  // Exported field_instance: 'taxonomy_term-fy-field_currency_cad_usd'.
   $field_instances['taxonomy_term-fy-field_currency_cad_usd'] = array(
     'bundle' => 'fy',
     'default_value' => NULL,

@@ -205,5 +205,12 @@ function crl_provider_feat_strongarm() {
   $strongarm->value = 0;
   $export['node_submitted_provider'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_provider_pattern';
+  $strongarm->value = 'providers/[node:title]';
+  $export['pathauto_node_provider_pattern'] = $strongarm;
+
   return $export;
 }
