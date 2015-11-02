@@ -737,7 +737,9 @@ function crl_pp_resource_feat_views_default_views() {
 </div>
 <p>CRL\'s <a href="http://www.crl.edu/collections/collection-building/cooperative-resource-development/pp-program">Purchase Proposal program</a> is an annual cooperative collection development activity. Member libraries nominate and vote for CRL to purchase microform and hard copy collections that may be too costly or esoteric for individual institutions to acquire. CRL collections are developed by and for the member community, with input and participation of all voting members.</p>
 
-<p><strong>The FY2015 ballot is now closed</strong></p>
+<p><a href="https://www.crl.edu/sites/default/files/attachments/pages/FY16_PP_Ballot_Description.pdf">Click here</a> for the pdf containing ballot information.</p>
+
+<p><strong>Voting is open until November 20th, 2015</strong></p>
 
 <div id="ballot"></div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
@@ -747,7 +749,8 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = '<hr />';
+  $handler->display->display_options['empty']['area']['content'] = '<hr />
+<p>The Purchase Proposal Ballot is only available for logged-in CRL Members.</p>';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
   $handler->display->display_options['path'] = 'pp';
   $handler->display->display_options['menu']['type'] = 'normal';
