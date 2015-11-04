@@ -603,6 +603,16 @@ function crl_resource_block_info() {
     'info' => t('CRL Resource Summary'),
     'cache' => DRUPAL_NO_CACHE,
   );
+  // The resource suggest blocks offers a common hook for resource suggestions.
+  $blocks['crl_resource_suggest'] = array(
+    'info' => t('CRL Resource Suggest'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // Also offer a collapsed version of the resource suggestion block.
+  $blocks['crl_resource_suggest_collapsed'] = array(
+    'info' => t('CRL Resource Suggest (Collapsed)'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
   return $blocks;
 }
 

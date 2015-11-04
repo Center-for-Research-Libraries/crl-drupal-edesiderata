@@ -31,17 +31,6 @@ class CrlHelpersBlocks {
       // only apply to resource lists.
       $extra = array();
       if (drupal_match_path(current_path(), 'resources/*')) {
-        // Add the suggest new resource block as a collapsed option.
-        // @todo Encapsulate this as a modular resource-specific method that's
-        // independent of the core block module.
-        $block_suggest = module_invoke('block', 'block_view', '12');
-        $extra['suggest'] = array(
-          '#theme' => 'fieldset',
-          '#attributes' => array('class' => array('collapsible', 'collapsed')),
-          '#title' => t('Suggest a New Resource'),
-          '#description' => '',
-          '#children' => $block_suggest['content'],
-        );
         // Integration with the crl_mydes_feat module to inject a save this
         // search option into the breadcrumb block.
         if (module_exists('crl_mydes_feat')) {

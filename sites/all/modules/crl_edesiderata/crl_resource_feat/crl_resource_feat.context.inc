@@ -68,9 +68,9 @@ function crl_resource_feat_context_default_contexts() {
           'region' => 'sidebar_first',
           'weight' => '-6',
         ),
-        'block-12' => array(
-          'module' => 'block',
-          'delta' => '12',
+        'crl_resource-crl_resource_suggest' => array(
+          'module' => 'crl_resource',
+          'delta' => 'crl_resource_suggest',
           'region' => 'sidebar_first',
           'weight' => '-5',
         ),
@@ -86,11 +86,17 @@ function crl_resource_feat_context_default_contexts() {
           'region' => 'preface_first',
           'weight' => '-9',
         ),
+        'crl_resource-crl_resource_suggest_collapsed' => array(
+          'module' => 'crl_resource',
+          'delta' => 'crl_resource_suggest_collapsed',
+          'region' => 'preface_first',
+          'weight' => '-8',
+        ),
         'delta_blocks-tabs' => array(
           'module' => 'delta_blocks',
           'delta' => 'tabs',
           'region' => 'preface_first',
-          'weight' => '-8',
+          'weight' => '-7',
         ),
       ),
     ),
