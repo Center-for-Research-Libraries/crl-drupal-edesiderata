@@ -89,23 +89,6 @@ function crl_resource_node_view($node, $view_mode, $langcode) {
 
 
 /**
- * Implements hook_node_view_alter().
- *
- * Add custom show/hide display logic on resource nodes. This fires when a node
- * is built even if its embedded with in another one (or a view). This also
- * takes place and the END of the rendering flow so this is our last chance to
- * manipulate things before themeing.
- */
-function crl_resource_node_view_alter(&$build) {
-  if ($build['#bundle'] == 'resource') {
-    if (empty($build['field_resource_all_jisc_details'][0]['#markup'])) {
-      unset($build['field_resource_all_jisc_details']);
-    }
-  }
-}
-
-
-/**
  * Implements hook_page_build().
  */
 function crl_resource_page_build(&$page) {
