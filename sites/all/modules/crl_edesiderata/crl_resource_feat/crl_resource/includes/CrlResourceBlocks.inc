@@ -56,7 +56,7 @@ class CrlResourceBlocks {
     $block = array(
       'subject' => t('Suggest a New Resource'),
       'content' => array(
-        '#markup' => '<p>' . t('Interested in a resource that you don\'t see listed? Please submit a suggestion for inclusion.') . '</p>' . l('<button>Suggest resources</button>', 'eform/submit/resource-suggestion', array('html' => TRUE)),
+        '#markup' => '<p>' . t('Interested in a resource that you don\'t see listed? Please submit a suggestion for inclusion.') . '</p>' . l('<button>View & Submit Suggestions</button>', 'resources/suggestions', array('html' => TRUE)),
       ),
     );
     return $block;

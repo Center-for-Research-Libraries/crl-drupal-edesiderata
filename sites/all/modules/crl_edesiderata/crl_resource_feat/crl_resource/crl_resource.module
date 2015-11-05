@@ -112,6 +112,21 @@ function crl_resource_page_build(&$page) {
 
 
 /**
+ * Implements hook_menu().
+ */
+function crl_resource_menu() {
+  // Menu item for the resource suggestion summary page.
+  $items['resources/suggestions'] = array(
+    'title' => 'Resource Suggestions',
+    'description' => 'Resource suggestions summary page.',
+    'page callback' => 'crl_resource_suggest_page',
+    'file' => 'includes/crl_resource_suggest.page.inc',
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+
+/**
  * Implements hook_theme().
  */
 function crl_resource_theme() {
