@@ -86,12 +86,6 @@ function crl_resource_feat_context_default_contexts() {
           'region' => 'preface_first',
           'weight' => '-9',
         ),
-        'crl_resource-crl_resource_suggest_collapsed' => array(
-          'module' => 'crl_resource',
-          'delta' => 'crl_resource_suggest_collapsed',
-          'region' => 'preface_first',
-          'weight' => '-8',
-        ),
         'delta_blocks-tabs' => array(
           'module' => 'delta_blocks',
           'delta' => 'tabs',

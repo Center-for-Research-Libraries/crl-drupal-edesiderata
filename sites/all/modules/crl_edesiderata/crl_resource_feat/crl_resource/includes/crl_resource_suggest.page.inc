@@ -21,7 +21,7 @@ function crl_resource_suggest_page() {
     }
   }
   else {
-    $text .= l('<button>Suggest Resource</button>', 'eform/submit/resource-suggestion', array('html' => TRUE));
+    $text .= l('<button>+&nbsp;&nbsp;' . t('Suggest New Resource') . '</button>', 'eform/submit/resource-suggestion', array('html' => TRUE));
   }
   return $text;
 }

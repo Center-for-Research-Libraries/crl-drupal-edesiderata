@@ -50,7 +50,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = '<p><strong>No results found. Please consider refining your search and filter criteria.</strong></p>
 
-<p>If your permissions allow, you may also <a href="/node/42">suggest a new resource</a> for inclusion in the resource lists.</p>';
+<p>Interested in a resource that you don\'t see listed? Please consider submitting a new <a href="/resources/suggestions">resource suggestion</a>.</p>';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
   /* Relationship: Indexed Node: Provider */
   $handler->display->display_options['relationships']['field_provider']['id'] = 'field_provider';
@@ -348,11 +348,16 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['relationships']['flag_content_rel']['required'] = 0;
   $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'resource_suggestion_convert';
   $handler->display->display_options['relationships']['flag_content_rel']['user_scope'] = 'any';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_resource_reference_target_id']['id'] = 'field_resource_reference_target_id';
+  $handler->display->display_options['relationships']['field_resource_reference_target_id']['table'] = 'field_data_field_resource_reference';
+  $handler->display->display_options['relationships']['field_resource_reference_target_id']['field'] = 'field_resource_reference_target_id';
   /* Field: Field: Sorting Title */
   $handler->display->display_options['fields']['field_title_sort']['id'] = 'field_title_sort';
   $handler->display->display_options['fields']['field_title_sort']['table'] = 'field_data_field_title_sort';
   $handler->display->display_options['fields']['field_title_sort']['field'] = 'field_title_sort';
-  $handler->display->display_options['fields']['field_title_sort']['label'] = 'Title';
+  $handler->display->display_options['fields']['field_title_sort']['label'] = 'Suggested Title';
+  $handler->display->display_options['fields']['field_title_sort']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_title_sort']['alter']['text'] = '[field_title_sort], [field_resource_provider_text]';
   $handler->display->display_options['fields']['field_title_sort']['element_type'] = 'strong';
   $handler->display->display_options['fields']['field_title_sort']['element_label_colon'] = FALSE;
@@ -360,8 +365,27 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_resource_provider_text']['id'] = 'field_resource_provider_text';
   $handler->display->display_options['fields']['field_resource_provider_text']['table'] = 'field_data_field_resource_provider_text';
   $handler->display->display_options['fields']['field_resource_provider_text']['field'] = 'field_resource_provider_text';
-  $handler->display->display_options['fields']['field_resource_provider_text']['label'] = 'Provider/Publisher';
+  $handler->display->display_options['fields']['field_resource_provider_text']['label'] = 'Suggested Provider';
+  $handler->display->display_options['fields']['field_resource_provider_text']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_resource_provider_text']['element_label_colon'] = FALSE;
+  /* Field: Field: Related resource */
+  $handler->display->display_options['fields']['field_resource_reference']['id'] = 'field_resource_reference';
+  $handler->display->display_options['fields']['field_resource_reference']['table'] = 'field_data_field_resource_reference';
+  $handler->display->display_options['fields']['field_resource_reference']['field'] = 'field_resource_reference';
+  $handler->display->display_options['fields']['field_resource_reference']['label'] = 'Title';
+  $handler->display->display_options['fields']['field_resource_reference']['empty'] = '[field_title_sort]';
+  $handler->display->display_options['fields']['field_resource_reference']['settings'] = array(
+    'link' => 1,
+  );
+  /* Field: Field: Provider */
+  $handler->display->display_options['fields']['field_provider']['id'] = 'field_provider';
+  $handler->display->display_options['fields']['field_provider']['table'] = 'field_data_field_provider';
+  $handler->display->display_options['fields']['field_provider']['field'] = 'field_provider';
+  $handler->display->display_options['fields']['field_provider']['relationship'] = 'field_resource_reference_target_id';
+  $handler->display->display_options['fields']['field_provider']['empty'] = '[field_resource_provider_text]';
+  $handler->display->display_options['fields']['field_provider']['settings'] = array(
+    'link' => 1,
+  );
   /* Field: User: Institution */
   $handler->display->display_options['fields']['field_institution']['id'] = 'field_institution';
   $handler->display->display_options['fields']['field_institution']['table'] = 'field_data_field_institution';
@@ -388,14 +412,16 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['created']['date_format'] = 'short';
   $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
-  /* Field: Flags: Flag link */
-  $handler->display->display_options['fields']['ops']['id'] = 'ops';
-  $handler->display->display_options['fields']['ops']['table'] = 'flagging';
-  $handler->display->display_options['fields']['ops']['field'] = 'ops';
-  $handler->display->display_options['fields']['ops']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['fields']['ops']['label'] = 'Process';
-  $handler->display->display_options['fields']['ops']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['ops']['link_type'] = 'confirm';
+  /* Field: Flags: Flagged */
+  $handler->display->display_options['fields']['flagged']['id'] = 'flagged';
+  $handler->display->display_options['fields']['flagged']['table'] = 'flagging';
+  $handler->display->display_options['fields']['flagged']['field'] = 'flagged';
+  $handler->display->display_options['fields']['flagged']['relationship'] = 'flag_content_rel';
+  $handler->display->display_options['fields']['flagged']['label'] = 'Status';
+  $handler->display->display_options['fields']['flagged']['type'] = 'custom';
+  $handler->display->display_options['fields']['flagged']['type_custom_true'] = 'Accepted';
+  $handler->display->display_options['fields']['flagged']['type_custom_false'] = 'Pending';
+  $handler->display->display_options['fields']['flagged']['not'] = 0;
   /* Field: Entityform Submission: Link */
   $handler->display->display_options['fields']['link_entityform']['id'] = 'link_entityform';
   $handler->display->display_options['fields']['link_entityform']['table'] = 'entityform';
@@ -410,12 +436,6 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'resource_suggestion' => 'resource_suggestion',
   );
-  /* Filter criterion: Flags: Flagged */
-  $handler->display->display_options['filters']['flagged']['id'] = 'flagged';
-  $handler->display->display_options['filters']['flagged']['table'] = 'flagging';
-  $handler->display->display_options['filters']['flagged']['field'] = 'flagged';
-  $handler->display->display_options['filters']['flagged']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['filters']['flagged']['value'] = '0';
 
   /* Display: Block - Suggested */
   $handler = $view->new_display('block', 'Block - Suggested', 'block_1');
@@ -453,7 +473,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['content'] = '<p>You have suggested the following resources for inclusion in the A-Z index.</p>
-<p><a href="/eform/submit/resource-suggestion"><button>+ Suggest resource</button></a></p>';
+<p><a href="/eform/submit/resource-suggestion"><button>+&nbsp;&nbsp;Suggest New Resource</button></a></p>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   /* Footer: Global: Text area */
