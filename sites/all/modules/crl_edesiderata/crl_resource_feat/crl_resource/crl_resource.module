@@ -772,3 +772,55 @@ function crl_resource_resource_suggestion_entityform_submit($form, &$form_state)
   $lang = $form['field_title_sort']['#language'];
   $form_state['values']['field_title_sort'][$lang][0]['value'] = $form_state['values']['title'];
 }
+
+
+/**
+ * Implements hook_form_flag_confirm_alter().
+ */
+function crl_resource_form_flag_confirm_alter(&$form, &$form_state) {
+  // Add some conditional states logic to our resource suggestion flagging form.
+  if (isset($form['#flag']) && $form['#flag']->name == 'resource_suggestion_process') {
+    // State changes for "required" values also require custom validation logic
+    // so add custom validate handler.
+    $form['#validate'][] = 'crl_resource_form_resource_suggestion_process_validate';
+    $form['field_provider']['#states'] = array(
+      'visible' => array(
+        ':input[name^="field_resource_suggestion_status"]' => array('value' => 'yes'),
+      ),
+      'required' => array(
+        ':input[name^="field_resource_suggestion_status"]' => array('value' => 'yes'),
+      ),
+    );
+    $form['field_crl_processing_notes']['#states'] = array(
+      'visible' => array(
+        ':input[name^="field_resource_suggestion_status"]' => array('value' => 'no'),
+      ),
+      'required' => array(
+        ':input[name^="field_resource_suggestion_status"]' => array('value' => 'no'),
+      ),
+    );
+  }
+}
+
+
+/**
+ * Validation callback for resiurce suggestion flagging form.
+ * 
+ * Implementes custom validation rules that are driven by conditional show/hide
+ * logic in the form itself.
+ * 
+ * @see crl_resource_form_flag_confirm_alter()
+ */
+function crl_resource_form_resource_suggestion_process_validate($form, &$form_state) {
+  $action = $form_state['values']['field_resource_suggestion_status'][$form['field_resource_suggestion_status']['#language']][0];
+  $provider = $form_state['values']['field_provider'][$form['field_provider']['#language']][0];
+  $notes = $form_state['values']['field_crl_processing_notes'][$form['field_crl_processing_notes']['#language']][0];
+  // When accepting a suggestion the provider field is required.
+  if (isset($action['value']) && $action['value'] == 'yes' && empty($provider['target_id'])) {
+    form_set_error('field_provider', t('A provider value must be entered when accepting a suggestion.'));
+  }
+  // When rejecting a suggestion the notes field is required.
+  if (isset($action['value']) && $action['value'] == 'no' && empty($notes['value'])) {
+    form_set_error('field_crl_processing_notes', t('You must provide a comment if rejecting a suggestion.'));
+  }
+}
