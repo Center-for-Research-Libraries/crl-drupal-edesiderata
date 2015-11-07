@@ -783,6 +783,7 @@ function crl_resource_form_flag_confirm_alter(&$form, &$form_state) {
     // State changes for "required" values also require custom validation logic
     // so add custom validate handler.
     $form['#validate'][] = 'crl_resource_form_resource_suggestion_process_validate';
+    // Provider field should be visible/required when accepting.
     $form['field_provider']['#states'] = array(
       'visible' => array(
         ':input[name^="field_resource_suggestion_status"]' => array('value' => 'yes'),
@@ -791,6 +792,7 @@ function crl_resource_form_flag_confirm_alter(&$form, &$form_state) {
         ':input[name^="field_resource_suggestion_status"]' => array('value' => 'yes'),
       ),
     );
+    // Notes field should be visible/required when rejecting.
     $form['field_crl_processing_notes']['#states'] = array(
       'visible' => array(
         ':input[name^="field_resource_suggestion_status"]' => array('value' => 'no'),
@@ -804,7 +806,7 @@ function crl_resource_form_flag_confirm_alter(&$form, &$form_state) {
 
 
 /**
- * Validation callback for resiurce suggestion flagging form.
+ * Validation callback for resource suggestion flagging form.
  * 
  * Implementes custom validation rules that are driven by conditional show/hide
  * logic in the form itself.
