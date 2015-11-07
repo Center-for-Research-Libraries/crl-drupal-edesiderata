@@ -614,7 +614,9 @@ function crl_resource_feat_field_group_info() {
     'weight' => '10',
     'children' => array(
       0 => 'field_resource_reference',
-      1 => 'flag_resource_suggestion_convert',
+      1 => 'flag_resource_suggestion_reject',
+      2 => 'flag_resource_suggestion_process',
+      3 => 'flag_resource_suggestion_convert',
     ),
     'format_type' => 'div',
     'format_settings' => array(

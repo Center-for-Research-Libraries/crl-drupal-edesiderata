@@ -220,12 +220,6 @@ function crl_resource_feat_context_default_contexts() {
           'region' => 'user_first',
           'weight' => '-10',
         ),
-        'views-resource_suggestions-block_2' => array(
-          'module' => 'views',
-          'delta' => 'resource_suggestions-block_2',
-          'region' => 'user_first',
-          'weight' => '-9',
-        ),
       ),
     ),
     'theme_html' => array(

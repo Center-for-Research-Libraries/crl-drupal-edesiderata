@@ -102,21 +102,21 @@ function crl_resource_feat_default_entityform_type() {
  */
 function crl_resource_feat_flag_default_flags() {
   $flags = array();
-  // Exported flag: "Resource Suggestion Convert".
-  $flags['resource_suggestion_convert'] = array(
+  // Exported flag: "Resource Suggestion Process".
+  $flags['resource_suggestion_process'] = array(
     'entity_type' => 'entityform',
-    'title' => 'Resource Suggestion Convert',
+    'title' => 'Resource Suggestion Process',
     'global' => 1,
     'types' => array(
       0 => 'resource_suggestion',
     ),
-    'flag_short' => 'Copy to new stub Resource',
-    'flag_long' => 'Copy the submission to a new stub Resource',
-    'flag_message' => 'The submission has been copied to a stub Resource. Please review and edit the node before publishing.',
-    'unflag_short' => 'Remove',
+    'flag_short' => 'Process this Resource Suggestion',
+    'flag_long' => 'Process (Accept or Reject) this Resource Suggestion',
+    'flag_message' => 'The submission has been processed',
+    'unflag_short' => 'Unprocess',
     'unflag_long' => 'This will not remove the converted Resource. ',
     'unflag_message' => 'Removed the flag',
-    'unflag_denied_text' => 'Converted',
+    'unflag_denied_text' => 'Processed',
     'link_type' => 'confirm',
     'weight' => 0,
     'show_in_links' => array(
@@ -133,13 +133,13 @@ function crl_resource_feat_flag_default_flags() {
     'show_on_form' => 0,
     'access_author' => '',
     'show_contextual_link' => 0,
-    'flag_confirmation' => 'Are you sure you want to convert this submission to a Stub Resource?',
+    'flag_confirmation' => 'Process this Resource Suggestion',
     'unflag_confirmation' => 'This is active for test purpose only!!!',
+    'api_version' => 3,
     'module' => 'crl_resource_feat',
     'locked' => array(
       0 => 'name',
     ),
-    'api_version' => 3,
   );
   return $flags;
 

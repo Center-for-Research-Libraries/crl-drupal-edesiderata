@@ -14,7 +14,10 @@ function crl_resource_feat_default_rules_configuration() {
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "REQUIRES" : [ "rules", "flag" ],
-      "ON" : { "flag_flagged_resource_suggestion_convert" : [] },
+      "ON" : {
+        "flag_flagged_resource_suggestion_convert" : [],
+        "flag_flagged_resource_suggestion_process" : []
+      },
       "IF" : [
         { "entity_is_of_bundle" : {
             "entity" : [ "flagged-entityform" ],
@@ -22,7 +25,17 @@ function crl_resource_feat_default_rules_configuration() {
             "bundle" : { "value" : { "resource_suggestion" : "resource_suggestion" } }
           }
         },
-        { "entity_has_field" : { "entity" : [ "flagging" ], "field" : "field_provider" } }
+        { "entity_has_field" : { "entity" : [ "flagging" ], "field" : "field_provider" } },
+        { "entity_has_field" : {
+            "entity" : [ "flagging" ],
+            "field" : "field_resource_suggestion_status"
+          }
+        },
+        { "data_is" : {
+            "data" : [ "flagging:field-resource-suggestion-status" ],
+            "value" : "yes"
+          }
+        }
       ],
       "DO" : [
         { "entity_create" : {
@@ -72,6 +85,7 @@ function crl_resource_feat_default_rules_configuration() {
             "value" : [ "entity-created" ]
           }
         },
+        { "drupal_message" : { "message" : "The resource suggestion has been converted to a stub \\u003Cstrong\\u003Eand is currently unpublished\\u003C\\/strong\\u003E. Please review the entry and make any needed edits before publishing." } },
         { "redirect" : { "url" : [ "entity-created:edit-url" ] } }
       ]
     }

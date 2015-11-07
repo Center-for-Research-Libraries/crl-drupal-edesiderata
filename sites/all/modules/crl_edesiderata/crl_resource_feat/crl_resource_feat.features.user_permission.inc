@@ -30,9 +30,9 @@ function crl_resource_feat_user_default_permissions() {
     'module' => 'tablefield',
   );
 
-  // Exported permission: 'flag resource_suggestion_convert'.
-  $permissions['flag resource_suggestion_convert'] = array(
-    'name' => 'flag resource_suggestion_convert',
+  // Exported permission: 'flag resource_suggestion_process'.
+  $permissions['flag resource_suggestion_process'] = array(
+    'name' => 'flag resource_suggestion_process',
     'roles' => array(
       'administrator' => 'administrator',
       'editor basic' => 'editor basic',
@@ -52,9 +52,9 @@ function crl_resource_feat_user_default_permissions() {
     'module' => 'tablefield',
   );
 
-  // Exported permission: 'unflag resource_suggestion_convert'.
-  $permissions['unflag resource_suggestion_convert'] = array(
-    'name' => 'unflag resource_suggestion_convert',
+  // Exported permission: 'unflag resource_suggestion_process'.
+  $permissions['unflag resource_suggestion_process'] = array(
+    'name' => 'unflag resource_suggestion_process',
     'roles' => array(
       'administrator' => 'administrator',
     ),

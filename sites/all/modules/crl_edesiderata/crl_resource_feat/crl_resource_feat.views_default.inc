@@ -275,11 +275,14 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['style_options']['columns'] = array(
     'field_title_sort' => 'field_title_sort',
     'field_resource_provider_text' => 'field_resource_provider_text',
+    'field_resource_reference' => 'field_resource_reference',
+    'field_provider' => 'field_provider',
     'field_institution' => 'field_institution',
     'name' => 'name',
     'created' => 'created',
+    'field_resource_suggestion_status' => 'field_resource_suggestion_status',
+    'field_crl_processing_notes' => 'field_crl_processing_notes',
     'link_entityform' => 'link_entityform',
-    'ops' => 'ops',
   );
   $handler->display->display_options['style_options']['default'] = 'created';
   $handler->display->display_options['style_options']['info'] = array(
@@ -291,6 +294,20 @@ function crl_resource_feat_views_default_views() {
       'empty_column' => 0,
     ),
     'field_resource_provider_text' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_resource_reference' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_provider' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -318,12 +335,21 @@ function crl_resource_feat_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'link_entityform' => array(
+    'field_resource_suggestion_status' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
-      'empty_column' => 1,
+      'empty_column' => 0,
     ),
-    'ops' => array(
+    'field_crl_processing_notes' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'link_entityform' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 1,
@@ -341,17 +367,18 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['relationships']['user']['id'] = 'user';
   $handler->display->display_options['relationships']['user']['table'] = 'entityform';
   $handler->display->display_options['relationships']['user']['field'] = 'user';
-  /* Relationship: Flags: resource_suggestion_convert */
-  $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
-  $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'entityform';
-  $handler->display->display_options['relationships']['flag_content_rel']['field'] = 'flag_content_rel';
-  $handler->display->display_options['relationships']['flag_content_rel']['required'] = 0;
-  $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'resource_suggestion_convert';
-  $handler->display->display_options['relationships']['flag_content_rel']['user_scope'] = 'any';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_resource_reference_target_id']['id'] = 'field_resource_reference_target_id';
   $handler->display->display_options['relationships']['field_resource_reference_target_id']['table'] = 'field_data_field_resource_reference';
   $handler->display->display_options['relationships']['field_resource_reference_target_id']['field'] = 'field_resource_reference_target_id';
+  /* Relationship: Flags: resource_suggestion_process */
+  $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
+  $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'entityform';
+  $handler->display->display_options['relationships']['flag_content_rel']['field'] = 'flag_content_rel';
+  $handler->display->display_options['relationships']['flag_content_rel']['ui_name'] = 'Flag - process';
+  $handler->display->display_options['relationships']['flag_content_rel']['required'] = 0;
+  $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'resource_suggestion_process';
+  $handler->display->display_options['relationships']['flag_content_rel']['user_scope'] = 'any';
   /* Field: Field: Sorting Title */
   $handler->display->display_options['fields']['field_title_sort']['id'] = 'field_title_sort';
   $handler->display->display_options['fields']['field_title_sort']['table'] = 'field_data_field_title_sort';
@@ -386,17 +413,6 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_provider']['settings'] = array(
     'link' => 1,
   );
-  /* Field: User: Institution */
-  $handler->display->display_options['fields']['field_institution']['id'] = 'field_institution';
-  $handler->display->display_options['fields']['field_institution']['table'] = 'field_data_field_institution';
-  $handler->display->display_options['fields']['field_institution']['field'] = 'field_institution';
-  $handler->display->display_options['fields']['field_institution']['relationship'] = 'user';
-  $handler->display->display_options['fields']['field_institution']['label'] = '';
-  $handler->display->display_options['fields']['field_institution']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_institution']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_institution']['alter']['text'] = '([field_institution])';
-  $handler->display->display_options['fields']['field_institution']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_institution']['hide_empty'] = TRUE;
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
@@ -412,16 +428,19 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['created']['date_format'] = 'short';
   $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
-  /* Field: Flags: Flagged */
-  $handler->display->display_options['fields']['flagged']['id'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['table'] = 'flagging';
-  $handler->display->display_options['fields']['flagged']['field'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['fields']['flagged']['label'] = 'Status';
-  $handler->display->display_options['fields']['flagged']['type'] = 'custom';
-  $handler->display->display_options['fields']['flagged']['type_custom_true'] = 'Accepted';
-  $handler->display->display_options['fields']['flagged']['type_custom_false'] = 'Pending';
-  $handler->display->display_options['fields']['flagged']['not'] = 0;
+  /* Field: Flagging: Action */
+  $handler->display->display_options['fields']['field_resource_suggestion_status']['id'] = 'field_resource_suggestion_status';
+  $handler->display->display_options['fields']['field_resource_suggestion_status']['table'] = 'field_data_field_resource_suggestion_status';
+  $handler->display->display_options['fields']['field_resource_suggestion_status']['field'] = 'field_resource_suggestion_status';
+  $handler->display->display_options['fields']['field_resource_suggestion_status']['relationship'] = 'flag_content_rel';
+  $handler->display->display_options['fields']['field_resource_suggestion_status']['label'] = 'Added to Index';
+  $handler->display->display_options['fields']['field_resource_suggestion_status']['empty'] = 'Review Pending';
+  $handler->display->display_options['fields']['field_resource_suggestion_status']['type'] = 'list_key';
+  /* Field: Flagging: CRL Comment */
+  $handler->display->display_options['fields']['field_crl_processing_notes']['id'] = 'field_crl_processing_notes';
+  $handler->display->display_options['fields']['field_crl_processing_notes']['table'] = 'field_data_field_crl_processing_notes';
+  $handler->display->display_options['fields']['field_crl_processing_notes']['field'] = 'field_crl_processing_notes';
+  $handler->display->display_options['fields']['field_crl_processing_notes']['relationship'] = 'flag_content_rel';
   /* Field: Entityform Submission: Link */
   $handler->display->display_options['fields']['link_entityform']['id'] = 'link_entityform';
   $handler->display->display_options['fields']['link_entityform']['table'] = 'entityform';
@@ -445,13 +464,6 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['disable_sql_rewrite'] = TRUE;
   $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<p>The following suggestions have been submitted and are pending review for inclusion.</p>';
-  $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   $handler->display->display_options['defaults']['empty'] = FALSE;
   /* No results behavior: Global: Text area */
@@ -493,64 +505,6 @@ function crl_resource_feat_views_default_views() {
 <p><a href="/eform/submit/resource-suggestion"><button>+ Suggest resource</button></a></p>
 ';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Field: Sorting Title */
-  $handler->display->display_options['fields']['field_title_sort']['id'] = 'field_title_sort';
-  $handler->display->display_options['fields']['field_title_sort']['table'] = 'field_data_field_title_sort';
-  $handler->display->display_options['fields']['field_title_sort']['field'] = 'field_title_sort';
-  $handler->display->display_options['fields']['field_title_sort']['label'] = 'Title';
-  $handler->display->display_options['fields']['field_title_sort']['alter']['text'] = '[field_title_sort], [field_resource_provider_text]';
-  $handler->display->display_options['fields']['field_title_sort']['element_type'] = 'strong';
-  $handler->display->display_options['fields']['field_title_sort']['element_label_colon'] = FALSE;
-  /* Field: Entityform Submission: Resource Provider/Publisher */
-  $handler->display->display_options['fields']['field_resource_provider_text']['id'] = 'field_resource_provider_text';
-  $handler->display->display_options['fields']['field_resource_provider_text']['table'] = 'field_data_field_resource_provider_text';
-  $handler->display->display_options['fields']['field_resource_provider_text']['field'] = 'field_resource_provider_text';
-  $handler->display->display_options['fields']['field_resource_provider_text']['label'] = 'Provider/Publisher';
-  $handler->display->display_options['fields']['field_resource_provider_text']['element_label_colon'] = FALSE;
-  /* Field: User: Institution */
-  $handler->display->display_options['fields']['field_institution']['id'] = 'field_institution';
-  $handler->display->display_options['fields']['field_institution']['table'] = 'field_data_field_institution';
-  $handler->display->display_options['fields']['field_institution']['field'] = 'field_institution';
-  $handler->display->display_options['fields']['field_institution']['relationship'] = 'user';
-  $handler->display->display_options['fields']['field_institution']['label'] = '';
-  $handler->display->display_options['fields']['field_institution']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_institution']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_institution']['alter']['text'] = '([field_institution])';
-  $handler->display->display_options['fields']['field_institution']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_institution']['hide_empty'] = TRUE;
-  /* Field: User: Name */
-  $handler->display->display_options['fields']['name']['id'] = 'name';
-  $handler->display->display_options['fields']['name']['table'] = 'users';
-  $handler->display->display_options['fields']['name']['field'] = 'name';
-  $handler->display->display_options['fields']['name']['relationship'] = 'user';
-  $handler->display->display_options['fields']['name']['label'] = 'Submitted by';
-  $handler->display->display_options['fields']['name']['alter']['text'] = '[name] [field_institution]';
-  /* Field: Entityform Submission: Date submitted */
-  $handler->display->display_options['fields']['created']['id'] = 'created';
-  $handler->display->display_options['fields']['created']['table'] = 'entityform';
-  $handler->display->display_options['fields']['created']['field'] = 'created';
-  $handler->display->display_options['fields']['created']['label'] = 'Submitted';
-  $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['created']['date_format'] = 'short';
-  $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
-  /* Field: Flags: Flagged */
-  $handler->display->display_options['fields']['flagged']['id'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['table'] = 'flagging';
-  $handler->display->display_options['fields']['flagged']['field'] = 'flagged';
-  $handler->display->display_options['fields']['flagged']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['fields']['flagged']['label'] = 'Accepted';
-  $handler->display->display_options['fields']['flagged']['type'] = 'custom';
-  $handler->display->display_options['fields']['flagged']['type_custom_true'] = 'Yes';
-  $handler->display->display_options['fields']['flagged']['type_custom_false'] = 'Not yet';
-  $handler->display->display_options['fields']['flagged']['not'] = 0;
-  /* Field: Entityform Submission: Link */
-  $handler->display->display_options['fields']['link_entityform']['id'] = 'link_entityform';
-  $handler->display->display_options['fields']['link_entityform']['table'] = 'entityform';
-  $handler->display->display_options['fields']['link_entityform']['field'] = 'link_entityform';
-  $handler->display->display_options['fields']['link_entityform']['label'] = '';
-  $handler->display->display_options['fields']['link_entityform']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['link_entityform']['text'] = 'view';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Entityform Submission: Entityform Type */
@@ -566,182 +520,6 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
   $handler->display->display_options['filters']['uid_current']['relationship'] = 'user';
   $handler->display->display_options['filters']['uid_current']['value'] = '1';
-
-  /* Display: Block - Recent Conversions */
-  $handler = $view->new_display('block', 'Block - Recent Conversions', 'block_2');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Recently Accepted';
-  $handler->display->display_options['defaults']['query'] = FALSE;
-  $handler->display->display_options['query']['type'] = 'views_query';
-  $handler->display->display_options['query']['options']['disable_sql_rewrite'] = TRUE;
-  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
-  $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['columns'] = array(
-    'title' => 'title',
-    'field_provider' => 'field_provider',
-    'field_institution' => 'field_institution',
-    'name' => 'name',
-    'created' => 'created',
-    'timestamp' => 'timestamp',
-  );
-  $handler->display->display_options['style_options']['default'] = 'timestamp';
-  $handler->display->display_options['style_options']['info'] = array(
-    'title' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_provider' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_institution' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'name' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'created' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'desc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'timestamp' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'desc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-  );
-  $handler->display->display_options['defaults']['style_options'] = FALSE;
-  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
-  $handler->display->display_options['defaults']['row_options'] = FALSE;
-  $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<p>The following resources have recently been accepted into the A-Z index based on user suggestions.</p>';
-  $handler->display->display_options['header']['area']['format'] = 'full_html';
-  $handler->display->display_options['defaults']['empty'] = FALSE;
-  /* No results behavior: Global: Text area */
-  $handler->display->display_options['empty']['area']['id'] = 'area';
-  $handler->display->display_options['empty']['area']['table'] = 'views';
-  $handler->display->display_options['empty']['area']['field'] = 'area';
-  $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = '<p>No items recently accepted.</p>';
-  $handler->display->display_options['empty']['area']['format'] = 'full_html';
-  $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Relationship: Entityform Submission: User uid */
-  $handler->display->display_options['relationships']['user']['id'] = 'user';
-  $handler->display->display_options['relationships']['user']['table'] = 'entityform';
-  $handler->display->display_options['relationships']['user']['field'] = 'user';
-  /* Relationship: Flags: resource_suggestion_convert */
-  $handler->display->display_options['relationships']['flag_content_rel']['id'] = 'flag_content_rel';
-  $handler->display->display_options['relationships']['flag_content_rel']['table'] = 'entityform';
-  $handler->display->display_options['relationships']['flag_content_rel']['field'] = 'flag_content_rel';
-  $handler->display->display_options['relationships']['flag_content_rel']['required'] = 0;
-  $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'resource_suggestion_convert';
-  $handler->display->display_options['relationships']['flag_content_rel']['user_scope'] = 'any';
-  /* Relationship: Entity Reference: Referenced Entity */
-  $handler->display->display_options['relationships']['field_resource_reference_target_id']['id'] = 'field_resource_reference_target_id';
-  $handler->display->display_options['relationships']['field_resource_reference_target_id']['table'] = 'field_data_field_resource_reference';
-  $handler->display->display_options['relationships']['field_resource_reference_target_id']['field'] = 'field_resource_reference_target_id';
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['relationship'] = 'field_resource_reference_target_id';
-  $handler->display->display_options['fields']['title']['element_type'] = 'strong';
-  /* Field: Field: Provider */
-  $handler->display->display_options['fields']['field_provider']['id'] = 'field_provider';
-  $handler->display->display_options['fields']['field_provider']['table'] = 'field_data_field_provider';
-  $handler->display->display_options['fields']['field_provider']['field'] = 'field_provider';
-  $handler->display->display_options['fields']['field_provider']['relationship'] = 'field_resource_reference_target_id';
-  $handler->display->display_options['fields']['field_provider']['settings'] = array(
-    'link' => 1,
-  );
-  /* Field: User: Institution */
-  $handler->display->display_options['fields']['field_institution']['id'] = 'field_institution';
-  $handler->display->display_options['fields']['field_institution']['table'] = 'field_data_field_institution';
-  $handler->display->display_options['fields']['field_institution']['field'] = 'field_institution';
-  $handler->display->display_options['fields']['field_institution']['relationship'] = 'user';
-  $handler->display->display_options['fields']['field_institution']['label'] = '';
-  $handler->display->display_options['fields']['field_institution']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_institution']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_institution']['alter']['text'] = '([field_institution])';
-  $handler->display->display_options['fields']['field_institution']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_institution']['hide_empty'] = TRUE;
-  /* Field: User: Name */
-  $handler->display->display_options['fields']['name']['id'] = 'name';
-  $handler->display->display_options['fields']['name']['table'] = 'users';
-  $handler->display->display_options['fields']['name']['field'] = 'name';
-  $handler->display->display_options['fields']['name']['relationship'] = 'user';
-  $handler->display->display_options['fields']['name']['label'] = 'Submitted by';
-  $handler->display->display_options['fields']['name']['alter']['text'] = '[name] [field_institution]';
-  /* Field: Entityform Submission: Date submitted */
-  $handler->display->display_options['fields']['created']['id'] = 'created';
-  $handler->display->display_options['fields']['created']['table'] = 'entityform';
-  $handler->display->display_options['fields']['created']['field'] = 'created';
-  $handler->display->display_options['fields']['created']['label'] = 'Submitted';
-  $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['created']['date_format'] = 'short';
-  $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
-  /* Field: Flags: Flagged time */
-  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['table'] = 'flagging';
-  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['fields']['timestamp']['label'] = 'Accepted';
-  $handler->display->display_options['fields']['timestamp']['date_format'] = 'short';
-  $handler->display->display_options['fields']['timestamp']['second_date_format'] = 'long';
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Entityform Submission: Entityform Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'entityform';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'resource_suggestion' => 'resource_suggestion',
-  );
-  /* Filter criterion: Flags: Flagged */
-  $handler->display->display_options['filters']['flagged']['id'] = 'flagged';
-  $handler->display->display_options['filters']['flagged']['table'] = 'flagging';
-  $handler->display->display_options['filters']['flagged']['field'] = 'flagged';
-  $handler->display->display_options['filters']['flagged']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['filters']['flagged']['value'] = '1';
-  /* Filter criterion: Flags: Flagged time */
-  $handler->display->display_options['filters']['timestamp']['id'] = 'timestamp';
-  $handler->display->display_options['filters']['timestamp']['table'] = 'flagging';
-  $handler->display->display_options['filters']['timestamp']['field'] = 'timestamp';
-  $handler->display->display_options['filters']['timestamp']['relationship'] = 'flag_content_rel';
-  $handler->display->display_options['filters']['timestamp']['operator'] = '>=';
-  $handler->display->display_options['filters']['timestamp']['value']['value'] = '- 1 year';
-  $handler->display->display_options['filters']['timestamp']['value']['type'] = 'offset';
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['relationship'] = 'field_resource_reference_target_id';
-  $handler->display->display_options['filters']['status']['value'] = '1';
   $export['resource_suggestions'] = $view;
 
   $view = new view();
