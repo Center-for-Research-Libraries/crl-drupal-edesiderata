@@ -362,9 +362,44 @@ function crl_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'flagging-resource_suggestion_convert-field_provider'.
-  $field_instances['flagging-resource_suggestion_convert-field_provider'] = array(
-    'bundle' => 'resource_suggestion_convert',
+  // 'flagging-resource_suggestion_process-field_crl_processing_notes'.
+  $field_instances['flagging-resource_suggestion_process-field_crl_processing_notes'] = array(
+    'bundle' => 'resource_suggestion_process',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Provide a <strong>very brief</strong> explanation about why this suggestion was rejected. <strong>These notes will be shown publicly</strong>.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'flagging',
+    'field_name' => 'field_crl_processing_notes',
+    'label' => 'CRL Comment',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'flagging-resource_suggestion_process-field_provider'.
+  $field_instances['flagging-resource_suggestion_process-field_provider'] = array(
+    'bundle' => 'resource_suggestion_process',
     'default_value' => NULL,
     'deleted' => 0,
     'description' => 'Select the provider that this resource should be associated with.<br/><strong class="important">If the provider value does not yet exist in the system please create it before continuing</strong>.',
@@ -382,6 +417,38 @@ function crl_resource_feat_field_default_field_instances() {
     'entity_type' => 'flagging',
     'field_name' => 'field_provider',
     'label' => 'Provider',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'flagging-resource_suggestion_process-field_resource_suggestion_status'.
+  $field_instances['flagging-resource_suggestion_process-field_resource_suggestion_status'] = array(
+    'bundle' => 'resource_suggestion_process',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => 'flagging',
+    'field_name' => 'field_resource_suggestion_status',
+    'label' => 'Action',
     'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -391,7 +458,7 @@ function crl_resource_feat_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 2,
+      'weight' => 0,
     ),
   );
 
@@ -2332,9 +2399,11 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   // Translatables
   // Included for use with string extractors like potx.
   t('Abstract');
+  t('Action');
   t('Additional Reviews in Other Sources');
   t('Appendix Notes');
   t('Attachments');
+  t('CRL Comment');
   t('Collection Content');
   t('Comment');
   t('Comment Privacy Setting');
@@ -2363,6 +2432,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('Platform and user interface');
   t('Please select all that apply.');
   t('Please tell us your motivation for including this resource in the eDesiderata listings along with any additional comments you may have.');
+  t('Provide a <strong>very brief</strong> explanation about why this suggestion was rejected. <strong>These notes will be shown publicly</strong>.');
   t('Provider');
   t('Provider Notes');
   t('Resource Provider/Publisher');
