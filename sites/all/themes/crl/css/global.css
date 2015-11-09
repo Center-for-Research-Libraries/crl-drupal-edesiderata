@@ -1448,7 +1448,8 @@ form.shared-vote-input-form .form-notes {
 .message-icon-small.resource_new_alert,
 .message-icon-small.resource_expires_soon,
 .message-icon-small.resource_status_update,
-.message-icon-small.resource_new_review {
+.message-icon-small.resource_new_review,
+.message-icon-small.resource_suggested {
   background-position: -350px -450px;
 }
 /* Other misc MyDes icons */
