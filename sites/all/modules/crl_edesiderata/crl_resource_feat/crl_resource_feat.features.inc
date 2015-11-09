@@ -51,7 +51,7 @@ function crl_resource_feat_default_entityform_type() {
       "preview_page" : 0,
       "submission_page_title" : "Thank you for your submission",
       "submission_text" : {
-        "value" : "\\u003Cp\\u003EThe details of your submission will be reviewed by CRL staff.\\u003C\\/p\\u003E\\r\\n\\r\\n\\u003Cp\\u003E\\u003Ca href=\\u0022\\/resources\\/suggestions\\u0022\\u003EBrowse all resource suggestions\\u003C\\/a\\u003E\\u003C\\/p\\u003E\\r\\n",
+        "value" : "\\u003Cp\\u003ECRL staff will review this submission and contact you if needed. You can monitor the status of this submission at any time in \\u003Ca href=\\u0022\\/me\\u0022\\u003EmeDesiderata\\u003C\\/a\\u003E and can view other member submissions on the \\u003Ca href=\\u0022\\/resources\\/suggestions\\u0022\\u003Eresource suggestion summary page\\u003C\\/a\\u003E.\\u003C\\/p\\u003E\\r\\n",
         "format" : "full_html"
       },
       "submission_show_submitted" : 0,

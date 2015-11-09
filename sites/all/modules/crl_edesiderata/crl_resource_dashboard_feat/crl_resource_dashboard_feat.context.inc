@@ -32,6 +32,12 @@ function crl_resource_dashboard_feat_context_default_contexts() {
           'region' => 'user_first',
           'weight' => '-10',
         ),
+        'crl_resource-crl_resource_suggest' => array(
+          'module' => 'crl_resource',
+          'delta' => 'crl_resource_suggest',
+          'region' => 'user_first',
+          'weight' => '-9',
+        ),
         'crl_resource_dashboard_feat-crl_resource_dashboard_feat_top' => array(
           'module' => 'crl_resource_dashboard_feat',
           'delta' => 'crl_resource_dashboard_feat_top',
