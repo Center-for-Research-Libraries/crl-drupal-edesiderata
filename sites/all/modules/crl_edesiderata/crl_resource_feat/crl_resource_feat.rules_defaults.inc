@@ -13,11 +13,8 @@ function crl_resource_feat_default_rules_configuration() {
       "LABEL" : "Convert to Resource",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "REQUIRES" : [ "rules", "flag" ],
-      "ON" : {
-        "flag_flagged_resource_suggestion_convert" : [],
-        "flag_flagged_resource_suggestion_process" : []
-      },
+      "REQUIRES" : [ "rules", "flag", "mimemail" ],
+      "ON" : { "flag_flagged_resource_suggestion_process" : [] },
       "IF" : [
         { "entity_is_of_bundle" : {
             "entity" : [ "flagged-entityform" ],
@@ -85,7 +82,37 @@ function crl_resource_feat_default_rules_configuration() {
             "value" : [ "entity-created" ]
           }
         },
-        { "drupal_message" : { "message" : "The resource suggestion has been converted to a stub \\u003Cstrong\\u003Eand is currently unpublished\\u003C\\/strong\\u003E. Please review the entry and make any needed edits before publishing." } },
+        { "flag_flagnode" : {
+            "flag" : "base_node_watch",
+            "node" : [ "entity-created" ],
+            "flagging_user" : [ "flagged-entityform:user" ],
+            "permission_check" : "0"
+          }
+        },
+        { "flag_flagnode" : {
+            "flag" : "email_node_watch",
+            "node" : [ "entity-created" ],
+            "flagging_user" : [ "flagged-entityform:user" ],
+            "permission_check" : "0"
+          }
+        },
+        { "mimemail" : {
+            "key" : "resource_suggest_converted",
+            "to" : [ "flagged-entityform:user:mail" ],
+            "from_name" : "Websystems",
+            "from_mail" : "[site:mail]",
+            "subject" : "[eDesiderata] Your suggested resource has been added to the site.",
+            "body" : "\\u003Cp\\u003EThe message is to inform you that the following eDesiderata resource has been created based on a suggestion that you submitted:\\u003C\\/p\\u003E\\r\\n\\r\\n\\u003Cp\\u003E\\u003Cstrong\\u003E\\u003Ca href=\\u0022[entity-created:url]\\u0022\\u003E[entity-created:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E\\u003C\\/p\\u003E\\r\\n\\r\\n\\u003Cp\\u003EThis resource has automatically been added to your watch list in \\u003Ca href=\\u0022\\/me\\u0022\\u003EmeDesiderata\\u003C\\/a\\u003E.\\u003C\\/p\\u003E",
+            "plaintext" : "The message is to inform you that the following eDesiderata resource has been created based on a suggestion that you submitted:\\r\\n\\r\\n[entity-created:title]\\r\\n\\r\\nThis resource has automatically been added to your watch list in meDesiderata",
+            "language" : [ "" ]
+          }
+        },
+        { "drupal_message" : { "message" : "The resource suggestion has been converted to a stub and the submitting user has been notified." } },
+        { "drupal_message" : {
+            "message" : "The new resource stub is currently \\u003Cstrong\\u003Eunpublished\\u003C\\/strong\\u003E. Please make any necessary edits and be sure to publish this resource once it is ready for public display.",
+            "type" : "warning"
+          }
+        },
         { "redirect" : { "url" : [ "entity-created:edit-url" ] } }
       ]
     }

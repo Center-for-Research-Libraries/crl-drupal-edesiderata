@@ -17,6 +17,7 @@ dependencies[] = file
 dependencies[] = fivestar
 dependencies[] = flag
 dependencies[] = list
+dependencies[] = mimemail
 dependencies[] = number
 dependencies[] = strongarm
 dependencies[] = tablefield
