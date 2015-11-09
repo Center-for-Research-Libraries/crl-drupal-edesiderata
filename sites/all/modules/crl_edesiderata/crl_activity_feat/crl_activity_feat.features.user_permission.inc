@@ -48,6 +48,8 @@ function crl_activity_feat_user_default_permissions() {
     'name' => 'view field_resource_reference',
     'roles' => array(
       'administrator' => 'administrator',
+      'anonymous user' => 'anonymous user',
+      'authenticated user' => 'authenticated user',
       'editor basic' => 'editor basic',
       'editor power' => 'editor power',
     ),
