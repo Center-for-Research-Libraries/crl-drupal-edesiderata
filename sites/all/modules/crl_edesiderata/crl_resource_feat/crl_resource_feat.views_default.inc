@@ -401,6 +401,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_resource_reference']['field'] = 'field_resource_reference';
   $handler->display->display_options['fields']['field_resource_reference']['label'] = 'Title';
   $handler->display->display_options['fields']['field_resource_reference']['empty'] = '[field_title_sort]';
+  $handler->display->display_options['fields']['field_resource_reference']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['field_resource_reference']['settings'] = array(
     'link' => 1,
   );
@@ -410,6 +411,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_provider']['field'] = 'field_provider';
   $handler->display->display_options['fields']['field_provider']['relationship'] = 'field_resource_reference_target_id';
   $handler->display->display_options['fields']['field_provider']['empty'] = '[field_resource_provider_text]';
+  $handler->display->display_options['fields']['field_provider']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['field_provider']['settings'] = array(
     'link' => 1,
   );

@@ -99,10 +99,8 @@ function crl_resource_feat_default_rules_configuration() {
         { "mimemail" : {
             "key" : "resource_suggest_converted",
             "to" : [ "flagged-entityform:user:mail" ],
-            "from_name" : "Websystems",
-            "from_mail" : "[site:mail]",
             "subject" : "[eDesiderata] Your suggested resource has been added to the site.",
-            "body" : "\\u003Cp\\u003EThe message is to inform you that the following eDesiderata resource has been created based on a suggestion that you submitted:\\u003C\\/p\\u003E\\r\\n\\r\\n\\u003Cp\\u003E\\u003Cstrong\\u003E\\u003Ca href=\\u0022[entity-created:url]\\u0022\\u003E[entity-created:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E\\u003C\\/p\\u003E\\r\\n\\r\\n\\u003Cp\\u003EThis resource has automatically been added to your watch list in \\u003Ca href=\\u0022\\/me\\u0022\\u003EmeDesiderata\\u003C\\/a\\u003E.\\u003C\\/p\\u003E",
+            "body" : "\\u003Cp\\u003EThe message is to inform you that the following eDesiderata resource is being created based on a suggestion that you submitted:\\u003C\\/p\\u003E\\r\\n\\r\\n\\u003Cp\\u003E\\u003Cstrong\\u003E\\u003Ca href=\\u0022[entity-created:url]\\u0022\\u003E[entity-created:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E\\u003C\\/p\\u003E\\r\\n\\r\\n\\u003Cp\\u003ECRL staff may still be making modifications to this new entry, so it may not be immediately available via the link above. However, once the entry is published it will be publicly accessible and will automatically be added to your watch list in \\u003Ca href=\\u0022\\/me\\u0022\\u003EmeDesiderata\\u003C\\/a\\u003E.\\u003C\\/p\\u003E",
             "plaintext" : "The message is to inform you that the following eDesiderata resource has been created based on a suggestion that you submitted:\\r\\n\\r\\n[entity-created:title]\\r\\n\\r\\nThis resource has automatically been added to your watch list in meDesiderata",
             "language" : [ "" ]
           }
