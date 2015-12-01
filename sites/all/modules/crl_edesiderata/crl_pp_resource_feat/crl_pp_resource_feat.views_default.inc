@@ -739,7 +739,7 @@ function crl_pp_resource_feat_views_default_views() {
 
 <p><a href="https://www.crl.edu/sites/default/files/attachments/pages/FY16_PP_Ballot_Description.pdf">Click here</a> for the pdf containing ballot information.</p>
 
-<p><strong>Voting is open until November 20th, 2015</strong></p>
+<p><strong>Voting is open until November 30th, 2015</strong></p>
 
 <div id="ballot"></div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
