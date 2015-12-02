@@ -51,7 +51,7 @@ function crl_resource_feat_default_entityform_type() {
       "preview_page" : 0,
       "submission_page_title" : "Thank you for your submission",
       "submission_text" : {
-        "value" : "\\u003Cp\\u003ECRL staff will review this submission and contact you if needed. You can monitor the status of this submission at any time in \\u003Ca href=\\u0022\\/me\\u0022\\u003EmeDesiderata\\u003C\\/a\\u003E and can view other member submissions on the \\u003Ca href=\\u0022\\/resources\\/suggestions\\u0022\\u003Eresource suggestion summary page\\u003C\\/a\\u003E.\\u003C\\/p\\u003E\\r\\n",
+        "value" : "\\u003Cp\\u003ECRL staff will review this resource suggestion and contact you if needed. You can monitor the status of this submission in \\u003Ca href=\\u0022\\/me\\u0022\\u003EmeDesiderata\\u003C\\/a\\u003E and can view other member submissions on the \\u003Ca href=\\u0022\\/resources\\/suggestions\\u0022\\u003Eresource suggestion summary page\\u003C\\/a\\u003E.\\u003C\\/p\\u003E\\r\\n",
         "format" : "full_html"
       },
       "submission_show_submitted" : 0,
@@ -86,7 +86,7 @@ function crl_resource_feat_default_entityform_type() {
       "resubmit_action" : "new",
       "redirect_path" : "",
       "instruction_pre" : {
-        "value" : "\\u003Cp\\u003EUse the form below to submit a resource suggestion for inclusion in the A-Z Resource index. Submissions will be reviewed by CRL staff before being included in the index.\\u003C\\/p\\u003E\\r\\n",
+        "value" : "\\u003Cp\\u003EUse the form below to submit a resource suggestion for inclusion in eDesiderata. Resource suggestions are reviewed by CRL staff before being added to the index.\\u003C\\/p\\u003E\\r\\n",
         "format" : "full_html"
       }
     },

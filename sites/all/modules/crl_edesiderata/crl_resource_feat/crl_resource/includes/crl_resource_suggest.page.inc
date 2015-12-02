@@ -10,7 +10,7 @@
  * Page callback for the resource suggestion page.
  */
 function crl_resource_suggest_page() {
-  $text = '<p>' . t('In addition to providing input on resources already listed in the eDesiderata index, CRL members are also invited to suggest new resources for inclusion. Resource suggestions are reviewed by CRL staff before being included in the index.') . '</p>';
+  $text = '<p>' . t('In addition to providing comments and insights on resources already listed in the eDesiderata index, CRL members are also invited to suggest new resources for inclusion. Resource suggestions are reviewed by CRL staff before being added to the index.') . '</p>';
   if (!user_access('crl access member features')) {
     global $user;
     if ($user->uid) {

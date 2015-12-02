@@ -489,7 +489,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<p>You have suggested the following resources for inclusion in the A-Z index.</p>
+  $handler->display->display_options['header']['area']['content'] = '<p>You have suggested the following resources for inclusion in eDesiderata.</p>
 <p><a href="/eform/submit/resource-suggestion"><button>+&nbsp;&nbsp;Suggest New Resource</button></a></p>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['footer'] = FALSE;
