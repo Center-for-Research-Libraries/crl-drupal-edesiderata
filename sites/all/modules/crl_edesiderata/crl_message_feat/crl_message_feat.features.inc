@@ -249,9 +249,9 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "\\u003Ca href=\\u0022\\/resources\\/suggestions\\u0022\\u003ESuggested Resources\\u003C\\/a\\u003E: A new suggestion was submitted.\\r\\n",
+          "value" : "\\u003Ca href=\\u0022\\/resources\\/suggestions\\u0022\\u003EResource Suggestions\\u003C\\/a\\u003E: A new resource was suggested by a CRL member.\\r\\n",
           "format" : "literal",
-          "safe_value" : "\\u003Ca href=\\u0022\\/resources\\/suggestions\\u0022\\u003ESuggested Resources\\u003C\\/a\\u003E: A new suggestion was submitted.\\n"
+          "safe_value" : "\\u003Ca href=\\u0022\\/resources\\/suggestions\\u0022\\u003EResource Suggestions\\u003C\\/a\\u003E: A new resource was suggested by a CRL member.\\n"
         }
       ]
     },

@@ -82,5 +82,18 @@ class CrlResourceBlocks {
     );
     return $block;
   }
+  
+  /**
+   * Build crl_resource_suggest_resource_long.
+   */
+  protected function build_crl_resource_suggest_long() {
+    $block = array(
+      'subject' => t('Suggest a New Resource'),
+      'content' => array(
+        '#markup' => '<p>' . t('In addition to providing comments and insights on resources already listed in the eDesiderata index, CRL members are also invited to <a href="@suggest-url">suggest new resources</a> for inclusion.', array('@suggest-url' => url('resources/suggestions'))) . '</p>',
+      ),
+    );
+    return $block;
+  }
 
 }

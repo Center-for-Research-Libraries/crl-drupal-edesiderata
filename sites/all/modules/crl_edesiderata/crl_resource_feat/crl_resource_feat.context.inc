@@ -222,6 +222,12 @@ function crl_resource_feat_context_default_contexts() {
         ),
       ),
     ),
+    'breadcrumb' => array(
+      0 => 'main-menu:resources/main',
+    ),
+    'menu' => array(
+      0 => 'main-menu:resources/main',
+    ),
     'theme_html' => array(
       'class' => 'dashboard',
     ),
