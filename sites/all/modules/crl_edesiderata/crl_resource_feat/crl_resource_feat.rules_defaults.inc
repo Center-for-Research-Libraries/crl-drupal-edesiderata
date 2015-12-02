@@ -9,6 +9,29 @@
  */
 function crl_resource_feat_default_rules_configuration() {
   $items = array();
+  $items['crl_message_feat_resource_suggested_email'] = entity_import('rules_config', '{ "crl_message_feat_resource_suggested_email" : {
+      "LABEL" : "Resource Suggested Email",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "REQUIRES" : [ "rules", "mimemail", "entityform" ],
+      "ON" : { "entityform_insert" : [] },
+      "IF" : [
+        { "entity_has_field" : { "entity" : [ "entityform" ], "field" : "field_title_sort" } }
+      ],
+      "DO" : [
+        { "mimemail" : {
+            "key" : "resource_suggested_email",
+            "to" : [ "entityform:user:mail" ],
+            "bcc" : "rjacobs@crl.edu",
+            "subject" : "Thank you for your recent resource suggestion on eDesiderata",
+            "body" : "\\u003Cp\\u003EThank you for your recent resource suggestion on eDesiderata:\\u003C\\/p\\u003E\\r\\n\\r\\n\\u003Cp\\u003E\\u003Cstrong\\u003E\\u003Ca href=\\u0022[entityform:url]\\u0022\\u003E[entityform:field-title-sort]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E\\u003C\\/p\\u003E\\r\\n\\r\\n\\u003Cp\\u003ECRL staff will review this resource suggestion and contact you if needed. You can monitor the status of this submission in \\u003Ca href=\\u0022\\/me\\u0022\\u003EmeDesiderata\\u003C\\/a\\u003E and can view other member submissions on the \\u003Ca href=\\u0022\\/resources\\/suggestions\\u0022\\u003Eresource suggestion summary page\\u003C\\/a\\u003E.\\u003C\\/p\\u003E\\r\\n",
+            "plaintext" : "Thank you for your recent resource suggestion on eDesiderata:\\r\\n\\r\\n[entityform:field-title-sort]\\r\\n\\r\\nCRL staff will review this resource suggestion and contact you if needed. You can monitor the status of this submission in meDesiderata and can view other member submissions on the \\u003Eresource suggestion summary page.\\r\\n",
+            "language" : [ "" ]
+          }
+        }
+      ]
+    }
+  }');
   $items['rules_convert_to_resource'] = entity_import('rules_config', '{ "rules_convert_to_resource" : {
       "LABEL" : "Convert to Resource",
       "PLUGIN" : "reaction rule",
