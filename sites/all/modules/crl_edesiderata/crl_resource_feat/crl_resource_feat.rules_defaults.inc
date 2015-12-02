@@ -32,8 +32,42 @@ function crl_resource_feat_default_rules_configuration() {
       ]
     }
   }');
+  $items['crl_resource_feat_process_resource_suggestion_reject'] = entity_import('rules_config', '{ "crl_resource_feat_process_resource_suggestion_reject" : {
+      "LABEL" : "Process Resource Suggestion - Reject",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "REQUIRES" : [ "rules", "flag" ],
+      "ON" : { "flag_flagged_resource_suggestion_process" : [] },
+      "IF" : [
+        { "entity_is_of_bundle" : {
+            "entity" : [ "flagged-entityform" ],
+            "type" : "entityform",
+            "bundle" : { "value" : { "resource_suggestion" : "resource_suggestion" } }
+          }
+        },
+        { "entity_has_field" : {
+            "entity" : [ "flagging" ],
+            "field" : "field_resource_suggestion_status"
+          }
+        },
+        { "data_is" : {
+            "data" : [ "flagging:field-resource-suggestion-status" ],
+            "value" : "no"
+          }
+        }
+      ],
+      "DO" : [
+        { "drupal_message" : {
+            "message" : "The CRL comment explaining why the suggestion was not accepted will appear publicly, but the submitting user has \\u003Cstrong\\u003Enot been notified\\u003C\\/strong\\u003E. You may wish to send them a direct email ([flagged-entityform:user:mail]) to explain why their suggestion was rejected.",
+            "type" : "warning"
+          }
+        },
+        { "redirect" : { "url" : "resources\\/suggestions" } }
+      ]
+    }
+  }');
   $items['rules_convert_to_resource'] = entity_import('rules_config', '{ "rules_convert_to_resource" : {
-      "LABEL" : "Convert to Resource",
+      "LABEL" : "Process Resource Suggestion - Convert",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "REQUIRES" : [ "rules", "flag", "mimemail" ],
