@@ -37,22 +37,104 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
-    'name' => 'name',
-    'entityform_id' => 'entityform_id',
+    'views_bulk_operations' => 'views_bulk_operations',
+    'field_title_sort' => 'field_title_sort',
+    'field_pp_publisher' => 'field_pp_publisher',
+    'field_contact_name' => 'field_contact_name',
+    'field_contact_email' => 'field_contact_email',
+    'field_pp_nominator_institution' => 'field_pp_nominator_institution',
+    'created' => 'created',
+    'field_pp_related' => 'field_pp_related',
+    'status' => 'status',
+    'field_pp_purchase_status' => 'field_pp_purchase_status',
+    'link_entityform' => 'link_entityform',
+    'edit_entityform' => 'edit_entityform',
+    'ops' => 'ops',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
-    'name' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
+    'views_bulk_operations' => array(
       'align' => '',
       'separator' => '',
+      'empty_column' => 0,
     ),
-    'entityform_id' => array(
+    'field_title_sort' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_pp_publisher' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_contact_name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_contact_email' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_pp_nominator_institution' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'created' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_pp_related' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'status' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_pp_purchase_status' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'link_entityform' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'edit_entityform' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'ops' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
     ),
   );
   /* No results behavior: Global: Text area */
@@ -72,6 +154,10 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['relationships']['flag_content_rel']['required'] = 0;
   $handler->display->display_options['relationships']['flag_content_rel']['flag'] = 'entityform_pp_convert';
   $handler->display->display_options['relationships']['flag_content_rel']['user_scope'] = 'any';
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_pp_related_target_id']['id'] = 'field_pp_related_target_id';
+  $handler->display->display_options['relationships']['field_pp_related_target_id']['table'] = 'field_data_field_pp_related';
+  $handler->display->display_options['relationships']['field_pp_related_target_id']['field'] = 'field_pp_related_target_id';
   /* Field: Bulk operations: Entityform Submission */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'entityform';
@@ -241,9 +327,25 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_related']['id'] = 'field_pp_related';
   $handler->display->display_options['fields']['field_pp_related']['table'] = 'field_data_field_pp_related';
   $handler->display->display_options['fields']['field_pp_related']['field'] = 'field_pp_related';
+  $handler->display->display_options['fields']['field_pp_related']['label'] = 'Converted PP Title';
   $handler->display->display_options['fields']['field_pp_related']['settings'] = array(
     'link' => 1,
   );
+  /* Field: Content: Published */
+  $handler->display->display_options['fields']['status']['id'] = 'status';
+  $handler->display->display_options['fields']['status']['table'] = 'node';
+  $handler->display->display_options['fields']['status']['field'] = 'status';
+  $handler->display->display_options['fields']['status']['relationship'] = 'field_pp_related_target_id';
+  $handler->display->display_options['fields']['status']['label'] = 'Related PP Published Status';
+  $handler->display->display_options['fields']['status']['not'] = 0;
+  /* Field: Content: Purchase Status */
+  $handler->display->display_options['fields']['field_pp_purchase_status']['id'] = 'field_pp_purchase_status';
+  $handler->display->display_options['fields']['field_pp_purchase_status']['table'] = 'field_data_field_pp_purchase_status';
+  $handler->display->display_options['fields']['field_pp_purchase_status']['field'] = 'field_pp_purchase_status';
+  $handler->display->display_options['fields']['field_pp_purchase_status']['relationship'] = 'field_pp_related_target_id';
+  $handler->display->display_options['fields']['field_pp_purchase_status']['label'] = 'Related PP Purchase Status';
+  $handler->display->display_options['fields']['field_pp_purchase_status']['hide_empty'] = TRUE;
+  $handler->display->display_options['fields']['field_pp_purchase_status']['empty_zero'] = TRUE;
   /* Field: Entityform Submission: Link */
   $handler->display->display_options['fields']['link_entityform']['id'] = 'link_entityform';
   $handler->display->display_options['fields']['link_entityform']['table'] = 'entityform';
@@ -260,8 +362,8 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['ops']['field'] = 'ops';
   $handler->display->display_options['fields']['ops']['relationship'] = 'flag_content_rel';
   $handler->display->display_options['fields']['ops']['label'] = 'Convert to Node';
-  $handler->display->display_options['path'] = 'admin/pp-nomination/list';
-  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['path'] = 'admin/pp/nomination/list';
+  $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'PP Nominations';
   $handler->display->display_options['menu']['description'] = 'View Submissions for Purchase Proposal';
   $handler->display->display_options['menu']['weight'] = '-46';
@@ -331,13 +433,13 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_publisher']['id'] = 'field_pp_publisher';
   $handler->display->display_options['fields']['field_pp_publisher']['table'] = 'field_data_field_pp_publisher';
   $handler->display->display_options['fields']['field_pp_publisher']['field'] = 'field_pp_publisher';
-  /* Field: Field: Vendor Contact */
+  /* Field: Field: Provider Contact */
   $handler->display->display_options['fields']['field_contacts']['id'] = 'field_contacts';
   $handler->display->display_options['fields']['field_contacts']['table'] = 'field_data_field_contacts';
   $handler->display->display_options['fields']['field_contacts']['field'] = 'field_contacts';
   $handler->display->display_options['fields']['field_contacts']['type'] = 'text_plain';
   $handler->display->display_options['fields']['field_contacts']['delta_offset'] = '0';
-  /* Field: Field: Website */
+  /* Field: Field: Provider URL */
   $handler->display->display_options['fields']['field_link']['id'] = 'field_link';
   $handler->display->display_options['fields']['field_link']['table'] = 'field_data_field_link';
   $handler->display->display_options['fields']['field_link']['field'] = 'field_link';
@@ -356,7 +458,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_subject_area']['table'] = 'field_data_field_pp_subject_area';
   $handler->display->display_options['fields']['field_pp_subject_area']['field'] = 'field_pp_subject_area';
   $handler->display->display_options['fields']['field_pp_subject_area']['delta_offset'] = '0';
-  /* Field: Entityform Submission: Background Information */
+  /* Field: Entityform Submission: Description */
   $handler->display->display_options['fields']['field_further_description']['id'] = 'field_further_description';
   $handler->display->display_options['fields']['field_further_description']['table'] = 'field_data_field_further_description';
   $handler->display->display_options['fields']['field_further_description']['field'] = 'field_further_description';
@@ -1660,6 +1762,7 @@ function crl_pp_resource_feat_views_default_views() {
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['group_by'] = TRUE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     3 => '3',
@@ -1854,12 +1957,6 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
   $handler->display->display_options['fields']['timestamp']['relationship'] = 'votingapi_vote';
   $handler->display->display_options['fields']['timestamp']['date_format'] = 'short';
-  /* Sort criterion: Votes: Timestamp */
-  $handler->display->display_options['sorts']['timestamp']['id'] = 'timestamp';
-  $handler->display->display_options['sorts']['timestamp']['table'] = 'votingapi_vote';
-  $handler->display->display_options['sorts']['timestamp']['field'] = 'timestamp';
-  $handler->display->display_options['sorts']['timestamp']['relationship'] = 'votingapi_vote';
-  $handler->display->display_options['sorts']['timestamp']['order'] = 'DESC';
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type_1']['id'] = 'type_1';
   $handler->display->display_options['filters']['type_1']['table'] = 'node';
@@ -2024,8 +2121,8 @@ function crl_pp_resource_feat_views_default_views() {
     24 => 0,
   );
 
-  /* Display: All Details */
-  $handler = $view->new_display('page', 'All Details', 'page_5');
+  /* Display: Vote Details (PP & SPP) */
+  $handler = $view->new_display('page', 'Vote Details (PP & SPP)', 'page_5');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'All PP and SPP Vote Details';
   $handler->display->display_options['defaults']['pager'] = FALSE;
@@ -2194,16 +2291,16 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['timestamp']['date_format'] = 'short';
   $handler->display->display_options['path'] = 'admin/pp/details';
   $handler->display->display_options['menu']['type'] = 'default tab';
-  $handler->display->display_options['menu']['title'] = 'All Details';
-  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['title'] = 'Vote Details (PP & SPP)';
+  $handler->display->display_options['menu']['weight'] = '1';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
   $handler->display->display_options['tab_options']['type'] = 'normal';
-  $handler->display->display_options['tab_options']['title'] = 'PP Votes Administration';
+  $handler->display->display_options['tab_options']['title'] = 'PP & SPP Reports';
   $handler->display->display_options['tab_options']['weight'] = '0';
 
-  /* Display: All Details by Title */
-  $handler = $view->new_display('page', 'All Details by Title', 'page_1');
+  /* Display: Vote Details by Title (PP & SPP) */
+  $handler = $view->new_display('page', 'Vote Details by Title (PP & SPP)', 'page_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'All PP and SPP Vote Details by Title';
   $handler->display->display_options['defaults']['pager'] = FALSE;
@@ -2300,7 +2397,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['path'] = 'admin/pp/details-title';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'All Details by Title';
+  $handler->display->display_options['menu']['title'] = 'Vote Details by Title (PP & SPP)';
   $handler->display->display_options['menu']['weight'] = '5';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
@@ -2547,6 +2644,263 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
+
+  /* Display: Institution Summary */
+  $handler = $view->new_display('page', 'Institution Summary', 'page_6');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Institution Summary';
+  $handler->display->display_options['defaults']['query'] = FALSE;
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'name' => 'name',
+    'mail' => 'mail',
+    'field_institution' => 'field_institution',
+    'field_fy' => 'field_fy',
+  );
+  $handler->display->display_options['style_options']['default'] = 'field_institution';
+  $handler->display->display_options['style_options']['info'] = array(
+    'name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'mail' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_institution' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_fy' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: User: Institution */
+  $handler->display->display_options['fields']['field_institution']['id'] = 'field_institution';
+  $handler->display->display_options['fields']['field_institution']['table'] = 'field_data_field_institution';
+  $handler->display->display_options['fields']['field_institution']['field'] = 'field_institution';
+  $handler->display->display_options['fields']['field_institution']['relationship'] = 'uid';
+  /* Field: User: Institution */
+  $handler->display->display_options['fields']['field_institution_1']['id'] = 'field_institution_1';
+  $handler->display->display_options['fields']['field_institution_1']['table'] = 'field_data_field_institution';
+  $handler->display->display_options['fields']['field_institution_1']['field'] = 'field_institution';
+  $handler->display->display_options['fields']['field_institution_1']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['field_institution_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_institution_1']['type'] = 'list_key';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
+  /* Field: User: E-mail */
+  $handler->display->display_options['fields']['mail']['id'] = 'mail';
+  $handler->display->display_options['fields']['mail']['table'] = 'users';
+  $handler->display->display_options['fields']['mail']['field'] = 'mail';
+  $handler->display->display_options['fields']['mail']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['mail']['link_to_user'] = '0';
+  /* Field: Content: Fiscal Year */
+  $handler->display->display_options['fields']['field_fy']['id'] = 'field_fy';
+  $handler->display->display_options['fields']['field_fy']['table'] = 'field_data_field_fy';
+  $handler->display->display_options['fields']['field_fy']['field'] = 'field_fy';
+  $handler->display->display_options['fields']['field_fy']['type'] = 'taxonomy_term_reference_plain';
+  /* Field: COUNT(Content: Title) */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['group_type'] = 'count';
+  $handler->display->display_options['fields']['title']['label'] = 'Votes Cast';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type_1']['id'] = 'type_1';
+  $handler->display->display_options['filters']['type_1']['table'] = 'node';
+  $handler->display->display_options['filters']['type_1']['field'] = 'type';
+  $handler->display->display_options['filters']['type_1']['value'] = array(
+    'pp_resource' => 'pp_resource',
+    'spp_resource' => 'spp_resource',
+  );
+  $handler->display->display_options['filters']['type_1']['group'] = 1;
+  /* Filter criterion: Content: Fiscal Year (field_fy) */
+  $handler->display->display_options['filters']['field_fy_tid']['id'] = 'field_fy_tid';
+  $handler->display->display_options['filters']['field_fy_tid']['table'] = 'field_data_field_fy';
+  $handler->display->display_options['filters']['field_fy_tid']['field'] = 'field_fy_tid';
+  $handler->display->display_options['filters']['field_fy_tid']['value'] = array(
+    156 => '156',
+  );
+  $handler->display->display_options['filters']['field_fy_tid']['group'] = 1;
+  $handler->display->display_options['filters']['field_fy_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['operator_id'] = 'field_fy_tid_op';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['label'] = 'Fiscal Year';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['operator'] = 'field_fy_tid_op';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['identifier'] = 'field_fy_tid';
+  $handler->display->display_options['filters']['field_fy_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    5 => 0,
+    6 => 0,
+    7 => 0,
+    8 => 0,
+    9 => 0,
+    10 => 0,
+    11 => 0,
+    12 => 0,
+    13 => 0,
+    14 => 0,
+    15 => 0,
+    16 => 0,
+    17 => 0,
+    18 => 0,
+    19 => 0,
+    20 => 0,
+    21 => 0,
+    22 => 0,
+    23 => 0,
+  );
+  $handler->display->display_options['filters']['field_fy_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_fy_tid']['vocabulary'] = 'fy';
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'pp_resource' => 'pp_resource',
+    'spp_resource' => 'spp_resource',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  $handler->display->display_options['filters']['type']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['type']['expose']['operator_id'] = 'type_op';
+  $handler->display->display_options['filters']['type']['expose']['label'] = 'Type';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = 'type_op';
+  $handler->display->display_options['filters']['type']['expose']['identifier'] = 'type';
+  $handler->display->display_options['filters']['type']['expose']['required'] = TRUE;
+  $handler->display->display_options['filters']['type']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    5 => 0,
+    6 => 0,
+    7 => 0,
+    8 => 0,
+    9 => 0,
+    10 => 0,
+    11 => 0,
+    12 => 0,
+    13 => 0,
+    14 => 0,
+    15 => 0,
+    16 => 0,
+    17 => 0,
+    18 => 0,
+    19 => 0,
+    20 => 0,
+    21 => 0,
+    22 => 0,
+    23 => 0,
+  );
+  $handler->display->display_options['filters']['type']['expose']['reduce'] = TRUE;
+  /* Filter criterion: Votes: Tag */
+  $handler->display->display_options['filters']['tag']['id'] = 'tag';
+  $handler->display->display_options['filters']['tag']['table'] = 'votingapi_vote';
+  $handler->display->display_options['filters']['tag']['field'] = 'tag';
+  $handler->display->display_options['filters']['tag']['relationship'] = 'votingapi_vote';
+  $handler->display->display_options['filters']['tag']['group'] = 1;
+  $handler->display->display_options['filters']['tag']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['tag']['expose']['operator_id'] = 'tag_op';
+  $handler->display->display_options['filters']['tag']['expose']['label'] = 'Tag';
+  $handler->display->display_options['filters']['tag']['expose']['operator'] = 'tag_op';
+  $handler->display->display_options['filters']['tag']['expose']['identifier'] = 'tag';
+  $handler->display->display_options['filters']['tag']['is_grouped'] = TRUE;
+  $handler->display->display_options['filters']['tag']['group_info']['label'] = 'Vote type';
+  $handler->display->display_options['filters']['tag']['group_info']['identifier'] = 'tag';
+  $handler->display->display_options['filters']['tag']['group_info']['group_items'] = array(
+    1 => array(
+      'title' => 'pp_own_lend',
+      'operator' => '=',
+      'value' => 'pp_own_lend',
+    ),
+    2 => array(
+      'title' => 'pp_preference',
+      'operator' => '=',
+      'value' => 'pp_preference',
+    ),
+    3 => array(
+      'title' => 'pp_shared_pledge_usd',
+      'operator' => '=',
+      'value' => 'pp_shared_pledge_usd',
+    ),
+    4 => array(
+      'title' => 'pp_shared_pledge_cad',
+      'operator' => '=',
+      'value' => 'pp_shared_pledge_cad',
+    ),
+  );
+  /* Filter criterion: User: Institution (field_institution) */
+  $handler->display->display_options['filters']['field_institution_value']['id'] = 'field_institution_value';
+  $handler->display->display_options['filters']['field_institution_value']['table'] = 'field_data_field_institution';
+  $handler->display->display_options['filters']['field_institution_value']['field'] = 'field_institution_value';
+  $handler->display->display_options['filters']['field_institution_value']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['field_institution_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_institution_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_institution_value']['expose']['operator_id'] = 'field_institution_value_op';
+  $handler->display->display_options['filters']['field_institution_value']['expose']['label'] = 'Institution';
+  $handler->display->display_options['filters']['field_institution_value']['expose']['operator'] = 'field_institution_value_op';
+  $handler->display->display_options['filters']['field_institution_value']['expose']['identifier'] = 'field_institution_value';
+  $handler->display->display_options['filters']['field_institution_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+    5 => 0,
+    6 => 0,
+    7 => 0,
+    8 => 0,
+    9 => 0,
+    10 => 0,
+    11 => 0,
+    12 => 0,
+    13 => 0,
+    14 => 0,
+    15 => 0,
+    16 => 0,
+    17 => 0,
+    18 => 0,
+    19 => 0,
+    20 => 0,
+    21 => 0,
+    22 => 0,
+    23 => 0,
+    24 => 0,
+  );
+  $handler->display->display_options['path'] = 'admin/pp/inst-summary';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Institution Summary (PP & SPP)';
+  $handler->display->display_options['menu']['weight'] = '7';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
 
   /* Display: Misc - Holding Details */
   $handler = $view->new_display('page', 'Misc - Holding Details', 'page_3');
@@ -2916,7 +3270,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['uid']['alter']['text'] = '[name] ([mail]), [field_institution]';
   $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['uid']['link_to_user'] = FALSE;
-  /* Field: Content: Title */
+  /* Field: COUNT(DISTINCT Content: Title) */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
