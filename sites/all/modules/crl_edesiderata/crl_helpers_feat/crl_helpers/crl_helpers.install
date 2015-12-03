@@ -61,6 +61,44 @@ function crl_helpers_update_7102() {
 
 
 /**
+ * Add custom date formats and types.
+ */
+function crl_helpers_update_7103() {
+  // Add custom date formats and types. Note that a format is tied to a type
+  // via a system variable, which we can track with features/strongarm, but any
+  // NEW format and type data must be manually added to the DB here.
+  db_insert('date_formats')
+    ->fields(array(
+      'format' => 'r',
+      'type' => 'custom',
+      'locked' => 0,
+    ))
+    ->execute();
+  db_insert('date_format_type')
+     ->fields(array(
+       'type' => 'rfc_2822',
+       'title' => 'RFC 2822',
+       'locked' => 0,
+    ))
+  ->execute();
+  db_insert('date_formats')
+    ->fields(array(
+      'format' => 'l, F d, Y',
+      'type' => 'custom',
+      'locked' => 0,
+    ))
+    ->execute();
+  db_insert('date_format_type')
+     ->fields(array(
+       'type' => 'long_no_time',
+       'title' => 'Long - no time',
+       'locked' => 0,
+    ))
+  ->execute();
+}
+
+
+/**
  * Helper to associate a custom oplist function with a field.
  */
 function crl_helpers_set_oplist_function($field_name, $function_name) {

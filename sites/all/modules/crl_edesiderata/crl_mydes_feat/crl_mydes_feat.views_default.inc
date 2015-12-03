@@ -144,7 +144,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['title_1']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['title_1']['alter']['text'] = '[title] [crl_resource_alert]';
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
-  /* Field: Content: Provider */
+  /* Field: Field: Provider */
   $handler->display->display_options['fields']['field_provider']['id'] = 'field_provider';
   $handler->display->display_options['fields']['field_provider']['table'] = 'field_data_field_provider';
   $handler->display->display_options['fields']['field_provider']['field'] = 'field_provider';
@@ -243,7 +243,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['path']['field'] = 'path';
   $handler->display->display_options['fields']['path']['label'] = 'eDesiderata URL';
   $handler->display->display_options['fields']['path']['absolute'] = TRUE;
-  /* Field: Content: Provider */
+  /* Field: Field: Provider */
   $handler->display->display_options['fields']['field_provider']['id'] = 'field_provider';
   $handler->display->display_options['fields']['field_provider']['table'] = 'field_data_field_provider';
   $handler->display->display_options['fields']['field_provider']['field'] = 'field_provider';
@@ -279,7 +279,8 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = 'Created date';
-  $handler->display->display_options['fields']['created']['date_format'] = 'medium_no_time';
+  $handler->display->display_options['fields']['created']['date_format'] = 'long_no_time';
+  $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
   /* Field: Content: CRL Resource Master Update Timestamp */
   $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['id'] = 'crl_resource_master_update_timestamp';
   $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['table'] = 'views_entity_node';
