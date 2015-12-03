@@ -2023,9 +2023,14 @@ function crl_pp_resource_feat_views_default_views() {
     23 => 0,
     24 => 0,
   );
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
 
-  /* Display: All Details */
-  $handler = $view->new_display('page', 'All Details', 'page_5');
+  /* Display: All Details (PP & SPP) */
+  $handler = $view->new_display('page', 'All Details (PP & SPP)', 'page_5');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'All PP and SPP Vote Details';
   $handler->display->display_options['defaults']['pager'] = FALSE;
@@ -2194,7 +2199,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['timestamp']['date_format'] = 'short';
   $handler->display->display_options['path'] = 'admin/pp/details';
   $handler->display->display_options['menu']['type'] = 'default tab';
-  $handler->display->display_options['menu']['title'] = 'All Details';
+  $handler->display->display_options['menu']['title'] = 'All Details (PP & SPP)';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
@@ -2202,8 +2207,8 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['tab_options']['title'] = 'PP Votes Administration';
   $handler->display->display_options['tab_options']['weight'] = '0';
 
-  /* Display: All Details by Title */
-  $handler = $view->new_display('page', 'All Details by Title', 'page_1');
+  /* Display: All Details by Title (PP & SPP) */
+  $handler = $view->new_display('page', 'All Details by Title (PP & SPP)', 'page_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'All PP and SPP Vote Details by Title';
   $handler->display->display_options['defaults']['pager'] = FALSE;
@@ -2300,7 +2305,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['path'] = 'admin/pp/details-title';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'All Details by Title';
+  $handler->display->display_options['menu']['title'] = 'All Details by Title (PP & SPP)';
   $handler->display->display_options['menu']['weight'] = '5';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
