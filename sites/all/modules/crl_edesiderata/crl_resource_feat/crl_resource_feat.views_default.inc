@@ -399,7 +399,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_resource_reference']['id'] = 'field_resource_reference';
   $handler->display->display_options['fields']['field_resource_reference']['table'] = 'field_data_field_resource_reference';
   $handler->display->display_options['fields']['field_resource_reference']['field'] = 'field_resource_reference';
-  $handler->display->display_options['fields']['field_resource_reference']['label'] = 'Title';
+  $handler->display->display_options['fields']['field_resource_reference']['label'] = 'Suggested Title';
   $handler->display->display_options['fields']['field_resource_reference']['empty'] = '[field_title_sort]';
   $handler->display->display_options['fields']['field_resource_reference']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['field_resource_reference']['settings'] = array(
@@ -421,14 +421,24 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'user';
   $handler->display->display_options['fields']['name']['label'] = 'Submitted by';
+  $handler->display->display_options['fields']['name']['exclude'] = TRUE;
   $handler->display->display_options['fields']['name']['alter']['text'] = '[name] [field_institution]';
+  $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
+  /* Field: User: Institution */
+  $handler->display->display_options['fields']['field_institution']['id'] = 'field_institution';
+  $handler->display->display_options['fields']['field_institution']['table'] = 'field_data_field_institution';
+  $handler->display->display_options['fields']['field_institution']['field'] = 'field_institution';
+  $handler->display->display_options['fields']['field_institution']['relationship'] = 'user';
+  $handler->display->display_options['fields']['field_institution']['exclude'] = TRUE;
   /* Field: Entityform Submission: Date submitted */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'entityform';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = 'Submitted';
+  $handler->display->display_options['fields']['created']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['created']['alter']['text'] = '[created]<br/>by [name] ([field_institution])';
   $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['created']['date_format'] = 'short';
+  $handler->display->display_options['fields']['created']['date_format'] = 'long_no_time';
   $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
   /* Field: Flagging: Action */
   $handler->display->display_options['fields']['field_resource_suggestion_status']['id'] = 'field_resource_suggestion_status';
@@ -510,6 +520,81 @@ function crl_resource_feat_views_default_views() {
 <p><a href="/eform/submit/resource-suggestion"><button>+ Suggest resource</button></a></p>
 ';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Field: Sorting Title */
+  $handler->display->display_options['fields']['field_title_sort']['id'] = 'field_title_sort';
+  $handler->display->display_options['fields']['field_title_sort']['table'] = 'field_data_field_title_sort';
+  $handler->display->display_options['fields']['field_title_sort']['field'] = 'field_title_sort';
+  $handler->display->display_options['fields']['field_title_sort']['label'] = 'Suggested Title';
+  $handler->display->display_options['fields']['field_title_sort']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_title_sort']['alter']['text'] = '[field_title_sort], [field_resource_provider_text]';
+  $handler->display->display_options['fields']['field_title_sort']['element_type'] = 'strong';
+  $handler->display->display_options['fields']['field_title_sort']['element_label_colon'] = FALSE;
+  /* Field: Entityform Submission: Resource Provider/Publisher */
+  $handler->display->display_options['fields']['field_resource_provider_text']['id'] = 'field_resource_provider_text';
+  $handler->display->display_options['fields']['field_resource_provider_text']['table'] = 'field_data_field_resource_provider_text';
+  $handler->display->display_options['fields']['field_resource_provider_text']['field'] = 'field_resource_provider_text';
+  $handler->display->display_options['fields']['field_resource_provider_text']['label'] = 'Suggested Provider';
+  $handler->display->display_options['fields']['field_resource_provider_text']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_resource_provider_text']['element_label_colon'] = FALSE;
+  /* Field: Field: Related resource */
+  $handler->display->display_options['fields']['field_resource_reference']['id'] = 'field_resource_reference';
+  $handler->display->display_options['fields']['field_resource_reference']['table'] = 'field_data_field_resource_reference';
+  $handler->display->display_options['fields']['field_resource_reference']['field'] = 'field_resource_reference';
+  $handler->display->display_options['fields']['field_resource_reference']['label'] = 'Suggested Title';
+  $handler->display->display_options['fields']['field_resource_reference']['empty'] = '[field_title_sort]';
+  $handler->display->display_options['fields']['field_resource_reference']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['field_resource_reference']['settings'] = array(
+    'link' => 1,
+  );
+  /* Field: Field: Provider */
+  $handler->display->display_options['fields']['field_provider']['id'] = 'field_provider';
+  $handler->display->display_options['fields']['field_provider']['table'] = 'field_data_field_provider';
+  $handler->display->display_options['fields']['field_provider']['field'] = 'field_provider';
+  $handler->display->display_options['fields']['field_provider']['relationship'] = 'field_resource_reference_target_id';
+  $handler->display->display_options['fields']['field_provider']['empty'] = '[field_resource_provider_text]';
+  $handler->display->display_options['fields']['field_provider']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['field_provider']['settings'] = array(
+    'link' => 1,
+  );
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'user';
+  $handler->display->display_options['fields']['name']['label'] = 'Submitted by';
+  $handler->display->display_options['fields']['name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['name']['alter']['text'] = '[name] [field_institution]';
+  $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
+  /* Field: Entityform Submission: Date submitted */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'entityform';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['label'] = 'Submitted';
+  $handler->display->display_options['fields']['created']['alter']['text'] = '[created] by [name]';
+  $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['created']['date_format'] = 'long_no_time';
+  $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
+  /* Field: Flagging: Action */
+  $handler->display->display_options['fields']['field_resource_suggestion_status']['id'] = 'field_resource_suggestion_status';
+  $handler->display->display_options['fields']['field_resource_suggestion_status']['table'] = 'field_data_field_resource_suggestion_status';
+  $handler->display->display_options['fields']['field_resource_suggestion_status']['field'] = 'field_resource_suggestion_status';
+  $handler->display->display_options['fields']['field_resource_suggestion_status']['relationship'] = 'flag_content_rel';
+  $handler->display->display_options['fields']['field_resource_suggestion_status']['label'] = 'Added to Index';
+  $handler->display->display_options['fields']['field_resource_suggestion_status']['empty'] = 'Review Pending';
+  $handler->display->display_options['fields']['field_resource_suggestion_status']['type'] = 'list_key';
+  /* Field: Flagging: CRL Comment */
+  $handler->display->display_options['fields']['field_crl_processing_notes']['id'] = 'field_crl_processing_notes';
+  $handler->display->display_options['fields']['field_crl_processing_notes']['table'] = 'field_data_field_crl_processing_notes';
+  $handler->display->display_options['fields']['field_crl_processing_notes']['field'] = 'field_crl_processing_notes';
+  $handler->display->display_options['fields']['field_crl_processing_notes']['relationship'] = 'flag_content_rel';
+  /* Field: Entityform Submission: Link */
+  $handler->display->display_options['fields']['link_entityform']['id'] = 'link_entityform';
+  $handler->display->display_options['fields']['link_entityform']['table'] = 'entityform';
+  $handler->display->display_options['fields']['link_entityform']['field'] = 'link_entityform';
+  $handler->display->display_options['fields']['link_entityform']['label'] = '';
+  $handler->display->display_options['fields']['link_entityform']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['link_entityform']['text'] = 'view';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Entityform Submission: Entityform Type */
