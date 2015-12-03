@@ -279,7 +279,8 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = 'Created date';
-  $handler->display->display_options['fields']['created']['date_format'] = 'medium_no_time';
+  $handler->display->display_options['fields']['created']['date_format'] = 'long_no_time';
+  $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
   /* Field: Content: CRL Resource Master Update Timestamp */
   $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['id'] = 'crl_resource_master_update_timestamp';
   $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['table'] = 'views_entity_node';
