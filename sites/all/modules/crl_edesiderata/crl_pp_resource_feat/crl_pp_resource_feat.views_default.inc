@@ -275,25 +275,6 @@ function crl_pp_resource_feat_views_default_views() {
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'entityforms_admin_page');
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Bulk operations: Entityform Submission */
-  $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'entityform';
-  $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
-  $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '1';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
-    'action::views_bulk_operations_delete_item' => array(
-      'selected' => 1,
-      'skip_confirmation' => 0,
-      'override_label' => 1,
-      'label' => 'Delete Submissions',
-      'postpone_processing' => 0,
-    ),
-  );
   /* Field: Field: Sorting Title */
   $handler->display->display_options['fields']['field_title_sort']['id'] = 'field_title_sort';
   $handler->display->display_options['fields']['field_title_sort']['table'] = 'field_data_field_title_sort';
@@ -1883,6 +1864,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['relationships']['votingapi_vote']['table'] = 'node';
   $handler->display->display_options['relationships']['votingapi_vote']['field'] = 'votingapi_vote';
   $handler->display->display_options['relationships']['votingapi_vote']['ui_name'] = 'Votes';
+  $handler->display->display_options['relationships']['votingapi_vote']['required'] = TRUE;
   $handler->display->display_options['relationships']['votingapi_vote']['votingapi'] = array(
     'value_type' => '',
     'tag' => '',
@@ -2696,17 +2678,19 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: User: Institution */
-  $handler->display->display_options['fields']['field_institution']['id'] = 'field_institution';
-  $handler->display->display_options['fields']['field_institution']['table'] = 'field_data_field_institution';
-  $handler->display->display_options['fields']['field_institution']['field'] = 'field_institution';
-  $handler->display->display_options['fields']['field_institution']['relationship'] = 'uid';
-  /* Field: User: Institution */
   $handler->display->display_options['fields']['field_institution_1']['id'] = 'field_institution_1';
   $handler->display->display_options['fields']['field_institution_1']['table'] = 'field_data_field_institution';
   $handler->display->display_options['fields']['field_institution_1']['field'] = 'field_institution';
   $handler->display->display_options['fields']['field_institution_1']['relationship'] = 'uid';
   $handler->display->display_options['fields']['field_institution_1']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_institution_1']['type'] = 'list_key';
+  /* Field: User: Institution */
+  $handler->display->display_options['fields']['field_institution']['id'] = 'field_institution';
+  $handler->display->display_options['fields']['field_institution']['table'] = 'field_data_field_institution';
+  $handler->display->display_options['fields']['field_institution']['field'] = 'field_institution';
+  $handler->display->display_options['fields']['field_institution']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['field_institution']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_institution']['alter']['path'] = 'admin/pp?field_institution_value=[field_institution_1]&field_fy_tid=All';
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
