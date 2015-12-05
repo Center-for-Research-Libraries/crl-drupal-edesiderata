@@ -23,7 +23,6 @@ function crl_pp_resource_feat_views_default_views() {
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'PP Nominations';
-  $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'view any entityform';
@@ -1757,8 +1756,11 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
-  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '200';
   $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['grouping'] = array(
     0 => array(
@@ -2633,6 +2635,9 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['title'] = 'Institution Summary';
   $handler->display->display_options['defaults']['query'] = FALSE;
   $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
@@ -2689,7 +2694,6 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_institution']['table'] = 'field_data_field_institution';
   $handler->display->display_options['fields']['field_institution']['field'] = 'field_institution';
   $handler->display->display_options['fields']['field_institution']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['field_institution']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['field_institution']['alter']['path'] = 'admin/pp?field_institution_value=[field_institution_1]&field_fy_tid=All';
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
@@ -2703,182 +2707,12 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['mail']['field'] = 'mail';
   $handler->display->display_options['fields']['mail']['relationship'] = 'uid';
   $handler->display->display_options['fields']['mail']['link_to_user'] = '0';
-  /* Field: Content: Fiscal Year */
-  $handler->display->display_options['fields']['field_fy']['id'] = 'field_fy';
-  $handler->display->display_options['fields']['field_fy']['table'] = 'field_data_field_fy';
-  $handler->display->display_options['fields']['field_fy']['field'] = 'field_fy';
-  $handler->display->display_options['fields']['field_fy']['type'] = 'taxonomy_term_reference_plain';
   /* Field: COUNT(Content: Title) */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['group_type'] = 'count';
   $handler->display->display_options['fields']['title']['label'] = 'Votes Cast';
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type_1']['id'] = 'type_1';
-  $handler->display->display_options['filters']['type_1']['table'] = 'node';
-  $handler->display->display_options['filters']['type_1']['field'] = 'type';
-  $handler->display->display_options['filters']['type_1']['value'] = array(
-    'pp_resource' => 'pp_resource',
-    'spp_resource' => 'spp_resource',
-  );
-  $handler->display->display_options['filters']['type_1']['group'] = 1;
-  /* Filter criterion: Content: Fiscal Year (field_fy) */
-  $handler->display->display_options['filters']['field_fy_tid']['id'] = 'field_fy_tid';
-  $handler->display->display_options['filters']['field_fy_tid']['table'] = 'field_data_field_fy';
-  $handler->display->display_options['filters']['field_fy_tid']['field'] = 'field_fy_tid';
-  $handler->display->display_options['filters']['field_fy_tid']['value'] = array(
-    156 => '156',
-  );
-  $handler->display->display_options['filters']['field_fy_tid']['group'] = 1;
-  $handler->display->display_options['filters']['field_fy_tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_fy_tid']['expose']['operator_id'] = 'field_fy_tid_op';
-  $handler->display->display_options['filters']['field_fy_tid']['expose']['label'] = 'Fiscal Year';
-  $handler->display->display_options['filters']['field_fy_tid']['expose']['operator'] = 'field_fy_tid_op';
-  $handler->display->display_options['filters']['field_fy_tid']['expose']['identifier'] = 'field_fy_tid';
-  $handler->display->display_options['filters']['field_fy_tid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    4 => 0,
-    5 => 0,
-    6 => 0,
-    7 => 0,
-    8 => 0,
-    9 => 0,
-    10 => 0,
-    11 => 0,
-    12 => 0,
-    13 => 0,
-    14 => 0,
-    15 => 0,
-    16 => 0,
-    17 => 0,
-    18 => 0,
-    19 => 0,
-    20 => 0,
-    21 => 0,
-    22 => 0,
-    23 => 0,
-  );
-  $handler->display->display_options['filters']['field_fy_tid']['type'] = 'select';
-  $handler->display->display_options['filters']['field_fy_tid']['vocabulary'] = 'fy';
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'pp_resource' => 'pp_resource',
-    'spp_resource' => 'spp_resource',
-  );
-  $handler->display->display_options['filters']['type']['group'] = 1;
-  $handler->display->display_options['filters']['type']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['type']['expose']['operator_id'] = 'type_op';
-  $handler->display->display_options['filters']['type']['expose']['label'] = 'Type';
-  $handler->display->display_options['filters']['type']['expose']['operator'] = 'type_op';
-  $handler->display->display_options['filters']['type']['expose']['identifier'] = 'type';
-  $handler->display->display_options['filters']['type']['expose']['required'] = TRUE;
-  $handler->display->display_options['filters']['type']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    4 => 0,
-    5 => 0,
-    6 => 0,
-    7 => 0,
-    8 => 0,
-    9 => 0,
-    10 => 0,
-    11 => 0,
-    12 => 0,
-    13 => 0,
-    14 => 0,
-    15 => 0,
-    16 => 0,
-    17 => 0,
-    18 => 0,
-    19 => 0,
-    20 => 0,
-    21 => 0,
-    22 => 0,
-    23 => 0,
-  );
-  $handler->display->display_options['filters']['type']['expose']['reduce'] = TRUE;
-  /* Filter criterion: Votes: Tag */
-  $handler->display->display_options['filters']['tag']['id'] = 'tag';
-  $handler->display->display_options['filters']['tag']['table'] = 'votingapi_vote';
-  $handler->display->display_options['filters']['tag']['field'] = 'tag';
-  $handler->display->display_options['filters']['tag']['relationship'] = 'votingapi_vote';
-  $handler->display->display_options['filters']['tag']['group'] = 1;
-  $handler->display->display_options['filters']['tag']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['tag']['expose']['operator_id'] = 'tag_op';
-  $handler->display->display_options['filters']['tag']['expose']['label'] = 'Tag';
-  $handler->display->display_options['filters']['tag']['expose']['operator'] = 'tag_op';
-  $handler->display->display_options['filters']['tag']['expose']['identifier'] = 'tag';
-  $handler->display->display_options['filters']['tag']['is_grouped'] = TRUE;
-  $handler->display->display_options['filters']['tag']['group_info']['label'] = 'Vote type';
-  $handler->display->display_options['filters']['tag']['group_info']['identifier'] = 'tag';
-  $handler->display->display_options['filters']['tag']['group_info']['group_items'] = array(
-    1 => array(
-      'title' => 'pp_own_lend',
-      'operator' => '=',
-      'value' => 'pp_own_lend',
-    ),
-    2 => array(
-      'title' => 'pp_preference',
-      'operator' => '=',
-      'value' => 'pp_preference',
-    ),
-    3 => array(
-      'title' => 'pp_shared_pledge_usd',
-      'operator' => '=',
-      'value' => 'pp_shared_pledge_usd',
-    ),
-    4 => array(
-      'title' => 'pp_shared_pledge_cad',
-      'operator' => '=',
-      'value' => 'pp_shared_pledge_cad',
-    ),
-  );
-  /* Filter criterion: User: Institution (field_institution) */
-  $handler->display->display_options['filters']['field_institution_value']['id'] = 'field_institution_value';
-  $handler->display->display_options['filters']['field_institution_value']['table'] = 'field_data_field_institution';
-  $handler->display->display_options['filters']['field_institution_value']['field'] = 'field_institution_value';
-  $handler->display->display_options['filters']['field_institution_value']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['field_institution_value']['group'] = 1;
-  $handler->display->display_options['filters']['field_institution_value']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_institution_value']['expose']['operator_id'] = 'field_institution_value_op';
-  $handler->display->display_options['filters']['field_institution_value']['expose']['label'] = 'Institution';
-  $handler->display->display_options['filters']['field_institution_value']['expose']['operator'] = 'field_institution_value_op';
-  $handler->display->display_options['filters']['field_institution_value']['expose']['identifier'] = 'field_institution_value';
-  $handler->display->display_options['filters']['field_institution_value']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    4 => 0,
-    5 => 0,
-    6 => 0,
-    7 => 0,
-    8 => 0,
-    9 => 0,
-    10 => 0,
-    11 => 0,
-    12 => 0,
-    13 => 0,
-    14 => 0,
-    15 => 0,
-    16 => 0,
-    17 => 0,
-    18 => 0,
-    19 => 0,
-    20 => 0,
-    21 => 0,
-    22 => 0,
-    23 => 0,
-    24 => 0,
-  );
   $handler->display->display_options['path'] = 'admin/pp/inst-summary';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Institution Summary (PP & SPP)';
