@@ -51,16 +51,16 @@ function crl_pp_resource_feat_theme() {
 function crl_pp_resource_feat_block_info() {
   // Add vote input block.
   $blocks['crl_pp_resource_feat_vote'] = array(
-    'info' => t('Vote input for a PP Resource'), 
+    'info' => t('Vote input for a PP Resource'),
     'cache' => DRUPAL_NO_CACHE,
   );
   // Add simple notice text that can be included anywhere (e.g., dashboard).
   $blocks['crl_pp_resource_feat_pp_link'] = array(
-    'info' => t('Text hook to PP'), 
+    'info' => t('Text hook to PP'),
     'cache' => DRUPAL_NO_CACHE,
   );
   $blocks['crl_pp_resource_feat_spp_link'] = array(
-    'info' => t('Text hook to spp'), 
+    'info' => t('Text hook to spp'),
     'cache' => DRUPAL_NO_CACHE,
   );
   return $blocks;
@@ -129,7 +129,7 @@ function crl_pp_resource_feat_get_vote_input($node) {
 
 /**
  * Form definition: SPP vote input widget.
- * 
+ *
  * @todo, consider themeing some of the markup here.
  */
 function crl_pp_resource_feat_shared_vote_input_form($form, &$form_state) {
@@ -242,7 +242,7 @@ function crl_pp_resource_feat_shared_vote_input_submit($form, &$form_state) {
     }
     drupal_set_message(t('Your pledge has been saved.' . ' ' . $conversion_note));
   }
-  // Special handling if this is an ajax callback. 
+  // Special handling if this is an ajax callback.
   if (isset($form_state['clicked_button']['#ajax'])) {
     // Some of our "save" logic above may have changed values that are displayed
     // on the form itself, so we can just fully rebuilt it.
@@ -256,7 +256,7 @@ function crl_pp_resource_feat_shared_vote_input_submit($form, &$form_state) {
 
 /**
  * Helper to generate a vote summary for the SPP vote widget.
- * 
+ *
  * @todo, consider themeing this output.
  */
 function crl_pp_resource_feat_shared_vote_get_summary($node) {
@@ -264,7 +264,7 @@ function crl_pp_resource_feat_shared_vote_get_summary($node) {
   $node_wrapper = entity_metadata_wrapper('node', $node);
   // Get the fiscal year taxonomy term that this node relates to as a wrapper.
   $term_wrapper = entity_metadata_wrapper('taxonomy_term', isset($node_wrapper->field_fy) ? $node_wrapper->field_fy->value() : NULL);
-  // Get the related vote api aggregate data for this node. 
+  // Get the related vote api aggregate data for this node.
   $results = votingapi_select_results(array('entity_type' => 'node', 'entity_id' => $node->nid, 'function' => array('sum', 'count')));
   $pledges_count = $pledges_total = 0;
   foreach ($results as $result) {
@@ -294,7 +294,7 @@ function crl_pp_resource_feat_shared_vote_get_summary($node) {
 
 /**
  * Implements hook_votingapi_metadata_alter()
- * 
+ *
  * Declare various tags used for the SPP voting to voting API. Required for
  * full views support, etc.
  */
@@ -307,11 +307,11 @@ function crl_pp_resource_feat_votingapi_metadata_alter(&$data) {
     );
   }
 }
-  
+
 
 /**
  * Implements hook_field_extra_fields().
- * 
+ *
  * Define numerous psuedo fields.
  */
 function crl_pp_resource_feat_field_extra_fields() {
@@ -326,7 +326,7 @@ function crl_pp_resource_feat_field_extra_fields() {
         'label' => t('PP Resource Vote Input'),
         'description' => t('The vote input for a purchase or shared purchase resource.'),
         'weight' => 901,
-      ),     
+      ),
     ),
   );
   $extra['node']['pp_resource'] = $extra_fields;
@@ -337,7 +337,7 @@ function crl_pp_resource_feat_field_extra_fields() {
 
 /**
  * Implements hook_node_view().
- * 
+ *
  * Attach custom display elements to a PP resource node that's about to be
  * rendered (custom pseudo fields, etc.).
  */
@@ -361,7 +361,7 @@ function crl_pp_resource_feat_node_view($node, $view_mode, $langcode) {
 
 /**
  * Implements hook_page_alter().
- * 
+ *
  * Ad hoc way to add some special styles for the admin interface when viewing
  * PP fivestar data.
  */
@@ -399,7 +399,7 @@ function crl_pp_resource_feat_form_print_mail_form_alter(&$form, &$form_state, $
       $form['fld_subject']['#default_value'] = t("Your input for CRL Shared Purchase Proposal is invited");
       $form['txt_message']['#default_value'] = t("The following title is on the Center for Research Libraries' Shared Purchase Proposal Ballot, I would appreciate your comments and insights regarding it.");
     }
-  }                        
+  }
 }
 
 
@@ -426,22 +426,80 @@ function crl_pp_resource_feat_page_build(&$vars) {
 }
 
 /*
- * Implement hook_from_FORM_ID_alter
+ * Implement hook_from_FORM_ID_alter().
  */
-
 function crl_pp_resource_feat_form_purchase_proposal_nomination_entityform_edit_form_alter(&$form, &$form_state, $form_id) {
-    //Revalidating Only for the purchase proposal nomination entiyform
-    if($form_id == "purchase_proposal_nomination_entityform_edit_form"){
-          //Get the information for logged in user
-          global $user;
-          $user_fields = user_load($user->uid);
-          $inst = crl_user_get_institution($user->uid, NULL);
-                    
-          //Setting the default values for nominator based on the logged in user
-          $form['field_contact_name'][LANGUAGE_NONE][0]['value']['#default_value'] = $user_fields->realname;  
-          $form['field_contact_email'][LANGUAGE_NONE][0]['email']['#default_value'] = $user_fields->mail;  
-          $form['field_pp_nominator_institution'][LANGUAGE_NONE][0]['value']['#default_value'] = $inst;  
-        
+  // Revalidating Only for the purchase proposal nomination entiyform
+  if ($form_id == "purchase_proposal_nomination_entityform_edit_form"){
+    // Get the information for logged in user
+    global $user;
+    $user_fields = user_load($user->uid);
+    $inst = crl_user_get_institution($user->uid, NULL);
+    // Setting the default values for nominator based on the logged in user
+    $form['field_contact_name'][LANGUAGE_NONE][0]['value']['#default_value'] = $user_fields->realname;
+    $form['field_contact_email'][LANGUAGE_NONE][0]['email']['#default_value'] = $user_fields->mail;
+    $form['field_pp_nominator_institution'][LANGUAGE_NONE][0]['value']['#default_value'] = $inst;
+  }
+}
+
+
+/*
+ * Implements hook_views_pre_render().
+ */
+function crl_pp_resource_feat_views_pre_render(&$view) {
+  // Apply some custom display logic to our PP and SPP report views.
+  if ($view->name == 'pp_resource_votes_admin_details_') {
+    // For all PP and SPP report view we want to visually highlight any active
+    // exposed filters (to make the context clearer).
+    foreach ($view->exposed_raw_input as $key => $input) {
+      // See which exposed filters are active.
+      if (!empty($input) && $input != 'All') {
+        // Inject some CSS for the ID of the div that wraps the active filter.
+        // Using inline CSS like this is pretty bad practice, but we can be
+        // failry liberal with the rules here given that this is an admin-only
+        // display.
+        drupal_add_css('#edit-' . str_replace('_', '-', $key) . ' { border: 3px solid #485b2e; }', 'inline');
+      }
     }
-    
+    // Custom alterations specific to the instituion summary display.
+    if ($view->current_display == 'page_6') {
+      $view->style_plugin->render_fields($view->result);
+      $rendered_fields = &$view->style_plugin->rendered_fields;
+      $inst_list = crl_user_inst_list_builder(FALSE);
+      $count_before = count($inst_list);
+      // Alter select fields directly in each row's rendered output.
+      foreach ($rendered_fields as &$field) {
+        if (!empty($field['field_institution_1']) && !empty($field['title'])) {
+          // Remove this entry from our "missing inst" data that will be added
+          // later as an attachment.
+          unset($inst_list[$field['field_institution_1']]);
+          // Apply a custom rewrite to our aggregate title field so that it can
+          // become a link to the admin/pp display with the instituion
+          // from this row passed as a filter (and all other active filters
+          // maintained).
+          $raw_filters = array('field_institution_value' => $field['field_institution_1']) + $view->exposed_raw_input;
+          $field['title'] = '<strong>' . l($field['title'], 'admin/pp', array('query' => $raw_filters)) . '</strong>';
+        }
+      }
+      $count_after = count($inst_list);
+      // Add a "missing inst" display as a view attachment. This simply diffs
+      // the insts represented in the view results with the full (current)
+      // voting inst list and bundles it in a nice fieldset.
+      if (!empty($inst_list) && $count_before > $count_after) {
+        $formatted_list = theme('item_list', array('items' => $inst_list));
+        $output = array(
+          '#theme' => 'fieldset',
+          '#attributes' => array('class' => array('collapsible', 'collapsed')),
+          '#title' => t('Missing Member Institutions (@inst_count)', array('@inst_count' => $count_after)),
+          '#description' => '<p>' . t('The following %inst_count member instituions are not represented in the results above. Please note that some of these institutions may not have been active during the voting time period specified in your filters.', array('%inst_count' => $count_after)) . '</p>',
+          '#children' => $formatted_list,
+          '#attached' => array(
+            'library' => array(array('system', 'drupal.collapse')),
+          ),
+        );
+        $view->attachment_after = render($output);
+      }
+    }
+  }
+
 }
