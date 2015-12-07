@@ -26,6 +26,7 @@ function crl_search_feat_default_search_api_index() {
         "crl_glossary_value" : { "type" : "string" },
         "crl_provider_status" : { "type" : "list\\u003Cstring\\u003E" },
         "crl_resource_expiration_countdown" : { "type" : "integer" },
+        "crl_resource_expiration_date" : { "type" : "date" },
         "crl_resource_master_update_timestamp" : { "type" : "date" },
         "crl_resource_status_backref" : { "type" : "list\\u003Cstring\\u003E" },
         "field_activity_crl_status" : { "type" : "list\\u003Cstring\\u003E" },

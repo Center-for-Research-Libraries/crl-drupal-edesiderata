@@ -210,10 +210,10 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Indexed Node: CRL Resource Expiration Countdown */
-  $handler->display->display_options['sorts']['crl_resource_expiration_countdown']['id'] = 'crl_resource_expiration_countdown';
-  $handler->display->display_options['sorts']['crl_resource_expiration_countdown']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['sorts']['crl_resource_expiration_countdown']['field'] = 'crl_resource_expiration_countdown';
+  /* Sort criterion: Indexed Node: CRL Resource Expiration Date */
+  $handler->display->display_options['sorts']['crl_resource_expiration_date']['id'] = 'crl_resource_expiration_date';
+  $handler->display->display_options['sorts']['crl_resource_expiration_date']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['sorts']['crl_resource_expiration_date']['field'] = 'crl_resource_expiration_date';
   /* Sort criterion: Indexed Node: Date changed */
   $handler->display->display_options['sorts']['changed']['id'] = 'changed';
   $handler->display->display_options['sorts']['changed']['table'] = 'search_api_index_title_search_index';

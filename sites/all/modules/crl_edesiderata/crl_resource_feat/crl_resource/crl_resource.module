@@ -221,6 +221,15 @@ function crl_resource_entity_property_info_alter(&$info) {
     'description' => t("See if a resource has an alert associated with it (through either the resource itself or backreferenced activity)."),
     'getter callback' => 'crl_resource_get_alert',
   );
+  // Get the expiration date for a resource that has backreferenced activity
+  // with soon-to-be expiration.
+  $properties['crl_resource_expiration_date'] = array(
+    'label' => t("CRL Resource Expiration Date"),
+    'type' => 'date',
+    'entity views field' => TRUE,
+    'description' => t("Get the expiration date for a resource that has backreferenced activity with soon-to-be expiration."),
+    'getter callback' => 'crl_resource_get_expiration_date',
+  );
   // Get the offer days remaining for a resource that has backreferenced
   // activity with soon-to-be expiration.
   $properties['crl_resource_expiration_countdown'] = array(
@@ -373,44 +382,6 @@ function crl_resource_get_alert($entity, array $options, $name, $type, $info) {
 
 
 /**
- * Properties getter callback: calculate expiration countdown through
- * backreferences.
- *
- * @see crl_resource_entity_property_info_alter().
- */
-function crl_resource_get_expiration_countdown($entity, array $options, $name, $type, $info) {
-  // If we are not working with a resoruce (e.g., building a generic node search
-  // index), we can just return a NULL value.
-  if (empty($entity->type) || $entity->type != 'resource') {
-    return;
-  }
-  // Initialize with a very high number in case we want to use this value in
-  // a sort (e.g. ensure NULL/empty values are listed last). This feels like a
-  // hack and there may be better options for this.
-  $days_left = 999999999;
-  $wrappers = crl_resource_get_wrappers($entity);
-  // Get the most recent expiration.
-  foreach ($wrappers['a_entity_wrappers'] as $a_entity_wrapper) {
-    // There should be no coutdown value unless the 'license available' status
-    // is set (regardless of the expiration data values that may be saved).
-    $statuses = isset($a_entity_wrapper->field_activity_crl_status) ? $a_entity_wrapper->field_activity_crl_status->value() : array();
-    if (in_array('license_available', $statuses)) {
-      $expire = isset($a_entity_wrapper->field_activity_offer_duration) ? $a_entity_wrapper->field_activity_offer_duration->value() : NULL;
-      // An empty end date, or a matching start/end date, means the field does
-      // not designate an expiration.
-      if (!empty($expire['value2']) && $expire['value2'] != $expire['value']) {
-        $days_left_this = floor((strtotime($expire['value2']) + 86400 - time()) / 60 / 60 / 24);
-        if (is_null($days_left) || $days_left_this < $days_left) {
-          $days_left = $days_left_this;
-        }
-      }
-    }
-  }
-  return $days_left;
-}
-
-
-/**
  * Properties getter callback: get resource vote average.
  *
  * NOTE: requires extra queries (does not just use loaded entity data). So it's
@@ -440,6 +411,91 @@ function crl_resource_get_vote_average($entity, array $options, $name, $type, $i
     }
   }
   return $vote_average;
+}
+
+
+/**
+ * Properties getter callback: calculate nearest expiration date (as a
+ * timestamp) across all resource activity.
+ *
+ * @see crl_resource_entity_property_info_alter().
+ */
+function crl_resource_get_expiration_date($entity, array $options, $name, $type, $info) {
+  // If we are not working with a resoruce (e.g., building a generic node search
+  // index), we can just return a NULL value.
+  if (empty($entity->type) || $entity->type != 'resource') {
+    return;
+  }
+  // Initialize with a very high number in case we want to use this value in
+  // a sort (e.g. ensure NULL/empty values are listed last).
+  $date = 9999999999;
+  $expire = crl_resource_get_expiration($entity);
+  if ($expire) {
+    $date = $expire;
+  }
+  return $date;
+}
+
+
+/**
+ * Properties getter callback: calculate expiration countdown across all
+ * activity.
+ *
+ * @see crl_resource_entity_property_info_alter().
+ */
+function crl_resource_get_expiration_countdown($entity, array $options, $name, $type, $info) {
+  // If we are not working with a resoruce (e.g., building a generic node search
+  // index), we can just return a NULL value.
+  if (empty($entity->type) || $entity->type != 'resource') {
+    return;
+  }
+  // Initialize with a very high number in case we want to use this value in
+  // a sort (e.g. ensure NULL/empty values are listed last).
+  $days_left = 999999999;
+  $expire = crl_resource_get_expiration($entity);
+  if ($expire) {
+    // Convert expiration timestamp into simple integer countdown value. Note
+    // that we round the day-specific expiration value to end END of the day.
+    $days_left = floor(($expire + 86400 - time()) / 60 / 60 / 24);
+  }
+  return $days_left;
+}
+
+
+/**
+ * Helper to fetch the next upcoming expiration date, across all activity, for
+ * a resource.
+ *
+ * @param object $entity
+ *   The Drupal entity for a resource.
+ * @return integer
+ *   A timestamp representing the next upcoming expiration data. Note that this
+ *   is the raw date as stored on the activity entity and is not yet rounded to
+ *   the start or end of the day. Returns int 0 if no expiration is upcoming.
+ */
+function crl_resource_get_expiration($entity) {
+  $expire = 0;
+  $wrappers = crl_resource_get_wrappers($entity);
+  // Get the most recent expiration.
+  foreach ($wrappers['a_entity_wrappers'] as $a_entity_wrapper) {
+    // There should be no expiration value unless the 'license available' status
+    // is set (regardless of the expiration data values that may be saved).
+    $statuses = isset($a_entity_wrapper->field_activity_crl_status) ? $a_entity_wrapper->field_activity_crl_status->value() : array();
+    if (in_array('license_available', $statuses)) {
+      $expire_date = isset($a_entity_wrapper->field_activity_offer_duration) ? $a_entity_wrapper->field_activity_offer_duration->value() : NULL;
+      // An empty end date, or a matching start/end date, means the field does
+      // not designate an expiration.
+      if (!empty($expire_date['value2']) && $expire_date['value2'] != $expire_date['value']) {
+        $expire_this = strtotime($expire_date['value2']);
+        // If we have an active expiration see that it is in the future and is
+        // sooner than any others already detected.
+        if ($expire_this > REQUEST_TIME && (!$expire || $expire_this < $expire)) {
+          $expire = $expire_this;
+        }
+      }
+    }
+  }
+  return $expire;
 }
 
 
