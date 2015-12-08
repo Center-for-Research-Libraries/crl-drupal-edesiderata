@@ -376,7 +376,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Jisc Data',
-    'weight' => '16',
+    'weight' => '17',
     'children' => array(
       0 => 'field_resource_jisc_overview',
       1 => 'field_resource_jisc_description',
@@ -509,6 +509,34 @@ function crl_resource_feat_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_official|entityform|resource_suggestion|form';
+  $field_group->group_name = 'group_official';
+  $field_group->entity_type = 'entityform';
+  $field_group->bundle = 'resource_suggestion';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Offical Use Only',
+    'weight' => '7',
+    'children' => array(
+      0 => 'field_resource_reference',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Offical Use Only',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'classes' => 'group-official field-group-fieldset',
+        'description' => '',
+      ),
+      'formatter' => 'collapsed',
+    ),
+  );
+  $export['group_official|entityform|resource_suggestion|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_overview|node|title_review|default';
   $field_group->group_name = 'group_overview';
   $field_group->entity_type = 'node';
@@ -575,6 +603,41 @@ function crl_resource_feat_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_process|entityform|resource_suggestion|default';
+  $field_group->group_name = 'group_process';
+  $field_group->entity_type = 'entityform';
+  $field_group->bundle = 'resource_suggestion';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Entry Processing',
+    'weight' => '10',
+    'children' => array(
+      0 => 'field_resource_reference',
+      1 => 'flag_resource_suggestion_reject',
+      2 => 'flag_resource_suggestion_process',
+      3 => 'flag_resource_suggestion_convert',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'Entry Processing',
+      'instance_settings' => array(
+        'id' => '',
+        'classes' => 'group-process field-group-div',
+        'description' => '',
+        'show_label' => '1',
+        'label_element' => 'h2',
+        'effect' => 'none',
+        'speed' => 'fast',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $export['group_process|entityform|resource_suggestion|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_ratings|node|title_review|default';
   $field_group->group_name = 'group_ratings';
   $field_group->entity_type = 'node';
@@ -583,7 +646,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Community Ratings',
-    'weight' => '1',
+    'weight' => '2',
     'children' => array(
       0 => 'field_platform_and_user_interfac',
       1 => 'field_content_scope_and_complete',
@@ -593,13 +656,13 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Community Ratings',
       'instance_settings' => array(
+        'id' => 'node_resource_full_group_ratings',
         'classes' => 'rating-wrapper group-ratings field-group-div',
         'description' => '',
         'show_label' => '1',
         'label_element' => 'h2',
         'effect' => 'none',
         'speed' => 'fast',
-        'id' => 'node_resource_full_group_ratings',
       ),
       'formatter' => 'open',
     ),

@@ -442,26 +442,55 @@ ul.facetapi-facet-crl-glossary-value li a.facetapi-active {
 /* Tweaks for custom facet breadcrumb */
 #block-crl-helpers-crl-helpers-facet-breadcrumb {
   background: url('../images/content.png') 0 0 repeat;
-  border: 1px solid #ff8c00;
+  border: 1px solid #1a1c35;
   margin: 20px 0px;
-  padding: 18px;
 }
-#block-crl-helpers-crl-helpers-facet-breadcrumb ul {
+#block-crl-helpers-crl-helpers-facet-breadcrumb #facet-breadcrumb {
+  padding: 10px;
+  background-color: #1a1c35;
+  color: #fff;
+}
+#block-crl-helpers-crl-helpers-facet-breadcrumb #facet-breadcrumb a {
+  color: #fff;
+}
+#block-crl-helpers-crl-helpers-facet-breadcrumb #facet-breadcrumb ul {
   margin: 0;
   padding: 0;
 }
-#facet-breadcrumb {
-  padding-bottom: 1em;
+#block-crl-helpers-crl-helpers-facet-breadcrumb .extras {
+  padding: 18px;
+  padding-bottom: 0px;
 }
+#block-crl-helpers-crl-helpers-facet-breadcrumb .extras fieldset, .facet-breadcrumb-reset {
+  //float: none;
+  //clear: both;
+  margin: 0 0 15px 0;
+  display: block;
+}
+#block-crl-helpers-crl-helpers-facet-breadcrumb .extras fieldset.collapsed,
 .facet-breadcrumb-reset {
-  float: right;
-  margin-left: 2em;
+  //float: left;
+  //clear: none;
+  //margin: 0 20px 20px 0;
+  //display: inline-block;
 }
-.facet-breadcrumb-label {
-  font-weight: bold;
+#block-crl-helpers-crl-helpers-facet-breadcrumb .fieldset-wrapper {
+  margin: 15px 0 0 20px;
+}
+#block-crl-helpers-crl-helpers-facet-breadcrumb .fieldset-legend {
+  font-weight: normal;
 }
 #block-crl-helpers-crl-helpers-facet-breadcrumb ul.breadcrumb {
   float: left;
+}
+.facet-breadcrumb-reset-icon {
+  background: transparent url("../images/sprites.png?v=5") no-repeat scroll -50px -300px;
+  display: inline-block;
+  height: 18px;
+  width: 18px;
+  margin-right: 8px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 /* Tweaks for back-to-index link block */
@@ -860,6 +889,7 @@ button, .button, input[type="reset"], input[type="submit"], input[type="button"]
   outline: 0 none;
   overflow: visible;
   padding: 5px 10px 5px;
+  margin: 0px 5px 5px 0px !important;
   text-shadow: none;
   width: auto;
   text-decoration: none !important;
@@ -1418,7 +1448,8 @@ form.shared-vote-input-form .form-notes {
 .message-icon-small.resource_new_alert,
 .message-icon-small.resource_expires_soon,
 .message-icon-small.resource_status_update,
-.message-icon-small.resource_new_review {
+.message-icon-small.resource_new_review,
+.message-icon-small.resource_suggested {
   background-position: -350px -450px;
 }
 /* Other misc MyDes icons */

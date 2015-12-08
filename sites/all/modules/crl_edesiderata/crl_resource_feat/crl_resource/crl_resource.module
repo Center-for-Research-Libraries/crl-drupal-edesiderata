@@ -112,6 +112,21 @@ function crl_resource_page_build(&$page) {
 
 
 /**
+ * Implements hook_menu().
+ */
+function crl_resource_menu() {
+  // Menu item for the resource suggestion summary page.
+  $items['resources/suggestions'] = array(
+    'title' => 'Resource Suggestions',
+    'description' => 'Resource suggestions summary page.',
+    'page callback' => 'crl_resource_suggest_page',
+    'file' => 'includes/crl_resource_suggest.page.inc',
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+
+/**
  * Implements hook_theme().
  */
 function crl_resource_theme() {
@@ -220,6 +235,15 @@ function crl_resource_entity_property_info_alter(&$info) {
     'entity views field' => TRUE,
     'description' => t("See if a resource has an alert associated with it (through either the resource itself or backreferenced activity)."),
     'getter callback' => 'crl_resource_get_alert',
+  );
+  // Get the expiration date for a resource that has backreferenced activity
+  // with soon-to-be expiration.
+  $properties['crl_resource_expiration_date'] = array(
+    'label' => t("CRL Resource Expiration Date"),
+    'type' => 'date',
+    'entity views field' => TRUE,
+    'description' => t("Get the expiration date for a resource that has backreferenced activity with soon-to-be expiration."),
+    'getter callback' => 'crl_resource_get_expiration_date',
   );
   // Get the offer days remaining for a resource that has backreferenced
   // activity with soon-to-be expiration.
@@ -373,44 +397,6 @@ function crl_resource_get_alert($entity, array $options, $name, $type, $info) {
 
 
 /**
- * Properties getter callback: calculate expiration countdown through
- * backreferences.
- *
- * @see crl_resource_entity_property_info_alter().
- */
-function crl_resource_get_expiration_countdown($entity, array $options, $name, $type, $info) {
-  // If we are not working with a resoruce (e.g., building a generic node search
-  // index), we can just return a NULL value.
-  if (empty($entity->type) || $entity->type != 'resource') {
-    return;
-  }
-  // Initialize with a very high number in case we want to use this value in
-  // a sort (e.g. ensure NULL/empty values are listed last). This feels like a
-  // hack and there may be better options for this.
-  $days_left = 999999999;
-  $wrappers = crl_resource_get_wrappers($entity);
-  // Get the most recent expiration.
-  foreach ($wrappers['a_entity_wrappers'] as $a_entity_wrapper) {
-    // There should be no coutdown value unless the 'license available' status
-    // is set (regardless of the expiration data values that may be saved).
-    $statuses = isset($a_entity_wrapper->field_activity_crl_status) ? $a_entity_wrapper->field_activity_crl_status->value() : array();
-    if (in_array('license_available', $statuses)) {
-      $expire = isset($a_entity_wrapper->field_activity_offer_duration) ? $a_entity_wrapper->field_activity_offer_duration->value() : NULL;
-      // An empty end date, or a matching start/end date, means the field does
-      // not designate an expiration.
-      if (!empty($expire['value2']) && $expire['value2'] != $expire['value']) {
-        $days_left_this = floor((strtotime($expire['value2']) + 86400 - time()) / 60 / 60 / 24);
-        if (is_null($days_left) || $days_left_this < $days_left) {
-          $days_left = $days_left_this;
-        }
-      }
-    }
-  }
-  return $days_left;
-}
-
-
-/**
  * Properties getter callback: get resource vote average.
  *
  * NOTE: requires extra queries (does not just use loaded entity data). So it's
@@ -440,6 +426,91 @@ function crl_resource_get_vote_average($entity, array $options, $name, $type, $i
     }
   }
   return $vote_average;
+}
+
+
+/**
+ * Properties getter callback: calculate nearest expiration date (as a
+ * timestamp) across all resource activity.
+ *
+ * @see crl_resource_entity_property_info_alter().
+ */
+function crl_resource_get_expiration_date($entity, array $options, $name, $type, $info) {
+  // If we are not working with a resoruce (e.g., building a generic node search
+  // index), we can just return a NULL value.
+  if (empty($entity->type) || $entity->type != 'resource') {
+    return;
+  }
+  // Initialize with a very high number in case we want to use this value in
+  // a sort (e.g. ensure NULL/empty values are listed last).
+  $date = 9999999999;
+  $expire = crl_resource_get_expiration($entity);
+  if ($expire) {
+    $date = $expire;
+  }
+  return $date;
+}
+
+
+/**
+ * Properties getter callback: calculate expiration countdown across all
+ * activity.
+ *
+ * @see crl_resource_entity_property_info_alter().
+ */
+function crl_resource_get_expiration_countdown($entity, array $options, $name, $type, $info) {
+  // If we are not working with a resoruce (e.g., building a generic node search
+  // index), we can just return a NULL value.
+  if (empty($entity->type) || $entity->type != 'resource') {
+    return;
+  }
+  // Initialize with a very high number in case we want to use this value in
+  // a sort (e.g. ensure NULL/empty values are listed last).
+  $days_left = 999999999;
+  $expire = crl_resource_get_expiration($entity);
+  if ($expire) {
+    // Convert expiration timestamp into simple integer countdown value. Note
+    // that we round the day-specific expiration value to end END of the day.
+    $days_left = floor(($expire + 86400 - time()) / 60 / 60 / 24);
+  }
+  return $days_left;
+}
+
+
+/**
+ * Helper to fetch the next upcoming expiration date, across all activity, for
+ * a resource.
+ *
+ * @param object $entity
+ *   The Drupal entity for a resource.
+ * @return integer
+ *   A timestamp representing the next upcoming expiration data. Note that this
+ *   is the raw date as stored on the activity entity and is not yet rounded to
+ *   the start or end of the day. Returns int 0 if no expiration is upcoming.
+ */
+function crl_resource_get_expiration($entity) {
+  $expire = 0;
+  $wrappers = crl_resource_get_wrappers($entity);
+  // Get the most recent expiration.
+  foreach ($wrappers['a_entity_wrappers'] as $a_entity_wrapper) {
+    // There should be no expiration value unless the 'license available' status
+    // is set (regardless of the expiration data values that may be saved).
+    $statuses = isset($a_entity_wrapper->field_activity_crl_status) ? $a_entity_wrapper->field_activity_crl_status->value() : array();
+    if (in_array('license_available', $statuses)) {
+      $expire_date = isset($a_entity_wrapper->field_activity_offer_duration) ? $a_entity_wrapper->field_activity_offer_duration->value() : NULL;
+      // An empty end date, or a matching start/end date, means the field does
+      // not designate an expiration.
+      if (!empty($expire_date['value2']) && $expire_date['value2'] != $expire_date['value']) {
+        $expire_this = strtotime($expire_date['value2']);
+        // If we have an active expiration see that it is in the future and is
+        // sooner than any others already detected.
+        if ($expire_this > REQUEST_TIME && (!$expire || $expire_this < $expire)) {
+          $expire = $expire_this;
+        }
+      }
+    }
+  }
+  return $expire;
 }
 
 
@@ -586,6 +657,21 @@ function crl_resource_block_info() {
     'info' => t('CRL Resource Summary'),
     'cache' => DRUPAL_NO_CACHE,
   );
+  // The resource suggest blocks offers a common hook for resource suggestions.
+  $blocks['crl_resource_suggest'] = array(
+    'info' => t('CRL Resource Suggest'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // The resource suggest blocks offers a common hook for resource suggestions.
+  $blocks['crl_resource_suggest_long'] = array(
+    'info' => t('CRL Resource Suggest (Long)'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // Also offer a collapsed version of the resource suggestion block.
+  $blocks['crl_resource_suggest_collapsed'] = array(
+    'info' => t('CRL Resource Suggest (Collapsed)'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
   return $blocks;
 }
 
@@ -686,5 +772,118 @@ function crl_resource_menu_local_tasks_alter(&$data, $router_item, $root_path) {
         $data['tabs'][1]['count']++;
       }
     }
+  }
+}
+
+
+/**
+ * Implements hook_form_resource_suggestion_entityform_edit_form_alter().
+ */
+function crl_resource_form_resource_suggestion_entityform_edit_form_alter(&$form, &$form_state, $form_id) {
+  // If this user has access to the uniqueness widget and this is a new
+  // submission we make some alterations to add "related" suggestions.
+  if (module_exists('uniqueness') && user_access('use uniqueness widget')
+      && !empty($form['#entity']) && !empty($form['#entity']->is_new)) {
+    $title_field_info = field_info_instance('entityform', 'field_title_sort', 'resource_suggestion');
+    // Disable the formal title storage and add a temporary field to the form
+    // that is compatible with uniqueness lookups.
+    $form['field_title_sort']['#access'] = $form['field_title_sort']['#required'] = FALSE;
+    $form['title'] = array( // 'title' key creates a form id that work with uniqueness JS
+      '#type' => 'textfield',
+      '#title' => $title_field_info['label'],
+      '#required' => TRUE,
+      '#maxlength' => 255,
+      '#weight' => -10,
+    );
+    // Set submit handler that will later process the data from the temporary
+    // title field into the formal title storage.
+    array_unshift($form['actions']['submit']['#submit'], 'crl_resource_resource_suggestion_entityform_submit');
+    // Implement the relevant logic from uniqueness_form_alter() in order to
+    // make our entity form uniqueness enabled.
+    $form['uniqueness']['#attached']['js'] = array(
+      drupal_get_path('module', 'uniqueness') . '/uniqueness.js',
+      array('data' => array('uniqueness' => _uniqueness_get_js_settings('resource', NULL)), 'type' => 'setting',)
+    );
+    $count = 0;
+    $content = uniqueness_widget_content($count);
+    $form['uniqueness'] += array(
+      '#type' => 'fieldset',
+      '#title' => filter_xss_admin(variable_get('uniqueness_default_title', t('Related content'))),
+      '#collapsible' => 1,
+      '#collapsed' => ($count == 0),
+      '#weight' => -9, // Place underneath title.
+      'uniqueness_type' => array(),
+    );
+    $form['uniqueness']['uniqueness_type'] += array(
+      '#type' => 'item',
+      '#title' => '',
+      '#markup' => $content,
+    );
+  }
+}
+
+
+/**
+ * Submit callback for resource suggestion entity form.
+ * 
+ * @see crl_resource_form_resource_suggestion_entityform_edit_form_alter()
+ */
+function crl_resource_resource_suggestion_entityform_submit($form, &$form_state) {
+  // Capture the title in the formal title storage for the submission.
+  $lang = $form['field_title_sort']['#language'];
+  $form_state['values']['field_title_sort'][$lang][0]['value'] = $form_state['values']['title'];
+}
+
+
+/**
+ * Implements hook_form_flag_confirm_alter().
+ */
+function crl_resource_form_flag_confirm_alter(&$form, &$form_state) {
+  // Add some conditional states logic to our resource suggestion flagging form.
+  if (isset($form['#flag']) && $form['#flag']->name == 'resource_suggestion_process') {
+    // State changes for "required" values also require custom validation logic
+    // so add custom validate handler.
+    $form['#validate'][] = 'crl_resource_form_resource_suggestion_process_validate';
+    // Provider field should be visible/required when accepting.
+    $form['field_provider']['#states'] = array(
+      'visible' => array(
+        ':input[name^="field_resource_suggestion_status"]' => array('value' => 'yes'),
+      ),
+      'required' => array(
+        ':input[name^="field_resource_suggestion_status"]' => array('value' => 'yes'),
+      ),
+    );
+    // Notes field should be visible/required when rejecting.
+    $form['field_crl_processing_notes']['#states'] = array(
+      'visible' => array(
+        ':input[name^="field_resource_suggestion_status"]' => array('value' => 'no'),
+      ),
+      'required' => array(
+        ':input[name^="field_resource_suggestion_status"]' => array('value' => 'no'),
+      ),
+    );
+  }
+}
+
+
+/**
+ * Validation callback for resource suggestion flagging form.
+ * 
+ * Implementes custom validation rules that are driven by conditional show/hide
+ * logic in the form itself.
+ * 
+ * @see crl_resource_form_flag_confirm_alter()
+ */
+function crl_resource_form_resource_suggestion_process_validate($form, &$form_state) {
+  $action = $form_state['values']['field_resource_suggestion_status'][$form['field_resource_suggestion_status']['#language']][0];
+  $provider = $form_state['values']['field_provider'][$form['field_provider']['#language']][0];
+  $notes = $form_state['values']['field_crl_processing_notes'][$form['field_crl_processing_notes']['#language']][0];
+  // When accepting a suggestion the provider field is required.
+  if (isset($action['value']) && $action['value'] == 'yes' && empty($provider['target_id'])) {
+    form_set_error('field_provider', t('A provider value must be entered when accepting a suggestion.'));
+  }
+  // When rejecting a suggestion the notes field is required.
+  if (isset($action['value']) && $action['value'] == 'no' && empty($notes['value'])) {
+    form_set_error('field_crl_processing_notes', t('You must provide a comment if rejecting a suggestion.'));
   }
 }

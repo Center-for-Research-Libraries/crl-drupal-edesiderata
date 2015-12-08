@@ -181,6 +181,7 @@ class CrlResourceDisplayElements {
     return array('#theme' => 'crl_helpers_pseudo_field', '#label' => t('Updated'), '#output' => format_date($this->entity_wrapper->crl_resource_master_update_timestamp->value(), 'short'), '#inline' => TRUE);
   }
 
+
   /**
    * Build custom field: pseudo_field_resource_alerts
    */
