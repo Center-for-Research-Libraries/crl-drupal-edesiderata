@@ -104,7 +104,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
   $handler->display->display_options['header']['area']['content'] = '<p>You can select individual resources of interest and track the updates, changes to CRL license status and community comments that apply to them. View updates to your watchlist with the activity report or through automated email notifications.</p>
-<p><a class="button" href="/resources/main" onclick="return window.confirm(\'You will be directed to the A-Z resource listings. To add a new item to your watchlist, simply click the \\\'Watch\\\' option that appears next to a resource while browsing.\');"></span><b>+</b>&nbsp;&nbsp;Add to Watchlist</a>&nbsp;&nbsp;<a class="button" href="/me/activity"><span class="crl-icon-small pulse-icon"></span>Watchlist Activity Report</a>&nbsp;&nbsp;<a class="button" href="/me/watchlist/download"><span class="crl-icon-small download-icon"></span>Download Watchlist</a></p>';
+<p><a class="button" href="/resources/main" onclick="return window.confirm(\'You will be directed to the A-Z resource listings. To add a new item to your watchlist, simply click the \\\'Watch\\\' option that appears next to a resource while browsing.\');"></span>+&nbsp;&nbsp;Add to Watchlist</a>&nbsp;&nbsp;<a class="button" href="/me/activity"><span class="crl-icon-small pulse-icon"></span>Watchlist Activity Report</a>&nbsp;&nbsp;<a class="button" href="/me/watchlist/download"><span class="crl-icon-small download-icon"></span>Download Watchlist</a></p>';
   $handler->display->display_options['header']['area']['format'] = 'literal';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
@@ -377,7 +377,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
   $handler->display->display_options['header']['area']['content'] = '<p>You can select sets of resources to track by designated category such as resource type, provider, CRL licensing status, or any combination of filters in the <a href="/resources/main">A-Z index</a>. Email alerts about new additions to your watchsets can be sent to you.</p>
-<p><a class="button" href="/resources/main" onclick="return window.confirm(\'You will be directed to the A-Z resource listings. To create a new watchset, first input some personalized filter criteria and then click the \\\'Watch this Resource Set\\\' option that appears at the top of the results page.\');"></span><b>+</b>&nbsp;&nbsp;Create</a>';
+<p><a class="button" href="/resources/main" onclick="return window.confirm(\'You will be directed to the A-Z resource listings. To create a new watchset, first input some personalized filter criteria and then click the \\\'Watch this Resource Set\\\' option that appears at the top of the results page.\');"></span>+&nbsp;&nbsp;Create Watchset</a></p>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['header']['area']['tokenize'] = TRUE;
   /* No results behavior: Global: Text area */

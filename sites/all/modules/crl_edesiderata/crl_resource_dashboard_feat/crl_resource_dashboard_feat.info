@@ -6,6 +6,7 @@ dependencies[] = crl_activity
 dependencies[] = crl_helpers_feat
 dependencies[] = crl_message_feat
 dependencies[] = crl_pp_resource_feat
+dependencies[] = crl_resource
 dependencies[] = crl_resource_feat
 dependencies[] = delta
 dependencies[] = views

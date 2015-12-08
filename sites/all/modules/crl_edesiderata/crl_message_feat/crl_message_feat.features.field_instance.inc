@@ -10,7 +10,8 @@
 function crl_message_feat_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'message-resource_expires_soon-field_resource_reference'
+  // Exported field_instance:
+  // 'message-resource_expires_soon-field_resource_reference'.
   $field_instances['message-resource_expires_soon-field_resource_reference'] = array(
     'bundle' => 'resource_expires_soon',
     'default_value' => NULL,
@@ -68,7 +69,7 @@ function crl_message_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'message-resource_new-field_resource_reference'
+  // Exported field_instance: 'message-resource_new-field_resource_reference'.
   $field_instances['message-resource_new-field_resource_reference'] = array(
     'bundle' => 'resource_new',
     'default_value' => NULL,
@@ -126,7 +127,8 @@ function crl_message_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'message-resource_new_alert-field_resource_reference'
+  // Exported field_instance:
+  // 'message-resource_new_alert-field_resource_reference'.
   $field_instances['message-resource_new_alert-field_resource_reference'] = array(
     'bundle' => 'resource_new_alert',
     'default_value' => NULL,
@@ -184,7 +186,8 @@ function crl_message_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'message-resource_new_comment-field_resource_reference'
+  // Exported field_instance:
+  // 'message-resource_new_comment-field_resource_reference'.
   $field_instances['message-resource_new_comment-field_resource_reference'] = array(
     'bundle' => 'resource_new_comment',
     'default_value' => NULL,
@@ -242,7 +245,8 @@ function crl_message_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'message-resource_new_review-field_resource_reference'
+  // Exported field_instance:
+  // 'message-resource_new_review-field_resource_reference'.
   $field_instances['message-resource_new_review-field_resource_reference'] = array(
     'bundle' => 'resource_new_review',
     'default_value' => NULL,
@@ -300,7 +304,8 @@ function crl_message_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'message-resource_status_update-field_activity_crl_status'
+  // Exported field_instance:
+  // 'message-resource_status_update-field_activity_crl_status'.
   $field_instances['message-resource_status_update-field_activity_crl_status'] = array(
     'bundle' => 'resource_status_update',
     'default_value' => NULL,
@@ -363,7 +368,8 @@ function crl_message_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'message-resource_status_update-field_resource_reference'
+  // Exported field_instance:
+  // 'message-resource_status_update-field_resource_reference'.
   $field_instances['message-resource_status_update-field_resource_reference'] = array(
     'bundle' => 'resource_status_update',
     'default_value' => NULL,
@@ -421,7 +427,8 @@ function crl_message_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'message-resource_update-field_resource_reference'
+  // Exported field_instance:
+  // 'message-resource_update-field_resource_reference'.
   $field_instances['message-resource_update-field_resource_reference'] = array(
     'bundle' => 'resource_update',
     'default_value' => NULL,
@@ -479,7 +486,7 @@ function crl_message_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-message_subscribe_email'
+  // Exported field_instance: 'user-user-message_subscribe_email'.
   $field_instances['user-user-message_subscribe_email'] = array(
     'bundle' => 'user',
     'default_value' => array(
@@ -515,7 +522,7 @@ function crl_message_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-message_subscribe_email_freq'
+  // Exported field_instance: 'user-user-message_subscribe_email_freq'.
   $field_instances['user-user-message_subscribe_email_freq'] = array(
     'bundle' => 'user',
     'default_value' => array(

@@ -112,6 +112,21 @@ function crl_resource_page_build(&$page) {
 
 
 /**
+ * Implements hook_menu().
+ */
+function crl_resource_menu() {
+  // Menu item for the resource suggestion summary page.
+  $items['resources/suggestions'] = array(
+    'title' => 'Resource Suggestions',
+    'description' => 'Resource suggestions summary page.',
+    'page callback' => 'crl_resource_suggest_page',
+    'file' => 'includes/crl_resource_suggest.page.inc',
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+
+/**
  * Implements hook_theme().
  */
 function crl_resource_theme() {
@@ -642,6 +657,21 @@ function crl_resource_block_info() {
     'info' => t('CRL Resource Summary'),
     'cache' => DRUPAL_NO_CACHE,
   );
+  // The resource suggest blocks offers a common hook for resource suggestions.
+  $blocks['crl_resource_suggest'] = array(
+    'info' => t('CRL Resource Suggest'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // The resource suggest blocks offers a common hook for resource suggestions.
+  $blocks['crl_resource_suggest_long'] = array(
+    'info' => t('CRL Resource Suggest (Long)'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // Also offer a collapsed version of the resource suggestion block.
+  $blocks['crl_resource_suggest_collapsed'] = array(
+    'info' => t('CRL Resource Suggest (Collapsed)'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
   return $blocks;
 }
 
@@ -742,5 +772,118 @@ function crl_resource_menu_local_tasks_alter(&$data, $router_item, $root_path) {
         $data['tabs'][1]['count']++;
       }
     }
+  }
+}
+
+
+/**
+ * Implements hook_form_resource_suggestion_entityform_edit_form_alter().
+ */
+function crl_resource_form_resource_suggestion_entityform_edit_form_alter(&$form, &$form_state, $form_id) {
+  // If this user has access to the uniqueness widget and this is a new
+  // submission we make some alterations to add "related" suggestions.
+  if (module_exists('uniqueness') && user_access('use uniqueness widget')
+      && !empty($form['#entity']) && !empty($form['#entity']->is_new)) {
+    $title_field_info = field_info_instance('entityform', 'field_title_sort', 'resource_suggestion');
+    // Disable the formal title storage and add a temporary field to the form
+    // that is compatible with uniqueness lookups.
+    $form['field_title_sort']['#access'] = $form['field_title_sort']['#required'] = FALSE;
+    $form['title'] = array( // 'title' key creates a form id that work with uniqueness JS
+      '#type' => 'textfield',
+      '#title' => $title_field_info['label'],
+      '#required' => TRUE,
+      '#maxlength' => 255,
+      '#weight' => -10,
+    );
+    // Set submit handler that will later process the data from the temporary
+    // title field into the formal title storage.
+    array_unshift($form['actions']['submit']['#submit'], 'crl_resource_resource_suggestion_entityform_submit');
+    // Implement the relevant logic from uniqueness_form_alter() in order to
+    // make our entity form uniqueness enabled.
+    $form['uniqueness']['#attached']['js'] = array(
+      drupal_get_path('module', 'uniqueness') . '/uniqueness.js',
+      array('data' => array('uniqueness' => _uniqueness_get_js_settings('resource', NULL)), 'type' => 'setting',)
+    );
+    $count = 0;
+    $content = uniqueness_widget_content($count);
+    $form['uniqueness'] += array(
+      '#type' => 'fieldset',
+      '#title' => filter_xss_admin(variable_get('uniqueness_default_title', t('Related content'))),
+      '#collapsible' => 1,
+      '#collapsed' => ($count == 0),
+      '#weight' => -9, // Place underneath title.
+      'uniqueness_type' => array(),
+    );
+    $form['uniqueness']['uniqueness_type'] += array(
+      '#type' => 'item',
+      '#title' => '',
+      '#markup' => $content,
+    );
+  }
+}
+
+
+/**
+ * Submit callback for resource suggestion entity form.
+ * 
+ * @see crl_resource_form_resource_suggestion_entityform_edit_form_alter()
+ */
+function crl_resource_resource_suggestion_entityform_submit($form, &$form_state) {
+  // Capture the title in the formal title storage for the submission.
+  $lang = $form['field_title_sort']['#language'];
+  $form_state['values']['field_title_sort'][$lang][0]['value'] = $form_state['values']['title'];
+}
+
+
+/**
+ * Implements hook_form_flag_confirm_alter().
+ */
+function crl_resource_form_flag_confirm_alter(&$form, &$form_state) {
+  // Add some conditional states logic to our resource suggestion flagging form.
+  if (isset($form['#flag']) && $form['#flag']->name == 'resource_suggestion_process') {
+    // State changes for "required" values also require custom validation logic
+    // so add custom validate handler.
+    $form['#validate'][] = 'crl_resource_form_resource_suggestion_process_validate';
+    // Provider field should be visible/required when accepting.
+    $form['field_provider']['#states'] = array(
+      'visible' => array(
+        ':input[name^="field_resource_suggestion_status"]' => array('value' => 'yes'),
+      ),
+      'required' => array(
+        ':input[name^="field_resource_suggestion_status"]' => array('value' => 'yes'),
+      ),
+    );
+    // Notes field should be visible/required when rejecting.
+    $form['field_crl_processing_notes']['#states'] = array(
+      'visible' => array(
+        ':input[name^="field_resource_suggestion_status"]' => array('value' => 'no'),
+      ),
+      'required' => array(
+        ':input[name^="field_resource_suggestion_status"]' => array('value' => 'no'),
+      ),
+    );
+  }
+}
+
+
+/**
+ * Validation callback for resource suggestion flagging form.
+ * 
+ * Implementes custom validation rules that are driven by conditional show/hide
+ * logic in the form itself.
+ * 
+ * @see crl_resource_form_flag_confirm_alter()
+ */
+function crl_resource_form_resource_suggestion_process_validate($form, &$form_state) {
+  $action = $form_state['values']['field_resource_suggestion_status'][$form['field_resource_suggestion_status']['#language']][0];
+  $provider = $form_state['values']['field_provider'][$form['field_provider']['#language']][0];
+  $notes = $form_state['values']['field_crl_processing_notes'][$form['field_crl_processing_notes']['#language']][0];
+  // When accepting a suggestion the provider field is required.
+  if (isset($action['value']) && $action['value'] == 'yes' && empty($provider['target_id'])) {
+    form_set_error('field_provider', t('A provider value must be entered when accepting a suggestion.'));
+  }
+  // When rejecting a suggestion the notes field is required.
+  if (isset($action['value']) && $action['value'] == 'no' && empty($notes['value'])) {
+    form_set_error('field_crl_processing_notes', t('You must provide a comment if rejecting a suggestion.'));
   }
 }

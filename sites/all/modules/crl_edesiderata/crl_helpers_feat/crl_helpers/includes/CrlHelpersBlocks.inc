@@ -27,12 +27,15 @@ class CrlHelpersBlocks {
       $breadcrumb = drupal_get_breadcrumb();
       // Drop the "home" value for the breadcrumb.
       array_shift($breadcrumb);
-      $extra = '';
-      // Integration with the crl_mydes_feat module to inject a save this
-      // search option into the breadcrumb block (only applicable to resource
-      // list).
-      if (module_exists('crl_mydes_feat') && drupal_match_path(current_path(), 'resources/*')) {
-        $extra = crl_mydes_feat_build_saved_search_form();
+      // Add some extras that may related to the filtered set. These currently
+      // only apply to resource lists.
+      $extra = array();
+      if (drupal_match_path(current_path(), 'resources/*')) {
+        // Integration with the crl_mydes_feat module to inject a save this
+        // search option into the breadcrumb block.
+        if (module_exists('crl_mydes_feat')) {
+          $extra['save_search'] = crl_mydes_feat_build_saved_search_form();
+        }
       }
       $output = array(
         'facet_breadcrumb' => array(
