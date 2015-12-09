@@ -418,51 +418,6 @@ function crl_provider_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-provider-field_contacts'.
-  $field_instances['node-provider-field_contacts'] = array(
-    'bundle' => 'provider',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Enter contact details by creating a <em>separate entry</em> for each distinct contact as applicable. Include all relevant details such as name, title, email, phone number along with any needed notes.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 1,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 4,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 21,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_contacts',
-    'label' => 'Contacts (Old - To be Removed)',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 3,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 19,
-    ),
-  );
-
   // Exported field_instance: 'node-provider-field_contacts_group'.
   $field_instances['node-provider-field_contacts_group'] = array(
     'bundle' => 'provider',
@@ -1590,14 +1545,12 @@ function crl_provider_feat_field_default_field_instances() {
   t('Comment');
   t('Comment Privacy Setting');
   t('Contacts');
-  t('Contacts (Old - To be Removed)');
   t('Description of access policies. Includes discussion of costs for content.');
   t('Description of founding of organization and important changes to the organizations. [3-6 paragraphs.] ');
   t('Description of how content is created, housed and distributed, commercial systems used, and platform(s).');
   t('Description of relevant legal concerns, includes links to available agreements and licenses.');
   t('Email');
   t('Enter contact details by creating a <em>separate entry</em> for each distinct contact as applicable. Fill in all fields that apply and leave the others blank (blank fields will be hidden).');
-  t('Enter contact details by creating a <em>separate entry</em> for each distinct contact as applicable. Include all relevant details such as name, title, email, phone number along with any needed notes.');
   t('Enter the contact\'s title or a descriptive label for this contact information.');
   t('Fax');
   t('Financial Information');

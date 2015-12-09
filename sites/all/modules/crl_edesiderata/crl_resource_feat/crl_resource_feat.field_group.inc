@@ -714,16 +714,14 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'System Fields',
-    'weight' => '10',
+    'weight' => '11',
     'children' => array(
       0 => 'field_platform_and_user_interfac',
       1 => 'field_content_scope_and_complete',
       2 => 'field_cost_and_price_structure',
       3 => 'field_resource_sources',
-      4 => 'field_temp_subjects_covered',
-      5 => 'field_temp_topics_from_review',
-      6 => 'field_resource_activity_history',
-      7 => 'field_source_guid',
+      4 => 'field_resource_activity_history',
+      5 => 'field_source_guid',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -783,7 +781,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Tabbed',
-    'weight' => '5',
+    'weight' => '4',
     'children' => array(
       0 => 'group_analysis',
       1 => 'group_appendix',
@@ -803,6 +801,40 @@ function crl_resource_feat_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_temp_old_reviews|node|resource|form';
+  $field_group->group_name = 'group_temp_old_reviews';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'resource';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Temporary Data from Old Reviews',
+    'weight' => '10',
+    'children' => array(
+      0 => 'field_temp_subjects_covered',
+      1 => 'field_temp_topics_from_review',
+    ),
+    'format_type' => 'div',
+    'format_settings' => array(
+      'label' => 'Temporary Data from Old Reviews',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'id' => '',
+        'classes' => 'group-temp-old-reviews field-group-div',
+        'description' => '',
+        'show_label' => '1',
+        'label_element' => 'h3',
+        'effect' => 'none',
+        'speed' => 'fast',
+      ),
+      'formatter' => 'collapsed',
+    ),
+  );
+  $export['group_temp_old_reviews|node|resource|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_update_alerts|node|resource|form';
   $field_group->group_name = 'group_update_alerts';
   $field_group->entity_type = 'node';
@@ -811,7 +843,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Update Alert',
-    'weight' => '8',
+    'weight' => '7',
     'children' => array(
       0 => 'field_update_alert',
       1 => 'field_update_alert_message',

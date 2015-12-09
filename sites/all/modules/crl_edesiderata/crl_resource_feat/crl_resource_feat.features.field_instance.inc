@@ -707,7 +707,7 @@ function crl_resource_feat_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 6,
+      'weight' => 5,
     ),
   );
 
@@ -807,7 +807,7 @@ function crl_resource_feat_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 3,
+      'weight' => 2,
     ),
   );
 
@@ -1624,52 +1624,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 4,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_sources'.
-  $field_instances['node-resource-field_resource_sources'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 16,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 44,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 48,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_sources',
-    'label' => 'TEMPORARY Sources - Will be refactored',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 8,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 150,
+      'weight' => 3,
     ),
   );
 
@@ -2203,7 +2158,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 148,
+      'weight' => 152,
     ),
   );
 
@@ -2248,7 +2203,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 149,
+      'weight' => 151,
     ),
   );
 
@@ -2452,7 +2407,6 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('Subject Areas');
   t('TEMP - Subjects Covered from Review');
   t('TEMP - Topics from Review');
-  t('TEMPORARY Sources - Will be refactored');
   t('Technical Platform');
   t('Terms');
   t('The first row will appear as the table header. Leave the first row blank if you do not need a header.<br />
