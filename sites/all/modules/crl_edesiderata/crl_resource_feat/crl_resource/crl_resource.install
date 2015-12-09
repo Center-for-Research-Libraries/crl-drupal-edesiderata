@@ -140,6 +140,36 @@ function crl_resource_update_7103() {
 
 
 /**
+ * Delete old resource fields - primarially old JISC fields.
+ */
+function crl_resource_update_7104() {
+  $delete = array(
+    'field_jisc_guid',
+    'field_jisc_id',
+    'field_jisc_import_batch',
+    'field_resource_jisc_access',
+    'field_resource_jisc_auth',
+    'field_resource_jisc_description',
+    'field_resource_jisc_federated',
+    'field_resource_jisc_full_text',
+    'field_resource_jisc_marc',
+    'field_resource_jisc_metadata_std',
+    'field_resource_jisc_overview',
+    'field_resource_jisc_person',
+    'field_resource_jisc_post_search',
+    'field_resource_jisc_sc_notes',
+    'field_resource_jisc_search',
+    'field_resource_jisc_usage_stat',
+    'field_resourc_free_specs',
+    'field_resource_sources',
+  );
+  foreach ($delete as $field) {
+    field_delete_field($field);
+  }
+}
+
+
+/**
  * Helper to associate a custom oplist function with a field.
  */
 function crl_resource_set_oplist_function($field_name, $function_name) {

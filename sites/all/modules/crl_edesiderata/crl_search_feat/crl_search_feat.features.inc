@@ -31,7 +31,6 @@ function crl_search_feat_default_search_api_index() {
         "crl_resource_status_backref" : { "type" : "list\\u003Cstring\\u003E" },
         "field_activity_crl_status" : { "type" : "list\\u003Cstring\\u003E" },
         "field_activity_offer_duration:value2" : { "type" : "date" },
-        "field_jisc_id" : { "type" : "integer" },
         "field_provider" : { "type" : "integer", "entity_type" : "node" },
         "field_provider_parent" : { "type" : "text" },
         "field_provider_publisher_type" : { "type" : "list\\u003Cinteger\\u003E", "entity_type" : "taxonomy_term" },
