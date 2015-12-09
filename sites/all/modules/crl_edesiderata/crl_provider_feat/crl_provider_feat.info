@@ -72,7 +72,6 @@ features[field_instance][] = field_collection_item-field_contacts_group-field_co
 features[field_instance][] = field_collection_item-field_contacts_group-field_link
 features[field_instance][] = node-provider-body
 features[field_instance][] = node-provider-field_address
-features[field_instance][] = node-provider-field_contacts
 features[field_instance][] = node-provider-field_contacts_group
 features[field_instance][] = node-provider-field_internal_notes
 features[field_instance][] = node-provider-field_link

@@ -72,6 +72,16 @@ function crl_provider_update_7102() {
 
 
 /**
+ * Remove old field_contacts instance from provider.
+ */
+function crl_provider_update_7103() {
+  if ($instance = field_info_instance('node', 'field_contacts', 'provider'))  {
+    field_delete_instance($instance);
+  }
+}
+
+
+/**
  * Helper to buk prep provider data for new structures.
  *
  * This function assumes that there are not too many providers (<100) in the
