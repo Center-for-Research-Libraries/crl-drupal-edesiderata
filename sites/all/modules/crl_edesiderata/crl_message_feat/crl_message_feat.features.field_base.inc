@@ -10,7 +10,7 @@
 function crl_message_feat_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'message_subscribe_email'
+  // Exported field_base: 'message_subscribe_email'.
   $field_bases['message_subscribe_email'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -19,7 +19,6 @@ function crl_message_feat_field_default_field_bases() {
       0 => 'user',
     ),
     'field_name' => 'message_subscribe_email',
-    'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
         0 => 'value',
@@ -38,7 +37,7 @@ function crl_message_feat_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'message_subscribe_email_freq'
+  // Exported field_base: 'message_subscribe_email_freq'.
   $field_bases['message_subscribe_email_freq'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -50,7 +49,6 @@ function crl_message_feat_field_default_field_bases() {
     'field_permissions' => array(
       'type' => 0,
     ),
-    'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
         0 => 'value',

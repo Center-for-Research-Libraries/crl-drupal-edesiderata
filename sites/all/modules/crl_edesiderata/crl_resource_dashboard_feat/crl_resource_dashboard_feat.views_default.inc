@@ -202,10 +202,10 @@ function crl_resource_dashboard_feat_views_default_views() {
   /* Display: Offers - Main */
   $handler = $view->new_display('block', 'Offers - Main', 'block_2');
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Indexed Node: CRL Resource Expiration Countdown */
-  $handler->display->display_options['sorts']['crl_resource_expiration_countdown']['id'] = 'crl_resource_expiration_countdown';
-  $handler->display->display_options['sorts']['crl_resource_expiration_countdown']['table'] = 'search_api_index_title_search_index';
-  $handler->display->display_options['sorts']['crl_resource_expiration_countdown']['field'] = 'crl_resource_expiration_countdown';
+  /* Sort criterion: Indexed Node: CRL Resource Expiration Date */
+  $handler->display->display_options['sorts']['crl_resource_expiration_date']['id'] = 'crl_resource_expiration_date';
+  $handler->display->display_options['sorts']['crl_resource_expiration_date']['table'] = 'search_api_index_title_search_index';
+  $handler->display->display_options['sorts']['crl_resource_expiration_date']['field'] = 'crl_resource_expiration_date';
   /* Sort criterion: Indexed Node: Date created */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'search_api_index_title_search_index';

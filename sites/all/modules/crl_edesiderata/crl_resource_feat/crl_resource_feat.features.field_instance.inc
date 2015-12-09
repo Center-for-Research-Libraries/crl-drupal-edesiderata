@@ -82,6 +82,386 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'entityform-resource_suggestion-field_further_description'.
+  $field_instances['entityform-resource_suggestion-field_further_description'] = array(
+    'bundle' => 'resource_suggestion',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Include any information about this resource that will be useful for other users of this site.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 4,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_further_description',
+    'label' => 'Description',
+    'required' => 1,
+    'settings' => array(
+      'display_summary' => 0,
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 20,
+        'summary_rows' => 5,
+      ),
+      'type' => 'text_textarea_with_summary',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance: 'entityform-resource_suggestion-field_misc_notes'.
+  $field_instances['entityform-resource_suggestion-field_misc_notes'] = array(
+    'bundle' => 'resource_suggestion',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Please tell us your motivation for including this resource in the eDesiderata listings along with any additional comments you may have.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 5,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_misc_notes',
+    'label' => 'Motivation and Comments',
+    'required' => 1,
+    'settings' => array(
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 10,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 6,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'entityform-resource_suggestion-field_resource_attachments'.
+  $field_instances['entityform-resource_suggestion-field_resource_attachments'] = array(
+    'bundle' => 'resource_suggestion',
+    'deleted' => 0,
+    'description' => 'If additional resource details are available as an attachment, please upload your attachment here.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'file',
+        'settings' => array(),
+        'type' => 'file_default',
+        'weight' => 6,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_resource_attachments',
+    'label' => 'Attachments',
+    'required' => 0,
+    'settings' => array(
+      'description_field' => 0,
+      'file_directory' => 'resource_docs/suggested',
+      'file_extensions' => 'jpg jpeg gif png txt doc xls pdf ppt pps odt ods odp docx xlsx pptx',
+      'max_filesize' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'file',
+      'settings' => array(
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'file_generic',
+      'weight' => 5,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'entityform-resource_suggestion-field_resource_provider_text'.
+  $field_instances['entityform-resource_suggestion-field_resource_provider_text'] = array(
+    'bundle' => 'resource_suggestion',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_resource_provider_text',
+    'label' => 'Resource Provider/Publisher',
+    'required' => 1,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'entityform-resource_suggestion-field_resource_reference'.
+  $field_instances['entityform-resource_suggestion-field_resource_reference'] = array(
+    'bundle' => 'resource_suggestion',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => 1,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 13,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_resource_reference',
+    'label' => 'Converted resource',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete',
+      'weight' => 6,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'entityform-resource_suggestion-field_resource_type'.
+  $field_instances['entityform-resource_suggestion-field_resource_type'] = array(
+    'bundle' => 'resource_suggestion',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 3,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_resource_type',
+    'label' => 'Resource Types',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'entityform-resource_suggestion-field_subject_area'.
+  $field_instances['entityform-resource_suggestion-field_subject_area'] = array(
+    'bundle' => 'resource_suggestion',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_subject_area',
+    'label' => 'Subject Areas',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance: 'entityform-resource_suggestion-field_title_sort'.
+  $field_instances['entityform-resource_suggestion-field_title_sort'] = array(
+    'bundle' => 'resource_suggestion',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_title_sort',
+    'label' => 'Resource Title',
+    'required' => 1,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 0,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'flagging-resource_suggestion_process-field_crl_processing_notes'.
+  $field_instances['flagging-resource_suggestion_process-field_crl_processing_notes'] = array(
+    'bundle' => 'resource_suggestion_process',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Provide a <strong>very brief</strong> explanation about why this suggestion was rejected. <strong>These notes will be shown publicly</strong>.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'flagging',
+    'field_name' => 'field_crl_processing_notes',
+    'label' => 'CRL Comment',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'flagging-resource_suggestion_process-field_provider'.
+  $field_instances['flagging-resource_suggestion_process-field_provider'] = array(
+    'bundle' => 'resource_suggestion_process',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Select the provider that this resource should be associated with.<br/><strong class="important">If the provider value does not yet exist in the system please create it before continuing</strong>.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'flagging',
+    'field_name' => 'field_provider',
+    'label' => 'Provider',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'flagging-resource_suggestion_process-field_resource_suggestion_status'.
+  $field_instances['flagging-resource_suggestion_process-field_resource_suggestion_status'] = array(
+    'bundle' => 'resource_suggestion_process',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => 'flagging',
+    'field_name' => 'field_resource_suggestion_status',
+    'label' => 'Action',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 0,
+    ),
+  );
+
   // Exported field_instance: 'node-resource-body'.
   $field_instances['node-resource-body'] = array(
     'bundle' => 'resource',
@@ -254,7 +634,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 4,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -296,7 +676,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -327,7 +707,7 @@ function crl_resource_feat_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 6,
+      'weight' => 5,
     ),
   );
 
@@ -427,7 +807,7 @@ function crl_resource_feat_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 3,
+      'weight' => 2,
     ),
   );
 
@@ -954,8 +1334,8 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'tablefield' => array(
           'cell_0_0' => '',
           'import' => array(
-            'rebuild_field_resource_interf_tools_tb_0' => 'Upload CSV',
-            'tablefield_csv_field_resource_interf_tools_tb_0' => '',
+            'file' => '',
+            'import' => 'Upload CSV',
           ),
           'rebuild' => array(
             'count_cols' => 1,
@@ -1217,7 +1597,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 11,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1244,52 +1624,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 4,
-    ),
-  );
-
-  // Exported field_instance: 'node-resource-field_resource_sources'.
-  $field_instances['node-resource-field_resource_sources'] = array(
-    'bundle' => 'resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 15,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 44,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 48,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_resource_sources',
-    'label' => 'TEMPORARY Sources - Will be refactored',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 8,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 150,
+      'weight' => 3,
     ),
   );
 
@@ -1347,8 +1682,8 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'tablefield' => array(
           'cell_0_0' => '',
           'import' => array(
-            'rebuild_field_resource_tech_platform_tb_0' => 'Upload CSV',
-            'tablefield_csv_field_resource_tech_platform_tb_0' => '',
+            'file' => '',
+            'import' => 'Upload CSV',
           ),
           'rebuild' => array(
             'count_cols' => 1,
@@ -1453,8 +1788,8 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'tablefield' => array(
           'cell_0_0' => '',
           'import' => array(
-            'rebuild_field_resource_terms_tb_0' => 'Upload CSV',
-            'tablefield_csv_field_resource_terms_tb_0' => '',
+            'file' => '',
+            'import' => 'Upload CSV',
           ),
           'rebuild' => array(
             'count_cols' => 1,
@@ -1705,7 +2040,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 2,
+        'weight' => 3,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1793,7 +2128,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 10,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1823,7 +2158,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 148,
+      'weight' => 152,
     ),
   );
 
@@ -1838,7 +2173,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1868,7 +2203,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 149,
+      'weight' => 151,
     ),
   );
 
@@ -1883,7 +2218,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 4,
+        'weight' => 5,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1927,7 +2262,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 7,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1981,7 +2316,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2019,39 +2354,51 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   // Translatables
   // Included for use with string extractors like potx.
   t('Abstract');
+  t('Action');
   t('Additional Reviews in Other Sources');
   t('Appendix Notes');
   t('Attachments');
+  t('CRL Comment');
   t('Collection Content');
   t('Comment');
   t('Comment Privacy Setting');
   t('Content Details');
   t('Content scope and completeness');
   t('Contributors');
+  t('Converted resource');
   t('Cost and price-structure');
   t('Delivery');
+  t('Description');
   t('Endnotes');
   t('Enter any special <em>resource-specific</em> notes that relate to the provider. These notes will be shown near the other provider information that\'s taken from the provider\'s profile.');
   t('Facets');
   t('Flag this item with an "update alert" until this date.');
   t('General Specifications');
+  t('If additional resource details are available as an attachment, please upload your attachment here.');
   t('If this entry has relationships with other entries, add links to those entries here (one or more as needed).');
   t('If this entry represents an alias or derivative version of another one, add a link to the entry that should be considered the canonical (master) version. If you place a value in this field you will most likely leave almost all other fields blank for this entry.');
+  t('Include any information about this resource that will be useful for other users of this site.');
   t('Interface Tools');
   t('Internal Notes');
   t('Major Languages');
   t('Metadata');
+  t('Motivation and Comments');
   t('Offer History');
   t('Platform and user interface');
   t('Please select all that apply.');
+  t('Please tell us your motivation for including this resource in the eDesiderata listings along with any additional comments you may have.');
+  t('Provide a <strong>very brief</strong> explanation about why this suggestion was rejected. <strong>These notes will be shown publicly</strong>.');
   t('Provider');
   t('Provider Notes');
+  t('Resource Provider/Publisher');
+  t('Resource Title');
   t('Resource Types');
   t('Reviewers');
   t('See');
   t('See also');
   t('Select any subjects/facets that apply to this resource. These will be used for dynamic linking relationships with the main CRL website.');
   t('Select the option that best represents where this entry was sourced from.');
+  t('Select the provider that this resource should be associated with.<br/><strong class="important">If the provider value does not yet exist in the system please create it before continuing</strong>.');
   t('Select the provider that this resource should be associated with.<br/><strong class="important">If the provider value does not yet exist in the system please create it before working with this resource entry</strong>.');
   t('Sorting Title');
   t('Source GUID');
@@ -2060,7 +2407,6 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('Subject Areas');
   t('TEMP - Subjects Covered from Review');
   t('TEMP - Topics from Review');
-  t('TEMPORARY Sources - Will be refactored');
   t('Technical Platform');
   t('Terms');
   t('The first row will appear as the table header. Leave the first row blank if you do not need a header.<br />

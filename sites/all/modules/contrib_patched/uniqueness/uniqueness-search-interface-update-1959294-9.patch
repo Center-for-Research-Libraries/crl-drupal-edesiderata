@@ -1,0 +1,53 @@
+diff --git a/uniqueness.js b/uniqueness.js
+index ef05e28..93c79c4 100644
+--- a/uniqueness.js
++++ b/uniqueness.js
+@@ -23,7 +23,7 @@
+         });
+       });
+       // Search off tags.
+-      $('#edit-taxonomy-tags-1').once('uniqueness', function() {
++      $('#edit-field-tags input:text').once('uniqueness', function() {
+         $(this).blur(function() {
+           input = this.value;
+           // Some tags set.
+diff --git a/uniqueness.module b/uniqueness.module
+index 8db0a8a..3dffc87 100644
+--- a/uniqueness.module
++++ b/uniqueness.module
+@@ -173,12 +173,19 @@ function uniqueness_form_alter(&$form, $form_state, $form_id) {
+         $values['nid'] = $form['nid']['#value'];
+       }
+       // Store the title.
+-      if (!empty($form['title'])) {
++      if (!empty($form['title']['#default_value'])) {
+         $values['title'] = strip_tags($form['title']['#default_value']);
++        if (variable_get('uniqueness_scope', UNIQUENESS_SCOPE_CONTENT_TYPE) == UNIQUENESS_SCOPE_CONTENT_TYPE) {
++           $values['type'] = $type;
++        }
+       }
+       // Store the tags.
+-      if (!empty($values['taxonomy']['tags'][1])) {
+-        $values['tags'] = strip_tags($form['taxonomy']['tags'][1]['#default_value']);
++      $langcode = field_language('node', $form['#node'], 'field_tags');
++      if (!empty($form['#node']->field_tags[$langcode])) {
++          foreach($form['#node']->field_tags[$langcode] as $term){         
++              $terms[] = $term['name'];
++            }
++       $values['tags'] = implode(' ', $terms);
+       }
+       _uniqueness_store($values);
+ 
+@@ -440,9 +447,11 @@ function _uniqueness_content_drupalsearch($values) {
+     drupal_set_message(t('Search module not found. Please enable the search module or select a different search mode on the uniqueness configuration page.'), 'warning');
+     return array();
+   }
+-
+   // build search string
+   $searchstring = array_key_exists('type', $values) ? ' type:' . $values['type'] . ' ' : '';
++  if(!empty($values['tags'])){
++    $searchstring .= join(' OR ', explode(' ', $values['tags'])) . ' OR ';
++  }
+   $searchstring .= join(' OR ', explode(' ', $values['title']));
+   $search_results = node_search_execute($searchstring);
+ 

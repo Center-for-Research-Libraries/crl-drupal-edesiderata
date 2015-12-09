@@ -66,3 +66,11 @@ function crl_pp_resource_feat_update_7101() {
     }
   }
 }
+
+
+/**
+ * Remove old field field_pp_publisher_url
+ */
+function crl_pp_resource_feat_update_7102() {
+  field_delete_field('field_pp_publisher_url');
+}

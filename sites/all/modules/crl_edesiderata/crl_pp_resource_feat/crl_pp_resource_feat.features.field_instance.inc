@@ -1412,51 +1412,6 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-pp_resource-field_pp_publisher_url'.
-  $field_instances['node-pp_resource-field_pp_publisher_url'] = array(
-    'bundle' => 'pp_resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Enter the Provder\'s URL. This will be displayed in the detail page for the resource.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 3,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 16,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_pp_publisher_url',
-    'label' => 'Provider URL (OLD)',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 26,
-    ),
-  );
-
   // Exported field_instance: 'node-pp_resource-field_pp_purchase_status'.
   $field_instances['node-pp_resource-field_pp_purchase_status'] = array(
     'bundle' => 'pp_resource',
@@ -2468,51 +2423,6 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-spp_resource-field_pp_publisher_url'.
-  $field_instances['node-spp_resource-field_pp_publisher_url'] = array(
-    'bundle' => 'spp_resource',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Enter the Provder\'s URL. This will be displayed in the detail page for the resource.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 4,
-      ),
-      'embedded' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 17,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_pp_publisher_url',
-    'label' => 'Provider URL (OLD)',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 26,
-    ),
-  );
-
   // Exported field_instance: 'node-spp_resource-field_pp_related'.
   $field_instances['node-spp_resource-field_pp_related'] = array(
     'bundle' => 'spp_resource',
@@ -2869,7 +2779,6 @@ function crl_pp_resource_feat_field_default_field_instances() {
   t('Enter summary of Comments from the Purchase Proposal that relates to this shared purchase.
 <b>This field will be used for Shared Purchase and will be hidden if not filled.</b>');
   t('Enter the Institution of nominator\'s institution. This will not be displayed in any user interface.');
-  t('Enter the Provder\'s URL. This will be displayed in the detail page for the resource.');
   t('Enter the Provider\'s URL. This will be displayed in the detail page for the resource.');
   t('Enter the Vendor or Provider\'s URL. ');
   t('Enter the email address of the individual who nominated this resource. This will not be displayed in any public pages.');
@@ -2895,7 +2804,6 @@ function crl_pp_resource_feat_field_default_field_instances() {
   t('Provider');
   t('Provider Contact');
   t('Provider URL');
-  t('Provider URL (OLD)');
   t('Publisher, Micropublisher, Vendor or Source');
   t('Purchase Proposal Comments Summary');
   t('Purchase Status');

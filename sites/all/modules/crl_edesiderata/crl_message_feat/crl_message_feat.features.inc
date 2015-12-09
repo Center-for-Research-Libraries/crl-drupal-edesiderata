@@ -235,6 +235,28 @@ function crl_message_feat_default_message_type() {
     },
     "rdf_mapping" : []
   }');
+  $items['resource_suggested'] = entity_import('message_type', '{
+    "name" : "resource_suggested",
+    "description" : "Resource Suggested",
+    "argument_keys" : [],
+    "argument" : [],
+    "category" : "message_type",
+    "data" : {
+      "token options" : { "clear" : 0 },
+      "purge" : { "override" : 0, "enabled" : 0, "quota" : "", "days" : "" }
+    },
+    "language" : "",
+    "arguments" : null,
+    "message_text" : { "und" : [
+        {
+          "value" : "\\u003Ca href=\\u0022\\/resources\\/suggestions\\u0022\\u003EResource Suggestions\\u003C\\/a\\u003E: A new resource was suggested by a CRL member.\\r\\n",
+          "format" : "literal",
+          "safe_value" : "\\u003Ca href=\\u0022\\/resources\\/suggestions\\u0022\\u003EResource Suggestions\\u003C\\/a\\u003E: A new resource was suggested by a CRL member.\\n"
+        }
+      ]
+    },
+    "rdf_mapping" : []
+  }');
   $items['resource_update'] = entity_import('message_type', '{
     "name" : "resource_update",
     "description" : "Resource entry updates",
