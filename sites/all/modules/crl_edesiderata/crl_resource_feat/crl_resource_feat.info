@@ -187,6 +187,7 @@ features[variable][] = pathauto_node_resource_pattern
 features[variable][] = pathauto_taxonomy_term_resource_languages_pattern
 features[variable][] = pathauto_taxonomy_term_resource_type_pattern
 features[variable][] = pathauto_taxonomy_term_title_type_pattern
+features[variable][] = uniqueness_type_resource
 features[views_view][] = resource_lists
 features[views_view][] = resource_suggestions
 features[views_view][] = resource_votes_admin

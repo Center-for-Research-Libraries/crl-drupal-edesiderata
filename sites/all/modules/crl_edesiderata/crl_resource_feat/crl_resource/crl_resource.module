@@ -813,8 +813,7 @@ function crl_resource_form_resource_suggestion_entityform_edit_form_alter(&$form
     $form['uniqueness'] += array(
       '#type' => 'fieldset',
       '#title' => filter_xss_admin(variable_get('uniqueness_default_title', t('Related content'))),
-      '#collapsible' => 1,
-      '#collapsed' => ($count == 0),
+      '#collapsible' => FALSE,
       '#weight' => -9, // Place underneath title.
       'uniqueness_type' => array(),
     );

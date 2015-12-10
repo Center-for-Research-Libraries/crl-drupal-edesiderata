@@ -59,12 +59,11 @@ function crl_provider_feat_field_group_info() {
     'label' => 'Details',
     'weight' => '22',
     'children' => array(
-      0 => 'field_contacts',
-      1 => 'field_provider_established',
-      2 => 'field_provider_in_operation',
-      3 => 'field_provider_parent',
-      4 => 'field_address',
-      5 => 'field_contacts_group',
+      0 => 'field_provider_established',
+      1 => 'field_provider_in_operation',
+      2 => 'field_provider_parent',
+      3 => 'field_address',
+      4 => 'field_contacts_group',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -255,14 +254,11 @@ function crl_provider_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'System Fields',
-    'weight' => '6',
+    'weight' => '7',
     'children' => array(
-      0 => 'field_jisc_guid',
-      1 => 'field_jisc_id',
-      2 => 'field_jisc_import_batch',
-      3 => 'field_resource_type',
-      4 => 'field_subject_area',
-      5 => 'field_source_guid',
+      0 => 'field_resource_type',
+      1 => 'field_subject_area',
+      2 => 'field_source_guid',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -321,7 +317,7 @@ function crl_provider_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Tabbed',
-    'weight' => '4',
+    'weight' => '5',
     'children' => array(
       0 => 'group_details',
       1 => 'group_overview',
