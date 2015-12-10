@@ -483,8 +483,7 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = '<p>No recent suggestions are pending review.</p>
-<p><a href="/eform/submit/resource-suggestion">Suggest a new resource</a></p>';
+  $handler->display->display_options['empty']['area']['content'] = '<p>No recent suggestions are pending review.</p>';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
 
   /* Display: Block - My Suggestions */

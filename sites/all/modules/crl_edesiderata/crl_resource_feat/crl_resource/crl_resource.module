@@ -442,8 +442,10 @@ function crl_resource_get_expiration_date($entity, array $options, $name, $type,
     return;
   }
   // Initialize with a very high number in case we want to use this value in
-  // a sort (e.g. ensure NULL/empty values are listed last).
-  $date = 9999999999;
+  // a sort (e.g. ensure NULL/empty values are listed last even when no IS NULL)
+  // query sorting is available). We use the max workable value for a 32bit int
+  // for comaptibility across different storage indixies (e.g. SySQL and Solr).
+  $date = 2147483647;
   $expire = crl_resource_get_expiration($entity);
   if ($expire) {
     $date = $expire;
@@ -465,8 +467,10 @@ function crl_resource_get_expiration_countdown($entity, array $options, $name, $
     return;
   }
   // Initialize with a very high number in case we want to use this value in
-  // a sort (e.g. ensure NULL/empty values are listed last).
-  $days_left = 999999999;
+  // a sort (e.g. ensure NULL/empty values are listed last even when no IS NULL)
+  // query sorting is available). We use the max workable value for a 32bit int
+  // for comaptibility across different storage indixies (e.g. SySQL and Solr).
+  $days_left = 2147483647;
   $expire = crl_resource_get_expiration($entity);
   if ($expire) {
     // Convert expiration timestamp into simple integer countdown value. Note
