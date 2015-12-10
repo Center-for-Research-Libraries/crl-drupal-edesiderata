@@ -14,6 +14,9 @@ function crl_mydes_feat_ctools_plugin_api($module = NULL, $api = NULL) {
   if ($module == "delta" && $api == "delta") {
     return array("version" => "3");
   }
+  if ($module == "strongarm" && $api == "strongarm") {
+    return array("version" => "1");
+  }
 }
 
 /**
