@@ -104,6 +104,9 @@ function crl_resource_feat_strongarm() {
         'redirect' => array(
           'weight' => '12',
         ),
+        'uniqueness' => array(
+          'weight' => '0',
+        ),
       ),
       'display' => array(
         'pseudo_field_resource_status_summary' => array(
@@ -342,6 +345,15 @@ function crl_resource_feat_strongarm() {
   $strongarm->name = 'pathauto_taxonomy_term_title_type_pattern';
   $strongarm->value = '';
   $export['pathauto_taxonomy_term_title_type_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'uniqueness_type_resource';
+  $strongarm->value = array(
+    0 => 1,
+  );
+  $export['uniqueness_type_resource'] = $strongarm;
 
   return $export;
 }

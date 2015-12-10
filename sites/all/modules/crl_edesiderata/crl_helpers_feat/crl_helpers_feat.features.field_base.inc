@@ -403,7 +403,7 @@ function crl_helpers_feat_field_default_field_bases() {
     'type' => 'link_field',
   );
 
-  // Exported field_base: 'field_misc_notes'
+  // Exported field_base: 'field_misc_notes'.
   $field_bases['field_misc_notes'] = array(
     'active' => 1,
     'cardinality' => 1,

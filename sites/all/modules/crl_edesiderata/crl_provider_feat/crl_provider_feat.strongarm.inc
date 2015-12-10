@@ -99,10 +99,13 @@ function crl_provider_feat_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '7',
+          'weight' => '8',
         ),
         'redirect' => array(
-          'weight' => '8',
+          'weight' => '9',
+        ),
+        'uniqueness' => array(
+          'weight' => '1',
         ),
       ),
       'display' => array(
@@ -211,6 +214,15 @@ function crl_provider_feat_strongarm() {
   $strongarm->name = 'pathauto_node_provider_pattern';
   $strongarm->value = 'providers/[node:title]';
   $export['pathauto_node_provider_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'uniqueness_type_provider';
+  $strongarm->value = array(
+    0 => 1,
+  );
+  $export['uniqueness_type_provider'] = $strongarm;
 
   return $export;
 }

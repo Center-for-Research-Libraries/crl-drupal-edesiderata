@@ -321,9 +321,12 @@ function crl_helpers_rate_widget_alter($widget, $context) {
 /**
  * Implements hook_form_alter().
  *
- * Note that this form_alter will fire last thanks to
+ * Alter node edit forms. Note that this form_alter will fire last thanks to
  * crl_helpers_module_implements_alter(). This is critical so that we can
- * make alterations AFTER revisioning's alterations.
+ * make alterations AFTER other module's alterations (e.g. revisioning). We
+ * could usually use hook_form_FORM_ID_alter() to ensure our alterations go
+ * after other hook_form_alters(), but for node edit forms the FORM_ID is
+ * dynamic and dependent on the node type, so doing it this way is easier. 
  *
  * @see crl_helpers_module_implements_alter()
  */
@@ -379,6 +382,11 @@ function crl_helpers_form_alter(&$form, $form_state) {
         $form['revision_information']['revision']['#suffix'] = '</div>';
         $form['revision_information']['revision']['#title'] = t('Notify watchers, alter activity feeds and create a new revision (uncheck for minor updates)');
       }
+    }
+    // Also add some alters specific to the uniqueness widget.
+    if (!empty($form['uniqueness'])) {
+      $form['uniqueness']['#collapsible'] = FALSE;
+      unset($form['uniqueness']['#collapsed']);
     }
   }
 }

@@ -114,6 +114,7 @@ features[variable][] = node_options_provider
 features[variable][] = node_preview_provider
 features[variable][] = node_submitted_provider
 features[variable][] = pathauto_node_provider_pattern
+features[variable][] = uniqueness_type_provider
 features[views_view][] = provider_lists
 features_exclude[field_base][field_title_sort] = field_title_sort
 features_exclude[field_base][field_title_alt] = field_title_alt

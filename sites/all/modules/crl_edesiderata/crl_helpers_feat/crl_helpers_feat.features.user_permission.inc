@@ -62,6 +62,15 @@ function crl_helpers_feat_user_default_permissions() {
     'module' => 'salesforce_mapping',
   );
 
+  // Exported permission: 'administer uniqueness'.
+  $permissions['administer uniqueness'] = array(
+    'name' => 'administer uniqueness',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'uniqueness',
+  );
+
   // Exported permission: 'create salesforce mapping object'.
   $permissions['create salesforce mapping object'] = array(
     'name' => 'create salesforce mapping object',
@@ -216,6 +225,15 @@ function crl_helpers_feat_user_default_permissions() {
       'member-crl' => 'member-crl',
     ),
     'module' => 'comment',
+  );
+
+  // Exported permission: 'use uniqueness widget'.
+  $permissions['use uniqueness widget'] = array(
+    'name' => 'use uniqueness widget',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'uniqueness',
   );
 
   // Exported permission: 'view any entityform'.
