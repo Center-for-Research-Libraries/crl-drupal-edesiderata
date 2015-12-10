@@ -878,5 +878,78 @@ function crl_helpers_feat_strongarm() {
   );
   $export['theme_crl_settings'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'uniqueness_default_description';
+  $strongarm->value = 'Help avoid duplicate content. Entries that may be related or similar to what you\'re posting will be listed below:';
+  $export['uniqueness_default_description'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'uniqueness_default_title';
+  $strongarm->value = 'Related content';
+  $export['uniqueness_default_title'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'uniqueness_no_result_string';
+  $strongarm->value = 'No related content found.';
+  $export['uniqueness_no_result_string'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'uniqueness_query_min';
+  $strongarm->value = '3';
+  $export['uniqueness_query_min'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'uniqueness_results_max';
+  $strongarm->value = '10';
+  $export['uniqueness_results_max'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'uniqueness_results_prepend';
+  $strongarm->value = '0';
+  $export['uniqueness_results_prepend'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'uniqueness_scope';
+  $strongarm->value = '2';
+  $export['uniqueness_scope'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'uniqueness_searching_string';
+  $strongarm->value = 'Searching&hellip;';
+  $export['uniqueness_searching_string'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'uniqueness_search_mode';
+  $strongarm->value = '2';
+  $export['uniqueness_search_mode'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'uniqueness_widgets';
+  $strongarm->value = array(
+    1 => '1',
+    2 => 0,
+  );
+  $export['uniqueness_widgets'] = $strongarm;
+
   return $export;
 }

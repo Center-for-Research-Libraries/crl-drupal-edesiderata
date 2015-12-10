@@ -1658,3 +1658,20 @@ span.provider-p {
 span.provider-stem {
   display: none; 
 }
+
+/* Uniqueness widgets */
+.uniqueness-dyn {
+  background-position: 0 -1em !important;
+  padding-left: 1em;
+}
+fieldset#edit-uniqueness {
+  border-left: 3px solid #aaa;
+  padding: 0px 15px;
+}
+fieldset#edit-uniqueness legend {
+  float: left;
+  margin-bottom: 15px;
+}
+#edit-uniqueness-type {
+  clear: both;
+}
