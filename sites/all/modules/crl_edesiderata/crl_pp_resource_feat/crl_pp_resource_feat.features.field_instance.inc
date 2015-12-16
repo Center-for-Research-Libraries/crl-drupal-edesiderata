@@ -294,6 +294,41 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'entityform-purchase_proposal_nomination-field_internal_notes'.
+  $field_instances['entityform-purchase_proposal_nomination-field_internal_notes'] = array(
+    'bundle' => 'purchase_proposal_nomination',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 16,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_internal_notes',
+    'label' => 'Internal Notes',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 15,
+    ),
+  );
+
+  // Exported field_instance:
   // 'entityform-purchase_proposal_nomination-field_link'.
   $field_instances['entityform-purchase_proposal_nomination-field_link'] = array(
     'bundle' => 'purchase_proposal_nomination',

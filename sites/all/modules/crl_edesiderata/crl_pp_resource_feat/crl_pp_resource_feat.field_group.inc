@@ -218,6 +218,7 @@ function crl_pp_resource_feat_field_group_info() {
     'weight' => '13',
     'children' => array(
       0 => 'field_pp_related',
+      1 => 'field_internal_notes',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

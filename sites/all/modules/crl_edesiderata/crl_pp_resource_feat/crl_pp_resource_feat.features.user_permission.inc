@@ -21,6 +21,15 @@ function crl_pp_resource_feat_user_default_permissions() {
     'module' => 'field_permissions',
   );
 
+  // Exported permission: 'create field_voting_results'.
+  $permissions['create field_voting_results'] = array(
+    'name' => 'create field_voting_results',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'field_permissions',
+  );
+
   // Exported permission: 'edit field_pp_related'.
   $permissions['edit field_pp_related'] = array(
     'name' => 'edit field_pp_related',
@@ -32,6 +41,15 @@ function crl_pp_resource_feat_user_default_permissions() {
     'module' => 'field_permissions',
   );
 
+  // Exported permission: 'edit field_voting_results'.
+  $permissions['edit field_voting_results'] = array(
+    'name' => 'edit field_voting_results',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'field_permissions',
+  );
+
   // Exported permission: 'edit own field_pp_related'.
   $permissions['edit own field_pp_related'] = array(
     'name' => 'edit own field_pp_related',
@@ -39,6 +57,15 @@ function crl_pp_resource_feat_user_default_permissions() {
       'administrator' => 'administrator',
       'editor basic' => 'editor basic',
       'editor power' => 'editor power',
+    ),
+    'module' => 'field_permissions',
+  );
+
+  // Exported permission: 'edit own field_voting_results'.
+  $permissions['edit own field_voting_results'] = array(
+    'name' => 'edit own field_voting_results',
+    'roles' => array(
+      'administrator' => 'administrator',
     ),
     'module' => 'field_permissions',
   );
@@ -72,6 +99,20 @@ function crl_pp_resource_feat_user_default_permissions() {
     'module' => 'field_permissions',
   );
 
+  // Exported permission: 'view field_voting_results'.
+  $permissions['view field_voting_results'] = array(
+    'name' => 'view field_voting_results',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'crl-staff' => 'crl-staff',
+      'cud administrator' => 'cud administrator',
+      'cud manager' => 'cud manager',
+      'editor basic' => 'editor basic',
+      'editor power' => 'editor power',
+    ),
+    'module' => 'field_permissions',
+  );
+
   // Exported permission: 'view own field_pp_related'.
   $permissions['view own field_pp_related'] = array(
     'name' => 'view own field_pp_related',
@@ -80,6 +121,15 @@ function crl_pp_resource_feat_user_default_permissions() {
       'authenticated user' => 'authenticated user',
       'editor basic' => 'editor basic',
       'editor power' => 'editor power',
+    ),
+    'module' => 'field_permissions',
+  );
+
+  // Exported permission: 'view own field_voting_results'.
+  $permissions['view own field_voting_results'] = array(
+    'name' => 'view own field_voting_results',
+    'roles' => array(
+      'administrator' => 'administrator',
     ),
     'module' => 'field_permissions',
   );
