@@ -506,9 +506,9 @@ function crl_resource_get_expiration($entity) {
       // not designate an expiration.
       if (!empty($expire_date['value2']) && $expire_date['value2'] != $expire_date['value']) {
         $expire_this = strtotime($expire_date['value2']);
-        // If we have an active expiration see that it is in the future and is
-        // sooner than any others already detected.
-        if ($expire_this > REQUEST_TIME && (!$expire || $expire_this < $expire)) {
+        // If we have an active expiration see that it is sooner than any others
+        // already detected.
+        if (!$expire || $expire_this < $expire) {
           $expire = $expire_this;
         }
       }
