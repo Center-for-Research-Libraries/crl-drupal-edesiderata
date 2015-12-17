@@ -119,6 +119,41 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance:
+  // 'entityform-resource_suggestion-field_internal_notes'.
+  $field_instances['entityform-resource_suggestion-field_internal_notes'] = array(
+    'bundle' => 'resource_suggestion',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 12,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_internal_notes',
+    'label' => 'Internal Notes',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 7,
+    ),
+  );
+
   // Exported field_instance: 'entityform-resource_suggestion-field_misc_notes'.
   $field_instances['entityform-resource_suggestion-field_misc_notes'] = array(
     'bundle' => 'resource_suggestion',
@@ -240,7 +275,7 @@ function crl_resource_feat_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 13,
+        'weight' => 11,
       ),
     ),
     'entity_type' => 'entityform',

@@ -71,6 +71,17 @@ function crl_helpers_feat_user_default_permissions() {
     'module' => 'uniqueness',
   );
 
+  // Exported permission: 'create field_internal_notes'.
+  $permissions['create field_internal_notes'] = array(
+    'name' => 'create field_internal_notes',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
+      'editor power' => 'editor power',
+    ),
+    'module' => 'field_permissions',
+  );
+
   // Exported permission: 'create salesforce mapping object'.
   $permissions['create salesforce mapping object'] = array(
     'name' => 'create salesforce mapping object',
@@ -136,6 +147,17 @@ function crl_helpers_feat_user_default_permissions() {
     'module' => 'entityform',
   );
 
+  // Exported permission: 'edit field_internal_notes'.
+  $permissions['edit field_internal_notes'] = array(
+    'name' => 'edit field_internal_notes',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
+      'editor power' => 'editor power',
+    ),
+    'module' => 'field_permissions',
+  );
+
   // Exported permission: 'edit own comments'.
   $permissions['edit own comments'] = array(
     'name' => 'edit own comments',
@@ -160,6 +182,17 @@ function crl_helpers_feat_user_default_permissions() {
       'editor power' => 'editor power',
     ),
     'module' => 'entityform',
+  );
+
+  // Exported permission: 'edit own field_internal_notes'.
+  $permissions['edit own field_internal_notes'] = array(
+    'name' => 'edit own field_internal_notes',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
+      'editor power' => 'editor power',
+    ),
+    'module' => 'field_permissions',
   );
 
   // Exported permission: 'edit salesforce mapping object'.
@@ -232,6 +265,7 @@ function crl_helpers_feat_user_default_permissions() {
     'name' => 'use uniqueness widget',
     'roles' => array(
       'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
     ),
     'module' => 'uniqueness',
   );
@@ -247,6 +281,17 @@ function crl_helpers_feat_user_default_permissions() {
     'module' => 'entityform',
   );
 
+  // Exported permission: 'view field_internal_notes'.
+  $permissions['view field_internal_notes'] = array(
+    'name' => 'view field_internal_notes',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
+      'editor power' => 'editor power',
+    ),
+    'module' => 'field_permissions',
+  );
+
   // Exported permission: 'view own entityform'.
   $permissions['view own entityform'] = array(
     'name' => 'view own entityform',
@@ -257,6 +302,17 @@ function crl_helpers_feat_user_default_permissions() {
       'member-crl' => 'member-crl',
     ),
     'module' => 'entityform',
+  );
+
+  // Exported permission: 'view own field_internal_notes'.
+  $permissions['view own field_internal_notes'] = array(
+    'name' => 'view own field_internal_notes',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
+      'editor power' => 'editor power',
+    ),
+    'module' => 'field_permissions',
   );
 
   // Exported permission: 'view salesforce mapping object'.

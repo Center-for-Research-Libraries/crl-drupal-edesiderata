@@ -424,19 +424,13 @@ function crl_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['name']['exclude'] = TRUE;
   $handler->display->display_options['fields']['name']['alter']['text'] = '[name] [field_institution]';
   $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
-  /* Field: User: Institution */
-  $handler->display->display_options['fields']['field_institution']['id'] = 'field_institution';
-  $handler->display->display_options['fields']['field_institution']['table'] = 'field_data_field_institution';
-  $handler->display->display_options['fields']['field_institution']['field'] = 'field_institution';
-  $handler->display->display_options['fields']['field_institution']['relationship'] = 'user';
-  $handler->display->display_options['fields']['field_institution']['exclude'] = TRUE;
   /* Field: Entityform Submission: Date submitted */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'entityform';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = 'Submitted';
   $handler->display->display_options['fields']['created']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['created']['alter']['text'] = '[created]<br/>by [name] ([field_institution])';
+  $handler->display->display_options['fields']['created']['alter']['text'] = '[created]<br/>by [name]';
   $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['created']['date_format'] = 'long_no_time';
   $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
