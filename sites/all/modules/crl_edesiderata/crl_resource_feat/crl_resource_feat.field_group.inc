@@ -520,6 +520,7 @@ function crl_resource_feat_field_group_info() {
     'weight' => '7',
     'children' => array(
       0 => 'field_resource_reference',
+      1 => 'field_internal_notes',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -614,9 +615,8 @@ function crl_resource_feat_field_group_info() {
     'weight' => '10',
     'children' => array(
       0 => 'field_resource_reference',
-      1 => 'flag_resource_suggestion_reject',
+      1 => 'field_internal_notes',
       2 => 'flag_resource_suggestion_process',
-      3 => 'flag_resource_suggestion_convert',
     ),
     'format_type' => 'div',
     'format_settings' => array(
