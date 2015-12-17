@@ -36,21 +36,27 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
+    'url' => 'url',
     'field_title_sort' => 'field_title_sort',
     'field_pp_publisher' => 'field_pp_publisher',
     'field_contact_name' => 'field_contact_name',
     'field_contact_email' => 'field_contact_email',
     'field_pp_nominator_institution' => 'field_pp_nominator_institution',
     'created' => 'created',
+    'field_internal_notes' => 'field_internal_notes',
+    'ops' => 'ops',
     'field_pp_related' => 'field_pp_related',
     'status' => 'status',
     'field_pp_purchase_status' => 'field_pp_purchase_status',
-    'link_entityform' => 'link_entityform',
-    'edit_entityform' => 'edit_entityform',
-    'ops' => 'ops',
+    'field_internal_notes_1' => 'field_internal_notes_1',
   );
   $handler->display->display_options['style_options']['default'] = 'created';
   $handler->display->display_options['style_options']['info'] = array(
+    'url' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'field_title_sort' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
@@ -93,38 +99,38 @@ function crl_pp_resource_feat_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'field_internal_notes' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'ops' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'field_pp_related' => array(
-      'sortable' => 0,
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'status' => array(
-      'sortable' => 0,
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'field_pp_purchase_status' => array(
-      'sortable' => 0,
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'link_entityform' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'edit_entityform' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'ops' => array(
+    'field_internal_notes_1' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -320,33 +326,41 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_title_sort']['id'] = 'field_title_sort';
   $handler->display->display_options['fields']['field_title_sort']['table'] = 'field_data_field_title_sort';
   $handler->display->display_options['fields']['field_title_sort']['field'] = 'field_title_sort';
-  $handler->display->display_options['fields']['field_title_sort']['label'] = 'Title';
+  $handler->display->display_options['fields']['field_title_sort']['label'] = 'Nominated Title';
   $handler->display->display_options['fields']['field_title_sort']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['field_title_sort']['alter']['path'] = '[url]';
   /* Field: Field: Provider */
   $handler->display->display_options['fields']['field_pp_publisher']['id'] = 'field_pp_publisher';
   $handler->display->display_options['fields']['field_pp_publisher']['table'] = 'field_data_field_pp_publisher';
   $handler->display->display_options['fields']['field_pp_publisher']['field'] = 'field_pp_publisher';
+  $handler->display->display_options['fields']['field_pp_publisher']['label'] = 'Nominated Provider';
   /* Field: Field: Name */
   $handler->display->display_options['fields']['field_contact_name']['id'] = 'field_contact_name';
   $handler->display->display_options['fields']['field_contact_name']['table'] = 'field_data_field_contact_name';
   $handler->display->display_options['fields']['field_contact_name']['field'] = 'field_contact_name';
-  $handler->display->display_options['fields']['field_contact_name']['label'] = 'Requestor\'s Name';
+  $handler->display->display_options['fields']['field_contact_name']['label'] = 'Noninator\'s Name';
   /* Field: Field: Email */
   $handler->display->display_options['fields']['field_contact_email']['id'] = 'field_contact_email';
   $handler->display->display_options['fields']['field_contact_email']['table'] = 'field_data_field_contact_email';
   $handler->display->display_options['fields']['field_contact_email']['field'] = 'field_contact_email';
-  $handler->display->display_options['fields']['field_contact_email']['label'] = 'Requestor\'s Email';
+  $handler->display->display_options['fields']['field_contact_email']['label'] = 'Noninator\'s Email';
   /* Field: Field: Institution */
   $handler->display->display_options['fields']['field_pp_nominator_institution']['id'] = 'field_pp_nominator_institution';
   $handler->display->display_options['fields']['field_pp_nominator_institution']['table'] = 'field_data_field_pp_nominator_institution';
   $handler->display->display_options['fields']['field_pp_nominator_institution']['field'] = 'field_pp_nominator_institution';
-  $handler->display->display_options['fields']['field_pp_nominator_institution']['label'] = 'Requestor\'s Institution';
+  $handler->display->display_options['fields']['field_pp_nominator_institution']['label'] = 'Noninator\'s Institution';
   /* Field: Entityform Submission: Date submitted */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'entityform';
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['date_format'] = 'medium';
+  /* Field: Field: Internal Notes */
+  $handler->display->display_options['fields']['field_internal_notes']['id'] = 'field_internal_notes';
+  $handler->display->display_options['fields']['field_internal_notes']['table'] = 'field_data_field_internal_notes';
+  $handler->display->display_options['fields']['field_internal_notes']['field'] = 'field_internal_notes';
+  $handler->display->display_options['fields']['field_internal_notes']['label'] = 'Nomination Internal Notes';
+  $handler->display->display_options['fields']['field_internal_notes']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_internal_notes']['separator'] = '<br/><br/>';
   /* Field: Flags: Flag link */
   $handler->display->display_options['fields']['ops']['id'] = 'ops';
   $handler->display->display_options['fields']['ops']['table'] = 'flagging';
@@ -376,6 +390,14 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_purchase_status']['label'] = 'Copied PP Purchase Status';
   $handler->display->display_options['fields']['field_pp_purchase_status']['hide_empty'] = TRUE;
   $handler->display->display_options['fields']['field_pp_purchase_status']['empty_zero'] = TRUE;
+  /* Field: Field: Internal Notes */
+  $handler->display->display_options['fields']['field_internal_notes_1']['id'] = 'field_internal_notes_1';
+  $handler->display->display_options['fields']['field_internal_notes_1']['table'] = 'field_data_field_internal_notes';
+  $handler->display->display_options['fields']['field_internal_notes_1']['field'] = 'field_internal_notes';
+  $handler->display->display_options['fields']['field_internal_notes_1']['relationship'] = 'field_pp_related_target_id';
+  $handler->display->display_options['fields']['field_internal_notes_1']['label'] = 'Copied PP Internal Notes';
+  $handler->display->display_options['fields']['field_internal_notes_1']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_internal_notes_1']['separator'] = '<br/><br/>';
   $handler->display->display_options['path'] = 'admin/pp/nomination/list';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'PP Nominations';
