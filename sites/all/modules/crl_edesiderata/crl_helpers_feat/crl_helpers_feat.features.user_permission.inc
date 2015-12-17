@@ -265,6 +265,7 @@ function crl_helpers_feat_user_default_permissions() {
     'name' => 'use uniqueness widget',
     'roles' => array(
       'administrator' => 'administrator',
+      'authenticated user' => 'authenticated user',
     ),
     'module' => 'uniqueness',
   );

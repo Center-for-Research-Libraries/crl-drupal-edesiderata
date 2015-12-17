@@ -321,7 +321,8 @@ function crl_pp_resource_feat_field_group_info() {
     'weight' => '14',
     'children' => array(
       0 => 'field_pp_related',
-      1 => 'flag_entityform_pp_convert',
+      1 => 'field_internal_notes',
+      2 => 'flag_entityform_pp_convert',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -637,18 +638,21 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group->mode = 'default';
   $field_group->parent_name = 'group_tabbed';
   $field_group->data = array(
-    'label' => 'Vote Results',
+    'label' => 'Admin Notes & Vote Results',
     'weight' => '12',
     'children' => array(
-      0 => 'field_voting_results',
+      0 => 'field_internal_notes',
+      1 => 'field_voting_results',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'Admin Notes & Vote Results',
       'instance_settings' => array(
-        'description' => '',
+        'id' => '',
         'classes' => ' group-vote-results field-group-htab',
+        'description' => '',
       ),
+      'formatter' => 'closed',
     ),
   );
   $export['group_vote_results|node|pp_resource|default'] = $field_group;
@@ -663,18 +667,21 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group->mode = 'default';
   $field_group->parent_name = 'group_tabbed';
   $field_group->data = array(
-    'label' => 'Vote Results',
+    'label' => 'Admin Notes & Vote Results',
     'weight' => '23',
     'children' => array(
-      0 => 'field_voting_results',
+      0 => 'field_internal_notes',
+      1 => 'field_voting_results',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'Admin Notes & Vote Results',
       'instance_settings' => array(
-        'description' => '',
+        'id' => '',
         'classes' => ' group-vote-results field-group-htab',
+        'description' => '',
       ),
+      'formatter' => 'closed',
     ),
   );
   $export['group_vote_results|node|spp_resource|default'] = $field_group;

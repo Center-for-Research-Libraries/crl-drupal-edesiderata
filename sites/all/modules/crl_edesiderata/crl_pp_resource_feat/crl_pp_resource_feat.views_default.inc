@@ -2638,6 +2638,18 @@ The following key provides additional information for the values that appear in 
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
+  $handler->display->display_options['footer']['area']['content'] = 'The following key provides additional information for the values that appear in the "Input" column:
+
+<p><strong>pp_preference = PP Purchase ranking</strong>. Values are percentages (Five stars = 100).</p>
+<p><strong>pp_own_lend = PP Member Library Holdings input</strong>. 1 = Do not own | 2 = Own, can lend | 3 = Own, cannot lend</p>
+<p><strong>pp_shared_pledge_[currency] = SPP Pledge</strong>. Values shown are <strong>not</strong> converted.</p>';
+  $handler->display->display_options['footer']['area']['format'] = 'filtered_html';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';

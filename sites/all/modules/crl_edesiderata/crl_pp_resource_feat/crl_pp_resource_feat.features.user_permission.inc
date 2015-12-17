@@ -105,8 +105,6 @@ function crl_pp_resource_feat_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
       'crl-staff' => 'crl-staff',
-      'cud administrator' => 'cud administrator',
-      'cud manager' => 'cud manager',
       'editor basic' => 'editor basic',
       'editor power' => 'editor power',
     ),

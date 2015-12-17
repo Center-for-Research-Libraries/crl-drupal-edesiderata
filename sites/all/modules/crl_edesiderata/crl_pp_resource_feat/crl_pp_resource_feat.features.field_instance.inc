@@ -306,7 +306,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 16,
+        'weight' => 12,
       ),
     ),
     'entity_type' => 'entityform',
@@ -602,7 +602,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 15,
+        'weight' => 11,
       ),
     ),
     'entity_type' => 'entityform',
@@ -925,8 +925,9 @@ function crl_pp_resource_feat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
+        'type' => 'text_default',
         'weight' => 12,
       ),
       'embedded' => array(
@@ -1736,11 +1737,11 @@ function crl_pp_resource_feat_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'hidden',
+        'label' => 'above',
         'module' => 'viewfield',
         'settings' => array(),
         'type' => 'viewfield_default',
-        'weight' => 907,
+        'weight' => 13,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1757,26 +1758,46 @@ function crl_pp_resource_feat_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_voting_results',
-    'label' => 'Voting Results',
+    'label' => 'Vote Results',
     'required' => 0,
     'settings' => array(
       'allowed_views' => array(
+        'activity_history' => 0,
         'admin_votes' => 0,
+        'comment_summary' => 0,
         'content_summary' => 0,
+        'crl_messages' => 0,
+        'crl_staff' => 0,
         'csv_exports' => 0,
+        'entityform_type_list' => 0,
+        'entityforms' => 0,
         'feeds_log' => 0,
-        'fontyourface_browse' => 0,
-        'google_fonts_api_browse' => 0,
+        'institution_admin_lists' => 0,
+        'message' => 0,
+        'mydes_lists' => 0,
+        'mydes_saved_searches' => 0,
+        'pp_nominations' => 0,
         'pp_resource_export' => 0,
         'pp_resource_lists' => 0,
         'pp_resource_votes_admin' => 0,
         'pp_resource_votes_admin_details_' => 'pp_resource_votes_admin_details_',
+        'provider_lists' => 0,
         'resource_dashboard' => 0,
         'resource_lists' => 0,
+        'resource_suggestions' => 0,
         'resource_votes_admin' => 0,
         'resource_votes_admin_details_' => 0,
         'reviews_export' => 0,
-        'revisioning_content_summary' => 0,
+        'subscribe_node' => 0,
+        'subscribe_node_email' => 0,
+        'subscribe_taxonomy_term' => 0,
+        'subscribe_taxonomy_term_email' => 0,
+        'subscribe_user' => 0,
+        'subscribe_user_email' => 0,
+        'temp_activity_fields' => 0,
+        'temp_activity_new_fields' => 0,
+        'temp_provider_profile_status' => 0,
+        'user_entityforms' => 0,
       ),
       'force_default' => 1,
       'user_register_form' => FALSE,
@@ -1981,8 +2002,9 @@ function crl_pp_resource_feat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
+        'module' => 'text',
         'settings' => array(),
-        'type' => 'hidden',
+        'type' => 'text_default',
         'weight' => 7,
       ),
       'embedded' => array(
@@ -2700,11 +2722,11 @@ function crl_pp_resource_feat_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'hidden',
+        'label' => 'above',
         'module' => 'viewfield',
         'settings' => array(),
         'type' => 'viewfield_default',
-        'weight' => 907,
+        'weight' => 8,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2858,6 +2880,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   t('Topic(s) Covered');
   t('Vendor Contact');
   t('Vendor URL');
+  t('Vote Results');
   t('Voting Results');
   t('Years Covered');
 

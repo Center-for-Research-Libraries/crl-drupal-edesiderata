@@ -109,6 +109,7 @@ features[field_group][] = group_update_alerts|node|resource|form
 features[field_instance][] = comment-comment_node_resource-comment_body
 features[field_instance][] = comment-comment_node_resource-field_comment_privacy
 features[field_instance][] = entityform-resource_suggestion-field_further_description
+features[field_instance][] = entityform-resource_suggestion-field_internal_notes
 features[field_instance][] = entityform-resource_suggestion-field_misc_notes
 features[field_instance][] = entityform-resource_suggestion-field_resource_attachments
 features[field_instance][] = entityform-resource_suggestion-field_resource_provider_text
