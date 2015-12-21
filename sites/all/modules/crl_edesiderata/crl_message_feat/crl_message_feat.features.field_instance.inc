@@ -187,6 +187,68 @@ function crl_message_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'message-resource_new_comment-field_comment_reference'.
+  $field_instances['message-resource_new_comment-field_comment_reference'] = array(
+    'bundle' => 'resource_new_comment',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 5,
+      ),
+      'message_notify_daily_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_email_body' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'message_notify_weekly_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'message',
+    'field_name' => 'field_comment_reference',
+    'label' => 'Related comment',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete',
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance:
   // 'message-resource_new_comment-field_resource_reference'.
   $field_instances['message-resource_new_comment-field_resource_reference'] = array(
     'bundle' => 'resource_new_comment',
@@ -566,6 +628,7 @@ function crl_message_feat_field_default_field_instances() {
   t('Email option will be checked automatically when subscribing to something.');
   t('Email subscriptions');
   t('How often would you like to receive email notifications?');
+  t('Related comment');
   t('Related resource');
 
   return $field_instances;

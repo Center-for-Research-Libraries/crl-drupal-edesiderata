@@ -168,14 +168,14 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: A new comment was added.",
+          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: A new \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#comment-[message:field-comment-reference:cid]\\u0027\\u003Ecomment\\u003C\\/a\\u003E was added.",
           "format" : "literal",
-          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: A new comment was added."
+          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: A new \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#comment-[message:field-comment-reference:cid]\\u0027\\u003Ecomment\\u003C\\/a\\u003E was added."
         },
         {
-          "value" : "A new comment was added.\\r\\n",
+          "value" : "A new \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#comment-[message:field-comment-reference:cid]\\u0027\\u003Ecomment\\u003C\\/a\\u003E was added.\\r\\n",
           "format" : "literal",
-          "safe_value" : "A new comment was added.\\n"
+          "safe_value" : "A new \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#comment-[message:field-comment-reference:cid]\\u0027\\u003Ecomment\\u003C\\/a\\u003E was added.\\n"
         }
       ]
     },
