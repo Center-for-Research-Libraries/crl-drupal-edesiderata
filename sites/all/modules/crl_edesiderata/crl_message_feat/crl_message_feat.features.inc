@@ -87,14 +87,14 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: An offer is scheduled to expire in less than 2 weeks.",
+          "value" : "\\u003Cstrong\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E: An \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#crl-offers-status\\u0027\\u003Eoffer\\u003C\\/a\\u003E is scheduled to expire in less than 2 weeks.",
           "format" : "literal",
-          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: An offer is scheduled to expire in less than 2 weeks."
+          "safe_value" : "\\u003Cstrong\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E: An \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#crl-offers-status\\u0027\\u003Eoffer\\u003C\\/a\\u003E is scheduled to expire in less than 2 weeks."
         },
         {
-          "value" : "An offer is scheduled to expire in less than 2 weeks.",
+          "value" : "An \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#crl-offers-status\\u0027\\u003Eoffer\\u003C\\/a\\u003E is scheduled to expire in less than 2 weeks.",
           "format" : "literal",
-          "safe_value" : "An offer is scheduled to expire in less than 2 weeks."
+          "safe_value" : "An \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#crl-offers-status\\u0027\\u003Eoffer\\u003C\\/a\\u003E is scheduled to expire in less than 2 weeks."
         }
       ]
     },
@@ -114,9 +114,9 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: Resource entry was added.",
+          "value" : "\\u003Cstrong\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E: Resource entry was added.",
           "format" : "literal",
-          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: Resource entry was added."
+          "safe_value" : "\\u003Cstrong\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E: Resource entry was added."
         },
         {
           "value" : "Resource entry was added.\\r\\n",
@@ -141,9 +141,9 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: CRL staff issued an alert.",
+          "value" : "\\u003Cstrong\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E: CRL staff issued an alert.",
           "format" : "literal",
-          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: CRL staff issued an alert."
+          "safe_value" : "\\u003Cstrong\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E: CRL staff issued an alert."
         },
         {
           "value" : "CRL staff issued an alert.\\r\\n",
@@ -168,9 +168,9 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: A new \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#comment-[message:field-comment-reference:cid]\\u0027\\u003Ecomment\\u003C\\/a\\u003E was added.",
+          "value" : "\\u003Cstrong\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E: A new \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#comment-[message:field-comment-reference:cid]\\u0027\\u003Ecomment\\u003C\\/a\\u003E was added.",
           "format" : "literal",
-          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: A new \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#comment-[message:field-comment-reference:cid]\\u0027\\u003Ecomment\\u003C\\/a\\u003E was added."
+          "safe_value" : "\\u003Cstrong\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E: A new \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#comment-[message:field-comment-reference:cid]\\u0027\\u003Ecomment\\u003C\\/a\\u003E was added."
         },
         {
           "value" : "A new \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#comment-[message:field-comment-reference:cid]\\u0027\\u003Ecomment\\u003C\\/a\\u003E was added.\\r\\n",
@@ -195,14 +195,14 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: CRL staff posted a new review.",
+          "value" : "\\u003Cstrong\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E: CRL staff posted a new \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#crl-review\\u0027\\u003Ereview\\u003C\\/a\\u003E.",
           "format" : "literal",
-          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: CRL staff posted a new review."
+          "safe_value" : "\\u003Cstrong\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E: CRL staff posted a new \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#crl-review\\u0027\\u003Ereview\\u003C\\/a\\u003E."
         },
         {
-          "value" : "CRL staff posted a new review.",
+          "value" : "CRL staff posted a new \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#crl-review\\u0027\\u003Ereview\\u003C\\/a\\u003E.",
           "format" : "literal",
-          "safe_value" : "CRL staff posted a new review."
+          "safe_value" : "CRL staff posted a new \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#crl-review\\u0027\\u003Ereview\\u003C\\/a\\u003E."
         }
       ]
     },
@@ -222,14 +222,14 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: CRL Status was changed to \\u003Cem\\u003E[message:field-activity-crl-status]\\u003C\\/em\\u003E.",
+          "value" : "\\u003Cstrong\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E: CRL Status was changed to \\u003Cem\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#crl-offers-status\\u0027\\u003E[message:field-activity-crl-status]\\u003C\\/a\\u003E\\u003C\\/em\\u003E.",
           "format" : "literal",
-          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: CRL Status was changed to \\u003Cem\\u003E[message:field-activity-crl-status]\\u003C\\/em\\u003E."
+          "safe_value" : "\\u003Cstrong\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E: CRL Status was changed to \\u003Cem\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#crl-offers-status\\u0027\\u003E[message:field-activity-crl-status]\\u003C\\/a\\u003E\\u003C\\/em\\u003E."
         },
         {
-          "value" : "CRL Status was changed to \\u003Cem\\u003E[message:field-activity-crl-status]\\u003C\\/em\\u003E.\\r\\n",
+          "value" : "CRL Status was changed to \\u003Cem\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#crl-offers-status\\u0027\\u003E[message:field-activity-crl-status]\\u003C\\/a\\u003E\\u003C\\/em\\u003E.\\r\\n",
           "format" : "literal",
-          "safe_value" : "CRL Status was changed to \\u003Cem\\u003E[message:field-activity-crl-status]\\u003C\\/em\\u003E.\\n"
+          "safe_value" : "CRL Status was changed to \\u003Cem\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#crl-offers-status\\u0027\\u003E[message:field-activity-crl-status]\\u003C\\/a\\u003E\\u003C\\/em\\u003E.\\n"
         }
       ]
     },
@@ -249,9 +249,9 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "\\u003Ca href=\\u0022\\/resources\\/suggestions\\u0022\\u003EResource Suggestions\\u003C\\/a\\u003E: A new resource was suggested by a CRL member.\\r\\n",
+          "value" : "\\u003Cstrong\\u003E\\u003Ca href=\\u0022\\/resources\\/suggestions\\u0022\\u003EResource Suggestions\\u003C\\/a\\u003E\\u003C\\/strong\\u003E: A new resource was suggested by a CRL member.\\r\\n",
           "format" : "literal",
-          "safe_value" : "\\u003Ca href=\\u0022\\/resources\\/suggestions\\u0022\\u003EResource Suggestions\\u003C\\/a\\u003E: A new resource was suggested by a CRL member.\\n"
+          "safe_value" : "\\u003Cstrong\\u003E\\u003Ca href=\\u0022\\/resources\\/suggestions\\u0022\\u003EResource Suggestions\\u003C\\/a\\u003E\\u003C\\/strong\\u003E: A new resource was suggested by a CRL member.\\n"
         }
       ]
     },
@@ -271,9 +271,9 @@ function crl_message_feat_default_message_type() {
     "arguments" : null,
     "message_text" : { "und" : [
         {
-          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: Resource entry was updated.",
+          "value" : "\\u003Cstrong\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E: Resource entry was updated.",
           "format" : "literal",
-          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: Resource entry was updated."
+          "safe_value" : "\\u003Cstrong\\u003E\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E\\u003C\\/strong\\u003E: Resource entry was updated."
         },
         {
           "value" : "Resource entry was updated.\\r\\n",
