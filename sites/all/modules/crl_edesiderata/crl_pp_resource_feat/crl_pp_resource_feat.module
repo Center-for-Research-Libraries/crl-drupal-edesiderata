@@ -363,11 +363,11 @@ function crl_pp_resource_feat_node_view($node, $view_mode, $langcode) {
  * Implements hook_page_alter().
  *
  * Ad hoc way to add some special styles for the admin interface when viewing
- * PP fivestar data.
+ * PP fivestar data and other reports with special formatting needs.
  */
 function crl_pp_resource_feat_page_alter(&$page) {
   if (path_is_admin(current_path())) {
-    drupal_add_css('.vote-summary-wrapper ul li, .vote-user-wrapper ul li {list-style: none outside none; margin: 0px;} .vote-summary-wrapper ul, .vote-user-wrapper ul {margin: 0px;}',
+    drupal_add_css('.vote-summary-wrapper ul li, .vote-user-wrapper ul li {list-style: none outside none; margin: 0px;} .vote-summary-wrapper ul, .vote-user-wrapper ul {margin: 0px;} ul.primary {height: auto !important;}',
       array(
         'group' => CSS_THEME,
         'type' => 'inline',
