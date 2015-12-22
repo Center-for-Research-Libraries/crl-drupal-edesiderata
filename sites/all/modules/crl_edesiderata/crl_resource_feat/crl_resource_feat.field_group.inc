@@ -35,6 +35,7 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'CRL Review',
       'instance_settings' => array(
+        'id' => 'crl-review',
         'classes' => ' group-analysis field-group-htab',
         'description' => '',
       ),
@@ -98,11 +99,13 @@ function crl_resource_feat_field_group_info() {
     ),
     'format_type' => 'htab',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'Appendix',
       'instance_settings' => array(
-        'description' => '',
+        'id' => 'crl-appendix',
         'classes' => ' group-appendix field-group-htab',
+        'description' => '',
       ),
+      'formatter' => 'closed',
     ),
   );
   $export['group_appendix|node|resource|default'] = $field_group;
@@ -291,6 +294,7 @@ function crl_resource_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Details',
       'instance_settings' => array(
+        'id' => 'crl-details',
         'classes' => ' group-details field-group-htab',
         'description' => '',
       ),
@@ -561,11 +565,13 @@ function crl_resource_feat_field_group_info() {
     ),
     'format_type' => 'htab',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'Overview',
       'instance_settings' => array(
-        'description' => '',
+        'id' => 'crl-overview',
         'classes' => ' group-overview field-group-htab',
+        'description' => '',
       ),
+      'formatter' => 'closed',
     ),
   );
   $export['group_overview|node|title_review|default'] = $field_group;
