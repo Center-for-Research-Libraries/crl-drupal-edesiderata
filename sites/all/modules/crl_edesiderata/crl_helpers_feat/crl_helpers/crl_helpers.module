@@ -131,7 +131,7 @@ function crl_helpers_page_build(&$page) {
       watchdog('crl helpers', 'Registration access was denied because the user did not pass the member IP check');
       drupal_goto();
     }
-  } 
+  }
 }
 
 
@@ -199,6 +199,16 @@ function crl_helpers_filter_info() {
     'cache' => FALSE,
   );
   return $filters;
+}
+
+
+/**
+ * Implements hook_field_group_build_pre_render_alter().
+ */
+function crl_helpers_field_group_build_pre_render_alter(& $element) {
+  // Add some custom js additions for field group tab rendering.
+  // @see https://www.drupal.org/node/1747804
+  $element['#attached']['js'][] = drupal_get_path('module', 'crl_helpers') . '/js/crl_helpers_field_group.js';
 }
 
 
@@ -326,7 +336,7 @@ function crl_helpers_rate_widget_alter($widget, $context) {
  * make alterations AFTER other module's alterations (e.g. revisioning). We
  * could usually use hook_form_FORM_ID_alter() to ensure our alterations go
  * after other hook_form_alters(), but for node edit forms the FORM_ID is
- * dynamic and dependent on the node type, so doing it this way is easier. 
+ * dynamic and dependent on the node type, so doing it this way is easier.
  *
  * @see crl_helpers_module_implements_alter()
  */
