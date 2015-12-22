@@ -192,7 +192,7 @@ function crl_message_feat_comment_insert($comment) {
     // Trigger comment related messages.
     $node = node_load($comment->nid);
     if ($node->type == 'resource') {
-      $messages[] = array('type' => 'resource_new_comment', 'fields' => array('field_resource_reference' => $node));
+      $messages[] = array('type' => 'resource_new_comment', 'fields' => array('field_resource_reference' => $node, 'field_comment_reference' => $comment));
       // Create messages.
       crl_message_feat_process_messages($messages);
     }
