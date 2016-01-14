@@ -21,7 +21,8 @@ function theme_mail_logger_read_mail($mail) {
   $output .= '<div class="mail_body_label">Body: </div>';
   if (preg_match('/<html.*?>(.*?)<\/html>/s', $mail->body, $mailbody)) {
     $output .= '<iframe srcdoc="<html>' . htmlspecialchars($mailbody[1], ENT_QUOTES) . '</html>" width="100%" height="500px"></iframe>';
-  } else {
+  }
+  else {
     $output .= '<div class="mail_body_label">Body: </div><div class="mail_body_data">' . nl2br(check_plain($mail->body)) . '</div>';
   }
   $output .= '</div>';
