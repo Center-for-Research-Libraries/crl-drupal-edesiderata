@@ -10,12 +10,18 @@
 function crl_resource_feat_default_rules_configuration() {
   $items = array();
   $items['crl_message_feat_resource_suggested_email'] = entity_import('rules_config', '{ "crl_message_feat_resource_suggested_email" : {
-      "LABEL" : "Resource Suggested Email",
+      "LABEL" : "Email on Resource Suggestion",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "REQUIRES" : [ "rules", "mimemail", "entityform" ],
       "ON" : { "entityform_insert" : [] },
       "IF" : [
+        { "entity_is_of_bundle" : {
+            "entity" : [ "entityform" ],
+            "type" : "entityform",
+            "bundle" : { "value" : { "resource_suggestion" : "resource_suggestion" } }
+          }
+        },
         { "entity_has_field" : { "entity" : [ "entityform" ], "field" : "field_title_sort" } }
       ],
       "DO" : [
