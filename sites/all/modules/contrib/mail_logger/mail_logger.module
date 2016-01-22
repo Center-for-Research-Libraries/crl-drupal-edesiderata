@@ -91,10 +91,15 @@ function mail_logger_mail_alter(&$message) {
     $logger['date_sent'] = REQUEST_TIME;
     if (!isset($logger['language'])) {
       $language = LANGUAGE_NONE;
-    } elseif (is_object($logger['language'])) {
+    }
+    elseif (is_object($logger['language'])) {
       $language = $logger['language']->language;
-    } else {
+    }
+    else {
       $language = $logger['language'];
+    }
+    if (empty($logger['to'])) {
+      $logger['to'] = t('* empty *');
     }
     db_insert('mail_logger', array())
       ->fields(array(
@@ -265,7 +270,7 @@ function mail_logger_token_values($type, $object = NULL) {
  */
 function mail_logger_load($id) {
   $mail = db_select('mail_logger', 'ml')
-    ->range(0,1)
+    ->range(0, 1)
     ->fields('ml')
     ->condition('mlid', $id)
     ->execute()

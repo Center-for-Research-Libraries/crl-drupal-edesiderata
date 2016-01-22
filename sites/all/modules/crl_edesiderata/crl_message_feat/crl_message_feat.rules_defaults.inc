@@ -15,6 +15,14 @@ function crl_message_feat_default_rules_configuration() {
       "OWNER" : "rules",
       "REQUIRES" : [ "rules", "entityform" ],
       "ON" : { "entityform_insert" : [] },
+      "IF" : [
+        { "entity_is_of_bundle" : {
+            "entity" : [ "entityform" ],
+            "type" : "entityform",
+            "bundle" : { "value" : { "resource_suggestion" : "resource_suggestion" } }
+          }
+        }
+      ],
       "DO" : [
         { "entity_create" : {
             "USING" : {

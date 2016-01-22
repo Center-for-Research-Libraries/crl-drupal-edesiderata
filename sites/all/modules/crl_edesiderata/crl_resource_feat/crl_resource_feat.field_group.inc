@@ -8,7 +8,7 @@
  * Implements hook_field_group_info().
  */
 function crl_resource_feat_field_group_info() {
-  $export = array();
+  $field_groups = array();
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -42,7 +42,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'closed',
     ),
   );
-  $export['group_analysis|node|title_review|default'] = $field_group;
+  $field_groups['group_analysis|node|title_review|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -78,7 +78,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'closed',
     ),
   );
-  $export['group_analysis|node|title_review|form'] = $field_group;
+  $field_groups['group_analysis|node|title_review|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -108,7 +108,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'closed',
     ),
   );
-  $export['group_appendix|node|resource|default'] = $field_group;
+  $field_groups['group_appendix|node|resource|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -137,7 +137,7 @@ function crl_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_appendix|node|resource|form'] = $field_group;
+  $field_groups['group_appendix|node|resource|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -167,7 +167,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'closed',
     ),
   );
-  $export['group_crl_details|node|title_review|default'] = $field_group;
+  $field_groups['group_crl_details|node|title_review|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -202,7 +202,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_details_collection_content|node|resource|default'] = $field_group;
+  $field_groups['group_details_collection_content|node|resource|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -236,7 +236,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_details_provider_terms|node|resource|default'] = $field_group;
+  $field_groups['group_details_provider_terms|node|resource|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -271,7 +271,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_details_specs|node|resource|default'] = $field_group;
+  $field_groups['group_details_specs|node|resource|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -301,7 +301,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'closed',
     ),
   );
-  $export['group_details|node|title_review|default'] = $field_group;
+  $field_groups['group_details|node|title_review|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -335,7 +335,7 @@ function crl_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_details|node|title_review|form'] = $field_group;
+  $field_groups['group_details|node|title_review|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -367,7 +367,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_history|node|resource|default'] = $field_group;
+  $field_groups['group_history|node|resource|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -395,7 +395,7 @@ function crl_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_jisc_data|node|resource|default'] = $field_group;
+  $field_groups['group_jisc_data|node|resource|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -434,7 +434,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_jisc_data|node|resource|form'] = $field_group;
+  $field_groups['group_jisc_data|node|resource|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -471,7 +471,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_jisc_standards_compliance|node|resource|default'] = $field_group;
+  $field_groups['group_jisc_standards_compliance|node|resource|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -508,7 +508,7 @@ function crl_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_jisc_standards_compliance|node|resource|form'] = $field_group;
+  $field_groups['group_jisc_standards_compliance|node|resource|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -537,7 +537,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_official|entityform|resource_suggestion|form'] = $field_group;
+  $field_groups['group_official|entityform|resource_suggestion|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -574,7 +574,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'closed',
     ),
   );
-  $export['group_overview|node|title_review|default'] = $field_group;
+  $field_groups['group_overview|node|title_review|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -605,7 +605,7 @@ function crl_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_overview|node|title_review|form'] = $field_group;
+  $field_groups['group_overview|node|title_review|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -639,7 +639,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_process|entityform|resource_suggestion|default'] = $field_group;
+  $field_groups['group_process|entityform|resource_suggestion|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -673,7 +673,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_ratings|node|title_review|default'] = $field_group;
+  $field_groups['group_ratings|node|title_review|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -707,7 +707,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_sources|node|resource|default'] = $field_group;
+  $field_groups['group_sources|node|resource|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -744,7 +744,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_system_fields|node|resource|form'] = $field_group;
+  $field_groups['group_system_fields|node|resource|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -773,7 +773,7 @@ function crl_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_tabbed|node|title_review|default'] = $field_group;
+  $field_groups['group_tabbed|node|title_review|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -801,7 +801,7 @@ function crl_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_tabbed|node|title_review|form'] = $field_group;
+  $field_groups['group_tabbed|node|title_review|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -835,7 +835,7 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_temp_old_reviews|node|resource|form'] = $field_group;
+  $field_groups['group_temp_old_reviews|node|resource|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -869,7 +869,29 @@ function crl_resource_feat_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_update_alerts|node|resource|form'] = $field_group;
+  $field_groups['group_update_alerts|node|resource|form'] = $field_group;
 
-  return $export;
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Appendix');
+  t('CRL Offers & Status');
+  t('CRL Review');
+  t('Collection Content');
+  t('Community Ratings');
+  t('Details');
+  t('Entry Processing');
+  t('Jisc Data');
+  t('Offical Use Only');
+  t('Overview');
+  t('Previous Offer History');
+  t('Sources');
+  t('Specifications');
+  t('Standards Compliance');
+  t('System Fields');
+  t('Tabbed');
+  t('Temporary Data from Old Reviews');
+  t('Terms and Provider Details');
+  t('Update Alert');
+
+  return $field_groups;
 }

@@ -231,8 +231,18 @@ function _crowd_process_redirects() {
  *   successful, or an empty array upon failure.
  */
 function crowd_login_remote($username, $password, $show_reject_message = TRUE) {
-  global $user;
+  global $user, $is_https;
   $crowd_user = array();
+  // Initiating a crowd session depends on our ability to set a Crowd cookie.
+  // If configured to set a secure cookie then we cannot continue over an
+  // insecure connection.
+  if (variable_get('crowd_secure_sso_cookie', FALSE) && !$is_https) {
+    if ($show_reject_message) {
+      drupal_set_message(t('Authentication is not currently allowed over an insecure (http) connection.'), 'error');
+    }
+    watchdog('crowd', 'User %username could not be authenticate against Crowd over an insecure connection because the "Secure SSO Cookie" option is set.', array('%username' => $username), WATCHDOG_NOTICE);
+    return $crowd_user;
+  }
   try {
     // Attempt to authenticate the user in Crowd.
     $crowd_client = crowd_client_connect();
@@ -630,18 +640,22 @@ function crowd_sync_user_data($crowd_user, $account = NULL) {
   // If we are not passed an account object use the current user.
   if (empty($account)) {
     global $user;
-    $account = $user;
+    // We don't want to be manipulating the global user object directly as doing
+    // so can cause irregular behavior during the save process later.
+    $account = clone $user;
   }
   // Don't do anything if working with anon user or if Crowd and Drupal
   // usernames do not match.
-  if (!$account->uid || $crowd_user['username'] != $account->name) {
+  if (!$account->uid || mb_strtolower($crowd_user['username']) != mb_strtolower($account->name)) {
+    watchdog('crowd', 'Failed to sync user data for Crowd user %name. The local Drupal user may not exist or there may be a username mismatch.', array('%name' => $crowd_user['username']), WATCHDOG_ERROR);
     return;
   }
   // Allow modules to implement their own sync tasks or alter data that will
   // be used by the native Crowd sync tasks that follow.
+  $edit = array();
   foreach (module_implements('crowd_presync_user_data') as $module) {
     $function = $module . '_crowd_presync_user_data';
-    $function($crowd_user, $account);
+    $function($crowd_user, $account, $edit);
   }
   // Map groups. Start by fetching the account's current roles.
   $roles = $account->roles;
@@ -687,19 +701,26 @@ function crowd_sync_user_data($crowd_user, $account = NULL) {
   if (!empty($crowd_user['email'])) {
     $mail = $crowd_user['email'];
   }
-  // Create the user information array
-  $info = array(
+  // Create the user information array and add any changes already specified
+  // from hook_crowd_presync_user_data(). We give priority to the custom
+  // calculated values if there is a property collision.
+  $edit += array(
     'mail' => $mail,
     'roles' => $roles
   );
   // Update the user in Drupal
-  $account = user_save($account, $info, 'account');
+  $account = user_save($account, $edit, 'account');
   if ($account != FALSE) {
-    watchdog('crowd', 'Updated user %name with data from Crowd User.', array('%name' => $crowd_user['username']), WATCHDOG_NOTICE);
+    watchdog('crowd', 'Updated user %name with data from Crowd User.', array('%name' => $account->name), WATCHDOG_NOTICE);
+    // If we are working with the current user also update the global $user
+    // object.
+    if (isset($user)) {
+      $user = $account;
+    }
   }
   else {
     // There has been a problem saving the user, log it.
-    watchdog('crowd', 'Failed to save the user account information for %name', array('%name' => $crowd_user['username']), WATCHDOG_ERROR);
+    watchdog('crowd', 'Failed to save the user account information for %name', array('%name' => $account->name), WATCHDOG_ERROR);
   }
 }
 
@@ -716,7 +737,11 @@ function crowd_get_set_cookie_data($token = NULL) {
     $_COOKIE[$cookie_name] = $token;
     return $token;
   }
-  return !empty($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : NULL;
+  // If the Secure SSO Cookie option is active, and we have an insecure
+  // connection, ignore any tokens that may be set. Otherwise, return the
+  // token.
+  global $is_https;
+  return (variable_get('crowd_secure_sso_cookie', FALSE) && !$is_https) || empty($_COOKIE[$cookie_name]) ? NULL : $_COOKIE[$cookie_name];
 }
 
 
