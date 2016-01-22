@@ -14,15 +14,17 @@
  *   An associative array of crowd user data that was fetched from Crowd.
  * @param object $account
  *   A Drupal user object representing the local user to be synced to.
+ * @param array $edit
+ *   An array of custom fields and values to save locally as part of the user
+ *   account, and as expected by user_save(). This can simply be left unchanged
+ *   if no local updates are needed. It is preferred to pass user object changes
+ *   through this variable as oppsoed to modifying $account directly.
  */
-function hook_crowd_presync_user_data(&$crowd_user, $account) {
+function hook_crowd_presync_user_data(&$crowd_user, $account, &$edit) {
   // Sync first and last name data with custom profile fields.
-  $edit = array();
-  // Make sure all the fields are loaded on the account.
-  $account = user_load($account->uid);
-  $edit['field_first_name'][LANGUAGE_NONE][0]['value'] = $crowd_user['first-name'];
-  $edit['field_last_name'][LANGUAGE_NONE][0]['value'] = $crowd_user['last-name'];
-  user_save($account, $edit);
+  $field_languages = field_language('user', $account);
+  $edit['field_first_name'][$field_languages['field_first_name']][0]['value'] = $crowd_user['first-name'];
+  $edit['field_last_name'][$field_languages['field_last_name']][0]['value'] = $crowd_user['last-name'];
 }
 
 

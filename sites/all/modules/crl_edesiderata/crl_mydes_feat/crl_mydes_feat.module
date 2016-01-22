@@ -135,6 +135,8 @@ function crl_mydes_feat_build_saved_search_form() {
       $saved_search = reset($saved_searches);
       drupal_add_library('system', 'drupal.collapse');
       $block_saved_search = module_invoke('search_api_saved_searches', 'block_view', $saved_search->delta);
+      // We only want the content part of the saved search block.
+      $block_saved_search = $block_saved_search['content'];
       $output['saved_this_search'] = array(
         '#theme' => 'fieldset',
         '#attributes' => array('class' => array('collapsible', 'collapsed')),

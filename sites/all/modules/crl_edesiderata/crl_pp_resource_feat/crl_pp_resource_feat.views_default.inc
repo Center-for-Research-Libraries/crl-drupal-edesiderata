@@ -338,17 +338,17 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_contact_name']['id'] = 'field_contact_name';
   $handler->display->display_options['fields']['field_contact_name']['table'] = 'field_data_field_contact_name';
   $handler->display->display_options['fields']['field_contact_name']['field'] = 'field_contact_name';
-  $handler->display->display_options['fields']['field_contact_name']['label'] = 'Noninator\'s Name';
+  $handler->display->display_options['fields']['field_contact_name']['label'] = 'Nominator\'s Name';
   /* Field: Field: Email */
   $handler->display->display_options['fields']['field_contact_email']['id'] = 'field_contact_email';
   $handler->display->display_options['fields']['field_contact_email']['table'] = 'field_data_field_contact_email';
   $handler->display->display_options['fields']['field_contact_email']['field'] = 'field_contact_email';
-  $handler->display->display_options['fields']['field_contact_email']['label'] = 'Noninator\'s Email';
+  $handler->display->display_options['fields']['field_contact_email']['label'] = 'Nominator\'s Email';
   /* Field: Field: Institution */
   $handler->display->display_options['fields']['field_pp_nominator_institution']['id'] = 'field_pp_nominator_institution';
   $handler->display->display_options['fields']['field_pp_nominator_institution']['table'] = 'field_data_field_pp_nominator_institution';
   $handler->display->display_options['fields']['field_pp_nominator_institution']['field'] = 'field_pp_nominator_institution';
-  $handler->display->display_options['fields']['field_pp_nominator_institution']['label'] = 'Noninator\'s Institution';
+  $handler->display->display_options['fields']['field_pp_nominator_institution']['label'] = 'Nominator\'s Institution';
   /* Field: Entityform Submission: Date submitted */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'entityform';

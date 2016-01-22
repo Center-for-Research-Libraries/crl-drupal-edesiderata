@@ -11,6 +11,7 @@
  * Menu callback function to generate the module configuration form.
  */
 function crowd_admin_settings($form, $form_state) {
+  global $is_https;
   // Run a quick check to see if the connection is working with the current
   // configuration.
   if (empty($form_state['input'])) {
@@ -96,11 +97,14 @@ function crowd_admin_settings($form, $form_state) {
     '#description' => t('The domain that SSO cookies should be generated for (such as .mydomain.com).'),
   );
 
+  $crowd_secure_sso_cookie_disabled = !$is_https && !variable_get('crowd_secure_sso_cookie', FALSE);
+  $crowd_secure_sso_cookie_disabled_message = $crowd_secure_sso_cookie_disabled ? '<strong>' . t('This option can only be enabled over a secure connection.') . '</strong>' : '';
   $form['cookie_options']['crowd_secure_sso_cookie'] = array(
     '#type' => 'checkbox',
     '#title' => t('Secure SSO cookie'),
     '#default_value' => variable_get('crowd_secure_sso_cookie', FALSE),
-    '#description' => t('If checked, the "Secure" flag is set on the cookie. This will break SSO for applications not accessed over SSL/TLS (https://), potentially making logging into Crowd impossible.'),
+    '#disabled' => $crowd_secure_sso_cookie_disabled,
+    '#description' => t('If enabled, the "Secure" flag will be set on the SSO cookie when a session is initiated by Drupal, and any insecure SSO cookies set by other applications will be ignored. This will break SSO for any applications not using a secure connection (SSL/TLS), including Drupal. Additionally, users will not be able to log in to Drupal with Crowd credentails over an insecure connection when this option is active.') . ' ' . $crowd_secure_sso_cookie_disabled_message,
   );
 
   $form['cookie_options']['crowd_logout_no_cookie'] = array(
