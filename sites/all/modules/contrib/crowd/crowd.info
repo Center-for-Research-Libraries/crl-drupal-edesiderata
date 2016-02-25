@@ -13,9 +13,9 @@ files[] = "includes/CrowdRestClient.inc"
 files[] = "tests/CrowdAuthenticationCase.test"
 files[] = "tests/CrowdConfCase.test"
 
-; Information added by Drupal.org packaging script on 2016-01-21
-version = "7.x-2.0+6-dev"
+; Information added by Drupal.org packaging script on 2016-02-15
+version = "7.x-2.0+7-dev"
 core = "7.x"
 project = "crowd"
-datestamp = "1453403045"
+datestamp = "1455563042"
 
