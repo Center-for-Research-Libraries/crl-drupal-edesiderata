@@ -88,6 +88,7 @@ features[field_instance][] = entityform-purchase_proposal_nomination-field_conta
 features[field_instance][] = entityform-purchase_proposal_nomination-field_further_description
 features[field_instance][] = entityform-purchase_proposal_nomination-field_internal_notes
 features[field_instance][] = entityform-purchase_proposal_nomination-field_link
+features[field_instance][] = entityform-purchase_proposal_nomination-field_pp_languages
 features[field_instance][] = entityform-purchase_proposal_nomination-field_pp_nomination_crl_holdings
 features[field_instance][] = entityform-purchase_proposal_nomination-field_pp_nominator_comments
 features[field_instance][] = entityform-purchase_proposal_nomination-field_pp_nominator_institution

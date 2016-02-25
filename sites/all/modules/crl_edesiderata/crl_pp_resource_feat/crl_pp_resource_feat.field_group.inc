@@ -219,7 +219,7 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Offical Use Only',
-    'weight' => '13',
+    'weight' => '14',
     'children' => array(
       0 => 'field_pp_related',
       1 => 'field_internal_notes',
