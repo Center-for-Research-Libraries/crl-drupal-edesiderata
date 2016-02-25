@@ -275,7 +275,7 @@ function crl_pp_resource_feat_strongarm() {
       'display' => array(
         'pseudo_field_pp_resource_source_notice' => array(
           'default' => array(
-            'weight' => '11',
+            'weight' => '12',
             'visible' => TRUE,
           ),
           'teaser' => array(

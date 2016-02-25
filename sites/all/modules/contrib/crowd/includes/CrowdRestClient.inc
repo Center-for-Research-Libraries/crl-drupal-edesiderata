@@ -207,7 +207,7 @@ class CrowdRestClient implements CrowdServiceInterface {
     $XML->addChild('last-name', htmlspecialchars($user_data['last-name'], ENT_NOQUOTES, 'UTF-8'));
     $XML->addChild('display-name', htmlspecialchars($user_data['display-name'], ENT_NOQUOTES, 'UTF-8'));
     $XML->addChild('email', htmlspecialchars($user_data['email'], ENT_NOQUOTES, 'UTF-8'));
-    $XML->addChild('active', $active);
+    $XML->addChild('active', $user_data['active']);
     $response = $this->apiHttpRequest('user', array('query' => array('username' => $username)), $XML->asXML(), 'PUT');
     // Check for success.
     if ($response->code == '204') {

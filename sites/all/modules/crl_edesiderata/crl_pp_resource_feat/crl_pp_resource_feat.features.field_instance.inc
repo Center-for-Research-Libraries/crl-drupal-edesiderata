@@ -289,7 +289,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 10,
+      'weight' => 11,
     ),
   );
 
@@ -381,6 +381,41 @@ function crl_pp_resource_feat_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'entityform-purchase_proposal_nomination-field_pp_languages'.
+  $field_instances['entityform-purchase_proposal_nomination-field_pp_languages'] = array(
+    'bundle' => 'purchase_proposal_nomination',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 13,
+      ),
+    ),
+    'entity_type' => 'entityform',
+    'field_name' => 'field_pp_languages',
+    'label' => 'Language(s)',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 8,
+    ),
+  );
+
+  // Exported field_instance:
   // 'entityform-purchase_proposal_nomination-field_pp_nomination_crl_holdings'.
   $field_instances['entityform-purchase_proposal_nomination-field_pp_nomination_crl_holdings'] = array(
     'bundle' => 'purchase_proposal_nomination',
@@ -408,7 +443,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 12,
+      'weight' => 13,
     ),
   );
 
@@ -443,7 +478,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 11,
+      'weight' => 12,
     ),
   );
 
@@ -513,7 +548,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 9,
+      'weight' => 10,
     ),
   );
 
@@ -548,7 +583,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 8,
+      'weight' => 9,
     ),
   );
 
@@ -975,7 +1010,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_default',
-        'weight' => 904,
+        'weight' => 903,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -1070,7 +1105,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 21,
+      'weight' => 22,
     ),
   );
 
@@ -1163,6 +1198,52 @@ function crl_pp_resource_feat_field_default_field_instances() {
       'settings' => array(),
       'type' => 'number',
       'weight' => 35,
+    ),
+  );
+
+  // Exported field_instance: 'node-pp_resource-field_pp_languages'.
+  $field_instances['node-pp_resource-field_pp_languages'] = array(
+    'bundle' => 'pp_resource',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 905,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_pp_languages',
+    'label' => 'Language(s)',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 19,
     ),
   );
 
@@ -1300,7 +1381,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 20,
+      'weight' => 21,
     ),
   );
 
@@ -1347,7 +1428,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 19,
+      'weight' => 20,
     ),
   );
 
@@ -1600,7 +1681,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 905,
+        'weight' => 904,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2114,7 +2195,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 12,
+        'weight' => 13,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2147,7 +2228,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 20,
+      'weight' => 21,
     ),
   );
 
@@ -2194,6 +2275,52 @@ function crl_pp_resource_feat_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 24,
+    ),
+  );
+
+  // Exported field_instance: 'node-spp_resource-field_pp_languages'.
+  $field_instances['node-spp_resource-field_pp_languages'] = array(
+    'bundle' => 'spp_resource',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 9,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_pp_languages',
+    'label' => 'Language(s)',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 18,
     ),
   );
 
@@ -2301,7 +2428,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 10,
+        'weight' => 11,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2332,7 +2459,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 19,
+      'weight' => 20,
     ),
   );
 
@@ -2349,7 +2476,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 9,
+        'weight' => 10,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2379,7 +2506,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 18,
+      'weight' => 19,
     ),
   );
 
@@ -2849,6 +2976,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   t('If this entry has relationships with other entries, add links to those entries here.');
   t('Institution');
   t('Internal Notes');
+  t('Language(s)');
   t('Name');
   t('Name of the Provider.');
   t('Nominator\'s Comments');

@@ -71,6 +71,11 @@ function crl_pp_resource_feat_default_rules_configuration() {
           }
         },
         { "data_set" : {
+            "data" : [ "entity-created:field-pp-languages" ],
+            "value" : "[flagged-entityform:field-pp-languages]"
+          }
+        },
+        { "data_set" : {
             "data" : [ "entity-created:field-link" ],
             "value" : [ "flagged-entityform:field-link" ]
           }
