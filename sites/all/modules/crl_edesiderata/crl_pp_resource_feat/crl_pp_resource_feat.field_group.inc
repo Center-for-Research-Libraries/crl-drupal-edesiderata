@@ -8,7 +8,7 @@
  * Implements hook_field_group_info().
  */
 function crl_pp_resource_feat_field_group_info() {
-  $export = array();
+  $field_groups = array();
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -30,7 +30,8 @@ function crl_pp_resource_feat_field_group_info() {
       4 => 'field_pp_subject_area',
       5 => 'field_pp_attachments',
       6 => 'field_link',
-      7 => 'pseudo_field_pp_resource_source_notice',
+      7 => 'field_pp_languages',
+      8 => 'pseudo_field_pp_resource_source_notice',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -41,7 +42,7 @@ function crl_pp_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_details|node|pp_resource|default'] = $field_group;
+  $field_groups['group_details|node|pp_resource|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -64,7 +65,8 @@ function crl_pp_resource_feat_field_group_info() {
       5 => 'field_pp_attachments',
       6 => 'field_contacts',
       7 => 'field_link',
-      8 => 'group_nominator',
+      8 => 'field_pp_languages',
+      9 => 'group_nominator',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -76,7 +78,7 @@ function crl_pp_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_details|node|pp_resource|form'] = $field_group;
+  $field_groups['group_details|node|pp_resource|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -98,7 +100,8 @@ function crl_pp_resource_feat_field_group_info() {
       4 => 'field_pp_subject_area',
       5 => 'field_pp_attachments',
       6 => 'field_link',
-      7 => 'pseudo_field_pp_resource_source_notice',
+      7 => 'field_pp_languages',
+      8 => 'pseudo_field_pp_resource_source_notice',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -110,7 +113,7 @@ function crl_pp_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_details|node|spp_resource|default'] = $field_group;
+  $field_groups['group_details|node|spp_resource|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -132,7 +135,8 @@ function crl_pp_resource_feat_field_group_info() {
       4 => 'field_pp_subject_area',
       5 => 'field_pp_attachments',
       6 => 'field_link',
-      7 => 'group_nominator',
+      7 => 'field_pp_languages',
+      8 => 'group_nominator',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -144,7 +148,7 @@ function crl_pp_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_details|node|spp_resource|form'] = $field_group;
+  $field_groups['group_details|node|spp_resource|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -153,6 +157,35 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group->group_name = 'group_nominator';
   $field_group->entity_type = 'node';
   $field_group->bundle = 'pp_resource';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_details';
+  $field_group->data = array(
+    'label' => 'Nominator',
+    'weight' => '23',
+    'children' => array(
+      0 => 'field_pp_nominator_institution',
+      1 => 'field_contact_email',
+      2 => 'field_contact_name',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => ' group-nominator field-group-fieldset',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $field_groups['group_nominator|node|pp_resource|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_nominator|node|spp_resource|form';
+  $field_group->group_name = 'group_nominator';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'spp_resource';
   $field_group->mode = 'form';
   $field_group->parent_name = 'group_details';
   $field_group->data = array(
@@ -173,36 +206,7 @@ function crl_pp_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_nominator|node|pp_resource|form'] = $field_group;
-
-  $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
-  $field_group->api_version = 1;
-  $field_group->identifier = 'group_nominator|node|spp_resource|form';
-  $field_group->group_name = 'group_nominator';
-  $field_group->entity_type = 'node';
-  $field_group->bundle = 'spp_resource';
-  $field_group->mode = 'form';
-  $field_group->parent_name = 'group_details';
-  $field_group->data = array(
-    'label' => 'Nominator',
-    'weight' => '21',
-    'children' => array(
-      0 => 'field_pp_nominator_institution',
-      1 => 'field_contact_email',
-      2 => 'field_contact_name',
-    ),
-    'format_type' => 'fieldset',
-    'format_settings' => array(
-      'formatter' => 'collapsible',
-      'instance_settings' => array(
-        'description' => '',
-        'classes' => ' group-nominator field-group-fieldset',
-        'required_fields' => 1,
-      ),
-    ),
-  );
-  $export['group_nominator|node|spp_resource|form'] = $field_group;
+  $field_groups['group_nominator|node|spp_resource|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -231,7 +235,7 @@ function crl_pp_resource_feat_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_official|entityform|purchase_proposal_nomination|form'] = $field_group;
+  $field_groups['group_official|entityform|purchase_proposal_nomination|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -246,11 +250,11 @@ function crl_pp_resource_feat_field_group_info() {
     'label' => 'Administrative Fields',
     'weight' => '2',
     'children' => array(
-      0 => 'field_pp_proposal_purchased',
-      1 => 'field_pp_related',
-      2 => 'field_pp_sp_target_price',
-      3 => 'field_fy',
-      4 => 'field_pp_purchase_status',
+      0 => 'field_pp_related',
+      1 => 'field_pp_sp_target_price',
+      2 => 'field_fy',
+      3 => 'field_pp_purchase_status',
+      4 => 'field_pp_proposal_purchased',
       5 => 'field_pp_discounted_price',
     ),
     'format_type' => 'div',
@@ -269,7 +273,7 @@ function crl_pp_resource_feat_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_pp_admin|node|pp_resource|form'] = $field_group;
+  $field_groups['group_pp_admin|node|pp_resource|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -305,7 +309,7 @@ function crl_pp_resource_feat_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_pp_admin|node|spp_resource|form'] = $field_group;
+  $field_groups['group_pp_admin|node|spp_resource|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -339,7 +343,7 @@ function crl_pp_resource_feat_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_process|entityform|purchase_proposal_nomination|default'] = $field_group;
+  $field_groups['group_process|entityform|purchase_proposal_nomination|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -366,7 +370,7 @@ function crl_pp_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_rationale|node|pp_resource|default'] = $field_group;
+  $field_groups['group_rationale|node|pp_resource|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -394,7 +398,7 @@ function crl_pp_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_rationale|node|pp_resource|form'] = $field_group;
+  $field_groups['group_rationale|node|pp_resource|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -423,7 +427,7 @@ function crl_pp_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_rationale|node|spp_resource|default'] = $field_group;
+  $field_groups['group_rationale|node|spp_resource|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -452,7 +456,7 @@ function crl_pp_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_rationale|node|spp_resource|form'] = $field_group;
+  $field_groups['group_rationale|node|spp_resource|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -467,8 +471,7 @@ function crl_pp_resource_feat_field_group_info() {
     'label' => 'System Fields',
     'weight' => '5',
     'children' => array(
-      0 => 'field_pp_publisher_url',
-      1 => 'field_voting_results',
+      0 => 'field_voting_results',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -486,7 +489,7 @@ function crl_pp_resource_feat_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_system_fields|node|pp_resource|form'] = $field_group;
+  $field_groups['group_system_fields|node|pp_resource|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -501,8 +504,7 @@ function crl_pp_resource_feat_field_group_info() {
     'label' => 'System Fields',
     'weight' => '5',
     'children' => array(
-      0 => 'field_pp_publisher_url',
-      1 => 'field_voting_results',
+      0 => 'field_voting_results',
     ),
     'format_type' => 'div',
     'format_settings' => array(
@@ -520,7 +522,7 @@ function crl_pp_resource_feat_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_system_fields|node|spp_resource|form'] = $field_group;
+  $field_groups['group_system_fields|node|spp_resource|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -547,7 +549,7 @@ function crl_pp_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_tabbed|node|pp_resource|default'] = $field_group;
+  $field_groups['group_tabbed|node|pp_resource|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -573,7 +575,7 @@ function crl_pp_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_tabbed|node|pp_resource|form'] = $field_group;
+  $field_groups['group_tabbed|node|pp_resource|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -600,7 +602,7 @@ function crl_pp_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_tabbed|node|spp_resource|default'] = $field_group;
+  $field_groups['group_tabbed|node|spp_resource|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -626,7 +628,7 @@ function crl_pp_resource_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_tabbed|node|spp_resource|form'] = $field_group;
+  $field_groups['group_tabbed|node|spp_resource|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -655,7 +657,7 @@ function crl_pp_resource_feat_field_group_info() {
       'formatter' => 'closed',
     ),
   );
-  $export['group_vote_results|node|pp_resource|default'] = $field_group;
+  $field_groups['group_vote_results|node|pp_resource|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -684,7 +686,20 @@ function crl_pp_resource_feat_field_group_info() {
       'formatter' => 'closed',
     ),
   );
-  $export['group_vote_results|node|spp_resource|default'] = $field_group;
+  $field_groups['group_vote_results|node|spp_resource|default'] = $field_group;
 
-  return $export;
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Admin Notes & Vote Results');
+  t('Administrative Fields');
+  t('Details');
+  t('Entry Processing');
+  t('Nominator');
+  t('Offical Use Only');
+  t('Rationale');
+  t('System Fields');
+  t('Tabbed');
+  t('tabbed');
+
+  return $field_groups;
 }
