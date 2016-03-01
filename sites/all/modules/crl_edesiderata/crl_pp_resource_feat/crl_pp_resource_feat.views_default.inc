@@ -469,7 +469,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_publisher']['id'] = 'field_pp_publisher';
   $handler->display->display_options['fields']['field_pp_publisher']['table'] = 'field_data_field_pp_publisher';
   $handler->display->display_options['fields']['field_pp_publisher']['field'] = 'field_pp_publisher';
-  /* Field: Field: Vendor Contact */
+  /* Field: Field: Provider Contact */
   $handler->display->display_options['fields']['field_contacts']['id'] = 'field_contacts';
   $handler->display->display_options['fields']['field_contacts']['table'] = 'field_data_field_contacts';
   $handler->display->display_options['fields']['field_contacts']['field'] = 'field_contacts';
@@ -877,7 +877,7 @@ function crl_pp_resource_feat_views_default_views() {
 
 <p><a href="https://www.crl.edu/sites/default/files/attachments/pages/FY16_PP_Ballot_Description.pdf">Click here</a> for the pdf containing ballot information.</p>
 
-<p><strong>Voting is open until November 30th, 2015</strong></p>
+<p><strong>Voting is currently closed.</strong></p>
 
 <div id="ballot"></div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
