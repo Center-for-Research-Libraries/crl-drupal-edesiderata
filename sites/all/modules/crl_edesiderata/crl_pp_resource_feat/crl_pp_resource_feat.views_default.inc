@@ -475,7 +475,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_contacts']['field'] = 'field_contacts';
   $handler->display->display_options['fields']['field_contacts']['type'] = 'text_plain';
   $handler->display->display_options['fields']['field_contacts']['delta_offset'] = '0';
-  /* Field: Field: Website */
+  /* Field: Field: Provider URL */
   $handler->display->display_options['fields']['field_link']['id'] = 'field_link';
   $handler->display->display_options['fields']['field_link']['table'] = 'field_data_field_link';
   $handler->display->display_options['fields']['field_link']['field'] = 'field_link';
@@ -494,7 +494,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_subject_area']['table'] = 'field_data_field_pp_subject_area';
   $handler->display->display_options['fields']['field_pp_subject_area']['field'] = 'field_pp_subject_area';
   $handler->display->display_options['fields']['field_pp_subject_area']['delta_offset'] = '0';
-  /* Field: Entityform Submission: Background Information */
+  /* Field: Entityform Submission: Description */
   $handler->display->display_options['fields']['field_further_description']['id'] = 'field_further_description';
   $handler->display->display_options['fields']['field_further_description']['table'] = 'field_data_field_further_description';
   $handler->display->display_options['fields']['field_further_description']['field'] = 'field_further_description';
@@ -1787,13 +1787,6 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
