@@ -1638,6 +1638,17 @@ table th {
   color: #fafafa !important;
 }
 
+/* Allow for responsive images. A fieldset mod is also needed to ensure that the
+effect works propery inside of field group field sets. */
+img.img-responsive {
+  display: block;
+  height: auto !important;
+  max-width: 100% !important;
+}
+fieldset {
+  display: table-cell;
+}
+
 /* Special graphic label for provider title text */
 span.provider-p {
   font-family: Raleway, sans-serif;
