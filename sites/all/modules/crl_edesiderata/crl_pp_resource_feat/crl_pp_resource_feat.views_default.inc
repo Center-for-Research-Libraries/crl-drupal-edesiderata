@@ -475,7 +475,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_contacts']['field'] = 'field_contacts';
   $handler->display->display_options['fields']['field_contacts']['type'] = 'text_plain';
   $handler->display->display_options['fields']['field_contacts']['delta_offset'] = '0';
-  /* Field: Field: Provider URL */
+  /* Field: Field: Website */
   $handler->display->display_options['fields']['field_link']['id'] = 'field_link';
   $handler->display->display_options['fields']['field_link']['table'] = 'field_data_field_link';
   $handler->display->display_options['fields']['field_link']['field'] = 'field_link';
@@ -494,7 +494,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_subject_area']['table'] = 'field_data_field_pp_subject_area';
   $handler->display->display_options['fields']['field_pp_subject_area']['field'] = 'field_pp_subject_area';
   $handler->display->display_options['fields']['field_pp_subject_area']['delta_offset'] = '0';
-  /* Field: Entityform Submission: Description */
+  /* Field: Entityform Submission: Background Information */
   $handler->display->display_options['fields']['field_further_description']['id'] = 'field_further_description';
   $handler->display->display_options['fields']['field_further_description']['table'] = 'field_data_field_further_description';
   $handler->display->display_options['fields']['field_further_description']['field'] = 'field_further_description';
@@ -917,7 +917,9 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['header']['area']['empty'] = TRUE;
   $handler->display->display_options['header']['area']['content'] = '<p>CRL’s <a href="http://www.crl.edu/shared-purchase-program">Shared Purchase Program</a> supports the cooperative acquisition of costly sets that were nominated for the Purchase Proposal Program, but were not of sufficiently broad interest to warrant purchase (or were proposed after voting). In Shared Purchase the nominating library and CRL contribute seed funds, and through the ballot other member libraries can voluntarily pledge funds toward the purchase of sets.  Purchased materials are available for use to all member libraries.</p>
 
-<p><strong>The shared purchase proposal ballot is currently closed.</strong></p>
+<p><a href="https://www.crl.edu/sites/default/files/attachments/pages/PDF%20FY16%20SP%20Ballot%20Detailed%20Description.pdf">Click here</a> for the pdf containing ballot information.</p>
+
+<p><strong>Voting for the FY2016 Shared Purchase Proposal ballot is open until March 25th 2016.</strong></p>
 
 <div id="ballot"></div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
@@ -927,7 +929,9 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = '<hr />';
+  $handler->display->display_options['empty']['area']['content'] = '<p>The Shared Purchase Proposal Ballot is only available for logged-in CRL Members.</p>
+
+<hr />';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Comment count */
