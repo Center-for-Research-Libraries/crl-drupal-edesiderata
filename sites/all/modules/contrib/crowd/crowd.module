@@ -310,8 +310,8 @@ function crowd_login_local($crowd_user) {
   if ($user_local) {
     // If we found a Drupal user we need to see if the user is a LOCAL drupal
     // user (i.e. not linked in the authmap table).
-    $user_authmap = user_get_authmaps($crowd_user['username']);
-    if (!is_array($user_authmap)) {
+    $user_authmaps = user_get_authmaps($crowd_user['username']);
+    if (!(is_array($user_authmaps) && array_key_exists('crowd', $user_authmaps))) {
       // We have a name collision where we are trying to login a user with crowd
       // credentials that already exists as a LOCAL Drupal user. Handle this
       // based on admin settings.
@@ -330,11 +330,6 @@ function crowd_login_local($crowd_user) {
           drupal_set_message(t("Attempted to login via Crowd with username @username, but a local account was detected with that same username. Please contact the site administrator.", array('@username' => $crowd_user['username'])), 'warning');
           return FALSE;
       }
-    }
-    // We are working with an existing user, so make sure they are not blocked
-    // before proceeding further.
-    if (!$user_local->status) {
-      return FALSE;
     }
   }
   // Force a login to Drupal.
@@ -487,6 +482,14 @@ function crowd_form_alter(&$form, $form_state, $form_id) {
     if ($submit_key !== FALSE) {
       $form['#submit'][$submit_key] = 'crowd_login_form_submit';
     }
+    // If we dissallow a local user block then we must also remove core's local
+    // name validation.
+    if (!variable_get('crowd_allow_local_block', TRUE)) {
+      $name_validate_key = array_search('user_login_name_validate', $form['#validate']);
+      if ($name_validate_key !== FALSE) {
+        unset($form['#validate'][$name_validate_key]);
+      }
+    }
   }
 }
 
@@ -507,35 +510,37 @@ function crowd_login_form_validate($form, &$form_state) {
     user_login_authenticate_validate($form, $form_state);
     return;
   }
-  // Attempt to authenticate the user in Crowd. Note that we tell
-  // crowd_login_remote() to supress error messages if a local fallback will
-  // also be checked after this.
-  $local_fallback = variable_get('crowd_allow_local_logins', TRUE);
-  $crowd_user = crowd_login_remote($form_state['values']['name'], $form_state['values']['pass'], !$local_fallback);
-  if ($crowd_user) {
-    // Even though this is a validation handler we have to do the full local
-    // login process here. The core workflow requires a uid to be fetched during
-    // validation ($form_state['uid'] must get set), but because we authentcate
-    // remotely we can't get that uid until after we call
-    // user_external_login_register() (inside crowd_login_local()) which then
-    // triggers the rest of the login process. This feels odd, but it seems to
-    // be a standard pattern for external authentication modules. It also means
-    // that any validation handlers triggerd after this one basically have no
-    // effect.
-    crowd_login_local($crowd_user);
-    // If all was successful update the form state with the uid. This is
-    // Drupal's "signal" that we have successfully validated a login for a
-    // local user. We also set our own flag to indicate that things were
-    // validated by Crowd.
-    global $user;
-    if (!empty($user->uid)) {
-      $form_state['uid'] = $user->uid;
-      $form_state['crowd_validated'] = TRUE;
+  // Attempt to authenticate the user. Even though this is a validation handler
+  // we have to do the full remote and local login process here. The core
+  // workflow requires a uid to be fetched during validation ($form_state['uid']
+  // must get set), but because we authentcate remotely we can't get that uid
+  // until after we call user_external_login_register() (inside
+  // crowd_login_local()) which then triggers the rest of the login process.
+  // This feels odd, but it seems to be a standard pattern for external
+  // authentication modules. It also means that any validation handlers triggerd
+  // after this one basically have no effect and that we need to manually detect
+  // if any previous validation handlers have already set errors.
+  if (!form_get_errors()) {
+    // Run Crowd login. Note that we tell crowd_login_remote() to supress error
+    // messages if a local fallback will also be checked after this.
+    $local_fallback = variable_get('crowd_allow_local_logins', TRUE);
+    $crowd_user = crowd_login_remote($form_state['values']['name'], $form_state['values']['pass'], !$local_fallback);
+    if ($crowd_user) {
+      crowd_login_local($crowd_user);
+      // If all was successful update the form state with the uid. This is
+      // Drupal's "signal" that we have successfully validated a login for a
+      // local user. We also set our own flag to indicate that things were
+      // validated by Crowd.
+      global $user;
+      if (!empty($user->uid)) {
+        $form_state['uid'] = $user->uid;
+        $form_state['crowd_validated'] = TRUE;
+      }
     }
-  }
-  // If configured, we fallback on local authentication when crowd fails.
-  elseif ($local_fallback) {
-    user_login_authenticate_validate($form, $form_state);
+    // If configured, we fallback on local authentication when crowd fails.
+    elseif ($local_fallback) {
+      user_login_authenticate_validate($form, $form_state);
+    }
   }
 }
 
@@ -700,6 +705,10 @@ function crowd_sync_user_data($crowd_user, $account = NULL) {
   $mail = '';
   if (!empty($crowd_user['email'])) {
     $mail = $crowd_user['email'];
+  }
+  // Sync Crowd status value if configured.
+  if (!variable_get('crowd_allow_local_block', TRUE)) {
+    $edit['status'] = !empty($crowd_user['active']);
   }
   // Create the user information array and add any changes already specified
   // from hook_crowd_presync_user_data(). We give priority to the custom
