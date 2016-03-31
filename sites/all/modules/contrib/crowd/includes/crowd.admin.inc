@@ -187,6 +187,12 @@ function crowd_admin_settings($form, $form_state) {
     '#title' => t('Allow local logins if Crowd fails'),
     '#default_value' => variable_get('crowd_allow_local_logins', TRUE)
   );
+  $form['other_settings']['crowd_allow_local_block'] = array(
+    '#type' => 'checkbox',
+    '#title' => t("Allow users' local blocked status to override Crowd active status"),
+    '#default_value' => variable_get('crowd_allow_local_block', TRUE),
+    '#description' => t('If enabled a user can be blocked based on their Drupal user status independent of thier Crowd active status. If unchecked each user\'s Crowd active status will be synced to Drupal and will uniquely determine whether-or-not the user is allowed to authenticate locally.'),
+  );
   $form['other_settings']['crowd_handle_username_collision'] = array(
     '#type' => 'select',
     '#title' => t('How to handle username collisions'),
