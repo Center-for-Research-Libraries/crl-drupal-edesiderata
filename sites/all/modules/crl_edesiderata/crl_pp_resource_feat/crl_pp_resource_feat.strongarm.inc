@@ -139,10 +139,9 @@ function crl_pp_resource_feat_strongarm() {
       3 => 5,
     ),
     'view' => array(
-      0 => 9,
-      1 => 21,
-      2 => 3,
-      3 => 5,
+      0 => 21,
+      1 => 3,
+      2 => 5,
     ),
   );
   $export['content_access_spp_resource'] = $strongarm;
