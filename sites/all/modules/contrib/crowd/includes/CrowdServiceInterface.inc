@@ -221,4 +221,19 @@ interface CrowdServiceInterface {
    */
   public function searchCql($entity_type, $restriction, $start_index = 0, $max_results = 1000);
 
+  /**
+   * Validate a Crowd REST connection.
+   *
+   * Most REST methods throw errors when there is a connection issue, but it is
+   * occasionally useful to directly check the status of the connection. In
+   * addition some methods may recieve a "valid" response that won't result in
+   * an exception but can be ambiguous (e.g. a 404 could mean a valid set of
+   * empty results, but could also result from a misconfigured endpoint). So
+   * this method can also be used as a confirmation in such cases.
+   *
+   * @return boolean
+   *   Returns TRUE if the connection can be validated or FALSE if not.
+   */
+  public function validateConnection();
+
 }

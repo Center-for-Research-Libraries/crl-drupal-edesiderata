@@ -198,7 +198,10 @@ function _crowd_process_redirects() {
     }
     // Handle the actual redirect if one is called for.
     if (!empty($redirect)) {
-      // Allow modules to react to or alter the redirect.
+      // Allow modules to react to or alter the redirect. A drupal_alter() call
+      // probably makes more sense here, but we use module_implements() instead
+      // for legacy support because this hook name has been available (without
+      // "_alter" in the name) for a while.
       foreach (module_implements('crowd_redirect') as $module) {
         $function = $module . '_crowd_redirect';
         $function($redirect);
@@ -341,7 +344,7 @@ function crowd_login_local($crowd_user) {
     // session variables).
     crowd_get_set_session_data(crowd_get_set_cookie_data());
     // Update the user object with data from Crowd.
-    crowd_sync_user_data($crowd_user);
+    crowd_pull_user_data($crowd_user);
     return TRUE;
   }
   return FALSE;
@@ -446,6 +449,21 @@ function crowd_drupal_goto_alter(&$path, &$options, &$http_response_code) {
       $options['query'] = $query;
     }
   }
+}
+
+
+/**
+ * Implements hook_hook_info().
+ */
+function crowd_hook_info() {
+  $hooks = array(
+    'crowd_pull_user_data_alter',
+    'crowd_client_connect_class_alter',
+    'crowd_client_connect_object_alter',
+    'crowd_presync_user_data',
+    'crowd_redirect',
+  );
+  return array_fill_keys($hooks, array('group' => 'crowd'));
 }
 
 
@@ -562,14 +580,14 @@ function crowd_login_form_submit($form, &$form_state) {
 
 
 /**
- * Factory to create a crowd connection.
+ * Factory to create a Crowd connection.
  *
  * @param string $connection_class
  *   The name of the connection class to load. This defaults to
  *   'CrowdRestClient', but can be explicitly overwritten with this param.
  *   Note that hook_crowd_client_connect_class_alter() can also be used to
- *   designate a custom class, and for global overrides that is probably the
- *   preferred option.
+ *   globally set custom class, and hook_crowd_client_connect_object_alter() can
+ *   be used to decorate the resulting connection object.
  * @param boolean $reset
  *   Whether-or-not to reset the connect values if they have previously been
  *   loaded during this page request.
@@ -577,23 +595,24 @@ function crowd_login_form_submit($form, &$form_state) {
  *   A Crowd connection object.
  */
 function crowd_client_connect($connection_class = 'CrowdRestClient', $reset = FALSE) {
-  // For efficiency we maintain a static cache to ensure each connection is only
-  // loaded once. The connection class itself should not act like a singleton,
-  // but we can still try and re-use the same object when appropriate via this
-  // factory.
-  static $crowd_connections = array();
-  if (empty($crowd_connections[$connection_class]) || $reset) {
-    // Allow other modules to alter the connection class.
+  // For efficiency we maintain a static cache as the connection acts like a
+  // service and really only needs to be loaded once.
+  $crowd_connection = &drupal_static(__FUNCTION__, array());
+  if (empty($crowd_connection) || $reset) {
+    // Allow other modules to alter the connection class (this is probably only
+    // useful for one module to implement at any given time).
     drupal_alter('crowd_client_connect_class', $connection_class);
     if (class_exists($connection_class)) {
-      $crowd_connections[$connection_class] = new $connection_class();
+      $crowd_connection = new $connection_class();
+      // Allow the object to be decorated by other modules.
+      drupal_alter('crowd_client_connect_object', $crowd_connection);
     }
   }
   // Return the object.
-  if (is_object($crowd_connections[$connection_class])) {
-    return $crowd_connections[$connection_class];
+  if (is_object($crowd_connection) && $crowd_connection instanceof CrowdServiceInterface) {
+    return $crowd_connection;
   }
-  throw new Exception('Cound not instantiate a Crowd client connection of class' . check_plain($connection_class) . '.');
+  throw new Exception('Cound not instantiate a Crowd client connection.');
 }
 
 
@@ -633,97 +652,75 @@ function crowd_logout() {
 
 
 /**
- * Helper function to sync crowd account data with linked user account data
- * in Drupal.
+ * Helper function to sync (pull) Crowd user data into a linked user account in
+ * Drupal.
  *
  * @param array $crowd_user
- *   Associative array containing user data from Crowd.
+ *   Associative array containing user data fetched from Crowd.
  * @param object $account
- *   A Drupal user account object.
+ *   A Drupal user account object to recieve the data pull. If enpty the current
+ *   user will be used.
  */
-function crowd_sync_user_data($crowd_user, $account = NULL) {
-  // If we are not passed an account object use the current user.
-  if (empty($account)) {
-    global $user;
-    // We don't want to be manipulating the global user object directly as doing
-    // so can cause irregular behavior during the save process later.
-    $account = clone $user;
-  }
+function crowd_pull_user_data($crowd_user, $account = NULL) {
+  global $user;
+  // Ensure $account is set. Note that we don't want to be manipulating the
+  // global user object directly as our changes may otherwise be reset once the
+  // final user_save() call takes place.
+  // @see https://www.drupal.org/node/2653844
+  $account = empty($account) ? clone $user : $account;
   // Don't do anything if working with anon user or if Crowd and Drupal
   // usernames do not match.
   if (!$account->uid || mb_strtolower($crowd_user['username']) != mb_strtolower($account->name)) {
     watchdog('crowd', 'Failed to sync user data for Crowd user %name. The local Drupal user may not exist or there may be a username mismatch.', array('%name' => $crowd_user['username']), WATCHDOG_ERROR);
     return;
   }
-  // Allow modules to implement their own sync tasks or alter data that will
+  // Allow modules to implement their own pre-sync tasks or alter data that will
   // be used by the native Crowd sync tasks that follow.
-  $edit = array();
   foreach (module_implements('crowd_presync_user_data') as $module) {
     $function = $module . '_crowd_presync_user_data';
-    $function($crowd_user, $account, $edit);
+    $function($crowd_user, $account);
   }
-  // Map groups. Start by fetching the account's current roles.
-  $roles = $account->roles;
-  // Fetch roles from crowd and sync.
+  // Map groups. Start by fetching the account's current roles, or in the case
+  // of a role flush, just the base "authenticated user" value.
+  $roles = variable_get('crowd_flush_roles_on_update', FALSE) ? array(DRUPAL_AUTHENTICATED_RID => 'authenticated user') : $account->roles;
+  $site_roles = user_roles();
   try {
     $groups = crowd_client_connect()->getUserGroups($crowd_user['username']);
     $group_map = variable_get('crowd_groups', array());
-    // If we are flushing roles then we just start with the base "authenticated
-    // user" value.
-    if (variable_get('crowd_flush_roles_on_update', FALSE)) {
-      $roles = array(DRUPAL_AUTHENTICATED_RID => 'authenticated user');
-    }
-    $roles_added = array();
-    $site_roles = user_roles();
-    // Loop thorugh the mappings and adjust the user's roles as needed.
-    if (!empty($group_map)) {
-      foreach ($group_map as $crowd_group => $drupal_role_id) {
-        // Check if we have a mapping set.
-        if (!empty($drupal_role_id)) {
-          // If this user is a member of the Crowd group that's defined in this
-          // mapping, add the mapped Drupal role.
-          if (in_array($crowd_group, $groups)) {
-            $roles[$drupal_role_id] = $site_roles[$drupal_role_id];
-            $roles_added[] = $drupal_role_id;
-          }
-          // If this user is NOT a group member of the Crowd group that's
-          // defined in this mapping, but they still have the mapped Drupal
-          // role, remove the mapped role. Note that mappings are OR'ed together
-          // so the removal only happens if the role was not also ADDED by
-          // another mapping.
-          if (!in_array($crowd_group, $groups) && array_key_exists($drupal_role_id, $roles) && !in_array($drupal_role_id, $roles_added)) {
-            unset($roles[$drupal_role_id]);
-          }
-        }
-      }
-    }
+    // Process additions.
+    $rids_add = array_unique(array_intersect_key($group_map, array_flip($groups))); // $crowd_group => $rid
+    $roles += array_intersect_key($site_roles, array_flip($rids_add)); // $rid => $drupal_role
+    // Process removals without touching local roles external to the group map.
+    $rids_remove = array_unique(array_diff_key($group_map, array_flip($groups))); // $crowd_group => $rid
+    $roles_remove = array_intersect_key($site_roles, array_flip($rids_remove)); // $rid => $drupal_role
+    $roles = array_diff_key($roles, $roles_remove);
   }
   catch (CrowdException $e) {
     $e->logResponse();
   }
-  // Assign email address.
-  $mail = '';
-  if (!empty($crowd_user['email'])) {
-    $mail = $crowd_user['email'];
-  }
-  // Sync Crowd status value if configured.
+  // Create the user information array with our calculated changes in
+  // preparation for the local save.
+  $edit = array(
+    'roles' => $roles,
+    'mail' => !empty($crowd_user['email']) ? $crowd_user['email'] : '',
+  );
+  // Also map Crowd status to Drupal status if configured.
   if (!variable_get('crowd_allow_local_block', TRUE)) {
     $edit['status'] = !empty($crowd_user['active']);
   }
-  // Create the user information array and add any changes already specified
-  // from hook_crowd_presync_user_data(). We give priority to the custom
-  // calculated values if there is a property collision.
-  $edit += array(
-    'mail' => $mail,
-    'roles' => $roles
-  );
-  // Update the user in Drupal
+  // Allow other modules to alter the local data that will be saved. The hooks
+  // inside user_save() (e.g. hook_user_presave()) could also be leveraged for
+  // this purpose in may cases, but invoking an explicit alter hook here allows
+  // for a more readable API.
+  drupal_alter('crowd_pull_user_data', $edit, $crowd_user, $account);
+  // Set a flag that can be used inside user_save() hooks to identify the fact
+  // that this save action is part of a Crowd pull. Then do the save.
+  $account->crowd_user_pull = TRUE;
   $account = user_save($account, $edit, 'account');
-  if ($account != FALSE) {
+  if ($account) {
     watchdog('crowd', 'Updated user %name with data from Crowd User.', array('%name' => $account->name), WATCHDOG_NOTICE);
-    // If we are working with the current user also update the global $user
-    // object.
-    if (isset($user)) {
+    // If we are working with the current user ensure global user is updated.
+    if ($user->uid == $account->uid) {
       $user = $account;
     }
   }
@@ -731,6 +728,21 @@ function crowd_sync_user_data($crowd_user, $account = NULL) {
     // There has been a problem saving the user, log it.
     watchdog('crowd', 'Failed to save the user account information for %name', array('%name' => $account->name), WATCHDOG_ERROR);
   }
+}
+
+
+/**
+ * This is a alias for crowd_pull_user_data() that is made available for legacy
+ * purposes.
+ *
+ * @param array $crowd_user
+ *   Associative array containing user data fetched from Crowd.
+ * @param object $account
+ *   A Drupal user account object to recieve the data pull. If enpty the current
+ *   user will be used.
+ */
+function crowd_sync_user_data($crowd_user, $account = NULL) {
+  crowd_pull_user_data($crowd_user, $account);
 }
 
 
