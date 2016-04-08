@@ -356,6 +356,34 @@ class CrowdRestClient implements CrowdServiceInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function validateConnection() {
+    // The Crowd API does not offer a direct way to validate the connection but
+    // we can simply do a generic group list request and validate a successful
+    // response. Note that a group search should never legitimately result in a
+    // response code that can be ambiguous (e.g. a 404 that could mean NULL but
+    // could also result from a misconfigured endpoint).
+    $XML = new SimpleXMLElement("<?xml version='1.0' encoding='utf-8'?><property-search-restriction></property-search-restriction>");
+    $prop = $XML->addChild('property');
+    $prop->addChild('name', 'active');
+    $prop->addChild('type', 'BOOLEAN');
+    $XML->addChild('match-mode', 'EXACTLY_MATCHES');
+    $XML->addChild('value', 'true');
+    try {
+      $response = $this->apiHttpRequest('search', array('query' => array('entity-type' => 'group')), $XML->asXML(), 'POST');
+    }
+    catch (Exception $e) {
+      return FALSE;
+    }
+    // Check very explicitly for success.
+    if ($response->code == '200') {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
    * Make a call to the Crowd REST API.
    *
    * This is largely a wrapper for drupal_http_request() with some generic error

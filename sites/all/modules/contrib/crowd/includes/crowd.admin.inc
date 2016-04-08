@@ -15,13 +15,10 @@ function crowd_admin_settings($form, $form_state) {
   // Run a quick check to see if the connection is working with the current
   // configuration.
   if (empty($form_state['input'])) {
-    try {
-      $groups = crowd_client_connect()->getAllGroups();
-      // If we completed an API call without any response-specific exceptions
-      // we can be confident that the base connection is working.
+    if (crowd_client_connect()->validateConnection()) {
       drupal_set_message(t('The connection to your Crowd server application appears to be functioning correctly.'));
     }
-    catch (CrowdException $e) {
+    else {
       drupal_set_message(t('Unable to connect to your Crowd server application. Please check your connection settings.'), 'error');
     }
   }
