@@ -34,7 +34,7 @@ interface CrowdServiceInterface {
   /**
    * Validates a user's session through the crowd server.
    *
-   * @param string $user_token
+   * @param string $crowd_token
    *   The active crowd token for the user.
    * @param string $ip
    *   The IP address that should be passed as a validation factor. If blank the
@@ -50,7 +50,7 @@ interface CrowdServiceInterface {
   /**
    * Log the user out from the crowd server.
    *
-   * @param string $user_token
+   * @param string $crowd_token
    *   The active crowd token for a user.
    * @return
    *   Boolen TRUE on success and FALSE on failure.
@@ -60,7 +60,7 @@ interface CrowdServiceInterface {
   /**
    * Get user data based on an active session token.
    *
-   * @param string $user_token
+   * @param string $crowd_token
    *   The active crowd token for a user.
    * @return
    *   An array containing the user data points or NULL if no user can be
@@ -88,7 +88,7 @@ interface CrowdServiceInterface {
   /**
    * Add a new user to Crowd
    *
-   * @param string $user
+   * @param string $username
    *   The username to add.
    * @param array $user_data
    *   An associative array containing the user data (fields) to add, including:
@@ -109,9 +109,9 @@ interface CrowdServiceInterface {
   /**
    * Update an existing user in Crowd.
    *
-   * @param string $user
+   * @param string $username
    *   The username to update.
-   * @return array $user_data
+   * @param array $user_data
    *   An associative array of user data (fields) to update, should include:
    *   - 'first-name': First name.
    *   - 'last-name': Last name.
@@ -125,6 +125,21 @@ interface CrowdServiceInterface {
    *   a CrowdException error is thrown.
    */
   public function updateUser($username, $user_data);
+
+  /**
+   * Update an existing user's password in Crowd.
+   *
+   * @param string $username
+   *   The username to update.
+   * @param array $password
+   *   A new password value to set for the user.
+   * @return boolean
+   *   TRUE on successful update and FALSE if a conflict occured.
+   * @throws CrowdException
+   *   If a specific response cannot be confirmed via the Crowd connection
+   *   a CrowdException error is thrown.
+   */
+  public function updateUserPassword($username, $password);
 
   /**
    * Get the crowd groups for a specific user.

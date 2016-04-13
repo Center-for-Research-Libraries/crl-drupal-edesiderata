@@ -224,6 +224,25 @@ class CrowdRestClient implements CrowdServiceInterface {
   /**
    * {@inheritdoc}
    */
+  public function updateUserPassword($username, $password) {
+    $XML = new SimpleXMLElement("<?xml version='1.0' encoding='utf-8'?><password></password>");
+    $XML->addChild('value', htmlspecialchars($password, ENT_NOQUOTES, 'UTF-8'));
+    $response = $this->apiHttpRequest('user/password', array('query' => array('username' => $username)), $XML->asXML(), 'PUT');
+    // Check for success.
+    if ($response->code == '204') {
+      return TRUE;
+    }
+    // Check for conflict or user not found.
+    if ($response->code == '404') {
+      return FALSE;
+    }
+    // Failure to get a confirmed result is an exception.
+    throw new CrowdException('REST updatePassword method error.', NULL, NULL, $response);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getUserGroups($name) {
     $response = $this->apiHttpRequest('user/group/nested', array('query' => array('username' => $name)));
     // Check for success.
