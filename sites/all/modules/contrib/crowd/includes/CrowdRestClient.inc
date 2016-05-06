@@ -183,16 +183,23 @@ class CrowdRestClient implements CrowdServiceInterface {
     $pass = $XML->addChild('password');
     $pass->addChild('value', htmlspecialchars($user_data['password'], ENT_NOQUOTES, 'UTF-8'));
     $response = $this->apiHttpRequest('user', array(), $XML->asXML(), 'POST');
-    // Check for success.
-    if ($response->code =='201') {
+    // Check for success 201. All other error codes are considered exceptions.
+    if ($response->code == '201') {
       return TRUE;
     }
-    // Check for conflict.
-    if ($response->code =='400') {
-      return FALSE;
-    }
-    // Failure to get a confirmed result is an exception.
     throw new CrowdException('REST addUser method error.', NULL, NULL, $response);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function removeUser($username) {
+    $response = $this->apiHttpRequest('user', array('query' => array('username' => $username)), NULL, 'DELETE');
+    // Check for success 204. All other error codes are considered exceptions.
+    if ($response->code == '204') {
+      return TRUE;
+    }
+    throw new CrowdException('REST removeUser method error.', NULL, NULL, $response);
   }
 
   /**
@@ -209,15 +216,10 @@ class CrowdRestClient implements CrowdServiceInterface {
     $XML->addChild('email', htmlspecialchars($user_data['email'], ENT_NOQUOTES, 'UTF-8'));
     $XML->addChild('active', $user_data['active']);
     $response = $this->apiHttpRequest('user', array('query' => array('username' => $username)), $XML->asXML(), 'PUT');
-    // Check for success.
+    // Check for success 204. All other error codes are considered exceptions.
     if ($response->code == '204') {
       return TRUE;
     }
-    // Check for conflict.
-    if ($response->code == '400' || $response->code == '404') {
-      return FALSE;
-    }
-    // Failure to get a confirmed result is an exception.
     throw new CrowdException('REST updateUser method error.', NULL, NULL, $response);
   }
 
@@ -228,15 +230,10 @@ class CrowdRestClient implements CrowdServiceInterface {
     $XML = new SimpleXMLElement("<?xml version='1.0' encoding='utf-8'?><password></password>");
     $XML->addChild('value', htmlspecialchars($password, ENT_NOQUOTES, 'UTF-8'));
     $response = $this->apiHttpRequest('user/password', array('query' => array('username' => $username)), $XML->asXML(), 'PUT');
-    // Check for success.
+    // Check for success 204. All other error codes are considered exceptions.
     if ($response->code == '204') {
       return TRUE;
     }
-    // Check for conflict or user not found.
-    if ($response->code == '404') {
-      return FALSE;
-    }
-    // Failure to get a confirmed result is an exception.
     throw new CrowdException('REST updatePassword method error.', NULL, NULL, $response);
   }
 
@@ -270,15 +267,12 @@ class CrowdRestClient implements CrowdServiceInterface {
     $XML = new SimpleXMLElement("<?xml version='1.0' encoding='utf-8'?><group></group>");
     $XML->addAttribute('name', htmlspecialchars($groupname, ENT_NOQUOTES, 'UTF-8'));
     $response = $this->apiHttpRequest('user/group/direct', array('query' => array('username' => $username)), $XML->asXML(), 'POST');
-    // Check for success.
-    if ($response->code =='201') {
+    // Check for success 201. Note that code 409 signifies that the user is
+    // already a member of the group, which is also a successful response. All
+    // other error codes are considered exceptions.
+    if ($response->code =='201' || $response->code == '409') {
       return TRUE;
     }
-    // Check for conflict or unknown user/group.
-    if ($response->code == '400' || $response->code == '404' || $response->code == '409') {
-      return FALSE;
-    }
-    // Failure to get a confirmed result is an exception.
     throw new CrowdException('REST addUserToGroup method error.', NULL, NULL, $response);
   }
 
@@ -287,15 +281,10 @@ class CrowdRestClient implements CrowdServiceInterface {
    */
   public function removeUserFromGroup($username, $groupname) {
     $response = $this->apiHttpRequest('user/group/direct', array('query' => array('username' => $username, 'groupname' => $groupname)), NULL, 'DELETE');
-    // Check for success.
+    // Check for success 204. All other error codes are considered exceptions.
     if ($response->code == '204') {
       return TRUE;
     }
-    // Check for unknown user/group.
-    if ($response->code == '400' || $response->code == '404') {
-      return FALSE;
-    }
-    // Failure to get a confirmed result is an exception.
     throw new CrowdException('REST removeUserFromGroup method error.', NULL, NULL, $response);
   }
 

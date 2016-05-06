@@ -32,10 +32,10 @@ interface CrowdServiceInterface {
   public function authorize($username, $password, $ip = NULL);
 
   /**
-   * Validates a user's session through the crowd server.
+   * Validates a user's session through the Crowd server.
    *
    * @param string $crowd_token
-   *   The active crowd token for the user.
+   *   The active Crowd token for the user.
    * @param string $ip
    *   The IP address that should be passed as a validation factor. If blank the
    *   current IP from ip_address() will be used.
@@ -48,10 +48,10 @@ interface CrowdServiceInterface {
   public function validateSession($crowd_token, $ip = NULL);
 
   /**
-   * Log the user out from the crowd server.
+   * Log the user out from the Crowd server.
    *
    * @param string $crowd_token
-   *   The active crowd token for a user.
+   *   The active Crowd token for a user.
    * @return
    *   Boolen TRUE on success and FALSE on failure.
    */
@@ -61,7 +61,7 @@ interface CrowdServiceInterface {
    * Get user data based on an active session token.
    *
    * @param string $crowd_token
-   *   The active crowd token for a user.
+   *   The active Crowd token for a user.
    * @return
    *   An array containing the user data points or NULL if no user can be
    *   matched to the passed token.
@@ -99,12 +99,25 @@ interface CrowdServiceInterface {
    *   - 'display-name' (optional): Display name.
    *   - 'active' (optional): Whether to set user as active (true/false)
    * @return boolean
-   *   TRUE on successful addition and FALSE if a conflict occured.
+   *   TRUE on successful addition.
    * @throws CrowdException
-   *   If a specific response cannot be confirmed via the Crowd connection
-   *   a CrowdException error is thrown.
+   *   If a specific response cannot be confirmed via the Crowd connection or
+   *   there is an error adding the user a CrowdException error is thrown.
    */
   public function addUser($username, $user_data);
+
+  /**
+   * Remove an existing user from Crowd
+   *
+   * @param string $username
+   *   The username to remove.
+   * @return boolean
+   *   TRUE on successful removal.
+   * @throws CrowdException
+   *   If a specific response cannot be confirmed via the Crowd connection or
+   *   there is an error deleting the user a CrowdException error is thrown.
+   */
+  public function removeUser($username);
 
   /**
    * Update an existing user in Crowd.
@@ -119,10 +132,10 @@ interface CrowdServiceInterface {
    *   - 'display-name': Display name.
    *   - 'active': Whether to set user as active (true/false).
    * @return boolean
-   *   TRUE on successful update and FALSE if a conflict occured.
+   *   TRUE on successful update.
    * @throws CrowdException
-   *   If a specific response cannot be confirmed via the Crowd connection
-   *   a CrowdException error is thrown.
+   *   If a specific response cannot be confirmed via the Crowd connection or
+   *   there is an error updating the user a CrowdException error is thrown.
    */
   public function updateUser($username, $user_data);
 
@@ -134,10 +147,10 @@ interface CrowdServiceInterface {
    * @param array $password
    *   A new password value to set for the user.
    * @return boolean
-   *   TRUE on successful update and FALSE if a conflict occured.
+   *   TRUE on successful update.
    * @throws CrowdException
-   *   If a specific response cannot be confirmed via the Crowd connection
-   *   a CrowdException error is thrown.
+   *   If a specific response cannot be confirmed via the Crowd connection or
+   *   there is an error updating the password a CrowdException error is thrown.
    */
   public function updateUserPassword($username, $password);
 
@@ -163,11 +176,11 @@ interface CrowdServiceInterface {
    * @param string $groupname
    *   The groupname to add the user to.
    * @return boolean
-   *   TRUE on successful addition and FALSE if the group or user was not found
-   *   or there was a conflict.
+   *   TRUE on successful addition.
    * @throws CrowdException
-   *   If a specific response cannot be confirmed via the Crowd connection
-   *   a CrowdException error is thrown.
+   *   If a specific response cannot be confirmed via the Crowd connection or
+   *   there is an error adding the user to the group a CrowdException error is
+   *   thrown.
    */
   public function addUserToGroup($username, $groupname);
 
@@ -179,16 +192,16 @@ interface CrowdServiceInterface {
    * @param string $groupname
    *   The groupname to remove the user from.
    * @return boolean
-   *   TRUE on successful removal and FALSE if the username or group does not
-   *   exist.
+   *   TRUE on successful removal.
    * @throws CrowdException
-   *   If a specific response cannot be confirmed via the Crowd connection
-   *   a CrowdException error is thrown.
+   *   If a specific response cannot be confirmed via the Crowd connection or
+   *   there is an error removing the user to the group a CrowdException error
+   *   is thrown.
    */
   public function removeUserFromGroup($username, $groupname);
 
   /**
-   * Get all active groups from the crowd server.
+   * Get all active groups from the Crowd server.
    *
    * @return
    *   A serial array of the groupnames.
