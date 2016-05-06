@@ -313,9 +313,8 @@ function crowd_login_local($crowd_user) {
   if ($user_local) {
     // If we found a Drupal user we need to see if the user is a LOCAL drupal
     // user (i.e. not linked in the authmap table).
-    $user_authmaps = user_get_authmaps($crowd_user['username']);
-    if (!(is_array($user_authmaps) && array_key_exists('crowd', $user_authmaps))) {
-      // We have a name collision where we are trying to login a user with crowd
+    if (!crowd_user_is_linked($crowd_user['username'])) {
+      // We have a name collision where we are trying to login a user with Crowd
       // credentials that already exists as a LOCAL Drupal user. Handle this
       // based on admin settings.
       switch (variable_get('crowd_handle_username_collision', 'abort')) {
@@ -344,7 +343,7 @@ function crowd_login_local($crowd_user) {
     // session variables).
     crowd_get_set_session_data(crowd_get_set_cookie_data());
     // Update the user object with data from Crowd.
-    crowd_pull_user_data($crowd_user);
+    crowd_pull_user_data($user, $crowd_user);
     return TRUE;
   }
   return FALSE;
@@ -406,20 +405,11 @@ function crowd_admin_paths_alter(&$paths) {
 function crowd_permission() {
   return array(
     'administer crowd' => array(
-      'title' => t('Administer Crowd Settings'),
+      'title' => t('Administer Crowd settings'),
       'description' => t('Set and change Crowd server settings and configure role mapping.'),
       'restrict access' => TRUE,
     ),
   );
-}
-
-
-/**
- * Implements hook_user_delete().
- */
-function crowd_user_delete($account) {
-  // Delete the entry from the authmap table
-  db_query("DELETE FROM {authmap} WHERE uid = :uid AND module='crowd'", array(':uid' => $account->uid));
 }
 
 
@@ -508,6 +498,30 @@ function crowd_form_alter(&$form, $form_state, $form_id) {
         unset($form['#validate'][$name_validate_key]);
       }
     }
+  }
+}
+
+
+/**
+ * Implements hook_form_user_profile_form_alter().
+ */
+function crowd_form_user_profile_form_alter(&$form, &$form_state) {
+  // Mark the Drupal roles that have Crowd mappings. This only applies for users
+  // that are linked to Crowd.
+  if (crowd_user_is_linked($form['#user']->name)) {
+    $flagged = array();
+    foreach (variable_get('crowd_groups', array()) as $crowd_group => $drupal_rid) {
+      if (isset($form['account']['roles']['#options'][$drupal_rid]) && !isset($flagged[$drupal_rid])) {
+        $form['account']['roles']['#options'][$drupal_rid] .= '<strong>*</strong>';
+        $flagged[$drupal_rid] = $drupal_rid;
+      }
+    }
+    if ($flagged) {
+      $form['account']['roles']['#description'] = (empty($form['account']['roles']['#description']) ? '' : $form['account']['roles']['#description'] . '<br/>') . '<strong>*</strong> ' . t("These Drupal roles are controlled by a mapped Crowd group, so the values set here may be overriden during Crowd sync activity.");
+    }
+    // Also add a notes about the user being linked to Crowd. This will only be
+    // visible if the user has rights to edit the name field.
+    $form['account']['name']['#prefix'] = '<p>' . t('<strong>Notice</strong>: This user is currently linked to Crowd using the username as a universal identifier. Changing the username value will unlink this user from Crowd.') . '</p>';
   }
 }
 
@@ -617,7 +631,7 @@ function crowd_client_connect($connection_class = 'CrowdRestClient', $reset = FA
 
 
 /**
- * Helper function to log a user out of Crowd remotely.
+ * Log a user out of Crowd remotely.
  *
  * @see crowd_user_logout().
  */
@@ -652,26 +666,34 @@ function crowd_logout() {
 
 
 /**
- * Helper function to sync (pull) Crowd user data into a linked user account in
- * Drupal.
+ * Sync (pull) Crowd user data into a linked user account in Drupal.
  *
- * @param array $crowd_user
- *   Associative array containing user data fetched from Crowd.
  * @param object $account
- *   A Drupal user account object to recieve the data pull. If enpty the current
+ *   A Drupal user account object to recieve the data pull. If empty the current
  *   user will be used.
+ * @param array $crowd_user
+ *   Associative array containing user data fetched from Crowd. If empty the
+ *   remote Crowd data for $account->name will be fetched and used.
  */
-function crowd_pull_user_data($crowd_user, $account = NULL) {
+function crowd_pull_user_data($account = NULL, $crowd_user = NULL) {
   global $user;
+  $crowd = crowd_client_connect();
   // Ensure $account is set. Note that we don't want to be manipulating the
   // global user object directly as our changes may otherwise be reset once the
   // final user_save() call takes place.
   // @see https://www.drupal.org/node/2653844
-  $account = empty($account) ? clone $user : $account;
-  // Don't do anything if working with anon user or if Crowd and Drupal
-  // usernames do not match.
-  if (!$account->uid || mb_strtolower($crowd_user['username']) != mb_strtolower($account->name)) {
-    watchdog('crowd', 'Failed to sync user data for Crowd user %name. The local Drupal user may not exist or there may be a username mismatch.', array('%name' => $crowd_user['username']), WATCHDOG_ERROR);
+  $account = empty($account) || $account == $user ? clone $user : $account;
+  // Ensure $crowd_user is set. If not we fetch the current data remotely.
+  try {
+    $crowd_user = empty($crowd_user) ? $crowd->getUserFromName($account->name) : $crowd_user;
+  }
+  catch (CrowdException $e) {
+    $e->logResponse();
+  }
+  // Don't do anything if working with anon user, an unknown Crowd user or if
+  // Crowd and Drupal usernames do not match.
+  if (!$account->uid || empty($crowd_user) || mb_strtolower($crowd_user['username']) != mb_strtolower($account->name)) {
+    watchdog('crowd', 'Failed to sync user data for Crowd user %name. The user may not exist or there may be a username mismatch.', array('%name' => $crowd_user['username']), WATCHDOG_ERROR);
     return;
   }
   // Allow modules to implement their own pre-sync tasks or alter data that will
@@ -684,20 +706,15 @@ function crowd_pull_user_data($crowd_user, $account = NULL) {
   // of a role flush, just the base "authenticated user" value.
   $roles = variable_get('crowd_flush_roles_on_update', FALSE) ? array(DRUPAL_AUTHENTICATED_RID => 'authenticated user') : $account->roles;
   $site_roles = user_roles();
+  // Fetch the current Crowd groups and calculate any changes they may have on
+  // the local roles.
   try {
-    $groups = crowd_client_connect()->getUserGroups($crowd_user['username']);
-    $group_map = variable_get('crowd_groups', array());
-    // Process additions.
-    $rids_add = array_unique(array_intersect_key($group_map, array_flip($groups))); // $crowd_group => $rid
-    $roles += array_intersect_key($site_roles, array_flip($rids_add)); // $rid => $drupal_role
-    // Process removals without touching local roles external to the group map.
-    $rids_remove = array_unique(array_diff_key($group_map, array_flip($groups))); // $crowd_group => $rid
-    $roles_remove = array_intersect_key($site_roles, array_flip($rids_remove)); // $rid => $drupal_role
-    $roles = array_diff_key($roles, $roles_remove);
+    $groups = $crowd->getUserGroups($crowd_user['username']);
   }
   catch (CrowdException $e) {
     $e->logResponse();
   }
+  crowd_update_roles_from_groups($roles, $groups);
   // Create the user information array with our calculated changes in
   // preparation for the local save.
   $edit = array(
@@ -706,11 +723,11 @@ function crowd_pull_user_data($crowd_user, $account = NULL) {
   );
   // Also map Crowd status to Drupal status if configured.
   if (!variable_get('crowd_allow_local_block', TRUE)) {
-    $edit['status'] = !empty($crowd_user['active']);
+    $edit['status'] = empty($crowd_user['active']) ? 0 : 1;
   }
   // Allow other modules to alter the local data that will be saved. The hooks
   // inside user_save() (e.g. hook_user_presave()) could also be leveraged for
-  // this purpose in may cases, but invoking an explicit alter hook here allows
+  // this purpose in many cases, but invoking an explicit alter hook here allows
   // for a more readable API.
   drupal_alter('crowd_pull_user_data', $edit, $crowd_user, $account);
   // Set a flag that can be used inside user_save() hooks to identify the fact
@@ -732,22 +749,53 @@ function crowd_pull_user_data($crowd_user, $account = NULL) {
 
 
 /**
- * This is a alias for crowd_pull_user_data() that is made available for legacy
- * purposes.
+ * This is a legacy alias for crowd_pull_user_data(). Note that the paramater
+ * order is different to conform with old code in a backwards-compatible way.
  *
  * @param array $crowd_user
  *   Associative array containing user data fetched from Crowd.
  * @param object $account
- *   A Drupal user account object to recieve the data pull. If enpty the current
+ *   A Drupal user account object to recieve the data pull. If empty the current
  *   user will be used.
  */
 function crowd_sync_user_data($crowd_user, $account = NULL) {
-  crowd_pull_user_data($crowd_user, $account);
+  crowd_pull_user_data($account, $crowd_user);
 }
 
 
 /**
- * Helper function get or set the Crowd token based on cookie data.
+ * Utility to calculate Drupal role changes based on a user's Crowd groups and
+ * the current group map.
+ *
+ * @param array $roles
+ *   The current roles for a user that are to be updated if needed. This array
+ *   MUST be keyed by Drupal role ID and should only list applied roles (the
+ *   boolean state of the value is not tested).
+ * @param array $groups
+ *   The current Crowd groups for a user. The values must match the exact string
+ *   group name used in Crowd and the group map.
+ */
+function crowd_update_roles_from_groups(&$roles, $groups) {
+  $site_roles = user_roles();
+  $group_map = variable_get('crowd_groups', array());
+  $groups = array_flip($groups); // Comparisons below use keys.
+  // Process additions.
+  $rids_add = array_unique(array_intersect_key($group_map, $groups)); // $crowd_group => $rid
+  $roles += array_intersect_key($site_roles, array_flip($rids_add)); // $rid => $drupal_role
+  // Process removals without touching local roles external to the group map.
+  $rids_remove = array_unique(array_diff_key($group_map, $groups)); // $crowd_group => $rid
+  // The group map supports a many-to-one relationship between Crowd groups and
+  // Drupal roles (groups are OR'ed to determine if the mapped role is active).
+  // This means that we have to ensure we aren't removing a role that was just
+  // set above when only a fraction of the mapped groups are set.
+  $rids_remove = array_diff($rids_remove, $rids_add);
+  $roles_remove = array_intersect_key($site_roles, array_flip($rids_remove)); // $rid => $drupal_role
+  $roles = array_diff_key($roles, $roles_remove);
+}
+
+
+/**
+ * Utility to get or set the Crowd token based on cookie data.
  *
  * @return string
  *   A Crowd token or NULL if one does not exist in the user's cookies.
@@ -767,7 +815,7 @@ function crowd_get_set_cookie_data($token = NULL) {
 
 
 /**
- * Helper function get or set the Crowd token for the currently logged-in user
+ * Utility to get or set the Crowd token for the currently logged-in user
  * based on local session storage data.
  *
  * If the current user started thier Drupal session by authenticating against
@@ -790,7 +838,7 @@ function crowd_get_set_session_data($token = NULL) {
 
 
 /**
- * Helper function get the Crowd cookie name. This is really just a wrapper for
+ * Utility to get the Crowd cookie name. This is really just a wrapper for
  * variable_get('crowd_cookie_name').
  *
  * @param boolean $convert
@@ -805,4 +853,32 @@ function crowd_get_cookie_name($convert = TRUE) {
     $cookie_name = str_replace('.', '_', $cookie_name);
   }
   return $cookie_name;
+}
+
+
+/**
+ * Utility to check if a user is linked to Crowd via the authmap table.
+ *
+ * We may want to call this several times in one request so some static caching
+ * is implemented to reduce DB queries.
+ *
+ * @param string $username
+ *   A username to check.
+ * @param boolean $reset
+ *   Whether-or-not to reset the static cache and fetch the result fresh from
+ *   the DB.
+ * @return boolean
+ *   Returns TRUE if the user is linked to Crowd in the authmap table and FALSE
+ *   if not.
+ */
+function crowd_user_is_linked($username, $reset = FALSE) {
+  $values = &drupal_static(__FUNCTION__, array());
+  if (empty($values[$username]) || $reset) {
+    $values[$username] = FALSE;
+    $user_authmaps = user_get_authmaps($username);
+    if (is_array($user_authmaps) && array_key_exists('crowd', $user_authmaps)) {
+      $values[$username] = TRUE;
+    }
+  }
+  return $values[$username];
 }
