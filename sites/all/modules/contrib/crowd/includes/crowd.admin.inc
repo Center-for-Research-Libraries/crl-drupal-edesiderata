@@ -101,7 +101,7 @@ function crowd_admin_settings($form, $form_state) {
     '#title' => t('Secure SSO cookie'),
     '#default_value' => variable_get('crowd_secure_sso_cookie', FALSE),
     '#disabled' => $crowd_secure_sso_cookie_disabled,
-    '#description' => t('If enabled, the "Secure" flag will be set on the SSO cookie when a session is initiated by Drupal, and any insecure SSO cookies set by other applications will be ignored. This will break SSO for any applications not using a secure connection (SSL/TLS), including Drupal. Additionally, users will not be able to log in to Drupal with Crowd credentails over an insecure connection when this option is active.') . ' ' . $crowd_secure_sso_cookie_disabled_message,
+    '#description' => t('If enabled, the "Secure" flag will be set on the SSO cookie when a session is initiated by Drupal, and any insecure SSO cookies set by other applications will be ignored. This will break SSO for any applications not using a secure connection (SSL/TLS), including Drupal. Additionally, users will not be able to log in to Drupal with Crowd credentials over an insecure connection when this option is active.') . ' ' . $crowd_secure_sso_cookie_disabled_message,
   );
 
   $form['cookie_options']['crowd_logout_no_cookie'] = array(

@@ -4,7 +4,7 @@
  * Class to group block build logic for crl_helpers.
  */
 class CrlHelpersBlocks {
-  
+
   /**
    * Common public build method that calls specific protected build method.
    */
@@ -14,7 +14,7 @@ class CrlHelpersBlocks {
     }
     return array();
   }
-  
+
   /**
    * Build crl_helpers_facet_breadcrumb.
    */
@@ -49,7 +49,7 @@ class CrlHelpersBlocks {
     $block['content'] = $output;
     return $block;
   }
-  
+
   /**
    * Build crl_helpers_editor_tools.
    */
@@ -64,7 +64,7 @@ class CrlHelpersBlocks {
     $block['content'] = $output;
     return $block;
   }
- 
+
   /**
    * Build crl_helpers_alpha_facet_sort.
    */
@@ -104,7 +104,7 @@ class CrlHelpersBlocks {
     $block['content'] = array('#theme' => 'crl_helpers_alpha_facet_sort', '#alpha_block' => $alpha_block, '#form_options' => $form_options);
     return $block;
   }
-  
+
   /**
    * Build crl_helpers_back_to_index.
    */
@@ -112,7 +112,8 @@ class CrlHelpersBlocks {
     $block = array();
     // For our purposes context should have set our menu trail such that we can
     // get out "back to" URL out of the menu trail.
-    $menu_item = array_pop(menu_get_active_trail());
+    $trail = menu_get_active_trail();
+    $menu_item = array_pop($trail);
     $url = url($menu_item['href']);
     $block['subject'] = '';
     $block['content'] = array(
@@ -125,7 +126,7 @@ class CrlHelpersBlocks {
     $block['content']['#attached']['js'][] = drupal_get_path('module', 'crl_helpers') .'/js/crl_helpers_back_to_index.js';
     return $block;
   }
-  
+
   /**
    * Build crl_resource_interest_input.
    */
@@ -148,7 +149,7 @@ class CrlHelpersBlocks {
     }
     return $block;
   }
-  
+
   /**
    * Build crl_helpers_lim_access_mess.
    */

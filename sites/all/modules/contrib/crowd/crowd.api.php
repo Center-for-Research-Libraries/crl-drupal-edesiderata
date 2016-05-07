@@ -15,7 +15,7 @@
  *   An array of custom fields and values to save locally as part of the user
  *   account, and as expected by user_save(). This can be altered as needed to
  *   enforce custom save logic. It is preferred to pass user object changes
- *   through this variable as oppsoed to modifying $account directly.
+ *   through this variable as opposed to modifying $account directly.
  * @param array $crowd_user
  *   An associative array of crowd user data that was fetched from Crowd.
  * @param object $account
