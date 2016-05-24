@@ -8,7 +8,7 @@
  * Implements hook_field_group_info().
  */
 function crl_provider_feat_field_group_info() {
-  $export = array();
+  $field_groups = array();
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -37,14 +37,14 @@ function crl_provider_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Details',
       'instance_settings' => array(
-        'id' => '',
+        'id' => 'crl-details',
         'classes' => 'group-details field-group-htab',
         'description' => '',
       ),
       'formatter' => 'closed',
     ),
   );
-  $export['group_details|node|provider|default'] = $field_group;
+  $field_groups['group_details|node|provider|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -76,7 +76,7 @@ function crl_provider_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_details|node|provider|form'] = $field_group;
+  $field_groups['group_details|node|provider|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -101,15 +101,16 @@ function crl_provider_feat_field_group_info() {
     ),
     'format_type' => 'htab',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'Overview',
       'instance_settings' => array(
-        'description' => '',
+        'id' => 'crl-overview',
         'classes' => 'group-overview field-group-htab',
-        'id' => '',
+        'description' => '',
       ),
+      'formatter' => 'closed',
     ),
   );
-  $export['group_overview|node|provider|default'] = $field_group;
+  $field_groups['group_overview|node|provider|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -141,7 +142,7 @@ function crl_provider_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_overview|node|provider|form'] = $field_group;
+  $field_groups['group_overview|node|provider|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -169,14 +170,14 @@ function crl_provider_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'CRL Analysis & Profile',
       'instance_settings' => array(
-        'id' => '',
+        'id' => 'crl-analysis',
         'classes' => 'group-analysis group-profile-analysis field-group-htab',
         'description' => '',
       ),
       'formatter' => 'closed',
     ),
   );
-  $export['group_profile_analysis|node|provider|default'] = $field_group;
+  $field_groups['group_profile_analysis|node|provider|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -213,7 +214,7 @@ function crl_provider_feat_field_group_info() {
       'formatter' => 'closed',
     ),
   );
-  $export['group_profile_analysis|node|provider|form'] = $field_group;
+  $field_groups['group_profile_analysis|node|provider|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -234,14 +235,14 @@ function crl_provider_feat_field_group_info() {
     'format_settings' => array(
       'label' => 'Resources',
       'instance_settings' => array(
-        'id' => '',
+        'id' => 'crl-resources',
         'classes' => 'group-resources field-group-htab',
         'description' => '',
       ),
       'formatter' => 'closed',
     ),
   );
-  $export['group_resources|node|provider|default'] = $field_group;
+  $field_groups['group_resources|node|provider|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -276,7 +277,7 @@ function crl_provider_feat_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_system_fields|node|provider|form'] = $field_group;
+  $field_groups['group_system_fields|node|provider|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -304,7 +305,7 @@ function crl_provider_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_tabbed|node|provider|default'] = $field_group;
+  $field_groups['group_tabbed|node|provider|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -331,7 +332,16 @@ function crl_provider_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_tabbed|node|provider|form'] = $field_group;
+  $field_groups['group_tabbed|node|provider|form'] = $field_group;
 
-  return $export;
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('CRL Analysis & Profile');
+  t('Details');
+  t('Overview');
+  t('Resources');
+  t('System Fields');
+  t('Tabbed');
+
+  return $field_groups;
 }

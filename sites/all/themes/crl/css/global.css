@@ -86,7 +86,7 @@ h4 {
   font-size: 100%;
 }
 .element-invisible {
-	display:none; 
+	display:none;
 }
 label {
 	padding-bottom: 3px;
@@ -146,7 +146,7 @@ sup {
 }
 sub {
   vertical-align: sub;
-    font-size: 80%;
+  font-size: 80%;
 }
 th {
   font-weight: bold;
@@ -167,6 +167,16 @@ hr {
   background: none repeat scroll 0 0 #bbb;
 }
 
+blockquote {
+  border-left-width: 3px;
+  border-color: #ccc;
+  border-style: solid;
+  margin-left: 20px;
+  padding-left: 20px;
+  padding-right: 8px;
+  font-style: italic;
+}
+
 
 /* --------------------------------------------------------------------------
    Header Styles - General
@@ -176,7 +186,7 @@ hr {
   background-color: #474b6f;
   background-image: url('../images/world-bg.png');
   background-repeat: no-repeat;
-  background-position: center top; 
+  background-position: center top;
   height: auto;
   position: relative;
 }
@@ -244,12 +254,12 @@ form#ctools-jump-menu {
   width: 100px;
   margin: auto;
   padding-bottom: 15px;
-  
+
 }
 
 
 /* --------------------------------------------------------------------------
-   Footer Styles 
+   Footer Styles
    -------------------------------------------------------------------------- */
 
 #zone-footer, #zone-footer-wrapper {
@@ -352,9 +362,9 @@ section.block ul.facetapi-facetapi-links li {
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-  
+
 }
-#zone-content h2.block-title span.facet-group { 
+#zone-content h2.block-title span.facet-group {
 	font-size: 110%;
 	font-weight: bold;
 }
@@ -500,7 +510,7 @@ a#back-to-index {
 
 
 /* --------------------------------------------------------------------------
-   Main Content Styles 
+   Main Content Styles
    -------------------------------------------------------------------------- */
 
 /* Embedded computed content should be stripped of padding so that it flows
@@ -533,7 +543,7 @@ normally with the other fields around it */
 
 
 /* --------------------------------------------------------------------------
-   Content-specific Field styles 
+   Content-specific Field styles
    -------------------------------------------------------------------------- */
 
 /* Handle taxonomy lists with inline labels */
@@ -589,7 +599,7 @@ img.from-provider-icon {
 
 
 /* --------------------------------------------------------------------------
-   Views Lists 
+   Views Lists
    -------------------------------------------------------------------------- */
 
 .view-resource-lists .views-row.views-row-odd,
@@ -766,7 +776,7 @@ body.resources-dashboard #zone-preface .view-display-id-block_5 .dashboard-lead-
 
 
 /* --------------------------------------------------------------------------
-   Pagination  
+   Pagination
    -------------------------------------------------------------------------- */
 
 /* Views pager buttons need some adjusting */
@@ -807,7 +817,7 @@ body.resources-dashboard #zone-preface .view-display-id-block_5 .dashboard-lead-
 
 
 /* --------------------------------------------------------------------------
-   Horizontal Tabs 
+   Horizontal Tabs
    -------------------------------------------------------------------------- */
 
 .field-group-htabs-wrapper {
@@ -823,7 +833,7 @@ div.horizontal-tabs {
   background: -ms-linear-gradient(top,  rgba(255,255,255,1) 90%,rgba(235,235,235,1) 100%); /* IE10+ */
   background: linear-gradient(to bottom,  rgba(255,255,255,1) 90%,rgba(235,235,235,1) 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f4f4f4',GradientType=0 ); /* IE6-9 */
-  
+
 }
 div.horizontal-tabs, .horizontal-tabs ul.horizontal-tabs-list {
   border-color: #b7b7b7;
@@ -863,7 +873,7 @@ div.horizontal-tabs ul.horizontal-tabs-list {
 
 
 /* --------------------------------------------------------------------------
-   Buttons 
+   Buttons
    -------------------------------------------------------------------------- */
 
 input.form-checkbox, input.form-radio {
@@ -935,7 +945,7 @@ nav.comment-links ul li {
 
 
 /* --------------------------------------------------------------------------
-   Form fields and edit modes 
+   Form fields and edit modes
    -------------------------------------------------------------------------- */
 
 /* Common input styling */
@@ -1017,7 +1027,7 @@ match normal field labels */
 
 
 /* --------------------------------------------------------------------------
-   Drupal Tabs 
+   Drupal Tabs
    -------------------------------------------------------------------------- */
 
 .tabs {
@@ -1141,7 +1151,7 @@ nav.node-links ul {
 
 
 /* --------------------------------------------------------------------------
-   Rating Stars 
+   Rating Stars
    -------------------------------------------------------------------------- */
 
 div.fivestar-widget-static .star, div.fivestar-widget .star, div.fivestar-widget .cancel {
@@ -1667,7 +1677,7 @@ span.provider-p {
   box-shadow: 0px 0px 2px 2px #ddd;
 }
 span.provider-stem {
-  display: none; 
+  display: none;
 }
 
 /* Uniqueness widgets */
