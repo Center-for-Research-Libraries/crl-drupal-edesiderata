@@ -36,6 +36,7 @@ function crl_helpers_feat_wysiwyg_default_profiles() {
           'Unlink' => 1,
           'Image' => 1,
           'Superscript' => 1,
+          'Blockquote' => 1,
           'Source' => 1,
           'Cut' => 1,
           'Copy' => 1,
