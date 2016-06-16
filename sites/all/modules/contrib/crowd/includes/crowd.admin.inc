@@ -182,7 +182,14 @@ function crowd_admin_settings($form, $form_state) {
   $form['other_settings']['crowd_allow_local_logins'] = array(
     '#type' => 'checkbox',
     '#title' => t('Allow local logins if Crowd fails'),
-    '#default_value' => variable_get('crowd_allow_local_logins', TRUE)
+    '#default_value' => variable_get('crowd_allow_local_logins', TRUE),
+    '#description' => t('If enabled, and a user\'s login credentials fail against Crowd, the same credentials will also be tested against the local database as a fallback.'),
+  );
+  $form['other_settings']['crowd_allow_email_logins'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Allow email logins'),
+    '#default_value' => variable_get('crowd_allow_email_logins', FALSE),
+    '#description' => t('When enabled Crowd users will have the added option to authenticate with their email address as their username. This setting only applies to this Drupal site, not other Atlassian applications.'),
   );
   $form['other_settings']['crowd_allow_local_block'] = array(
     '#type' => 'checkbox',
@@ -205,7 +212,7 @@ function crowd_admin_settings($form, $form_state) {
     '#title' => t('Optional Page Redirects'),
     '#description' => t('The Crowd module does not natively provide Drupal-to-Crowd integration for "self-service" user account management and password reset requests. However, you can redirect users from the Drupal-based forms that handle these actions to alternative locations (such as the Crowd Console web application).'),
     '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
+    '#collapsed' => TRUE,
   );
   $form['other_settings']['redirects']['crowd_redirect_user_edit_url'] = array(
     '#type' => 'textfield',

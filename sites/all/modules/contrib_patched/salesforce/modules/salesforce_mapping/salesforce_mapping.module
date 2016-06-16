@@ -50,11 +50,24 @@ define('SALESFORCE_MAPPING_STATUS_ERROR', 0);
  * Access callback for managing Salesforce mappings.
  */
 function salesforce_mappings_access() {
+  if (!module_exists('salesforce_pull') && !module_exists('salesforce_push')) {
+    return FALSE;
+  }
+
   if (user_access('administer salesforce mapping')) {
     $sfapi = salesforce_get_api();
     return $sfapi->isAuthorized();
   }
   return FALSE;
+}
+
+/**
+ * Implements hook_page_alter().
+ */
+function salesforce_mapping_page_alter(&$page) {
+  if (current_path() == 'admin/structure/salesforce' && !module_exists('salesforce_pull') && !module_exists('salesforce_push')) {
+    drupal_set_message(t('At least one sync method (Push or Pull) must be <a href="/admin/modules">enabled</a> to configure Salesforce Mappings.'), 'error', FALSE);
+  }
 }
 
 /**
@@ -167,18 +180,26 @@ function salesforce_mapping_menu() {
     // after it is put into the loop below:
     $mapped_entities[$mapping->drupal_entity_type] = $mapping->drupal_bundle;
   }
-  foreach ($mapped_entities as $type => $bundle) {
-    $info = entity_get_info($type);
-    $bundle_key = $info['entity keys']['bundle'] ?: 'type';
-    $entity = entity_create($type, array($bundle_key => $bundle));
 
-    $info = entity_get_info($type);
-    $entity_id_field = $info['entity keys']['id'];
-    if (!isset($entity->$entity_id_field)) {
-      $entity->$entity_id_field = '';
+  $manual_uris = array();
+  drupal_alter('salesforce_mapping_entity_uris', $manual_uris);
+  foreach ($mapped_entities as $type => $bundle) {
+    $uri = array();
+    if (isset($manual_uris[$type])) {
+      $uri = $manual_uris[$type];
+    }
+    else {
+      try {
+        $info = entity_get_info($type);
+        $bundle_key = $info['entity keys']['bundle'] ?: 'type';
+        $entity = entity_create($type, array($bundle_key => $bundle));
+        $uri = method_exists($entity, 'uri') ? $entity->uri() : entity_uri($type, $entity);
+      }
+      catch (Exception $e) {
+        // Fall through to default behavior
+      }
     }
 
-    $uri = method_exists($entity, 'uri') ? $entity->uri() : entity_uri($type, $entity);
     if (empty($uri['path'])) {
       $path = 'admin/content/salesforce/' . $type . '/%' . $type . '/salesforce_activity';
       $menu_type = MENU_NORMAL_ITEM;
@@ -187,6 +208,7 @@ function salesforce_mapping_menu() {
       $path = $uri['path'] . '%' . $type . '/salesforce_activity';
       $menu_type = MENU_LOCAL_TASK;
     }
+
     $entity_arg = substr_count($path, '/') - 1;
     $items[$path] = array(
       'title' => 'Salesforce activity',
@@ -220,6 +242,21 @@ function salesforce_mapping_menu() {
     ) + $defaults;
   }
   return $items;
+}
+
+/**
+ * Implements hook_salesforce_mapping_entity_uris().
+ *
+ * Node and User, like most entities in core, don't respond well to entity_uri()
+ * calls on unsaved entity stubs, which is what we need for our menu items.
+ */
+function salesforce_mapping_salesforce_mapping_entity_uris_alter(&$entity_uris) {
+  $entity_uris['node'] = array(
+    'path' => 'node/',
+  );
+  $entity_uris['user'] = array(
+    'path' => 'user/',
+  );
 }
 
 /**
@@ -272,7 +309,7 @@ function salesforce_mapping_load_multiple($properties = array(), $reset = FALSE)
     }
     if ($record_type) {
       foreach ($mappings as $id => $mapping) {
-        if (!$mapping->salesforce_record_types_allowed[$record_type]) {
+        if (empty($mapping->salesforce_record_types_allowed[$record_type])) {
           unset($mappings[$id]);
         }
       }
@@ -291,21 +328,13 @@ function salesforce_mapping_theme($existing, $type, $theme, $path) {
       'render element' => 'elements',
       'file' => 'includes/salesforce_mapping.admin.inc',
     ),
-    'salesforce_mapping_linked_object' => array(
-      'variables' => array(
-        'label_hidden' => FALSE,
-        'title_attributes' => NULL,
-        'label' => '',
-        'content_attributes' => NULL,
-        'items' => array(),
-        'item_attributes' => array(0 => ''),
-        'classes' => '',
-        'attributes' => '',
-      ),
-    ),
     'salesforce_mapping_overview_tabledrag_form' => array(
       'render element' => 'form',
       'file' => 'includes/salesforce_mapping.ui_controller.inc',
+    ),
+    'salesforce_mapping_form_table_row' => array(
+      'render element' => 'elements',
+      'file' => 'includes/salesforce_mapping.admin.inc',
     ),
   );
 }
@@ -586,39 +615,6 @@ function salesforce_mapping_entity_mapping_accessible($op, $entity, $type, $acco
 }
 
 /**
- * Implements hook_field_extra_fields().
- */
-function salesforce_mapping_field_extra_fields() {
-  // Include Salesforce data for mapped entities.
-  $mappings = salesforce_mapping_load();
-  foreach ($mappings as $mapping) {
-    $extra[$mapping->drupal_entity_type][$mapping->drupal_bundle] = array(
-      'display' => array(
-        'salesforce_id' => array(
-          'label' => t('Salesforce Id'),
-          'description' => t('ID of a linked Salesforce object.'),
-          'weight' => 0,
-        ),
-        'salesforce_last_sync' => array(
-          'label' => t('Salesforce last sync'),
-          'description' => t('Timestamp for the latest sync with Salesforce.'),
-          'weight' => 0,
-        ),
-      ),
-    );
-  }
-
-  return isset($extra) ? $extra : array();
-}
-
-/**
- * Wrapper around theme_field() to format linked Salesforce data.
- */
-function theme_salesforce_mapping_linked_object($variables) {
-  return theme_field($variables);
-}
-
-/**
  * Implements hook_entity_update().
  *
  * Ensures drupal entity has an update timestamp.
@@ -786,7 +782,8 @@ function salesforce_mapping_object_filter_query($header = FALSE, $properties = a
         case 'salesforce_id':
           if (strlen($value) < 18) {
             // Match start of the Salesforce ID if less than the full 18 chars.
-            $operator = 'STARTS_WITH';
+            $operator = 'LIKE';
+            $value = db_like($value) . '%';
           }
 
         default:

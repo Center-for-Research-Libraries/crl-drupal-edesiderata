@@ -1,6 +1,29 @@
 <?php
 
 /**
+ * Implements hook_requirements().
+ */
+function salesforce_mapping_requirements($phase) {
+  $requirements = array();
+  $t = get_t();
+  switch($phase) {
+    case 'install':
+      drupal_set_message(t('At least one sync method (Push or Pull) must be <a href="/admin/modules">enabled</a> to configure Salesforce Mappings.'), 'status', FALSE);
+      break;
+    case 'runtime':
+      if (!module_exists('salesforce_pull') && !module_exists('salesforce_push')) {
+        $requirements['salesforce_mapping'] = array(
+          'title' => $t('Salesforce Mapping'),
+          'description' => $t('<a href="/admin/modules">Enable</a> at least one sync method (Push or Pull) to configure Salesforce Mappings.'),
+          'severity' => REQUIREMENT_ERROR,
+        );
+      }
+      break;
+  }
+  return $requirements;
+}
+
+/**
  * @file
  * Install and uninstall instructions for salesforce_mapping.
  */
@@ -85,6 +108,13 @@ function salesforce_mapping_schema() {
         'serialize' => TRUE,
         'size' => 'big',
         'description' => 'A serialized object that stores the field mappings.',
+      ),
+      'pull_trigger_date' => array(
+        'description' => 'The Saleforce field to trigger pulls from.',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => 'LastModifiedDate',
       ),
       'push_async' => array(
         'type' => 'int',
@@ -636,4 +666,18 @@ function salesforce_mapping_update_7304(&$sandbox) {
 function salesforce_mapping_update_7305(&$sandbox) {
   db_drop_field('salesforce_mapping', 'updated');
   cache_clear_all('schema', 'cache');
+}
+
+/**
+ * Add the configurable Pull Trigger Date field to mappings.
+ */
+function salesforce_mapping_update_7306(&$sandbox) {
+  $pull_date_field = array(
+    'description' => 'The Saleforce field to trigger pulls from.',
+    'type' => 'varchar',
+    'length' => 128,
+    'not null' => TRUE,
+    'default' => 'LastModifiedDate',
+  );
+  db_add_field('salesforce_mapping', 'pull_trigger_date', $pull_date_field);
 }

@@ -10,6 +10,7 @@ class SalesforceSelectQuery {
   public $order = array();
   public $objectType;
   public $limit;
+  public $offset;
   public $conditions = array();
 
   /**
@@ -86,6 +87,13 @@ class SalesforceSelectQuery {
     if ($this->limit) {
       $query .= "+LIMIT+" . (int) $this->limit;
     }
+
+    if ($this->offset) {
+      $query .= "+OFFSET+" . (int) $this->offset;
+    }
+    
+    // Replaces spaces with + signs for custom filters.
+    $query = str_replace(" ", "+", $query);
 
     return $query;
   }
