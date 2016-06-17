@@ -32,6 +32,7 @@ function crowd_uninstall() {
   variable_del('crowd_redirect_content_profile_url');
   variable_del('crowd_redirect_pass_reset_url');
   variable_del('crowd_allow_local_block');
+  variable_del('crowd_allow_email_logins');
 }
 
 

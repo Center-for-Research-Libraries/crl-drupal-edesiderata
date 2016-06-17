@@ -1,0 +1,76 @@
+diff --git a/includes/salesforce.inc b/includes/salesforce.inc
+index c0f23f7..427d330 100644
+--- a/includes/salesforce.inc
++++ b/includes/salesforce.inc
+@@ -672,6 +672,22 @@ class Salesforce {
+   }
+ 
+   /**
++   * Retrieves the list of individual objects that have been deleted within the
++   * given timespan for a specified object type.
++   *
++   * @param string $type
++   *   Object type name, E.g., Contact, Account.
++   * @param string $startDate
++   *   Start date to check for deleted objects (in ISO 8601 format).
++   * @param string $endDate
++   *   End date to check for deleted objects (in ISO 8601 format).
++   * @return GetDeletedResult
++   */
++  public function getDeleted($type, $startDate, $endDate) {
++    return $this->apiCall("sobjects/{$type}/deleted/?start={$startDate}&end={$endDate}");
++  }
++
++  /**
+    * Return a list of available resources for the configured API version.
+    *
+    * @return array
+diff --git a/modules/salesforce_pull/salesforce_pull.module b/modules/salesforce_pull/salesforce_pull.module
+index 1bcf058..8ab27ba 100644
+--- a/modules/salesforce_pull/salesforce_pull.module
++++ b/modules/salesforce_pull/salesforce_pull.module
+@@ -471,27 +471,33 @@ function salesforce_pull_process_records($sf_object) {
+  * Process deleted records from salesforce.
+  */
+ function salesforce_pull_process_deleted_records() {
+-  // Only the SOAP API supports getting deleted records.
+-  if (!module_exists('salesforce_soap')) {
+-    salesforce_set_message('Enable Salesforce SOAP to process deleted records');
+-    return;
+-  }
++  // Calculate which client to use. We default to the REST client but also
++  // support SOAP if enabled. Note that deletions can only be queried via REST
++  // with an API version >= 29.0.
+   $sfapi = salesforce_get_api();
+-  $soap = new SalesforceSoapPartner($sfapi);
+-
++  $client = $sfapi;
++  if (module_exists('salesforce_soap')) {
++    $client = new SalesforceSoapPartner($sfapi);
++  }
+   // Load all unique SF record types that we have mappings for.
+   foreach (array_reverse(salesforce_mapping_get_mapped_objects()) as $type) {
+     $last_delete_sync = variable_get('salesforce_pull_delete_last_' . $type, REQUEST_TIME);
+     $now = time();
+-
+-    // SOAP getDeleted() restraint: startDate must be at least one minute
+-    // greater than endDate.
++    // getDeleted() restraint: startDate cannot be more than 30 days ago
++    // (using an incompatible data may lead to exceptions).
++    $last_delete_sync = $last_delete_sync > REQUEST_TIME - 2505600 ? $last_delete_sync : REQUEST_TIME - 2505600;
++    // getDeleted() restraint: startDate must be at least one minute greater
++    // than endDate.
+     $now = $now > $last_delete_sync + 60 ? $now : $now + 60;
+     $last_delete_sync_sf = gmdate('Y-m-d\TH:i:s\Z', $last_delete_sync);
+     $now_sf = gmdate('Y-m-d\TH:i:s\Z', $now);
+-    $deleted = $soap->getDeleted($type, $last_delete_sync_sf, $now_sf);
++    // SOAP getDeleted() returns an object while the REST getDeleted() returns
++    // an array, so cast all checked values to an object to avoid additional
++    // conditional logic.
++    $deleted = (object) $client->getDeleted($type, $last_delete_sync_sf, $now_sf);
+     if (!empty($deleted->deletedRecords)) {
+       foreach ($deleted->deletedRecords as $record) {
++        $record = (object) $record;
+         $mapping_object = salesforce_mapping_object_load_by_sfid($record->id);
+         if ($mapping_object) {
+           // Load and wrap the Drupal entity linked to the SF object.

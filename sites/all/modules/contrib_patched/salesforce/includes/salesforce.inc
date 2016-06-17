@@ -24,12 +24,61 @@ class Salesforce {
     $this->consumer_secret = $consumer_secret;
     $this->login_url = variable_get('salesforce_endpoint', 'https://login.salesforce.com');
 
-    // @TODO: Does this need to be configurable?
-    $this->rest_api_version = array(
-      "label" => "Spring '13",
-      "url" => "/services/data/v27.0/",
-      "version" => "27.0",
-    );
+    $this->rest_api_version = variable_get('salesforce_api_version', array(
+      "label" => "Winter '14",
+      "url" => "/services/data/v29.0/",
+      "version" => "29.0",
+    ));
+  }
+
+  /**
+   * Converts a 15-character case-sensitive Salesforce ID to 18-character
+   * case-insensitive ID. If input is not 15-characters, return input unaltered.
+   *
+   * @param string $sfid15
+   *   15-character case-sensitive Salesforce ID
+   * @return string
+   *   18-character case-insensitive Salesforce ID
+   */
+  public static function convertId($sfid15) {
+    if (strlen($sfid15) != 15) {
+      return $sfid15;
+    }
+    $chunks = str_split($sfid15, 5);
+    $extra = '';
+    foreach ($chunks as $chunk) {
+      $chars = str_split($chunk, 1);
+      $bits = '';
+      foreach ($chars as $char) {
+        $bits .= (!is_numeric($char) && $char == strtoupper($char)) ? '1' : '0';
+      }
+      $map = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ012345';
+      $extra .= substr($map, base_convert(strrev($bits), 2, 10), 1);
+    }
+    return $sfid15 . $extra;
+  }
+
+  /**
+   * Given a Salesforce ID, return the corresponding SObject name. (Based on
+   *  keyPrefix from object definition, @see
+   *  https://developer.salesforce.com/forums/?id=906F0000000901ZIAQ )
+   *
+   * @param string $sfid
+   *   15- or 18-character Salesforce ID
+   * @return string
+   *   sObject name, e.g. "Account", "Contact", "my__Custom_Object__c" or FALSE
+   *   if no match could be found.
+   * @throws SalesforceException
+   */
+  public function getSobjectType($sfid) {
+    $objects = $this->objects(array('keyPrefix' => substr($sfid, 0, 3)));
+    if (count($objects) == 1) {
+      // keyPrefix is unique across objects. If there is exactly one return value from objects(), then we have a match.
+      $object = reset($objects);
+      return $object['name'];
+    }
+    // Otherwise, we did not find a match.
+    return FALSE;
   }
 
   /**
@@ -50,18 +99,22 @@ class Salesforce {
    *   Parameters to provide.
    * @param string $method
    *   Method to initiate the call, such as GET or POST.  Defaults to GET.
+   * @param string $type
+   *   Type of object to request. Defaults to 'rest'. Most common examples:
+   *   - rest - Call the standard Salesforce REST API.
+   *   - apexrest - Call a custom REST URL defined in Salesforce.
    *
    * @return mixed
    *   The requested response.
    *
    * @throws SalesforceException
    */
-  public function apiCall($path, $params = array(), $method = 'GET') {
+  public function apiCall($path, $params = array(), $method = 'GET', $type = 'rest') {
     if (!$this->getAccessToken()) {
       $this->refreshToken();
     }
 
-    $this->response = $this->apiHttpRequest($path, $params, $method);
+    $this->response = $this->apiHttpRequest($path, $params, $method, $type);
 
     switch ($this->response->code) {
       // The session ID or OAuth token used has expired or is invalid.
@@ -70,7 +123,7 @@ class Salesforce {
         $this->refreshToken();
 
         // Rebuild our request and repeat request.
-        $this->response = $this->apiHttpRequest($path, $params, $method);
+        $this->response = $this->apiHttpRequest($path, $params, $method, $type);
         // Throw an error if we still have bad response.
         if (!in_array($this->response->code, array(200, 201, 204))) {
           throw new SalesforceException($this->response->error, $this->response->code);
@@ -96,7 +149,7 @@ class Salesforce {
       $data = $data[0];
     }
 
-    if (isset($data['error'])) {
+    if (is_array($data) && isset($data['error'])) {
       throw new SalesforceException($data['error_description'], $data['error']);
     }
 
@@ -116,12 +169,16 @@ class Salesforce {
    *   Parameters to provide.
    * @param string $method
    *   Method to initiate the call, such as GET or POST.  Defaults to GET.
+   * @param string $type
+   *   Type of request. Examples include:
+   *   - rest (default)
+   *   - apexrest (custom REST written in APEX in Salesforce instance)
    *
    * @return object
    *   The requested data.
    */
-  protected function apiHttpRequest($path, $params, $method) {
-    $url = $this->getApiEndPoint() . $path;
+  protected function apiHttpRequest($path, $params, $method, $type = 'rest') {
+    $url = $this->getApiEndPoint($type) . $path;
     $headers = array(
       'Authorization' => 'OAuth ' . $this->getAccessToken(),
       'Content-type' => 'application/json',
@@ -146,6 +203,13 @@ class Salesforce {
    *   Salesforce response object.
    */
   protected function httpRequest($url, $data, $headers = array(), $method = 'GET') {
+
+    // If method is GET, data should not be sent otherwise drupal_http_request()
+    // will set Content-Length header which confuses some proxies like Squid.
+    if ($method === 'GET') {
+      $data = NULL;
+    }
+
     // Build the request, including path and headers. Internal use.
     $options = array(
       'method' => $method,
@@ -168,8 +232,14 @@ class Salesforce {
   public function getApiEndPoint($api_type = 'rest') {
     $url = &drupal_static(__FUNCTION__ . $api_type);
     if (!isset($url)) {
-      $identity = $this->getIdentity();
-      $url = str_replace('{version}', $this->rest_api_version['version'], $identity['urls'][$api_type]);
+      // Special handling for apexrest, since it's not in the identity object.
+      if ($api_type == 'apexrest') {
+        $url = $this->getInstanceUrl() . '/services/apexrest/';
+      }
+      else {
+        $identity = $this->getIdentity();
+        $url = str_replace('{version}', $this->rest_api_version['version'], $identity['urls'][$api_type]);
+      }
     }
     return $url;
   }
@@ -405,7 +475,7 @@ class Salesforce {
     if (!empty($conditions)) {
       foreach ($result['sobjects'] as $key => $object) {
         foreach ($conditions as $condition => $value) {
-          if (!$object[$condition] == $value) {
+          if ($object[$condition] != $value) {
             unset($result['sobjects'][$key]);
           }
         }
@@ -602,6 +672,22 @@ class Salesforce {
   }
 
   /**
+   * Retrieves the list of individual objects that have been deleted within the
+   * given timespan for a specified object type.
+   *
+   * @param string $type
+   *   Object type name, E.g., Contact, Account.
+   * @param string $startDate
+   *   Start date to check for deleted objects (in ISO 8601 format).
+   * @param string $endDate
+   *   End date to check for deleted objects (in ISO 8601 format).
+   * @return GetDeletedResult
+   */
+  public function getDeleted($type, $startDate, $endDate) {
+    return $this->apiCall("sobjects/{$type}/deleted/?start={$startDate}&end={$endDate}");
+  }
+
+  /**
    * Return a list of available resources for the configured API version.
    *
    * @return array
@@ -616,7 +702,47 @@ class Salesforce {
     }
     return $items;
   }
+
+  /**
+   * Return a list of SFIDs for the given object, which have been created or
+   * updated in the given timeframe. 
+   *
+   * @param int $start
+   *   unix timestamp for older timeframe for updates. 
+   *   Defaults to "-29 days" if empty.
+   *
+   * @param int $end
+   *   unix timestamp for end of timeframe for updates. 
+   *   Defaults to now if empty
+   *
+   * @return array
+   *   return array has 2 indexes:
+   *     "ids": a list of SFIDs of those records which have been created or
+   *       updated in the given timeframe.
+   *     "latestDateCovered": ISO 8601 format timestamp (UTC) of the last date
+   *       covered in the request.
+   *
+   * @see https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_getupdated.htm
+   *
+   * @addtogroup salesforce_apicalls
+   */
+  public function getUpdated($name, $start = null, $end = null) {
+    if (empty($start)) {
+      $start = strtotime('-29 days');
+    }
+    $start = urlencode(gmdate(DATE_ATOM, $start));
+  
+    if (empty($end)) {
+      $end = time();
+    }
+    $end = urlencode(gmdate(DATE_ATOM, $end));
+  
+    return $this->apiCall("sobjects/{$name}/updated/?start=$start&end=$end");
+  }
 }
 
 class SalesforceException extends Exception {
+}
+
+class SalesforcePullException extends SalesforceException {
 }
