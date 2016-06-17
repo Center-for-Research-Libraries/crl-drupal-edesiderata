@@ -18,9 +18,9 @@ configure = admin/structure/salesforce/mappings
 dependencies[] = salesforce
 dependencies[] = entity
 
-; Information added by Drupal.org packaging script on 2015-03-13
-version = "7.x-3.1"
+; Information added by Drupal.org packaging script on 2016-06-15
+version = "7.x-3.1+68-dev"
 core = "7.x"
 project = "salesforce"
-datestamp = "1426286882"
+datestamp = "1466010554"
 

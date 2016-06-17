@@ -135,12 +135,12 @@ function salesforce_mapping_related_entity_fieldmap_push_value($fieldmap, $entit
   }
   if ($related_entity = $related_wrapper->value()) {
     list($related_entity_id) = entity_extract_ids($related_wrapper->type(), $related_entity);
-    $mapped_objects = salesforce_mapping_object_load_by_drupal(
+    $mapping_object = salesforce_mapping_object_load_by_drupal(
       $related_wrapper->type(),
       $related_entity_id
     );
-    if ($mapped_objects) {
-      $value = $mapped_objects->salesforce_id;
+    if ($mapping_object) {
+      $value = $mapping_object->salesforce_id;
     }
   }
   return $value;
@@ -150,11 +150,11 @@ function salesforce_mapping_related_entity_fieldmap_push_value($fieldmap, $entit
  * Pull value callback for property fieldmap type.
  */
 function salesforce_mapping_related_entity_fieldmap_pull_value($entity_wrapper, $sf_object, $field_map) {
-  $mapped_objects = salesforce_mapping_object_load_by_sfid($sf_object[$field_map['salesforce_field']['name']]);
+  $mapping_object = salesforce_mapping_object_load_by_sfid($sf_object[$field_map['salesforce_field']['name']]);
   $info = $entity_wrapper->info();
-  if ($mapped_objects && !isset($info['relation_type'])) {
-    $entity = entity_load_single($mapped_objects->entity_type, $mapped_objects->entity_id);
-    return entity_metadata_wrapper($mapped_objects->entity_type, $entity);
+  if ($mapping_object && !isset($info['relation_type'])) {
+    $entity = entity_load_single($mapping_object->entity_type, $mapping_object->entity_id);
+    return entity_metadata_wrapper($mapping_object->entity_type, $entity);
   }
   // Handle relations.
   elseif (module_exists('relation') && isset($info['relation_type'])) {
@@ -186,19 +186,19 @@ function salesforce_mapping_related_entity_fieldmap_pull_value($entity_wrapper, 
         if (
           ($current_endpoints[LANGUAGE_NONE][0]['entity_type'] != $parent_type) ||
           ($current_endpoints[LANGUAGE_NONE][0]['entity_id'] != $parent_entity_id) ||
-          ($current_endpoints[LANGUAGE_NONE][1]['entity_type'] != $mapped_objects->entity_type) ||
-          ($current_endpoints[LANGUAGE_NONE][1]['entity_id'] != $mapped_objects->entity_id)
+          ($current_endpoints[LANGUAGE_NONE][1]['entity_type'] != $mapping_object->entity_type) ||
+          ($current_endpoints[LANGUAGE_NONE][1]['entity_id'] != $mapping_object->entity_id)
         ) {
           $match = FALSE;
         }
         // If same type and not a match delete relation.
-        if ($current_endpoints[LANGUAGE_NONE][1]['entity_type'] == $mapped_objects->entity_type && !$match) {
+        if ($current_endpoints[LANGUAGE_NONE][1]['entity_type'] == $mapping_object->entity_type && !$match) {
           relation_delete($rid);
         }
       }
     }
     // Create new relation and endpoints.
-    if ($mapped_objects && !$match) {
+    if ($mapping_object && !$match) {
       $relation_type = $info['relation_type'];
       $endpoints = array(
         array(
@@ -206,8 +206,8 @@ function salesforce_mapping_related_entity_fieldmap_pull_value($entity_wrapper, 
           'entity_id' => $parent_entity_id,
         ),
         array(
-          'entity_type' => $mapped_objects->entity_type,
-          'entity_id' => $mapped_objects->entity_id,
+          'entity_type' => $mapping_object->entity_type,
+          'entity_id' => $mapping_object->entity_id,
         ),
       );
       $relation_new = relation_create($relation_type, $endpoints);
@@ -256,10 +256,10 @@ function salesforce_mapping_relation_endpoints_fieldmap_pull_value($entity_wrapp
 
   // Load each related Drupal entity.
   foreach ($field_map['salesforce_field'] as $sf_field) {
-    $mapped_object = salesforce_mapping_object_load_by_sfid($sf_object[$sf_field['name']]);
-    if ($mapped_object) {
-      $entity = entity_load_single($mapped_object->entity_type, $mapped_object->entity_id);
-      $values[] = entity_metadata_wrapper($mapped_object->entity_type, $entity);
+    $mapping_object = salesforce_mapping_object_load_by_sfid($sf_object[$sf_field['name']]);
+    if ($mapping_object) {
+      $entity = entity_load_single($mapping_object->entity_type, $mapping_object->entity_id);
+      $values[] = entity_metadata_wrapper($mapping_object->entity_type, $entity);
     }
   }
 
@@ -269,12 +269,13 @@ function salesforce_mapping_relation_endpoints_fieldmap_pull_value($entity_wrapp
 
   // If the relationship is directional, ensure source/bundle are in the right
   // order.
+  $return_values = array();
   if ($relation_type->directional) {
     foreach ($values as $value) {
       foreach ($relation_type->source_bundles as $bundle_key) {
         list($source_entity_type) = explode(':', $bundle_key);
         if ($source_entity_type == $value->type()) {
-          $values[0] = $value;
+          $return_values[0] = $value;
           break;
         }
       }
@@ -282,14 +283,14 @@ function salesforce_mapping_relation_endpoints_fieldmap_pull_value($entity_wrapp
       foreach ($relation_type->target_bundles as $bundle_key) {
         list($target_entity_type) = explode(':', $bundle_key);
         if ($target_entity_type == $value->type()) {
-          $values[1] = $value;
+          $return_values[1] = $value;
           break;
         }
       }
     }
   }
 
-  return $values;
+  return empty($return_values) ? $values : $return_values;
 }
 
 /**
@@ -338,6 +339,11 @@ function salesforce_mapping_property_fieldmap_push_value($fieldmap, $entity_wrap
     $value = format_date($value, 'custom', 'c');
   }
 
+  // Boolean SF fields only want real boolean values. NULL is also not allowed.
+  if ($fieldmap['salesforce_field']['type'] == 'boolean') {
+    $value = (bool) $value;
+  }
+
   return $value;
 }
 
@@ -365,14 +371,14 @@ function salesforce_mapping_property_fieldmap_pull_value($entity_wrapper, $sf_ob
       }
       break;
 
+    case 'integer':
     case 'boolean':
-      if (isset($value)) {
-        $value = (int) $value;
-      }
+      $value = isset($value) ? (int) $value : 0;
       break;
 
     case 'text':
       $value = (string) $value;
+      break;
   }
 
   return $value;

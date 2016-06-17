@@ -221,7 +221,8 @@ function _crowd_process_redirects() {
  * locally to Drupal.
  *
  * @param string $username
- *   The Crowd username.
+ *   The Crowd username. If the crowd_allow_email_logins configuration option is
+ *   TRUE a user's email address is also allowed here.
  * @param string $password
  *   The Crowd password.
  * @param boolean $show_reject_message
@@ -247,14 +248,31 @@ function crowd_login_remote($username, $password, $show_reject_message = TRUE) {
     return $crowd_user;
   }
   try {
-    // Attempt to authenticate the user in Crowd.
+    // Attempt to authenticate the user in Crowd. When successful also fetch the
+    // full user details so they can be returned.
     $crowd_client = crowd_client_connect();
     $response = $crowd_client->authorize($username, $password);
-    // If authentication passed also fetch the user info. This is compulsory
-    // for the login process to be considered complete.
     if (!empty($response['token'])) {
       $auth_token = $response['token'];
       $crowd_user = $crowd_client->getUserFromToken($auth_token);
+    }
+    // If username-based authentication failed allow fallback to email-based
+    // authentication (if configured).
+    elseif (variable_get('crowd_allow_email_logins', FALSE) && valid_email_address($username)) {
+      $email_matches = $crowd_client->searchCql('user', 'email=' . $username);
+      foreach ($email_matches as $email_match) {
+        if ($email_match != $username) { // Don't retest same user if their email matches thier username
+          $lookup_user = $crowd_client->getUserFromName($email_match);
+          if (!empty($lookup_user['active'])) {
+            $response = $crowd_client->authorize($lookup_user['name'], $password);
+            if (!empty($response['token'])) {
+              $auth_token = $response['token'];
+              $crowd_user = $lookup_user;
+              break;
+            }
+          }
+        }
+      }
     }
   }
   catch (CrowdException $e) {
@@ -306,32 +324,27 @@ function crowd_login_remote($username, $password, $show_reject_message = TRUE) {
  */
 function crowd_login_local($crowd_user) {
   global $user;
-  // First we need to see if this is already a Drupal user. We check via a
-  // manual query instead of user_load to keep things lean (as we don't need a
-  // fully-loaded user object).
-  $user_local = db_query("SELECT uid, status, name FROM {users} WHERE name = :name", array(':name' => $crowd_user['username']))->fetchObject();
-  if ($user_local) {
-    // If we found a Drupal user we need to see if the user is a LOCAL drupal
-    // user (i.e. not linked in the authmap table).
-    if (!crowd_user_is_linked($crowd_user['username'])) {
-      // We have a name collision where we are trying to login a user with Crowd
-      // credentials that already exists as a LOCAL Drupal user. Handle this
-      // based on admin settings.
-      switch (variable_get('crowd_handle_username_collision', 'abort')) {
-        case 'merge':
-          // If we are going to silently merge the Crowd and Drupal accounts
-          // we need to adjust the authmap table before proceeding with the
-          // login.
-          watchdog('crowd', 'Username collision detected. Username @username is authenticating via crowd but already exists as a local Drupal user. Merging Crowd and Drupal accounts and proceeding with login.', array('@username' => $user_local->name), WATCHDOG_WARNING);
-          user_set_authmaps($user_local, array("authname_crowd" => $user_local->name));
-          break;
-        case 'abort':
-        case 'default':
-          // If we abort the login simply report and return.
-          watchdog('crowd', 'Username collision detected. Username @username is authenticating via crowd but already exists as a local Drupal user. Aborting login.', array('@username' => $user_local->name), WATCHDOG_ERROR);
-          drupal_set_message(t("Attempted to login via Crowd with username @username, but a local account was detected with that same username. Please contact the site administrator.", array('@username' => $crowd_user['username'])), 'warning');
-          return FALSE;
-      }
+  // We need to see (1) if a local Drupal user already uses this Crowd username
+  // and (2) if user_external_login_register() would identify this as a new
+  // account. If both are true then we have a name collison which would lead to
+  // DB errors during user_external_login_register(). We handle this based on
+  // admin settings.
+  $user_local = user_load_by_name($crowd_user['username']);
+  if ($user_local && !user_external_load($crowd_user['username'])) {
+    switch (variable_get('crowd_handle_username_collision', 'abort')) {
+      case 'merge':
+        // If we are going to silently merge the Crowd and Drupal accounts
+        // we need to adjust the authmap table before proceeding with the
+        // login.
+        watchdog('crowd', 'Username collision detected. Username @username is authenticating via Crowd but already exists as a local Drupal user. Merging Crowd and Drupal accounts and proceeding with login.', array('@username' => $crowd_user['username']), WATCHDOG_WARNING);
+        user_set_authmaps($user_local, array('authname_crowd' => $crowd_user['username']));
+        break;
+      case 'abort':
+      case 'default':
+        // If we abort the login simply report and return.
+        watchdog('crowd', 'Username collision detected. Username @username is authenticating via Crowd but already exists as a local Drupal user. Aborting login.', array('@username' => $crowd_user['username']), WATCHDOG_ERROR);
+        drupal_set_message(t("Attempted to login via Crowd with username @username, but a local account was detected with that same username. Please contact the site administrator.", array('@username' => $crowd_user['username'])), 'warning');
+        return FALSE;
     }
   }
   // Force a login to Drupal.
@@ -521,7 +534,7 @@ function crowd_form_user_profile_form_alter(&$form, &$form_state) {
     }
     // Also add a notes about the user being linked to Crowd. This will only be
     // visible if the user has rights to edit the name field.
-    $form['account']['name']['#prefix'] = '<p>' . t('<strong>Notice</strong>: This user is currently linked to Crowd using the username as a universal identifier. Changing the username value will unlink this user from Crowd.') . '</p>';
+    $form['account']['name']['#prefix'] = '<p>' . t('<strong>Notice</strong>: This user is currently linked to Crowd user %cname. Changing the username value here will <strong>not</strong> change the Crowd username, and this user will still be able to login to this local Drupal account as %cname.', array('%cname' => crowd_user_authmap_name($form['#user']->name))) . '</p>';
   }
 }
 
@@ -683,17 +696,19 @@ function crowd_pull_user_data($account = NULL, $crowd_user = NULL) {
   // final user_save() call takes place.
   // @see https://www.drupal.org/node/2653844
   $account = empty($account) || $account == $user ? clone $user : $account;
+  // Lookup the authname in case it's different from the local username.
+  $authname = crowd_user_authmap_name($account->name);
   // Ensure $crowd_user is set. If not we fetch the current data remotely.
   try {
-    $crowd_user = empty($crowd_user) ? $crowd->getUserFromName($account->name) : $crowd_user;
+    $crowd_user = empty($crowd_user) ? $crowd->getUserFromName($authname) : $crowd_user;
   }
   catch (CrowdException $e) {
     $e->logResponse();
   }
-  // Don't do anything if working with anon user, an unknown Crowd user or if
-  // Crowd and Drupal usernames do not match.
-  if (!$account->uid || empty($crowd_user) || mb_strtolower($crowd_user['username']) != mb_strtolower($account->name)) {
-    watchdog('crowd', 'Failed to sync user data for Crowd user %name. The user may not exist or there may be a username mismatch.', array('%name' => $crowd_user['username']), WATCHDOG_ERROR);
+  // Don't do anything if working with anon user, an unknown Crowd user or if a
+  // Crowd link cannot be confirmed.
+  if (!$account->uid || empty($crowd_user) || empty($authname)) {
+    watchdog('crowd', 'Failed to pull Crowd data for Drupal user %dname. The user may not be linked to Crowd.', array('%dname' => $account->name), WATCHDOG_ERROR);
     return;
   }
   // Allow modules to implement their own pre-sync tasks or alter data that will
@@ -710,11 +725,11 @@ function crowd_pull_user_data($account = NULL, $crowd_user = NULL) {
   // the local roles.
   try {
     $groups = $crowd->getUserGroups($crowd_user['username']);
+    crowd_update_roles_from_groups($roles, $groups);
   }
   catch (CrowdException $e) {
     $e->logResponse();
   }
-  crowd_update_roles_from_groups($roles, $groups);
   // Create the user information array with our calculated changes in
   // preparation for the local save.
   $edit = array(
@@ -735,7 +750,7 @@ function crowd_pull_user_data($account = NULL, $crowd_user = NULL) {
   $account->crowd_user_pull = TRUE;
   $account = user_save($account, $edit, 'account');
   if ($account) {
-    watchdog('crowd', 'Updated user %name with data from Crowd User.', array('%name' => $account->name), WATCHDOG_NOTICE);
+    watchdog('crowd', 'Updated Drupal user %dname with data from Crowd User %cname.', array('%dname' => $account->name, '%cname' => $authname), WATCHDOG_NOTICE);
     // If we are working with the current user ensure global user is updated.
     if ($user->uid == $account->uid) {
       $user = $account;
@@ -743,7 +758,7 @@ function crowd_pull_user_data($account = NULL, $crowd_user = NULL) {
   }
   else {
     // There has been a problem saving the user, log it.
-    watchdog('crowd', 'Failed to save the user account information for %name', array('%name' => $account->name), WATCHDOG_ERROR);
+    watchdog('crowd', 'Failed to update Drupal user %dname with data from Crowd User %cname.', array('%dname' => $account->name, '%cname' => $authname), WATCHDOG_ERROR);
   }
 }
 
@@ -857,10 +872,39 @@ function crowd_get_cookie_name($convert = TRUE) {
 
 
 /**
- * Utility to check if a user is linked to Crowd via the authmap table.
+ * Utility to get a user's remote Crowd name based on their Drupal name from the
+ * authmap table.
  *
  * We may want to call this several times in one request so some static caching
  * is implemented to reduce DB queries.
+ *
+ * @param string $username
+ *   A Drupal username to check.
+ * @param boolean $reset
+ *   Whether-or-not to reset the static cache and fetch the result fresh from
+ *   the DB.
+ * @return mixed
+ *   Returns the Crowd name from the authmap table if one can be found and NULL
+ *   if not.
+ */
+function crowd_user_authmap_name($username, $reset = FALSE) {
+  $values = &drupal_static(__FUNCTION__, array());
+  if (empty($values[$username]) || $reset) {
+    $values[$username] = NULL;
+    $user = user_load_by_name($username);
+    if ($user) {
+      // Apparently there is no core function to get authname data from Drupal
+      // user data, so we need to do our own query here.
+      $authmaps = db_query("SELECT authname, uid FROM {authmap} WHERE module = :module AND uid = :uid", array(':module' => 'crowd', ':uid' => $user->uid))->fetchAllKeyed();
+      $values[$username] = count($authmaps) ? key($authmaps) : NULL;
+    }
+  }
+  return $values[$username];
+}
+
+
+/**
+ * Utility to check if a user is linked to Crowd via the authmap table.
  *
  * @param string $username
  *   A username to check.
@@ -872,13 +916,6 @@ function crowd_get_cookie_name($convert = TRUE) {
  *   if not.
  */
 function crowd_user_is_linked($username, $reset = FALSE) {
-  $values = &drupal_static(__FUNCTION__, array());
-  if (empty($values[$username]) || $reset) {
-    $values[$username] = FALSE;
-    $user_authmaps = user_get_authmaps($username);
-    if (is_array($user_authmaps) && array_key_exists('crowd', $user_authmaps)) {
-      $values[$username] = TRUE;
-    }
-  }
-  return $values[$username];
+  // Simply return the results of crowd_user_authmap_name() in boolen form.
+  return crowd_user_authmap_name($username, $reset) ? TRUE : FALSE;
 }

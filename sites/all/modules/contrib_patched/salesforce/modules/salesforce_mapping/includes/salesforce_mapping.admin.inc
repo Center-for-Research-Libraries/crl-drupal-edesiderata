@@ -155,6 +155,20 @@ function salesforce_mapping_form($form, &$form_state, SalesforceMapping $mapping
         '#value' => array($salesforce_record_type_default => $salesforce_record_type_default),
       );
     }
+    $sf_date_fields = _salesforce_mapping_get_salesforce_field_options($salesforce_object_type, $form_state, FALSE, 'datetime');
+    $date_default = _salesforce_mapping_get_default_value('pull_trigger_date', $form_state);
+    if (!$date_default) {
+      $date_default = 'LastModifiedDate';
+    }
+    $form['salesforce_object']['pull_trigger_date'] = array(
+      '#title' => t('Date field to trigger pull'),
+      '#id' => 'edit-trigger-date',
+      '#type' => 'select',
+      '#description' => t('Select a date field to base pull triggers on. (Default of "Last Modified Date" is usually appropriate).'),
+      '#required' => TRUE,
+      '#default_value' => $date_default,
+      '#options' => $sf_date_fields,
+    );
   }
 
   $form['salesforce_field_mappings_wrapper'] = array(
@@ -262,11 +276,7 @@ function salesforce_mapping_form($form, &$form_state, SalesforceMapping $mapping
       $row['direction'] = array(
         '#id' => 'edit-direction-' . $delta,
         '#type' => 'radios',
-        '#options' => array(
-          SALESFORCE_MAPPING_DIRECTION_DRUPAL_SF => t('Drupal to SF'),
-          SALESFORCE_MAPPING_DIRECTION_SF_DRUPAL => t('SF to Drupal'),
-          SALESFORCE_MAPPING_DIRECTION_SYNC => t('Sync'),
-        ),
+        '#options' => _salesforce_mapping_get_direction_options(),
         '#required' => TRUE,
         '#default_value' => _salesforce_mapping_get_default_value('direction', $form_state, $delta),
       );
@@ -314,6 +324,7 @@ function salesforce_mapping_form($form, &$form_state, SalesforceMapping $mapping
           '#theme' => 'token_tree',
           '#token_types' => array($token_type),
           '#global_types' => TRUE,
+          '#dialog' => TRUE,
         );
       }
     }
@@ -441,17 +452,17 @@ function salesforce_mapping_form_field_callback($form, $form_state) {
   $row = $form[$parents[0]][$parents[1]][$delta];
 
   // Render the row.  This requires rendering it as a table, then stripping away
-  // the table tags in order to leave only the HTML of a table row.  Finally,
+  // unwanted tags in order to leave only the HTML of a table row.  Finally,
   // all line breaks had to be removed in order to prevent the ajax replace from
   // wrapping the output in a div.
-  $table = array(
-    '#theme' => 'salesforce_fieldmap_form_table',
+  $table_row = array(
+    '#theme' => 'salesforce_mapping_form_table_row',
     '#tree' => TRUE,
     '#columns' => array_keys($form['salesforce_field_mappings_wrapper']['salesforce_field_mappings']['#header']),
-    0 => $row,
+    '#row' => $row,
   );
-  $rendered_table = render($table);
-  $rendered_row = str_replace(array("\r", "\n"), "", substr(substr($rendered_table, 17), 0, -18));
+  $rendered_table = render($table_row);
+  $rendered_row = str_replace(array("\r", "\n"), "", $rendered_table);
 
   $commands = array(
     // Replace the row.
@@ -467,6 +478,40 @@ function salesforce_mapping_form_field_callback($form, $form_state) {
     '#type' => 'ajax',
     '#commands' => $commands,
   );
+}
+
+/**
+ * Theme a single row for our ajax callback to inject into an existing table.
+ * @see salesforce_mapping_form_field_callback()
+ * @see theme_table()
+ */
+function theme_salesforce_mapping_form_table_row($variables) {
+  watchdog('row', "<pre>" . var_export($variables, 1));
+  $elements = $variables['elements'];
+
+  // Build the rows array.
+  $columns = !empty($elements['#columns']) ? $elements['#columns'] : array();
+  $row = !empty($elements['#row']) ? $elements['#row'] : array();
+  $attributes = !empty($row['#attributes']) ? $row['#attributes'] : array();
+
+  $output = '<tr' . drupal_attributes($attributes) . '>';
+
+  $data = array();
+  foreach ($columns as $column) {
+    if (isset($row[$column])) {
+      $cell = array(
+        'data' => drupal_render($row[$column]),
+      );
+      if (isset($row[$column]['#attributes'])) {
+        foreach ($row[$column]['#attributes'] as $key => $value) {
+          $cell[$key] = ($key == 'id') ? (is_array($value) ? array($value[0] . '-cell') : $value . '-cell') : $value;
+        }
+      }
+      $output .= _theme_table_cell($cell);
+    }
+  }
+  $output .= "</tr>";
+  return $output;  
 }
 
 /**
@@ -645,7 +690,8 @@ function salesforce_mapping_form_submit($form, &$form_state) {
         if (isset($field_map['salesforce_multiple_fields']) && $field_map['salesforce_multiple_fields']) {
           $sf_field = array();
           foreach ($mapping['salesforce_field'] as $field) {
-            $sf_field[] = reset(array_filter($sf_fields, salesforce_field_filter($field)));
+            $filtered = array_filter($sf_fields, salesforce_field_filter($field));
+            $sf_field[] = reset($filtered);
           }
         }
         else {
@@ -679,6 +725,7 @@ function salesforce_mapping_form_submit($form, &$form_state) {
     'description' => '',
     'field_mappings' => $mappings,
     'sync_triggers' => $sync_triggers,
+    'pull_trigger_date' => $values['pull_trigger_date'],
     'push_async' => $values['push_async'],
     'push_batch' => $values['push_batch'],
   );
@@ -853,7 +900,8 @@ function _salesforce_mapping_get_default_value($field, &$form_state, $delta = NU
 
       case 'direction':
         // Set default for direction, which cannot be NULL like the others.
-        $value = SALESFORCE_MAPPING_DIRECTION_SYNC;
+        $keys = array_keys(_salesforce_mapping_get_direction_options());
+        $value = end($keys);
         // No break for this case, should carry onto the default case.
       default:
         if (isset($form_state['input']['salesforce_field_mappings'][$delta][$field])) {
@@ -965,10 +1013,16 @@ function _salesforce_mapping_get_salesforce_object_type_options(&$form_state, $i
   else {
     $sfapi = salesforce_get_api();
     // Note that we're filtering SF object types to a reasonable subset.
-    $sfobjects = $sfapi->objects(array(
-      'updateable' => TRUE,
+    $sf_object_filter = array(
       'triggerable' => TRUE,
-    ));
+    );
+
+    //TODO: Handle this somewhere else to validate we can push to this object.
+    // if (module_exists('salesforce_push')) {
+    //   $sf_object_filter['updateable'] = TRUE;
+    // }
+    
+    $sfobjects = $sfapi->objects($sf_object_filter);
     $form_state['sfm_storage']['salesforce_object_type'] = $sfobjects;
   }
 
@@ -1057,7 +1111,7 @@ function _salesforce_mapping_get_salesforce_record_type_options($salesforce_obje
  *   An array of values keyed by machine name of the field with the label as
  *   the value, formatted to be appropriate as a value for #options.
  */
-function _salesforce_mapping_get_salesforce_field_options($salesforce_object_type, &$form_state, $include_select = TRUE) {
+function _salesforce_mapping_get_salesforce_field_options($salesforce_object_type, &$form_state, $include_select = TRUE, $type = NULL) {
   $sfobject = _salesforce_mapping_get_salesforce_object($salesforce_object_type, $form_state);
   $sf_fields = array();
   if (isset($sfobject['fields'])) {
@@ -1065,9 +1119,12 @@ function _salesforce_mapping_get_salesforce_field_options($salesforce_object_typ
       $sf_fields[''] = '- ' . t('Select') . ' -';
     }
     foreach ($sfobject['fields'] as $sf_field) {
-      $sf_fields[$sf_field['name']] = $sf_field['label'];
+      if ($type == NULL || $type == $sf_field['type']) {
+        $sf_fields[$sf_field['name']] = $sf_field['label'] . ' - (' . $sf_field['name'] . ')';
+      }
     }
   }
+  natcasesort($sf_fields);
   return $sf_fields;
 }
 
@@ -1099,18 +1156,49 @@ function _salesforce_mapping_get_drupal_type_options($include_select = TRUE) {
  * Return form options for available sync triggers.
  *
  * @return array
- *   Array of sync trigger options keyed by their machine name with their lable
+ *   Array of sync trigger options keyed by their machine name with their label
  *   as the value.
  */
 function _salesforce_mapping_get_sync_trigger_options() {
-  return array(
-    SALESFORCE_MAPPING_SYNC_DRUPAL_CREATE => t('Drupal entity create'),
-    SALESFORCE_MAPPING_SYNC_DRUPAL_UPDATE => t('Drupal entity update'),
-    SALESFORCE_MAPPING_SYNC_DRUPAL_DELETE => t('Drupal entity delete'),
-    SALESFORCE_MAPPING_SYNC_SF_CREATE => t('Salesforce object create'),
-    SALESFORCE_MAPPING_SYNC_SF_UPDATE => t('Salesforce object update'),
-    SALESFORCE_MAPPING_SYNC_SF_DELETE => t('Salesforce object delete'),
-  );
+  $options = array();
+  if (module_exists('salesforce_push')) {
+    $options += array(
+      SALESFORCE_MAPPING_SYNC_DRUPAL_CREATE => t('Drupal entity create'),
+      SALESFORCE_MAPPING_SYNC_DRUPAL_UPDATE => t('Drupal entity update'),
+      SALESFORCE_MAPPING_SYNC_DRUPAL_DELETE => t('Drupal entity delete'),
+    );
+  }
+  if (module_exists('salesforce_pull')) {
+    $options += array(
+      SALESFORCE_MAPPING_SYNC_SF_CREATE => t('Salesforce object create'),
+      SALESFORCE_MAPPING_SYNC_SF_UPDATE => t('Salesforce object update'),
+      SALESFORCE_MAPPING_SYNC_SF_DELETE => t('Salesforce object delete'),
+    );
+  }
+  return $options;
+}
+
+/**
+ * Return form options for available direction options.
+ *
+ * @return array
+ *   Array of direction options keyed by their machine name with their label
+ *   as the value.
+ */
+function _salesforce_mapping_get_direction_options() {
+  $options = array();
+  if (module_exists('salesforce_pull')) {
+    $options += array(
+      SALESFORCE_MAPPING_DIRECTION_SF_DRUPAL => t('SF to Drupal'),
+    );
+  }
+  if (module_exists('salesforce_push')) {
+    $options += array(
+      SALESFORCE_MAPPING_DIRECTION_DRUPAL_SF => t('Drupal to SF'),
+      SALESFORCE_MAPPING_DIRECTION_SYNC => t('Sync'),
+    );
+  }
+  return $options;
 }
 
 /**
@@ -1160,6 +1248,6 @@ function _salesforce_mapping_get_empty_field_map_row() {
     'drupal_field' => '',
     'salesforce_field' => '',
     'key' => '',
-    'direction' => SALESFORCE_MAPPING_DIRECTION_SYNC,
+    'direction' => end(array_keys(_salesforce_mapping_get_direction_options())),
   );
 }
