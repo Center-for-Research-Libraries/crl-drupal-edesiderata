@@ -498,6 +498,9 @@ class CrowdException extends Exception {
   public function __construct($message, $code = 0, $previous = NULL, $response = NULL) {
     parent::__construct($message, $code, $previous);
     $this->response = $response;
+    // The exception's error code should be tied to the specific http response
+    // code when possible.
+    $this->code = empty($this->response->code) ? $this->getCode() : $this->response->code;
   }
 
   /**
