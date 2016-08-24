@@ -51,6 +51,7 @@ function crl_provider_feat_facetapi_default_facet_settings() {
     'dependencies' => array(
       'bundle' => 'none',
       'bundle_selected' => array(),
+      'roles' => array(),
     ),
     'facet_mincount' => '1',
     'facet_missing' => '0',
@@ -59,6 +60,8 @@ function crl_provider_feat_facetapi_default_facet_settings() {
     'default_true' => '1',
     'facet_search_ids' => array(),
     'exclude' => 0,
+    'individual_parent' => '0',
+    'limit_active_items' => 0,
   );
   $export['search_api@title_search_index::field_provider_publisher_type'] = $facet;
 
@@ -85,6 +88,8 @@ function crl_provider_feat_facetapi_default_facet_settings() {
     'default_true' => '1',
     'facet_search_ids' => array(),
     'exclude' => 0,
+    'individual_parent' => '0',
+    'limit_active_items' => 0,
   );
   $export['search_api@title_search_index::field_provider_type'] = $facet;
 
@@ -148,25 +153,35 @@ function crl_provider_feat_facetapi_default_facet_settings() {
     'filters' => array(),
     'active_sorts' => array(
       'active' => 'active',
-      'count' => 'count',
       'display' => 'display',
+      'count' => 'count',
+      'indexed' => 0,
+      'crl_status_sort' => 0,
     ),
     'sort_weight' => array(
-      'active' => -50,
-      'count' => -49,
-      'display' => -48,
+      'active' => '-50',
+      'count' => '-48',
+      'display' => '-49',
+      'indexed' => '-47',
+      'crl_status_sort' => '-46',
     ),
     'sort_order' => array(
-      'active' => 3,
-      'count' => 3,
-      'display' => 4,
+      'active' => '3',
+      'count' => '3',
+      'display' => '4',
+      'indexed' => '4',
+      'crl_status_sort' => '4',
     ),
     'empty_behavior' => 'none',
-    'soft_limit' => 20,
+    'soft_limit' => '20',
     'nofollow' => 1,
     'show_expanded' => 0,
     'facet_more_text' => 'Show more',
     'facet_fewer_text' => 'Show fewer',
+    'empty_text' => array(
+      'value' => '',
+      'format' => 'full_html',
+    ),
   );
   $export['search_api@title_search_index:block:field_provider_publisher_type'] = $facet;
 
@@ -184,25 +199,35 @@ function crl_provider_feat_facetapi_default_facet_settings() {
     'filters' => array(),
     'active_sorts' => array(
       'active' => 'active',
-      'count' => 'count',
       'display' => 'display',
+      'count' => 'count',
+      'indexed' => 0,
+      'crl_status_sort' => 0,
     ),
     'sort_weight' => array(
-      'active' => -50,
-      'count' => -49,
-      'display' => -48,
+      'active' => '-50',
+      'count' => '-48',
+      'display' => '-49',
+      'indexed' => '-47',
+      'crl_status_sort' => '-46',
     ),
     'sort_order' => array(
-      'active' => 3,
-      'count' => 3,
-      'display' => 4,
+      'active' => '3',
+      'count' => '3',
+      'display' => '4',
+      'indexed' => '4',
+      'crl_status_sort' => '4',
     ),
     'empty_behavior' => 'none',
-    'soft_limit' => 20,
+    'soft_limit' => '20',
     'nofollow' => 1,
     'show_expanded' => 0,
     'facet_more_text' => 'Show more',
     'facet_fewer_text' => 'Show fewer',
+    'empty_text' => array(
+      'value' => '',
+      'format' => 'full_html',
+    ),
   );
   $export['search_api@title_search_index:block:field_provider_type'] = $facet;
 
