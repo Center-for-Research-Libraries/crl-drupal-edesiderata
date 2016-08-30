@@ -57,6 +57,9 @@ function crl_resource_feat_facetapi_default_facet_settings() {
     'query_type' => 'term',
     'default_true' => '1',
     'facet_search_ids' => array(),
+    'individual_parent' => 0,
+    'limit_active_items' => 0,
+    'exclude' => 0,
   );
   $export['search_api@title_search_index::field_provider'] = $facet;
 
@@ -83,6 +86,8 @@ function crl_resource_feat_facetapi_default_facet_settings() {
     'default_true' => '1',
     'facet_search_ids' => array(),
     'exclude' => 0,
+    'individual_parent' => '0',
+    'limit_active_items' => 0,
   );
   $export['search_api@title_search_index::field_resource_type'] = $facet;
 
@@ -108,6 +113,9 @@ function crl_resource_feat_facetapi_default_facet_settings() {
     'query_type' => 'term',
     'default_true' => '1',
     'facet_search_ids' => array(),
+    'individual_parent' => '0',
+    'limit_active_items' => 0,
+    'exclude' => 0,
   );
   $export['search_api@title_search_index::field_subject_area'] = $facet;
 
@@ -179,15 +187,15 @@ function crl_resource_feat_facetapi_default_facet_settings() {
     ),
     'sort_weight' => array(
       'active' => '-50',
-      'count' => '-49',
       'display' => '-48',
-      'indexed' => '0',
-      'crl_status_sort' => '0',
+      'count' => '-49',
+      'indexed' => '-47',
+      'crl_status_sort' => '-46',
     ),
     'sort_order' => array(
       'active' => '3',
-      'count' => '3',
       'display' => '4',
+      'count' => '3',
       'indexed' => '4',
       'crl_status_sort' => '4',
     ),
@@ -219,17 +227,17 @@ function crl_resource_feat_facetapi_default_facet_settings() {
     'filters' => array(),
     'active_sorts' => array(
       'active' => 'active',
-      'count' => 'count',
       'display' => 'display',
+      'count' => 'count',
       'indexed' => 0,
       'crl_status_sort' => 0,
     ),
     'sort_weight' => array(
       'active' => '-50',
-      'count' => '-49',
-      'display' => '-48',
-      'indexed' => '0',
-      'crl_status_sort' => '0',
+      'count' => '-48',
+      'display' => '-49',
+      'indexed' => '-47',
+      'crl_status_sort' => '-46',
     ),
     'sort_order' => array(
       'active' => '3',
@@ -266,17 +274,17 @@ function crl_resource_feat_facetapi_default_facet_settings() {
     'filters' => array(),
     'active_sorts' => array(
       'active' => 'active',
-      'count' => 'count',
       'display' => 'display',
+      'count' => 'count',
       'indexed' => 0,
       'crl_status_sort' => 0,
     ),
     'sort_weight' => array(
       'active' => '-50',
-      'count' => '-49',
-      'display' => '-48',
-      'indexed' => '0',
-      'crl_status_sort' => '0',
+      'count' => '-48',
+      'display' => '-49',
+      'indexed' => '-47',
+      'crl_status_sort' => '-46',
     ),
     'sort_order' => array(
       'active' => '3',
