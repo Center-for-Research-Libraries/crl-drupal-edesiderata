@@ -574,7 +574,7 @@ function salesforce_mapping_form_validate($form, &$form_state) {
   if (strlen($values['name']) > SALESFORCE_MAPPING_NAME_LENGTH) {
     form_set_error('name', t('Name must not exceed @max characters.', array('@max' => SALESFORCE_MAPPING_NAME_LENGTH)));
   }
-  if (!in_array($values['salesforce_record_type_default'], $values['salesforce_record_types_allowed'])) {
+  if (isset($values['salesforce_record_type_default']) && !in_array($values['salesforce_record_type_default'], $values['salesforce_record_types_allowed'])) {
     form_set_error('salesforce_record_type_default', t('Default record type must be one of the Allowed Record Types.'));
   }
 
@@ -1195,9 +1195,15 @@ function _salesforce_mapping_get_direction_options() {
   if (module_exists('salesforce_push')) {
     $options += array(
       SALESFORCE_MAPPING_DIRECTION_DRUPAL_SF => t('Drupal to SF'),
+    );
+  }
+
+  if (module_exists('salesforce_pull') && module_exists('salesforce_push')) {
+    $options += array(
       SALESFORCE_MAPPING_DIRECTION_SYNC => t('Sync'),
     );
   }
+
   return $options;
 }
 
