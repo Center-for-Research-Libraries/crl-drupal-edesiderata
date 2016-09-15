@@ -13,7 +13,7 @@ define('CRL_MESSAGE_OFFER_EXPIRE_NOTICE', 60*60*24*13);
 
 /**
  * Implements hook_theme_registry_alter.
- * 
+ *
  * Override some existing theme hooks via this module directly. Because these
  * hooks are already declared, we use hook_theme_registry_alter().
  */
@@ -68,7 +68,7 @@ function crl_message_feat_options() {
 
 /**
  * Implements hook_node_insert().
- * 
+ *
  * This triggers messages when content is created.
  */
 function crl_message_feat_node_insert($node) {
@@ -84,8 +84,16 @@ function crl_message_feat_node_insert($node) {
       $r_entity_wrapper = $wrappers['r_entity_wrapper'];
       switch ($node->type) {
         case 'activity':
-          // New activity entries are treated as updates to the related resouce.
-          if (crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_update') && crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_new')) {
+          // Check if the CRL status has been set immediatly upon creation.
+          if ($entity_wrapper->field_activity_crl_status->value()) {
+            $messages[] = array('type' => 'resource_status_update', 'fields' => array(
+              'field_resource_reference' => $r_entity_wrapper->value(),
+              'field_activity_crl_status' => $entity_wrapper->field_activity_crl_status->value(),
+            ));
+          }
+          // If there is no status change to report we treat new activity
+          // entries as updates to the related resouce.
+          elseif (crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_update') && crl_message_feat_resource_message_lull($r_entity_wrapper, 'resource_new')) {
             $messages[] = array('type' => 'resource_update', 'fields' => array('field_resource_reference' => $r_entity_wrapper->value()));
           }
           break;
@@ -111,7 +119,7 @@ function crl_message_feat_node_insert($node) {
 
 /**
  * Implements hook_node_update().
- * 
+ *
  * This triggers messages when content is updated.
  */
 function crl_message_feat_node_update($node) {
@@ -157,7 +165,7 @@ if (($node->type == 'resource' || $node->type == 'activity') && $node->status) {
           break;
       }
       // Check if an alert has been issued.
-      if (isset($entity_wrapper->field_update_alert) && 
+      if (isset($entity_wrapper->field_update_alert) &&
           $entity_wrapper->field_update_alert->value() != $entity_wrapper_orig->field_update_alert->value() &&
           $entity_wrapper->field_update_alert->value() > REQUEST_TIME) {
         $messages[] = array('type' => 'resource_new_alert', 'fields' => array('field_resource_reference' => $r_entity_wrapper->value()));
@@ -181,7 +189,7 @@ if (($node->type == 'resource' || $node->type == 'activity') && $node->status) {
 
 /**
  * Implements hook_comment_insert().
- * 
+ *
  * This triggers messages when users comment.
  */
 function crl_message_feat_comment_insert($comment) {
@@ -206,11 +214,11 @@ function crl_message_feat_comment_insert($comment) {
 
 /**
  * Implements hook_cron().
- * 
+ *
  * This triggers "about to expire" messages. Note that we use a lot of EFQ logic
  * here, which may look rather complicated. Though it might be possible to do
  * all this with some simpler direct SQL queries, that approach could cause
- * problems if schema's change in the future. 
+ * problems if schema's change in the future.
  */
 function crl_message_feat_cron() {
   // Get a list of "about to expire" messages that were recently sent already.
@@ -248,7 +256,7 @@ function crl_message_feat_cron() {
   // Restrict cases where a message was already sent.
   if (!empty($sent_messages_resource_ids)) {
     $query_expiring->fieldCondition('field_resource_reference', 'target_id', $sent_messages_resource_ids, 'NOT IN');
-  }    
+  }
   $expiring = $query_expiring->execute();
   // Load the activity so we can get the related resource entity details.
   $expiring_activity_ids = !empty($expiring['node']) ? array_keys($expiring['node']) : array();
@@ -271,7 +279,7 @@ function crl_message_feat_cron() {
 
 /**
  * Helper to process an array of messages.
- * 
+ *
  * @param array $messages
  *   A multidimentional array of message info. Each entry will contain an
  *   associative array with keys for the message type along with descriptive
@@ -300,7 +308,7 @@ function crl_message_feat_process_messages($messages) {
 /**
  * Helper to see if sufficient time has passed since a message of a certain
  * type was issued on a certain resource.
- * 
+ *
  * @param EntityDrupalWrapper $r_entity_wrapper
  *   A wrapped resource entity that the message relates to.
  * @param string $type
