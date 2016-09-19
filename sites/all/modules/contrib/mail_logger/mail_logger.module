@@ -92,15 +92,12 @@ function mail_logger_mail_alter(&$message) {
     if (!isset($logger['language'])) {
       $language = LANGUAGE_NONE;
     }
-    elseif (is_object($logger['language'])) {
-      $language = $logger['language']->language;
-    }
     else {
-      $language = $logger['language'];
+      $language = (is_object($logger['language']) ? $logger['language']->language : $logger['language']);
     }
-    if (empty($logger['to'])) {
-      $logger['to'] = t('* empty *');
-    }
+
+    $logger['to'] = (empty($logger['to']) ? t('* empty *') : $logger['to']);
+
     db_insert('mail_logger', array())
       ->fields(array(
         'mailkey'   => $logger['id'],
@@ -111,8 +108,10 @@ function mail_logger_mail_alter(&$message) {
         'headers'   => serialize($logger['headers']),
         'date_sent' => $logger['date_sent'],
         'language'  => $language,
+        'ipaddr'    => $_SERVER['REMOTE_ADDR'],
       ))
       ->execute();
+
     // Fire 'mail_logger' 'mail_sent' action.
     module_invoke_all('mail_logger', 'mail_sent', $message, user_load_by_mail($message['from']), user_load_by_mail($message['to']));
   }
