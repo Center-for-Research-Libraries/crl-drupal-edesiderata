@@ -1,0 +1,19 @@
+diff --git a/tablefield.module b/tablefield.module
+index 9ac208a..ffd084f 100644
+--- a/tablefield.module
++++ b/tablefield.module
+@@ -334,9 +334,12 @@ function tablefield_field_is_empty($item, $field) {
+   unset($item['tablefield']['caption']);
+   unset($item['tablefield']['rebuild']);
+   unset($item['tablefield']['import']);
++  unset($item['tablefield']['paste']);
+   if (!empty($item['tablefield'])) {
+-    foreach ($item['tablefield'] as $cell) {
+-      if (!empty($cell)) {
++    foreach ($item['tablefield'] as $key => $cell) {
++      // Keys denoting weight data any anything still iterateable should be
++      // ignored while checking for empty cell data.
++      if (strpos($key, 'weight') === FALSE && !is_array($cell) && !empty($cell)) {
+         return FALSE;
+       }
+     }
