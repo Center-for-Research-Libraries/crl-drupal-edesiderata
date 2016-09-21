@@ -422,8 +422,7 @@ function tablefield_field_formatter_view($entity_type, $entity, $field, $instanc
     }
 
     // Run the table through input filters.
-    if (isset($tabledata)) {
-      if (!empty($tabledata)) {
+    if (!empty($tabledata)) {
 
         if (!empty($settings['trim_trailing_rows'])) {
           $tabledata = tablefield_rtrim_rows($tabledata);
@@ -449,7 +448,6 @@ function tablefield_field_formatter_view($entity_type, $entity, $field, $instanc
             }
           }
         }
-      }
 
       // Check for an empty header, if so we don't want to theme it.
       $noheader = TRUE;
