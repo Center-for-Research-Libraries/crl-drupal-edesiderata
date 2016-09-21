@@ -1,0 +1,22 @@
+diff --git a/tablefield.module b/tablefield.module
+index 9ac208a..b2a2341 100644
+--- a/tablefield.module
++++ b/tablefield.module
+@@ -419,8 +419,7 @@ function tablefield_field_formatter_view($entity_type, $entity, $field, $instanc
+     }
+ 
+     // Run the table through input filters.
+-    if (isset($tabledata)) {
+-      if (!empty($tabledata)) {
++    if (!empty($tabledata)) {
+ 
+         if (!empty($settings['trim_trailing_rows'])) {
+           $tabledata = tablefield_rtrim_rows($tabledata);
+@@ -446,7 +445,6 @@ function tablefield_field_formatter_view($entity_type, $entity, $field, $instanc
+             }
+           }
+         }
+-      }
+ 
+       // Check for an empty header, if so we don't want to theme it.
+       $noheader = TRUE;
