@@ -137,13 +137,17 @@ function crl_mydes_feat_build_saved_search_form() {
       $block_saved_search = module_invoke('search_api_saved_searches', 'block_view', $saved_search->delta);
       // We only want the content part of the saved search block.
       $block_saved_search = $block_saved_search['content'];
+      // The collapsed state depends on query params.
+      $params = drupal_get_query_parameters();
       $output['saved_this_search'] = array(
         '#theme' => 'fieldset',
-        '#attributes' => array('class' => array('collapsible', 'collapsed')),
+        '#attributes' => array('class' => !empty($params['watchset']) ? array('collapsible') : array('collapsible', 'collapsed')),
         '#title' => t('Watch this Resource Set'),
         '#description' => '',
         '#children' => drupal_render($block_saved_search),
+        '#prefix' => '<div id="watchset"></div>'
       );
+      // Alterntive to drupal.collapse js show/hide logic:
       // drupal_add_js(drupal_get_path('module', 'crl_mydes_feat') .'/js/crl_mydes_feat.js', 'file');
       // $output .= theme('crl_mydes_feat_save_search_form', array('block' => $block));
     }
@@ -168,7 +172,9 @@ function crl_mydes_feat_form_alter(&$form, &$form_state, $form_id) {
       '#markup' => '<p>' . t('You can save this filter selection as a watchset and track future additions to these results. Manage your watchsets and email notification options in meDesiderata.') . '</p>',
       '#weight' => -10,
     );
-    $form['name']['#default_value'] = '';
+    // See if we should auto-fill the watchset name based on the query params.
+    $params = drupal_get_query_parameters();
+    $form['name']['#default_value'] = !empty($params['watchset']) ? check_plain($params['watchset']) : '';
     $form['name']['#description'] = t('Give this group a name by which it can be later accessed within meDesiderata');
     // If the form is presented outside of the normal user configuration pages
     // for the search api module, we manually control the notification interval.
