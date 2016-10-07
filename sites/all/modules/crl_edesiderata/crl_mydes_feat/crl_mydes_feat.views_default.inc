@@ -300,7 +300,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'views_data_export_xls';
   $handler->display->display_options['style_options']['provide_file'] = 1;
-  $handler->display->display_options['style_options']['filename'] = 'my_edesiderata_watchset_%1-value_%timestamp-full.xls';
+  $handler->display->display_options['style_options']['filename'] = 'my_edesiderata_watchset_%2-value_%timestamp-full.xls';
   $handler->display->display_options['style_options']['parent_sort'] = 0;
   $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
@@ -371,15 +371,6 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Global: Null */
-  $handler->display->display_options['arguments']['null']['id'] = 'null';
-  $handler->display->display_options['arguments']['null']['table'] = 'views';
-  $handler->display->display_options['arguments']['null']['field'] = 'null';
-  $handler->display->display_options['arguments']['null']['default_action'] = 'empty';
-  $handler->display->display_options['arguments']['null']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['null']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['null']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['null']['summary_options']['items_per_page'] = '25';
   /* Contextual filter: Content: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
@@ -390,6 +381,15 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['nid']['break_phrase'] = TRUE;
+  /* Contextual filter: Global: Null */
+  $handler->display->display_options['arguments']['null']['id'] = 'null';
+  $handler->display->display_options['arguments']['null']['table'] = 'views';
+  $handler->display->display_options['arguments']['null']['field'] = 'null';
+  $handler->display->display_options['arguments']['null']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['null']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['null']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['null']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['null']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['path'] = 'me/watchset/download';
   $handler->display->display_options['sitename_title'] = 0;
   $export['mydes_lists'] = $view;
@@ -544,30 +544,13 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['created']['field'] = 'created';
   $handler->display->display_options['fields']['created']['label'] = 'Watched since';
   $handler->display->display_options['fields']['created']['date_format'] = 'short';
-  /* Field: Saved search: Label */
-  $handler->display->display_options['fields']['name_1']['id'] = 'name_1';
-  $handler->display->display_options['fields']['name_1']['table'] = 'search_api_saved_search';
-  $handler->display->display_options['fields']['name_1']['field'] = 'name';
-  $handler->display->display_options['fields']['name_1']['label'] = '';
-  $handler->display->display_options['fields']['name_1']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['name_1']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['name_1']['link_to_page'] = 0;
-  /* Field: Saved search: Results */
-  $handler->display->display_options['fields']['results_1']['id'] = 'results_1';
-  $handler->display->display_options['fields']['results_1']['table'] = 'search_api_saved_search';
-  $handler->display->display_options['fields']['results_1']['field'] = 'results';
-  $handler->display->display_options['fields']['results_1']['label'] = '';
-  $handler->display->display_options['fields']['results_1']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['results_1']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['results_1']['list']['separator'] = ',';
-  $handler->display->display_options['fields']['results_1']['link_to_entity'] = 0;
   /* Field: Saved search: Edit link */
   $handler->display->display_options['fields']['edit_link']['id'] = 'edit_link';
   $handler->display->display_options['fields']['edit_link']['table'] = 'search_api_saved_search';
   $handler->display->display_options['fields']['edit_link']['field'] = 'edit_link';
   $handler->display->display_options['fields']['edit_link']['label'] = '';
   $handler->display->display_options['fields']['edit_link']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['edit_link']['alter']['text'] = '<a href="/me/watchset/download/[name_1]/[results_1]">Download</a>&nbsp;&nbsp;<a href="/search-api/saved-search/[id]/delete?destination=me">Delete</a>';
+  $handler->display->display_options['fields']['edit_link']['alter']['text'] = '<a href="/me/watchset/download/[id]">Download</a>&nbsp;&nbsp;<a href="/search-api/saved-search/[id]/delete?destination=me">Delete</a>';
   $handler->display->display_options['fields']['edit_link']['element_label_colon'] = FALSE;
   /* Filter criterion: User: Current */
   $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
