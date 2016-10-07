@@ -495,3 +495,27 @@ function crl_mydes_feat_preprocess_delta_blocks_page_title(&$vars) {
 function crl_mydes_feat_style_name($text) {
   return str_ireplace('meDesiderata', '<span class="m-edes">m</span>eDesiderata', $text);
 }
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function crl_mydes_feat_views_pre_view(&$view, &$display_id, &$args) {
+  // We don't have a good way to build a view of an individual saved search
+  // result set. A workround is to to manually execute the saved query and then
+  // pass the results into a view as a comma-separated argument (i.e. the query
+  // result is essentially an argument). It's a bit roundabout but it gets the
+  // job done. In mydes_lists-views_data_export_2 the first arg passed-in via
+  // the URL should be the saved search ID, but the view expects a list of nids,
+  // so calculate the result set here based on that passed ID.
+  if ($view->name == 'mydes_lists' && $display_id == 'views_data_export_2') {
+    if (!empty($args[0]) && is_numeric($args[0])) { // Check for single int
+      $saved_search = search_api_saved_search_load($args[0]);
+      if ($saved_search) {
+        $response = $saved_search->query()->execute();
+        $args[0] = !empty($response['results']) ? implode(',', array_keys($response['results'])) : $saved_search->results;
+        // Also pass-in the saved search name for usage within the view.
+        $args[1] = check_plain($saved_search->name);
+      }
+    }
+  }
+}
