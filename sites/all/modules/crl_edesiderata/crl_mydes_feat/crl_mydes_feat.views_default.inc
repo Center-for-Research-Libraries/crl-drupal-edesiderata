@@ -223,7 +223,8 @@ function crl_mydes_feat_views_default_views() {
 
   /* Display: Data export */
   $handler = $view->new_display('views_data_export', 'Data export', 'views_data_export_1');
-  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'views_data_export_xls';
   $handler->display->display_options['style_options']['provide_file'] = 1;
   $handler->display->display_options['style_options']['filename'] = 'my_edesiderata_watchlist_%timestamp-full.xls';
@@ -286,9 +287,111 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['field'] = 'crl_resource_master_update_timestamp';
   $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['label'] = 'Updated Date';
-  $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['date_format'] = 'medium_no_time';
+  $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['date_format'] = 'long_no_time';
+  $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['second_date_format'] = 'search_api_facetapi_YEAR';
   $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['link_to_entity'] = 0;
   $handler->display->display_options['path'] = 'me/watchlist/download';
+
+  /* Display: Data export - Saved Search */
+  $handler = $view->new_display('views_data_export', 'Data export - Saved Search', 'views_data_export_2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'My Watchset';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'views_data_export_xls';
+  $handler->display->display_options['style_options']['provide_file'] = 1;
+  $handler->display->display_options['style_options']['filename'] = 'my_edesiderata_watchset_%2-value_%timestamp-full.xls';
+  $handler->display->display_options['style_options']['parent_sort'] = 0;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['label'] = 'Resource';
+  $handler->display->display_options['fields']['title_1']['alter']['text'] = '[title] [crl_resource_alert]&nbsp;&nbsp;[timestamp]&nbsp;&nbsp;[timestamp_1]';
+  $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
+  /* Field: Content: Path */
+  $handler->display->display_options['fields']['path']['id'] = 'path';
+  $handler->display->display_options['fields']['path']['table'] = 'node';
+  $handler->display->display_options['fields']['path']['field'] = 'path';
+  $handler->display->display_options['fields']['path']['label'] = 'eDesiderata URL';
+  $handler->display->display_options['fields']['path']['absolute'] = TRUE;
+  /* Field: Field: Provider */
+  $handler->display->display_options['fields']['field_provider']['id'] = 'field_provider';
+  $handler->display->display_options['fields']['field_provider']['table'] = 'field_data_field_provider';
+  $handler->display->display_options['fields']['field_provider']['field'] = 'field_provider';
+  $handler->display->display_options['fields']['field_provider']['settings'] = array(
+    'link' => 0,
+  );
+  /* Field: Field: Subject Areas */
+  $handler->display->display_options['fields']['field_subject_area']['id'] = 'field_subject_area';
+  $handler->display->display_options['fields']['field_subject_area']['table'] = 'field_data_field_subject_area';
+  $handler->display->display_options['fields']['field_subject_area']['field'] = 'field_subject_area';
+  $handler->display->display_options['fields']['field_subject_area']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['field_subject_area']['delta_offset'] = '0';
+  /* Field: Field: Resource Types */
+  $handler->display->display_options['fields']['field_resource_type']['id'] = 'field_resource_type';
+  $handler->display->display_options['fields']['field_resource_type']['table'] = 'field_data_field_resource_type';
+  $handler->display->display_options['fields']['field_resource_type']['field'] = 'field_resource_type';
+  $handler->display->display_options['fields']['field_resource_type']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['fields']['field_resource_type']['delta_offset'] = '0';
+  /* Field: Content: Major Languages */
+  $handler->display->display_options['fields']['field_resource_languages']['id'] = 'field_resource_languages';
+  $handler->display->display_options['fields']['field_resource_languages']['table'] = 'field_data_field_resource_languages';
+  $handler->display->display_options['fields']['field_resource_languages']['field'] = 'field_resource_languages';
+  $handler->display->display_options['fields']['field_resource_languages']['delta_offset'] = '0';
+  /* Field: Content: CRL Resource Status Backreference */
+  $handler->display->display_options['fields']['crl_resource_status_backref']['id'] = 'crl_resource_status_backref';
+  $handler->display->display_options['fields']['crl_resource_status_backref']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['crl_resource_status_backref']['field'] = 'crl_resource_status_backref';
+  $handler->display->display_options['fields']['crl_resource_status_backref']['label'] = 'CRL Status';
+  $handler->display->display_options['fields']['crl_resource_status_backref']['link_to_entity'] = 0;
+  $handler->display->display_options['fields']['crl_resource_status_backref']['format_name'] = 1;
+  /* Field: Content: Post date */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'node';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['label'] = 'Created date';
+  $handler->display->display_options['fields']['created']['date_format'] = 'long_no_time';
+  $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
+  /* Field: Content: CRL Resource Master Update Timestamp */
+  $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['id'] = 'crl_resource_master_update_timestamp';
+  $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['field'] = 'crl_resource_master_update_timestamp';
+  $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['label'] = 'Updated Date';
+  $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['date_format'] = 'long_no_time';
+  $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['second_date_format'] = 'search_api_facetapi_YEAR';
+  $handler->display->display_options['fields']['crl_resource_master_update_timestamp']['link_to_entity'] = 0;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Nid */
+  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['table'] = 'node';
+  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['nid']['break_phrase'] = TRUE;
+  /* Contextual filter: Global: Null */
+  $handler->display->display_options['arguments']['null']['id'] = 'null';
+  $handler->display->display_options['arguments']['null']['table'] = 'views';
+  $handler->display->display_options['arguments']['null']['field'] = 'null';
+  $handler->display->display_options['arguments']['null']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['null']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['null']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['null']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['null']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['path'] = 'me/watchset/download';
+  $handler->display->display_options['sitename_title'] = 0;
   $export['mydes_lists'] = $view;
 
   $view = new view();
@@ -447,7 +550,7 @@ function crl_mydes_feat_views_default_views() {
   $handler->display->display_options['fields']['edit_link']['field'] = 'edit_link';
   $handler->display->display_options['fields']['edit_link']['label'] = '';
   $handler->display->display_options['fields']['edit_link']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['edit_link']['alter']['text'] = '<a href="/search-api/saved-search/[id]/delete?destination=me">Delete</a>';
+  $handler->display->display_options['fields']['edit_link']['alter']['text'] = '<a href="/me/watchset/download/[id]">Download</a>&nbsp;&nbsp;<a href="/search-api/saved-search/[id]/delete?destination=me">Delete</a>';
   $handler->display->display_options['fields']['edit_link']['element_label_colon'] = FALSE;
   /* Filter criterion: User: Current */
   $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
