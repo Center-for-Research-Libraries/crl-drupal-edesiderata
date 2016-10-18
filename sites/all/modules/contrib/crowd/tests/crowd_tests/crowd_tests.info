@@ -5,9 +5,9 @@ dependencies[] = crowd
 hidden = TRUE
 
 
-; Information added by Drupal.org packaging script on 2016-06-20
-version = "7.x-2.1+3-dev"
+; Information added by Drupal.org packaging script on 2016-10-13
+version = "7.x-2.2"
 core = "7.x"
 project = "crowd"
-datestamp = "1466455443"
+datestamp = "1476379740"
 
