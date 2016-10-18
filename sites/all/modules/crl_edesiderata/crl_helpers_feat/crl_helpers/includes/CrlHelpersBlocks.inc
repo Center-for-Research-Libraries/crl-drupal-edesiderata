@@ -26,7 +26,7 @@ class CrlHelpersBlocks {
       // Get the most recent breadcrumb.
       $breadcrumb = drupal_get_breadcrumb();
       // Drop the "home" value for the breadcrumb.
-      array_shift($breadcrumb);
+      $breadcrumb = array_splice($breadcrumb, 2);
       // Add some extras that may related to the filtered set. These currently
       // only apply to resource lists.
       $extra = array();

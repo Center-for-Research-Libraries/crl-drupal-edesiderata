@@ -459,9 +459,15 @@ ul.facetapi-facet-crl-glossary-value li a.facetapi-active {
   padding: 10px;
   background-color: #1a1c35;
   color: #fff;
+  font-weight: bold;
+}
+#block-crl-helpers-crl-helpers-facet-breadcrumb #facet-breadcrumb .facet-breadcrumb-label {
+  font-weight: normal;
+  font-size: smaller;
 }
 #block-crl-helpers-crl-helpers-facet-breadcrumb #facet-breadcrumb a {
   color: #fff;
+  text-decoration: none;
 }
 #block-crl-helpers-crl-helpers-facet-breadcrumb #facet-breadcrumb ul {
   margin: 0;
@@ -472,17 +478,8 @@ ul.facetapi-facet-crl-glossary-value li a.facetapi-active {
   padding-bottom: 0px;
 }
 #block-crl-helpers-crl-helpers-facet-breadcrumb .extras fieldset, .facet-breadcrumb-reset {
-  //float: none;
-  //clear: both;
   margin: 0 0 15px 0;
   display: block;
-}
-#block-crl-helpers-crl-helpers-facet-breadcrumb .extras fieldset.collapsed,
-.facet-breadcrumb-reset {
-  //float: left;
-  //clear: none;
-  //margin: 0 20px 20px 0;
-  //display: inline-block;
 }
 #block-crl-helpers-crl-helpers-facet-breadcrumb .fieldset-wrapper {
   margin: 15px 0 0 20px;
@@ -501,6 +498,9 @@ ul.facetapi-facet-crl-glossary-value li a.facetapi-active {
   margin-right: 8px;
   overflow: hidden;
   white-space: nowrap;
+}
+#search-api-saved-searches-save-form-wrapper input#edit-name {
+  width: 50%;
 }
 
 /* Tweaks for back-to-index link block */

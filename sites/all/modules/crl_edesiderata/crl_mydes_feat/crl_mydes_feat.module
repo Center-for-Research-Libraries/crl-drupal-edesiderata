@@ -172,9 +172,10 @@ function crl_mydes_feat_form_alter(&$form, &$form_state, $form_id) {
       '#markup' => '<p>' . t('You can save this filter selection as a watchset and track future additions to these results. Manage your watchsets and email notification options in meDesiderata.') . '</p>',
       '#weight' => -10,
     );
-    // See if we should auto-fill the watchset name based on the query params.
-    $params = drupal_get_query_parameters();
-    $form['name']['#default_value'] = !empty($params['watchset']) ? check_plain($params['watchset']) : '';
+    // Auto-fill the default watchset name based on the breadcrumb.
+    $breadcrumb = drupal_get_breadcrumb();
+    $breadcrumb = array_map('strip_tags', array_splice($breadcrumb, 2));
+    $form['name']['#default_value'] = substr(implode(', ', $breadcrumb), 0, 49);
     $form['name']['#description'] = t('Give this group a name by which it can be later accessed within meDesiderata');
     // If the form is presented outside of the normal user configuration pages
     // for the search api module, we manually control the notification interval.
