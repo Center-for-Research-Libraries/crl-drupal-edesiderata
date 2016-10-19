@@ -72,11 +72,11 @@ function crl_helpers_feat_strongarm() {
       'Do you really want to delete this saved search?' => 'Do you really want to delete this watchset?',
       'Once a day in an email digest' => 'Daily email digest',
       'Once a week in an email digest' => 'Weekly email digest',
+      'Show End Date' => 'Use End Date',
       'Submitted by !username on !datetime' => '!username on !datetime',
       'The saved search was successfully deleted.' => 'The watchset was successfully deleted.',
       'Your saved search was successfully created.' => 'Your watchset was successfully created in meDesiderata.',
-      'Your saved search was successfully created. You will receive e-mail notifications for new results in the future.' => 'Your watchset was successfully created in meDesiderata. You will receive e-mail notifications for new results in the future.',
-      'Show End Date' => 'Use End Date',
+      'Your saved search was successfully created. You will receive e-mail notifications for new results in the future.' => 'Your watchset was successfully created in <a href="/me">meDesiderata</a>. You will receive e-mail notifications for new results in the future.',
     ),
   );
   $export['locale_custom_strings_en'] = $strongarm;
