@@ -189,6 +189,9 @@ function crl_mydes_feat_form_alter(&$form, &$form_state, $form_id) {
       $form['notify_interval']['#description'] = t('Select how frequently you would like to be notifed via email when resources are <em>added</em> that match this filter criteria');
     }
     $form['submit']['#value'] = t('Watch');
+    // If our watchset query param is set we want to be sure it does not get
+    // saved as part of the watchset itself
+    unset($form_state['page']['query']['watchset']);
   }
 }
 
