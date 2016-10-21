@@ -1144,7 +1144,10 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'default' => array(
         'label' => 'above',
         'module' => 'tablefield',
-        'settings' => array(),
+        'settings' => array(
+          'trim_trailing_cols' => FALSE,
+          'trim_trailing_rows' => FALSE,
+        ),
         'type' => 'tablefield_default',
         'weight' => 907,
       ),
@@ -1388,7 +1391,10 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'default' => array(
         'label' => 'above',
         'module' => 'tablefield',
-        'settings' => array(),
+        'settings' => array(
+          'trim_trailing_cols' => FALSE,
+          'trim_trailing_rows' => FALSE,
+        ),
         'type' => 'tablefield_default',
         'weight' => 1006,
       ),
@@ -1494,7 +1500,10 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'default' => array(
         'label' => 'above',
         'module' => 'tablefield',
-        'settings' => array(),
+        'settings' => array(
+          'trim_trailing_cols' => FALSE,
+          'trim_trailing_rows' => FALSE,
+        ),
         'type' => 'tablefield_default',
         'weight' => 1004,
       ),
@@ -1736,7 +1745,10 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'default' => array(
         'label' => 'above',
         'module' => 'tablefield',
-        'settings' => array(),
+        'settings' => array(
+          'trim_trailing_cols' => FALSE,
+          'trim_trailing_rows' => FALSE,
+        ),
         'type' => 'tablefield_default',
         'weight' => 1005,
       ),
@@ -1842,7 +1854,10 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'default' => array(
         'label' => 'above',
         'module' => 'tablefield',
-        'settings' => array(),
+        'settings' => array(
+          'trim_trailing_cols' => FALSE,
+          'trim_trailing_rows' => FALSE,
+        ),
         'type' => 'tablefield_default',
         'weight' => 6,
       ),
