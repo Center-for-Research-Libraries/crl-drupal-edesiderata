@@ -875,9 +875,9 @@ function crl_pp_resource_feat_views_default_views() {
 </div>
 <p>CRL\'s <a href="http://www.crl.edu/collections/collection-building/cooperative-resource-development/pp-program">Purchase Proposal program</a> is an annual cooperative collection development activity. Member libraries nominate and vote for CRL to purchase microform and hard copy collections that may be too costly or esoteric for individual institutions to acquire. CRL collections are developed by and for the member community, with input and participation of all voting members.</p>
 
-<p><a href="https://www.crl.edu/sites/default/files/attachments/pages/FY16_PP_Ballot_Description.pdf">Click here</a> for the pdf containing ballot information.</p>
+<p><a href="https://www.crl.edu/sites/default/files/attachments/pages/FY17_PP_Ballot_Description.pdf">Click here</a> for the pdf containing ballot information.</p>
 
-<p><strong>Voting is currently closed.</strong></p>
+<p><strong>Voting is open until November 18th, 2016.</strong></p>
 
 <div id="ballot"></div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
@@ -1155,7 +1155,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['field_fy_tid']['table'] = 'field_data_field_fy';
   $handler->display->display_options['filters']['field_fy_tid']['field'] = 'field_fy_tid';
   $handler->display->display_options['filters']['field_fy_tid']['value'] = array(
-    156 => '156',
+    157 => '157',
   );
   $handler->display->display_options['filters']['field_fy_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_fy_tid']['expose']['operator_id'] = 'field_fy_tid_op';
@@ -1173,7 +1173,6 @@ function crl_pp_resource_feat_views_default_views() {
     8 => 0,
     9 => 0,
     10 => 0,
-    11 => 0,
     12 => 0,
     13 => 0,
     14 => 0,
@@ -2024,7 +2023,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['field_fy_tid']['table'] = 'field_data_field_fy';
   $handler->display->display_options['filters']['field_fy_tid']['field'] = 'field_fy_tid';
   $handler->display->display_options['filters']['field_fy_tid']['value'] = array(
-    156 => '156',
+    157 => '157',
   );
   $handler->display->display_options['filters']['field_fy_tid']['group'] = 1;
   $handler->display->display_options['filters']['field_fy_tid']['exposed'] = TRUE;
@@ -2043,7 +2042,6 @@ function crl_pp_resource_feat_views_default_views() {
     8 => 0,
     9 => 0,
     10 => 0,
-    11 => 0,
     12 => 0,
     13 => 0,
     14 => 0,
