@@ -8,7 +8,7 @@
  * Implements hook_field_group_info().
  */
 function crl_activity_feat_field_group_info() {
-  $export = array();
+  $field_groups = array();
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -35,7 +35,7 @@ function crl_activity_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_activity_documents|node|activity|default'] = $field_group;
+  $field_groups['group_activity_documents|node|activity|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -63,7 +63,7 @@ function crl_activity_feat_field_group_info() {
       ),
     ),
   );
-  $export['group_activity_documents|node|activity|embedded'] = $field_group;
+  $field_groups['group_activity_documents|node|activity|embedded'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -101,7 +101,7 @@ function crl_activity_feat_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_activity_offer|node|activity|default'] = $field_group;
+  $field_groups['group_activity_offer|node|activity|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -140,7 +140,7 @@ function crl_activity_feat_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_activity_offer|node|activity|embedded'] = $field_group;
+  $field_groups['group_activity_offer|node|activity|embedded'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -177,7 +177,7 @@ function crl_activity_feat_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_activity_offer|node|activity|form'] = $field_group;
+  $field_groups['group_activity_offer|node|activity|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -211,7 +211,7 @@ function crl_activity_feat_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_activity_trial|node|activity|default'] = $field_group;
+  $field_groups['group_activity_trial|node|activity|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -245,7 +245,7 @@ function crl_activity_feat_field_group_info() {
       'formatter' => 'open',
     ),
   );
-  $export['group_activity_trial|node|activity|embedded'] = $field_group;
+  $field_groups['group_activity_trial|node|activity|embedded'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -275,10 +275,10 @@ function crl_activity_feat_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_activity_trial|node|activity|form'] = $field_group;
+  $field_groups['group_activity_trial|node|activity|form'] = $field_group;
 
   $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->disabled = TRUE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
   $field_group->identifier = 'group_system_fields|node|activity|form';
   $field_group->group_name = 'group_system_fields';
@@ -309,10 +309,10 @@ function crl_activity_feat_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_system_fields|node|activity|form'] = $field_group;
+  $field_groups['group_system_fields|node|activity|form'] = $field_group;
 
   $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->disabled = TRUE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
   $field_group->identifier = 'group_update_alerts|node|activity|form';
   $field_group->group_name = 'group_update_alerts';
@@ -343,7 +343,15 @@ function crl_activity_feat_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_update_alerts|node|activity|form'] = $field_group;
+  $field_groups['group_update_alerts|node|activity|form'] = $field_group;
 
-  return $export;
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Documents');
+  t('Offer Information');
+  t('System Fields');
+  t('Trial Information');
+  t('Update Alert');
+
+  return $field_groups;
 }

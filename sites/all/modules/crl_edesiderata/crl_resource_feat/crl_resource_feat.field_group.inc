@@ -370,7 +370,7 @@ function crl_resource_feat_field_group_info() {
   $field_groups['group_history|node|resource|default'] = $field_group;
 
   $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->disabled = TRUE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
   $field_group->identifier = 'group_jisc_data|node|resource|default';
   $field_group->group_name = 'group_jisc_data';
@@ -398,7 +398,7 @@ function crl_resource_feat_field_group_info() {
   $field_groups['group_jisc_data|node|resource|default'] = $field_group;
 
   $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->disabled = TRUE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
   $field_group->identifier = 'group_jisc_data|node|resource|form';
   $field_group->group_name = 'group_jisc_data';
@@ -437,7 +437,7 @@ function crl_resource_feat_field_group_info() {
   $field_groups['group_jisc_data|node|resource|form'] = $field_group;
 
   $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->disabled = TRUE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
   $field_group->identifier = 'group_jisc_standards_compliance|node|resource|default';
   $field_group->group_name = 'group_jisc_standards_compliance';
@@ -474,7 +474,7 @@ function crl_resource_feat_field_group_info() {
   $field_groups['group_jisc_standards_compliance|node|resource|default'] = $field_group;
 
   $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->disabled = TRUE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
   $field_group->identifier = 'group_jisc_standards_compliance|node|resource|form';
   $field_group->group_name = 'group_jisc_standards_compliance';
