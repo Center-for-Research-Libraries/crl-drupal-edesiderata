@@ -263,7 +263,6 @@ function crl_helpers_feat_strongarm() {
       'comment_display_mode' => '1',
       'roles' => array(
         3 => '3',
-        7 => '7',
         13 => 0,
         14 => 0,
         15 => 0,
@@ -284,6 +283,7 @@ function crl_helpers_feat_strongarm() {
         9 => 0,
         6 => 0,
         10 => 0,
+        7 => 0,
       ),
       'allow_voting_by_author' => 1,
       'noperm_behaviour' => '3',
@@ -327,7 +327,6 @@ function crl_helpers_feat_strongarm() {
       'comment_display_mode' => '1',
       'roles' => array(
         3 => '3',
-        7 => '7',
         13 => 0,
         14 => 0,
         15 => 0,
@@ -348,6 +347,7 @@ function crl_helpers_feat_strongarm() {
         9 => 0,
         6 => 0,
         10 => 0,
+        7 => 0,
       ),
       'allow_voting_by_author' => 1,
       'noperm_behaviour' => '3',
@@ -441,7 +441,7 @@ function crl_helpers_feat_strongarm() {
     'default_logo' => 1,
     'logo_path' => '',
     'logo_upload' => '',
-    'default_favicon' => 0,
+    'default_favicon' => 1,
     'favicon_path' => 'public://crl_favicon.ico',
     'favicon_upload' => '',
     'alpha_grid' => 'alpha_default',
@@ -534,7 +534,6 @@ function crl_helpers_feat_strongarm() {
       8 => 0,
       9 => 0,
       10 => 0,
-      11 => 0,
       12 => 0,
       13 => 0,
       14 => 0,
@@ -872,7 +871,6 @@ function crl_helpers_feat_strongarm() {
     'magic_library_head' => 0,
     'magic_experimental_js' => 0,
     'magic_js_excludes' => '',
-    'favicon_mimetype' => 'image/vnd.microsoft.icon',
   );
   $export['theme_crl_settings'] = $strongarm;
 
