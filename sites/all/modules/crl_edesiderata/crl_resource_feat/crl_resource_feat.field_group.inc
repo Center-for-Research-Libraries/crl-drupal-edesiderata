@@ -370,147 +370,6 @@ function crl_resource_feat_field_group_info() {
   $field_groups['group_history|node|resource|default'] = $field_group;
 
   $field_group = new stdClass();
-  $field_group->disabled = TRUE; /* Edit this to true to make a default field_group disabled initially */
-  $field_group->api_version = 1;
-  $field_group->identifier = 'group_jisc_data|node|resource|default';
-  $field_group->group_name = 'group_jisc_data';
-  $field_group->entity_type = 'node';
-  $field_group->bundle = 'resource';
-  $field_group->mode = 'default';
-  $field_group->parent_name = '';
-  $field_group->data = array(
-    'label' => 'Jisc Data',
-    'weight' => '17',
-    'children' => array(
-      0 => 'field_resource_jisc_overview',
-      1 => 'field_resource_jisc_description',
-      2 => 'group_jisc_standards_compliance',
-    ),
-    'format_type' => 'hidden',
-    'format_settings' => array(
-      'formatter' => 'closed',
-      'instance_settings' => array(
-        'description' => '',
-        'classes' => ' group-jisc-data field-group-hidden',
-      ),
-    ),
-  );
-  $field_groups['group_jisc_data|node|resource|default'] = $field_group;
-
-  $field_group = new stdClass();
-  $field_group->disabled = TRUE; /* Edit this to true to make a default field_group disabled initially */
-  $field_group->api_version = 1;
-  $field_group->identifier = 'group_jisc_data|node|resource|form';
-  $field_group->group_name = 'group_jisc_data';
-  $field_group->entity_type = 'node';
-  $field_group->bundle = 'resource';
-  $field_group->mode = 'form';
-  $field_group->parent_name = '';
-  $field_group->data = array(
-    'label' => 'Jisc Data',
-    'weight' => '9',
-    'children' => array(
-      0 => 'field_jisc_id',
-      1 => 'field_jisc_guid',
-      2 => 'field_resource_jisc_overview',
-      3 => 'field_resource_jisc_description',
-      4 => 'field_jisc_import_batch',
-      5 => 'field_resourc_free_specs',
-      6 => 'group_jisc_standards_compliance',
-    ),
-    'format_type' => 'div',
-    'format_settings' => array(
-      'label' => 'Jisc Data',
-      'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => ' group-jisc-data field-group-div',
-        'description' => '',
-        'show_label' => '1',
-        'label_element' => 'h3',
-        'effect' => 'none',
-        'speed' => 'fast',
-        'id' => 'node_resource_form_group_jisc_data',
-      ),
-      'formatter' => 'collapsed',
-    ),
-  );
-  $field_groups['group_jisc_data|node|resource|form'] = $field_group;
-
-  $field_group = new stdClass();
-  $field_group->disabled = TRUE; /* Edit this to true to make a default field_group disabled initially */
-  $field_group->api_version = 1;
-  $field_group->identifier = 'group_jisc_standards_compliance|node|resource|default';
-  $field_group->group_name = 'group_jisc_standards_compliance';
-  $field_group->entity_type = 'node';
-  $field_group->bundle = 'resource';
-  $field_group->mode = 'default';
-  $field_group->parent_name = 'group_jisc_data';
-  $field_group->data = array(
-    'label' => 'Standards Compliance',
-    'weight' => '41',
-    'children' => array(
-      0 => 'field_resource_jisc_federated',
-      1 => 'field_resource_jisc_full_text',
-      2 => 'field_resource_jisc_marc',
-      3 => 'field_resource_jisc_search',
-      4 => 'field_resource_jisc_post_search',
-      5 => 'field_resource_jisc_usage_stat',
-      6 => 'field_resource_jisc_auth',
-      7 => 'field_resource_jisc_access',
-      8 => 'field_resource_jisc_person',
-      9 => 'field_resource_jisc_sc_notes',
-      10 => 'field_resource_jisc_metadata_std',
-    ),
-    'format_type' => 'hidden',
-    'format_settings' => array(
-      'label' => 'Standards Compliance',
-      'instance_settings' => array(
-        'classes' => ' group-jisc-standards-compliance field-group-hidden',
-        'description' => '',
-      ),
-      'formatter' => 'collapsible',
-    ),
-  );
-  $field_groups['group_jisc_standards_compliance|node|resource|default'] = $field_group;
-
-  $field_group = new stdClass();
-  $field_group->disabled = TRUE; /* Edit this to true to make a default field_group disabled initially */
-  $field_group->api_version = 1;
-  $field_group->identifier = 'group_jisc_standards_compliance|node|resource|form';
-  $field_group->group_name = 'group_jisc_standards_compliance';
-  $field_group->entity_type = 'node';
-  $field_group->bundle = 'resource';
-  $field_group->mode = 'form';
-  $field_group->parent_name = 'group_jisc_data';
-  $field_group->data = array(
-    'label' => 'Standards Compliance',
-    'weight' => '12',
-    'children' => array(
-      0 => 'field_resource_jisc_federated',
-      1 => 'field_resource_jisc_full_text',
-      2 => 'field_resource_jisc_marc',
-      3 => 'field_resource_jisc_search',
-      4 => 'field_resource_jisc_post_search',
-      5 => 'field_resource_jisc_usage_stat',
-      6 => 'field_resource_jisc_auth',
-      7 => 'field_resource_jisc_access',
-      8 => 'field_resource_jisc_person',
-      9 => 'field_resource_jisc_sc_notes',
-      10 => 'field_resource_jisc_metadata_std',
-    ),
-    'format_type' => 'fieldset',
-    'format_settings' => array(
-      'formatter' => 'collapsible',
-      'instance_settings' => array(
-        'description' => '',
-        'classes' => ' group-jisc-standards-compliance field-group-fieldset',
-        'required_fields' => 1,
-      ),
-    ),
-  );
-  $field_groups['group_jisc_standards_compliance|node|resource|form'] = $field_group;
-
-  $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
   $field_group->identifier = 'group_official|entityform|resource_suggestion|form';
@@ -880,13 +739,11 @@ function crl_resource_feat_field_group_info() {
   t('Community Ratings');
   t('Details');
   t('Entry Processing');
-  t('Jisc Data');
   t('Offical Use Only');
   t('Overview');
   t('Previous Offer History');
   t('Sources');
   t('Specifications');
-  t('Standards Compliance');
   t('System Fields');
   t('Tabbed');
   t('Temporary Data from Old Reviews');
