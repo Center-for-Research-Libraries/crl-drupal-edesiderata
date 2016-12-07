@@ -277,81 +277,11 @@ function crl_activity_feat_field_group_info() {
   );
   $field_groups['group_activity_trial|node|activity|form'] = $field_group;
 
-  $field_group = new stdClass();
-  $field_group->disabled = TRUE; /* Edit this to true to make a default field_group disabled initially */
-  $field_group->api_version = 1;
-  $field_group->identifier = 'group_system_fields|node|activity|form';
-  $field_group->group_name = 'group_system_fields';
-  $field_group->entity_type = 'node';
-  $field_group->bundle = 'activity';
-  $field_group->mode = 'form';
-  $field_group->parent_name = '';
-  $field_group->data = array(
-    'label' => 'System Fields',
-    'weight' => '11',
-    'children' => array(
-      0 => 'field_trial_access_info',
-      1 => 'field_access_trial_url',
-    ),
-    'format_type' => 'div',
-    'format_settings' => array(
-      'label' => 'System Fields',
-      'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => ' group-system-fields field-group-div',
-        'description' => '',
-        'show_label' => '1',
-        'label_element' => 'h3',
-        'effect' => 'none',
-        'speed' => 'fast',
-        'id' => 'node_activity_form_group_system_fields',
-      ),
-      'formatter' => 'collapsed',
-    ),
-  );
-  $field_groups['group_system_fields|node|activity|form'] = $field_group;
-
-  $field_group = new stdClass();
-  $field_group->disabled = TRUE; /* Edit this to true to make a default field_group disabled initially */
-  $field_group->api_version = 1;
-  $field_group->identifier = 'group_update_alerts|node|activity|form';
-  $field_group->group_name = 'group_update_alerts';
-  $field_group->entity_type = 'node';
-  $field_group->bundle = 'activity';
-  $field_group->mode = 'form';
-  $field_group->parent_name = '';
-  $field_group->data = array(
-    'label' => 'Update Alert',
-    'weight' => '13',
-    'children' => array(
-      0 => 'field_update_alert',
-      1 => 'field_update_alert_message',
-    ),
-    'format_type' => 'div',
-    'format_settings' => array(
-      'label' => 'Update Alert',
-      'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => ' group-update-alerts field-group-div',
-        'description' => '',
-        'show_label' => '1',
-        'label_element' => 'h3',
-        'effect' => 'none',
-        'speed' => 'fast',
-        'id' => 'node_activity_form_group_update_alerts',
-      ),
-      'formatter' => 'collapsed',
-    ),
-  );
-  $field_groups['group_update_alerts|node|activity|form'] = $field_group;
-
   // Translatables
   // Included for use with string extractors like potx.
   t('Documents');
   t('Offer Information');
-  t('System Fields');
   t('Trial Information');
-  t('Update Alert');
 
   return $field_groups;
 }
