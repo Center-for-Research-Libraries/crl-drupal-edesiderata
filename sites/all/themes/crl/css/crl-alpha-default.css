@@ -5,7 +5,7 @@
    Header Styles - General
    -------------------------------------------------------------------------- */
 
-#section-header { 
+#section-header {
   height: 250px;
 }
 #header-logo {
@@ -181,4 +181,9 @@ aside#activity-documents {
   margin: 0px 0px 10px 10px;
   width: 40%;
   border: 1px solid #ddd;
+}
+
+/* Adjust alignment of active facet display */
+#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-facet {
+  clear: none;
 }

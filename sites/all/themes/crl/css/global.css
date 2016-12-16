@@ -452,43 +452,50 @@ ul.facetapi-facet-crl-glossary-value li a.facetapi-active {
 /* Tweaks for custom facet breadcrumb */
 #block-crl-helpers-crl-helpers-facet-breadcrumb {
   background: url('../images/content.png') 0 0 repeat;
-  border: 1px solid #1a1c35;
+  border: 1px solid #b7b7b7;
   margin: 20px 0px;
-}
-#block-crl-helpers-crl-helpers-facet-breadcrumb #facet-breadcrumb {
   padding: 10px;
-  background-color: #1a1c35;
-  color: #fff;
-  font-weight: bold;
 }
-#block-crl-helpers-crl-helpers-facet-breadcrumb #facet-breadcrumb .facet-breadcrumb-label {
-  font-weight: normal;
-  font-size: smaller;
-}
-#block-crl-helpers-crl-helpers-facet-breadcrumb #facet-breadcrumb a {
-  color: #fff;
+#block-crl-helpers-crl-helpers-facet-breadcrumb a {
   text-decoration: none;
 }
-#block-crl-helpers-crl-helpers-facet-breadcrumb #facet-breadcrumb ul {
-  margin: 0;
-  padding: 0;
+#block-crl-helpers-crl-helpers-facet-breadcrumb .active-facet-wrapper {
+  display: inline-block;
+  margin: 0.2em 1em 0.2em 0;
+  padding: 5px 8px;
+  background-color: #eee;
 }
-#block-crl-helpers-crl-helpers-facet-breadcrumb .extras {
-  padding: 18px;
-  padding-bottom: 0px;
+#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-facet {
+  float: left;
+  clear: left;
 }
-#block-crl-helpers-crl-helpers-facet-breadcrumb .extras fieldset, .facet-breadcrumb-reset {
-  margin: 0 0 15px 0;
+#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-misc {
+  font-weight: bold;
+  float: left;
+  background-color: transparent;
+}
+#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-reset {
+  background-color: transparent;
+  float: right;
+  margin-right: 0;
+}
+#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-facets {
   display: block;
 }
-#block-crl-helpers-crl-helpers-facet-breadcrumb .fieldset-wrapper {
+#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-extras {
+  display: block;
+  margin-top: 10px;
+  padding: 20px 10px 10px 0px;
+  border-top: 1px solid #acbfb1;
+}
+#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-extras fieldset {
+  margin: 0;
+}
+#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-extras .fieldset-wrapper {
   margin: 15px 0 0 20px;
 }
-#block-crl-helpers-crl-helpers-facet-breadcrumb .fieldset-legend {
+#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-extras .fieldset-legend {
   font-weight: normal;
-}
-#block-crl-helpers-crl-helpers-facet-breadcrumb ul.breadcrumb {
-  float: left;
 }
 .facet-breadcrumb-reset-icon {
   background: transparent url("../images/sprites.png?v=5") no-repeat scroll -50px -300px;

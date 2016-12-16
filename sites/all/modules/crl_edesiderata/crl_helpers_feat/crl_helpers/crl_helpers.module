@@ -34,7 +34,7 @@ function crl_helpers_theme() {
   $hooks = array(
     // Theme hook to generate our custom facet breadcrumb.
     'crl_helpers_facet_breadcrumb' => array(
-      'variables' => array('breadcrumb' => array(), 'base_path' => '', 'extra' => ''),
+      'variables' => array('active_facets' => array(), 'base_path' => '', 'extra' => ''),
     ),
     // Theme hook to generate editor tools.
     'crl_helpers_editor_tools' => array(
