@@ -374,12 +374,12 @@ ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref
   float: left;
   margin-top: 5px;
 }
-ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref span.facet_api_text {
+ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref a span.facet_api_text {
   float: left;
   max-width: 70%;
   text-decoration: underline;
 }
-ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref span.facet_api_text:hover {
+ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref a span.facet_api_text:hover {
   text-decoration: none;
 }
 

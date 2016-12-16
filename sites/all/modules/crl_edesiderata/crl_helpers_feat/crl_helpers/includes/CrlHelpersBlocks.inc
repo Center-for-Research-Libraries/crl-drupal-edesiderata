@@ -36,9 +36,8 @@ class CrlHelpersBlocks {
           'path' => $item_build['#path'],
           'text' => $item_build['#markup'],
           'options' => array(
-            'attributes' => $item_build['#class'],
             'html' => TRUE,
-            'query' => $item_build['#query'],
+            'query' => isset($item_build['#query']) ? $item_build['#query'] : array(),
           ),
         );
       }
