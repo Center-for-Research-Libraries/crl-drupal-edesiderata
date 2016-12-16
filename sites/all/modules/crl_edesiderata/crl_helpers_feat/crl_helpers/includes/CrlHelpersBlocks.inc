@@ -194,8 +194,8 @@ class CrlHelpersBlocks {
       else {
         $urls = array(
           '!mlist' => 'http://www.crl.edu/membership/members',
-          '!login' => url('user', array('query' => array('destination' => request_path()))),
-          '!signup' => url('user/register', array('query' => array('destination' => request_path()))),
+          '!login' => url('user', array('query' => drupal_get_destination())),
+          '!signup' => url('user/register', array('query' => drupal_get_destination())),
         );
         $block['subject'] = t('You are not logged-in');
         $block['content'] = '<p>' . t('CRL licensing and community input features are only available with a CRL member login.') . '</p>';

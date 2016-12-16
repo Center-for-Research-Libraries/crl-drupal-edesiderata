@@ -8,8 +8,8 @@ function crl_alpha_preprocess_zone(&$vars) {
       $user_message .= '<br/><a class="inline-button" href="' . url('user/' . $user->uid . '/edit') . '">' . t('your account') . '</a>&nbsp&nbsp<a class="inline-button" href="' . url('user/logout') . '">' . t('logout') . '</a>';
     }
     else {
-      $login_url = url('user', array('query' => array('destination' => request_path())));
-      $signup_url = url('user/register', array('query' => array('destination' => request_path())));
+      $login_url = url('user', array('query' => drupal_get_destination()));
+      $signup_url = url('user/register', array('query' => drupal_get_destination()));
       $user_message = t('Please !login_link or !signup_link to access all resource details and interactive features', array('!login_link' => '<a class="inline-button" href="' . $login_url . '">' . t('log in') . '</a>', '!signup_link' => '<a class="inline-button" href="' . $signup_url . '">' . t('sign up') . '</a>'));
     }
     $vars['user_message'] = $user_message;
