@@ -314,7 +314,7 @@ footer#section-footer {
    Block Content Styles - Common
    -------------------------------------------------------------------------- */
 
-/* Normal content and sidebar blocks */
+// Normal content and sidebar blocks
 #zone-content h2.block-title {
     color: #474848;
     font-size: 100%;
@@ -339,21 +339,21 @@ footer#section-footer {
    Blocks Content Styles - Facet Blocks
    -------------------------------------------------------------------------- */
 
-/* Get rid of bullets for facet block select items */
+// Get rid of bullets for facet block select items
 .block-facetapi .content li {
   list-style: none !important;
   padding-left: 0 !important;
   margin-left: 0 !important;
 }
 
-/* Tweaks for sidebar facet blocks to give better whitespace control, etc. */
+// Tweaks for sidebar facet blocks to give better whitespace control, etc.
 section.block ul.facetapi-facetapi-links li {
   clear: left;
   float: left;
   width: 100%;
   padding: 0.3em 0em;
 }
-/* Add remove sprite icon for active facet selections */
+// Add remove sprite icon for active facet selections
 .block ul.facetapi-facetapi-links li a.facetapi-active {
   float: right;
   background: url("../images/sprites.png?v=5") no-repeat scroll -50px -300px transparent;
@@ -369,48 +369,48 @@ section.block ul.facetapi-facetapi-links li {
 	font-weight: bold;
 }
 
-/* Tweaks for crl status facet block only */
-ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref span.summary-icon-small {
-  float: left;
-  margin-top: 5px;
-}
-ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref a span.facet_api_text {
-  float: left;
-  max-width: 70%;
-  text-decoration: underline;
-}
-ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref a span.facet_api_text:hover {
-  text-decoration: none;
+// Tweaks for crl status facet block only
+ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref {
+  span.summary-icon-small {
+    float: left;
+    margin-top: 5px;
+  }
+  a {
+    span.facet_api_text {
+      float: left;
+      max-width: 70%;
+      text-decoration: underline;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
 }
 
-/* Tweaks for alpha facet glossary and sort block content */
-ul.facetapi-facet-field-resource-glossary li,
-ul.facetapi-facet-crl-resource-glossary-value li,
-ul.facetapi-facet-crl-glossary-value li {
-  display: inline;
-  padding: 3px 5px;
-  margin: 0 2px 0 0 !important;
-  border-right: 1px solid #999;
-}
-ul.facetapi-facet-field-resource-glossary li.last,
-ul.facetapi-facet-crl-resource-glossary-value li.last,
-ul.facetapi-facet-crl-glossary-value li.last {
-  border-right: none;
-}
-ul.facetapi-facet-field-resource-glossary .facetapi_count_value,
-ul.facetapi-facet-crl-resource-glossary-value .facetapi_count_value,
-ul.facetapi-facet-crl-glossary-value .facetapi_count_value {
-  display: none;
-}
-ul.facetapi-facet-field-resource-glossary li a.facetapi-active,
-ul.facetapi-facet-crl-resource-glossary-value li a.facetapi-active,
-ul.facetapi-facet-crl-glossary-value li a.facetapi-active {
-  float: none !important;
-  margin-right: 0.5em;
+// Tweaks for alpha facet glossary and sort block content
+ul.facetapi-facet-field-resource-glossary,
+ul.facetapi-facet-crl-resource-glossary-value,
+ul.facetapi-facet-crl-glossary-value {
+  li {
+    display: inline;
+    padding: 3px 5px;
+    margin: 0 2px 0 0 !important;
+    border-right: 1px solid #999;
+    &.last {
+      border-right: none;
+    }
+  }
+  .facetapi_count_value {
+    display: none;
+  }
+  li a.facetapi-active {
+    float: none !important;
+    margin-right: 0.5em;
+  }
 }
 #resource_sort_opts,
 #helpers_sort_opts {
-  display: none; /* Will activate display with javascript */
+  display: none; // Will activate display with javascript
   float: right;
   margin-bottom: 10px;
 }
@@ -421,7 +421,7 @@ ul.facetapi-facet-crl-glossary-value li a.facetapi-active {
   margin-bottom: 10px;
 }
 
-/* Make sure we get 100% with for text inputs that use facets */
+// Make sure we get 100% with for text inputs that use facets
 .form-item-search-api-views-fulltext input {
   width: 100% !important;
 }

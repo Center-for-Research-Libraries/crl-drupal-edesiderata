@@ -291,7 +291,6 @@ footer#section-footer .footer-topper h3 {
 /* --------------------------------------------------------------------------
    Block Content Styles - Common
    -------------------------------------------------------------------------- */
-/* Normal content and sidebar blocks */
 #zone-content h2.block-title {
   color: #474848;
   font-size: 100%;
@@ -313,20 +312,17 @@ footer#section-footer .footer-topper h3 {
 /* --------------------------------------------------------------------------
    Blocks Content Styles - Facet Blocks
    -------------------------------------------------------------------------- */
-/* Get rid of bullets for facet block select items */
 .block-facetapi .content li {
   list-style: none !important;
   padding-left: 0 !important;
   margin-left: 0 !important;
 }
-/* Tweaks for sidebar facet blocks to give better whitespace control, etc. */
 section.block ul.facetapi-facetapi-links li {
   clear: left;
   float: left;
   width: 100%;
   padding: 0.3em 0em;
 }
-/* Add remove sprite icon for active facet selections */
 .block ul.facetapi-facetapi-links li a.facetapi-active {
   float: right;
   background: url("../images/sprites.png?v=5") no-repeat scroll -50px -300px transparent;
@@ -340,7 +336,6 @@ section.block ul.facetapi-facetapi-links li {
   font-size: 110%;
   font-weight: bold;
 }
-/* Tweaks for crl status facet block only */
 ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref span.summary-icon-small {
   float: left;
   margin-top: 5px;
@@ -353,7 +348,6 @@ ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref
 ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref a span.facet_api_text:hover {
   text-decoration: none;
 }
-/* Tweaks for alpha facet glossary and sort block content */
 ul.facetapi-facet-field-resource-glossary li,
 ul.facetapi-facet-crl-resource-glossary-value li,
 ul.facetapi-facet-crl-glossary-value li {
@@ -381,7 +375,6 @@ ul.facetapi-facet-crl-glossary-value li a.facetapi-active {
 #resource_sort_opts,
 #helpers_sort_opts {
   display: none;
-  /* Will activate display with javascript */
   float: right;
   margin-bottom: 10px;
 }
@@ -391,7 +384,6 @@ ul.facetapi-facet-crl-glossary-value li a.facetapi-active {
   width: 150px;
   margin-bottom: 10px;
 }
-/* Make sure we get 100% with for text inputs that use facets */
 .form-item-search-api-views-fulltext input {
   width: 100% !important;
 }
