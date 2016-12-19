@@ -8,7 +8,7 @@
 
 /**
  * Implements hook_preprocess_crl_helpers_interest_widget().
- * 
+ *
  * Build custom variables for the interest widget.
  */
 function crl_helpers_preprocess_crl_helpers_interest_widget(&$variables) {
@@ -70,27 +70,19 @@ function theme_crl_helpers_interest_widget($variables) {
 */
 function theme_crl_helpers_facet_breadcrumb($variables) {
   $output = '';
-  $glue = "»";
-  $reset_markup = '<span class="facet-breadcrumb-reset">' . l('<span class="facet-breadcrumb-reset-icon"></span><span class="facet-breadcrumb-label">' . t('Clear Filters') . '</span>', $variables['base_path'], array('html' => TRUE)) . '</span>';
-  $variables['extra'] += array('reset' => array('#markup' => $reset_markup, '#weight' => -10));
-  $output .= '<div id="facet-breadcrumb" class="clearfix"><ul class="breadcrumb"><li><span class="facet-breadcrumb-label">' . t('Filters') . ': </span></li>';
-  $switch = array('odd' => 'even', 'even' => 'odd');
-  $zebra = 'even';
-  $last = count($variables['breadcrumb']) - 1;    
-  foreach ($variables['breadcrumb'] as $key => $item) {
-    $zebra = $switch[$zebra];
-    $attributes['class'] = array('depth-' . ($key + 1), $zebra);
-    if ($key == 0) {
-      $attributes['class'][] = 'first';
-    }
-    if ($key == $last) {
-      $attributes['class'][] = 'last';
-      $glue = '';
-    }
-    $output .= '<li' . drupal_attributes($attributes) . '>' . $item . ' ' . $glue . '</li>';
+  $output .= '<div class="facet-breadcrumb-content">';
+  $output .= '<div class="facet-breadcrumb-facets clearfix">';
+  $output .= '<div class="active-facet-wrapper facet-breadcrumb-reset">' . l('<span class="facet-breadcrumb-reset-icon"></span>' . t('Clear all filters'), $variables['base_path'], array('html' => TRUE)) . '</div>';
+  $output .= '<div class="active-facet-wrapper facet-breadcrumb-misc">' . t('Active Filters:') . '</div>';
+  foreach ($variables['active_facets'] as $facet) {
+    $output .= '<div class="active-facet-wrapper facet-breadcrumb-facet">' . l('<span class="facet-breadcrumb-reset-icon"></span><span class="facet-breadcrumb-label"></span>', $facet['path'], $facet['options']) . $facet['text'] . '</div>';
   }
-  $output .= '</ul></div>';
-  $output .= '<div class="extras">' . drupal_render($variables['extra']) . '</div>';
+  $output .= '</div>';
+  $extra = drupal_render($variables['extra']);
+  if (!empty($extra)) {
+    $output .= '<div class="facet-breadcrumb-extras clearfix">' . $extra . '</div>';
+  }
+  $output .= '</div>';
   return $output;
 }
 
@@ -108,7 +100,7 @@ function theme_crl_helpers_editor_tools($variables) {
   $output .= '<div class="editor-tools"><strong>' . l(t('+ Add Resource'), 'node/add/resource') . '&nbsp;&nbsp;&nbsp;' . l(t('+ Add Provider'), 'node/add/provider') . '<br/>' . l(t('Editor & Admin Dashboard'), 'admin/dashboard') . '</strong></div>';
   $output .= '<p>This page\'s internal path and permalink is:<br /><strong>';
   if (arg(0) == 'node') {
-    $output .='<span style="color:green;">/node/' . arg(1) . '</span>'; 
+    $output .='<span style="color:green;">/node/' . arg(1) . '</span>';
   }
   elseif (!strpos($_GET['q'], "/admin")) {
     $output .= '<span style="color:green;">/' . $_GET['q'] . '</span>';
