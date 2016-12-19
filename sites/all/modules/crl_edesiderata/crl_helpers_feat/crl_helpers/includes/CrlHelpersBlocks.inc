@@ -21,14 +21,40 @@ class CrlHelpersBlocks {
   protected function build_crl_helpers_facet_breadcrumb() {
     $block = array();
     $output = '';
-    if (isset($_GET['f']) || !empty($_GET['search_api_views_fulltext'])) {
+    $active_facets = array();
+    // Detect the active facets from the query string (the query string should
+    // list them in the order they were entered).
+    if (isset($_GET['f'])) {
+      foreach ($_GET['f'] as $f) {
+        // Get facet details directly from facetapi.
+        list($facet_name, $item) = explode(':', $f);
+        $adapter = facetapi_adapter_load('search_api@title_search_index');
+        $processor = $adapter->getProcessor($facet_name);
+        $build = $processor->getBuild();
+        $item_build = $build[$item];
+        $active_facets[] = array(
+          'path' => $item_build['#path'],
+          'text' => $item_build['#markup'],
+          'options' => array(
+            'html' => TRUE,
+            'query' => isset($item_build['#query']) ? $item_build['#query'] : array(),
+          ),
+        );
+      }
+    }
+    // Also treat any fulltext search inputs as a facet.
+    if (!empty($_GET['search_api_views_fulltext'])) {
+      $active_facets[] = array(
+        'path' => current_path(),
+        'text' => check_plain($_GET['search_api_views_fulltext']),
+        'options' => array(
+          'html' => TRUE,
+          'query' => drupal_get_query_parameters(NULL, array('q', 'search_api_views_fulltext')),
+        ),
+      );
+    }
+    if ($active_facets) {
       $base_path = current_path();
-      // Get the most recent breadcrumb.
-      $breadcrumb = drupal_get_breadcrumb();
-      // Drop the "home" value for the breadcrumb.
-      $breadcrumb = array_splice($breadcrumb, 2);
-      // Add some extras that may related to the filtered set. These currently
-      // only apply to resource lists.
       $extra = array();
       if (drupal_match_path(current_path(), 'resources/*')) {
         // Integration with the crl_mydes_feat module to inject a save this
@@ -39,7 +65,7 @@ class CrlHelpersBlocks {
       }
       $output = array(
         'facet_breadcrumb' => array(
-          '#breadcrumb' => $breadcrumb,
+          '#active_facets' => $active_facets,
           '#base_path' => $base_path,
           '#extra' => $extra,
           '#theme' => 'crl_helpers_facet_breadcrumb',
@@ -167,8 +193,8 @@ class CrlHelpersBlocks {
       else {
         $urls = array(
           '!mlist' => 'http://www.crl.edu/membership/members',
-          '!login' => url('user', array('query' => array('destination' => request_path()))),
-          '!signup' => url('user/register', array('query' => array('destination' => request_path()))),
+          '!login' => url('user', array('query' => drupal_get_destination())),
+          '!signup' => url('user/register', array('query' => drupal_get_destination())),
         );
         $block['subject'] = t('You are not logged-in');
         $block['content'] = '<p>' . t('CRL licensing and community input features are only available with a CRL member login.') . '</p>';
