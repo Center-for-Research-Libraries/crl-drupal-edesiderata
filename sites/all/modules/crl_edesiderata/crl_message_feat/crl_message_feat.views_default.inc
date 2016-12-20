@@ -47,7 +47,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['footer']['area']['id'] = 'area';
   $handler->display->display_options['footer']['area']['table'] = 'views';
   $handler->display->display_options['footer']['area']['field'] = 'area';
-  $handler->display->display_options['footer']['area']['content'] = '<p><a class="button" href="/activity/rss"><span class="crl-icon-small rss-icon"></span>Subscribe via RSS</a></p>';
+  $handler->display->display_options['footer']['area']['content'] = '<p><a class="button" href="/activity/rss"><i class="icon icon-rss"></i>Subscribe via RSS</a></p>';
   $handler->display->display_options['footer']['area']['format'] = 'full_html';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';

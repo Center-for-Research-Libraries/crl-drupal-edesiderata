@@ -49,8 +49,8 @@ function theme_crl_helpers_interest_widget($variables) {
     $output .= '<p>' . $display_options['description'] . '</p>';
   }
 
-  $yes_button = '<a class="rate-button button" id="rate-button-100" rel="nofollow" href="' . htmlentities($links[0]['href']) . '" title="' . $links[0]['text'] . '">' . '<span class="crl-icon-small thumbsup-icon"></span>' . $links[0]['text'] . '</a>';
-  $no_button = '<a class="rate-button button" id="rate-button-101" rel="nofollow" href="' . htmlentities($links[1]['href']) . '" title="' . $links[1]['text'] . '">' . '<span class="crl-icon-small thumbsdown-icon"></span>' . $links[1]['text'] . '</a>';
+  $yes_button = '<a class="rate-button button" id="rate-button-100" rel="nofollow" href="' . htmlentities($links[0]['href']) . '" title="' . $links[0]['text'] . '">' . '<i class="icon icon-thumbs-up-alt"></i>' . $links[0]['text'] . '</a>';
+  $no_button = '<a class="rate-button button" id="rate-button-101" rel="nofollow" href="' . htmlentities($links[1]['href']) . '" title="' . $links[1]['text'] . '">' . '<i class="icon icon-thumbs-down-alt"></i>' . $links[1]['text'] . '</a>';
   $output .= '<p class="interest-input">' . $yes_button . ' ' . $no_button . '</p>';
 
   if ($info) {
@@ -209,10 +209,10 @@ function theme_crl_helpers_summary($vars) {
       $highlights['two'][] = '<span class="big-num">' . $vars['vote_average'] . '</span> ' . t('Average Rating');
     }
     if (!empty($vars['interest_count_up'])) {
-      $highlights['two'][] = '<span class="big-num">' . $vars['interest_count_up'] . '</span><span title="Thumbs Up" alt="Thumbs Up" class="crl-icon-small thumbsup-icon-dark"></span>';
+      $highlights['two'][] = '<span class="big-num">' . $vars['interest_count_up'] . '</span><i title="Thumbs Up" alt="Thumbs Up" class="icon-large icon-thumbs-up-alt"></i>';
     }
     if (!empty($vars['interest_count_down'])) {
-      $highlights['two'][] = '<span class="big-num">' . $vars['interest_count_down'] . '</span><span title="Thumbs Down" alt="Thumbs Down" class="crl-icon-small thumbsdown-icon-dark"></span>';
+      $highlights['two'][] = '<span class="big-num">' . $vars['interest_count_down'] . '</span><i title="Thumbs Down" alt="Thumbs Down" class="icon-large icon-thumbs-down-alt"></i>';
     }
     foreach($highlights as $row_key => $row) {
       if ($row_key == 'one') {

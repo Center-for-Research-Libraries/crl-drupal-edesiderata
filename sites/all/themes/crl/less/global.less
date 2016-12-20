@@ -431,21 +431,14 @@ ul.facetapi-facet-crl-glossary-value {
    -------------------------------------------------------------------------- */
 
 /* Tweaks for interest rate box and summary */
-.thumbsup-icon {
-  background-position: -100px -300px;
-}
-.thumbsdown-icon {
-  background-position: -150px -300px;
-}
-.thumbsup-icon-dark {
-  background-position: -200px -300px;
-}
-.thumbsdown-icon-dark {
-  background-position: -250px -300px;
-}
-#block-crl-helpers-crl-helpers-interest-input .interest-vote {
-  color: green;
-  font-weight: bold;
+#block-crl-helpers-crl-helpers-interest-input {
+  i.icon { // Fontello icon
+    font-size: 120%;
+  }
+  .interest-vote {
+    color: green;
+    font-weight: bold;
+  }
 }
 
 /* Tweaks for custom facet breadcrumb */
@@ -1288,13 +1281,16 @@ div.fivestar-widget div.hover a, div.rating div a:hover {
 /* Styles for numbers used as icons */
 span.big-num {
   font-size: 26px; /* Should be pixel size to match icons */
-  margin-right: 0.5em;
+  margin-right: 0.2em;
   font-weight: normal;
   color: #555;
   display: inline-block;
 }
 .res-highlight-row {
   line-height: 1.5em;
+  .icon-thumbs-up-alt, .icon-thumbs-down-alt {
+    color: #555;
+  }
 }
 .res-highlight-row-items {
   float: left;
