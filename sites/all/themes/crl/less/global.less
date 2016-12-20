@@ -1,6 +1,4 @@
-/* This file will hold styles for the mobile version of your website (mobile first). */
-/* This also can include ANY global CSS that applies site-wide. Unless overwritten by a more specific style rule, CSS declarations in global.css will apply site-wide. */
-
+@import 'fontello';
 
 /* --------------------------------------------------------------------------
    Main zones and regions
@@ -353,16 +351,17 @@ section.block ul.facetapi-facetapi-links li {
   width: 100%;
   padding: 0.3em 0em;
 }
-// Add remove sprite icon for active facet selections
+// Add remove icon for active facet selections
 .block ul.facetapi-facetapi-links li a.facetapi-active {
   float: right;
-  background: url("../images/sprites.png?v=5") no-repeat scroll -50px -300px transparent;
-  height: 20px;
-  width: 20px;
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-
+  i.icon { // Fontello icon
+    color: red;
+    font-size: larger;
+    margin-right: 0 !important;
+  }
 }
 #zone-content h2.block-title span.facet-group {
 	font-size: 110%;
@@ -371,9 +370,9 @@ section.block ul.facetapi-facetapi-links li {
 
 // Tweaks for crl status facet block only
 ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref {
-  span.summary-icon-small {
+  i.icon { // Fontello icon
     float: left;
-    margin-top: 5px;
+    margin-right: 8px;
   }
   a {
     span.facet_api_text {
@@ -498,13 +497,8 @@ ul.facetapi-facet-crl-glossary-value {
   font-weight: normal;
 }
 .facet-breadcrumb-reset-icon {
-  background: transparent url("../images/sprites.png?v=5") no-repeat scroll -50px -300px;
-  display: inline-block;
-  height: 18px;
-  width: 18px;
   margin-right: 8px;
-  overflow: hidden;
-  white-space: nowrap;
+  color: red;
 }
 #search-api-saved-searches-save-form-wrapper input#edit-name {
   width: 50%;
@@ -750,10 +744,13 @@ body.resources-dashboard #zone-postscript .attachment-after {
 /* Set resource dashboard typography and word spacing */
 .dashboard-lead {
   text-align: center;
-}
-.dashboard-lead h3 {
-  margin: 0px;
-  text-decoration: none;
+  h3 {
+    margin: 0px;
+    text-decoration: none;
+    i.icon {
+      font-size: 110%;
+    }
+  }
 }
 .super-num {
   font-family: Raleway;
@@ -1206,6 +1203,38 @@ div.fivestar-widget div.hover a, div.rating div a:hover {
    Flagging and Status Icons
    -------------------------------------------------------------------------- */
 
+.icon {
+  margin-right: 0.5em;
+  font-size: 100%;
+}
+.icon-large {
+  font-size: 140%;
+}
+.icon-license_available {
+  color: #469c36
+}
+.icon-license_under_consideration {
+  color: #e77a22;
+}
+.icon-trial_access_available {
+  color: #00369a;
+}
+.icon-crl_desiderata {
+  color: #dc286c;
+}
+.icon-crl_review_available {
+  color: #70009a;
+}
+.icon-license_renewal_available {
+  color: #47aea7;
+}
+.icon-past_license_offer {
+  color: #a50808;
+}
+.icon-inactive_declined {
+  color: #ed9800;
+}
+
 /* Icon Sprites */
 .summary-icon, .crl-icon, .message-icon {
   background-image: url("../images/sprites.png?v=5");
@@ -1217,34 +1246,6 @@ div.fivestar-widget div.hover a, div.rating div a:hover {
   white-space: nowrap;
   vertical-align: middle;
 }
-.summary-icon.license_available {
-  background-position: 0px 0px;
-}
-.summary-icon.license_under_consideration {
-  background-position: -50px 0px;
-}
-.summary-icon.trial_access_available {
-  background-position: -100px 0px;
-}
-.summary-icon.crl_desiderata {
-  background-position: -150px 0px;
-}
-.summary-icon.crl_review_available {
-  background-position: -200px 0px;
-}
-.summary-icon.license_renewal_available {
-  background-position: -250px 0px;
-}
-.summary-icon.past_license_offer {
-  background-position: -300px 0px;
-}
-.summary-icon.inactive_declined {
-  background-position: -350px 0px;
-}
-.summary-icon.crl_profile {
-  background-position: -450px 0px;
-}
-
 .summary-icon-small, .crl-icon-small, .message-icon-small {
   background-image: url("../images/sprites.png?v=5");
   height: 16px;
@@ -1254,30 +1255,6 @@ div.fivestar-widget div.hover a, div.rating div a:hover {
   overflow: hidden;
   white-space: nowrap;
   vertical-align: middle;
-}
-.summary-icon-small.license_available {
-  background-position: 0px -50px;
-}
-.summary-icon-small.license_under_consideration {
-  background-position: -50px -50px;
-}
-.summary-icon-small.trial_access_available {
-  background-position: -100px -50px;
-}
-.summary-icon-small.crl_desiderata {
-  background-position: -150px -50px;
-}
-.summary-icon-small.crl_review_available {
-  background-position: -200px -50px;
-}
-.summary-icon-small.license_renewal_available {
-  background-position: -250px -50px;
-}
-.summary-icon-small.past_license_offer {
-  background-position: -300px -50px;
-}
-.summary-icon-small.inactive_declined {
-  background-position: -350px -50px;
 }
 
 /* Activity Report */
@@ -1293,30 +1270,6 @@ div.fivestar-widget div.hover a, div.rating div a:hover {
 #status-summary .status-active {
   font-weight: bold;
 }
-.status-inactive.summary-icon-small.license_available {
-  background-position: 0px -100px;
-}
-.status-inactive.summary-icon-small.license_under_consideration {
-  background-position: -50px -100px;
-}
-.status-inactive.summary-icon-small.trial_access_available {
-  background-position: -100px -100px;
-}
-.status-inactive.summary-icon-small.crl_desiderata {
-  background-position: -150px -100px;
-}
-.status-inactive.summary-icon-small.crl_review_available {
-  background-position: -200px -100px;
-}
-.status-inactive.summary-icon-small.license_renewal_available {
-  background-position: -250px -100px;
-}
-.status-inactive.summary-icon-small.past_license_offer {
-  background-position: -300px -100px;
-}
-.status-inactive.summary-icon-small.inactive_declined {
-  background-position: -350px -100px;
-}
 
 /* Icon containers */
 .view-teaser-status-highlight {
@@ -1326,7 +1279,7 @@ div.fivestar-widget div.hover a, div.rating div a:hover {
 .res_highlight .summary-icon {
   float: left;
 }
-.view-teaser-status-icons .summary-icon-small {
+.view-teaser-status-icons i.icon {
   float: left;
 }
 .view-teaser-status-icons {
@@ -1336,14 +1289,12 @@ div.fivestar-widget div.hover a, div.rating div a:hover {
 span.big-num {
   font-size: 26px; /* Should be pixel size to match icons */
   margin-right: 0.5em;
-  margin-top: -10px;
   font-weight: normal;
   color: #555;
-  display: block;
-  float: left;
+  display: inline-block;
 }
-.res-highlight_row {
-  color: #555;
+.res-highlight-row {
+  line-height: 1.5em;
 }
 .res-highlight-row-items {
   float: left;
@@ -1351,11 +1302,11 @@ span.big-num {
 }
 .res-highlight-row-label, .res-highlight {
   font-size: 100%;
-  margin: 1.3em 1.5em 1.3em 0;
+  margin: 1em 1.8em 1em 0;
   float: left;
 }
 .two .res-highlight-row-label {
-  margin-right: 2.5em;
+  margin-right: 2.7em;
 }
 
 

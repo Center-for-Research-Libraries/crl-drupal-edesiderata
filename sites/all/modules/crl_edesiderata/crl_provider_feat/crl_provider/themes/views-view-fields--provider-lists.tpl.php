@@ -35,7 +35,7 @@
   if (!empty($status)) {
     print '<div class="view-teaser-status-icons">';
     foreach ($status as $stat) {
-      print '<span class="summary-icon-small ' . $stat . '" title="' . $status_options[$stat] . '"></span>';
+      print '<i class="icon icon-' . $stat . '" title="' . $status_options[$stat] . '"></i>';
     }
     print '</div>';
   } 

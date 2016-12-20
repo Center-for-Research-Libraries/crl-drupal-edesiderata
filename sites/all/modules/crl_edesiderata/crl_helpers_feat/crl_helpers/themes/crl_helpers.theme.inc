@@ -72,10 +72,10 @@ function theme_crl_helpers_facet_breadcrumb($variables) {
   $output = '';
   $output .= '<div class="facet-breadcrumb-content">';
   $output .= '<div class="facet-breadcrumb-facets clearfix">';
-  $output .= '<div class="active-facet-wrapper facet-breadcrumb-reset">' . l('<span class="facet-breadcrumb-reset-icon"></span>' . t('Clear all filters'), $variables['base_path'], array('html' => TRUE)) . '</div>';
+  $output .= '<div class="active-facet-wrapper facet-breadcrumb-reset">' . l('<i class="facet-breadcrumb-reset-icon icon-cancel"></i>' . t('Clear all filters'), $variables['base_path'], array('html' => TRUE)) . '</div>';
   $output .= '<div class="active-facet-wrapper facet-breadcrumb-misc">' . t('Active Filters:') . '</div>';
   foreach ($variables['active_facets'] as $facet) {
-    $output .= '<div class="active-facet-wrapper facet-breadcrumb-facet">' . l('<span class="facet-breadcrumb-reset-icon"></span><span class="facet-breadcrumb-label"></span>', $facet['path'], $facet['options']) . $facet['text'] . '</div>';
+    $output .= '<div class="active-facet-wrapper facet-breadcrumb-facet">' . l('<i class="facet-breadcrumb-reset-icon icon-cancel"></i>', $facet['path'], $facet['options']) . '<span class="facet-breadcrumb-label">' . $facet['text'] . '</span></div>';
   }
   $output .= '</div>';
   $extra = drupal_render($variables['extra']);
@@ -198,7 +198,7 @@ function theme_crl_helpers_summary($vars) {
     $highlights = array();
     if (!empty($vars['status'])) {
       foreach ($vars['status'] as $status) {
-        $highlights['one'][] = '<span class="summary-icon ' . $status . '"></span>' . $status_options[$status];
+        $highlights['one'][] = '<i class="icon icon-' . $status . ' icon-large"></i>' . $status_options[$status];
       }
     }
     // Get feedback row.
