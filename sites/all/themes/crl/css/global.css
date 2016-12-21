@@ -212,6 +212,10 @@ label {
 }
 #page a {
   color: #493986;
+  transition: color 100ms ease-out;
+}
+#page a:hover {
+  color: #d06500;
 }
 a.inline-button {
   background-color: #9c9eb0;
@@ -308,11 +312,14 @@ blockquote {
 #zone-header {
   position: relative;
 }
-#section-header,
+#section-header {
+  color: #fff;
+}
 #section-header p,
 #section-header a,
-#section-header a.active {
-  color: #fff;
+#section-header a.active,
+#section-header a:hover {
+  color: #fff !important;
 }
 #header-logo {
   position: relative;
@@ -462,10 +469,12 @@ section.block ul.facetapi-facetapi-links li {
   width: 100%;
   padding: 0.3em 0em;
 }
+section.block ul.facetapi-facetapi-links li a {
+  text-decoration: none !important;
+}
 .block ul.facetapi-facetapi-links li a.facetapi-active {
   float: right;
   display: inline-block;
-  overflow: hidden;
   white-space: nowrap;
 }
 .block ul.facetapi-facetapi-links li a.facetapi-active i.icon {
@@ -484,10 +493,6 @@ ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref
 ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref a span.facet_api_text {
   float: left;
   max-width: 70%;
-  text-decoration: underline;
-}
-ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref a span.facet_api_text:hover {
-  text-decoration: none;
 }
 ul.facetapi-facet-field-resource-glossary li,
 ul.facetapi-facet-crl-resource-glossary-value li,
@@ -501,6 +506,11 @@ ul.facetapi-facet-field-resource-glossary li.last,
 ul.facetapi-facet-crl-resource-glossary-value li.last,
 ul.facetapi-facet-crl-glossary-value li.last {
   border-right: none;
+}
+ul.facetapi-facet-field-resource-glossary li a,
+ul.facetapi-facet-crl-resource-glossary-value li a,
+ul.facetapi-facet-crl-glossary-value li a {
+  text-decoration: none !important;
 }
 ul.facetapi-facet-field-resource-glossary .facetapi_count_value,
 ul.facetapi-facet-crl-resource-glossary-value .facetapi_count_value,
@@ -747,7 +757,8 @@ body.dashboard #zone-postscript .block-inner {
 body.dashboard #zone-preface .block-inner:hover,
 body.dashboard #zone-user .block-inner:hover,
 body.dashboard #zone-postscript .block-inner:hover {
-  outline-width: 3px;
+  outline-width: 2px;
+  transition: outline 0.25s ease;
 }
 body.dashboard h3 a {
   text-decoration: none;
@@ -773,12 +784,16 @@ body.equal-postscript #zone-postscript .region {
   outline: 1px solid #999;
 }
 body.equal-postscript #zone-postscript .region:hover {
-  outline-width: 3px;
+  outline-width: 2px;
+  transition: outline 0.25s ease;
 }
 /* --------------------------------------------------------------------------
    Dashboard - Resources / Homepage
    -------------------------------------------------------------------------- */
 /* The resources dashboard has some special styles and colors specific to it */
+body.resources-dashboard #zone-postscript a {
+  text-decoration: none !important;
+}
 body.resources-dashboard #zone-postscript .region-postscript-first {
   outline: 1px solid #6e0097;
 }
@@ -969,7 +984,7 @@ aside .block .flag {
   border-style: solid;
   border-width: 1px;
   background-color: #e05300;
-  border-color: #e97100;
+  border-color: #fff;
   color: #fff !important;
   cursor: pointer;
   font-weight: bold;
@@ -994,7 +1009,7 @@ input[type="button"]:hover,
 .form-actions input:hover,
 aside .block .flag:hover {
   background-color: #fa5c00;
-  border-color: #fff;
+  border-color: #e97100;
 }
 button a,
 .button a,
@@ -1489,6 +1504,7 @@ form.shared-vote-input-form .form-notes {
    -------------------------------------------------------------------------- */
 .icon-message {
   width: 20px;
+  font-size: 100%;
   margin-right: 1em;
   display: block;
   float: left;
@@ -1535,6 +1551,7 @@ form.shared-vote-input-form .form-notes {
 .view-crl-messages .views-row,
 .view-crl-messages .more-link {
   padding: 2px 0px;
+  margin-bottom: 15px;
 }
 .view-crl-messages span.message-list-text {
   display: block;
