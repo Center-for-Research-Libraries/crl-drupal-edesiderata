@@ -247,5 +247,5 @@ function theme_crl_helpers_back_to_index(&$vars) {
   if ($vars['browser_back']) {
     $onclick = 'onclick="window.history.go(-1);return false;"';
   }
-  return '<strong>&larr;&nbsp;<a id="back-to-index" href="' . $vars['url'] . '" ' . $onclick . '>' . $vars['back_text'] . '</a></strong>';
+  return '<strong><a id="back-to-index" href="' . $vars['url'] . '" ' . $onclick . '><i class="icon icon-level-up"></i>' . $vars['back_text'] . '</a></strong>';
 }
