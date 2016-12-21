@@ -1402,17 +1402,40 @@ form.shared-vote-input-form .form-notes {
 
 
 /* --------------------------------------------------------------------------
-   Messages and Mydes icons
+   Messages and Related icons
    -------------------------------------------------------------------------- */
 
-/* Icon Sprites */
-.message-icon-small {
+.icon-message {
+  width: 20px;
+  margin-right: 1em;
+  display: block;
+  float: left;
+  // Some message icons use glyphs
+  &:extend(.icon-pencil all); // Default icon if not overriden below
+  &.resource_update {
+    &:extend(.icon-pencil all);
+  }
+  &.resource_new {
+    &:extend(.icon-doc-add all);
+  }
+  &.resource_new_comment {
+    &:extend(.icon-comment all);
+  }
+}
+// Some message icons us sprites
+.message-icon-small.resource_new_alert,
+.message-icon-small.resource_expires_soon,
+.message-icon-small.resource_status_update,
+.message-icon-small.resource_new_review,
+.message-icon-small.resource_suggested {
+  &:before {
+    content: '';
+  }
+  margin-top: 0.2em;
   background-image: url("../images/sprites.png?v=6");
   background-size: 500px;
-  height: 16px;
-  width: 16px;
+  height: 20px;
   display: inline-block;
-  margin-right: 16px;
   overflow: hidden;
   white-space: nowrap;
   vertical-align: middle;
@@ -1420,56 +1443,30 @@ form.shared-vote-input-form .form-notes {
   @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
     background-image: url("../images/sprites2x.png?v=6");
   }
-}
-
-
-/* Default for mesages */
-.message-icon-small {
-  background-position: -50px -450px;
-}
-/* Specifics for messages */
-.message-icon-small.resource_update {
-  background-position: -50px -450px;
-}
-.message-icon-small.resource_new {
-  background-position: -200px -450px;
-}
-.message-icon-small.resource_new_comment {
   background-position: 0px -450px;
 }
-.message-icon-small.resource_new_alert,
-.message-icon-small.resource_expires_soon,
-.message-icon-small.resource_status_update,
-.message-icon-small.resource_new_review,
-.message-icon-small.resource_suggested {
-  background-position: -350px -450px;
-}
 
-/* Style exposed filters for message lists */
-.view-crl-messages .views-exposed-form .views-exposed-widget .form-submit {
-  margin-top: 0px;
-}
-.view-crl-messages .views-exposed-widgets label, .view-crl-messages .views-exposed-widgets .views-widget {
-  float: left;
-  margin-bottom: 1em;
-}
-
-/* Tweaks for list displays of messages */
-.view-crl-messages .views-row, .view-crl-messages .more-link {
-  padding: 2px 0px;
-}
-.view-crl-messages span.message-icon-small {
-  display: block;
-  float: left;
-}
-.view-crl-messages span.message-list-text {
-  display: block;
-  float: left;
-  max-width: 80%;
-  margin-top: -0.3em; /* Ad hoc adjustment for line height */
-}
-.view-crl-messages h3 {
-  padding-left: 32px;
+.view-crl-messages {
+  // Style exposed filters for message lists
+  .views-exposed-form .views-exposed-widget .form-submit {
+    margin-top: 0px;
+  }
+  .views-exposed-widgets label, .views-exposed-widgets .views-widget {
+    float: left;
+    margin-bottom: 1em;
+  }
+  // Tweaks for list displays of messages
+  .views-row, .more-link {
+    padding: 2px 0px;
+  }
+  span.message-list-text {
+    display: block;
+    float: left;
+    max-width: 80%;
+  }
+   h3 {
+    padding-left: 32px;
+  }
 }
 
 
