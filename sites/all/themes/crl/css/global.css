@@ -289,7 +289,7 @@ blockquote {
    -------------------------------------------------------------------------- */
 #section-header {
   background-color: #474b6f;
-  background-image: url('../images/world-bg.png');
+  background-image: url('../images/world-bg.png?v=6');
   background-size: 538px;
   background-repeat: no-repeat;
   background-position: center top;
@@ -298,7 +298,7 @@ blockquote {
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
   #section-header {
-    background-image: url('../images/world-bg2x.png');
+    background-image: url('../images/world-bg2x.png?v=6');
   }
 }
 #zone-header {
@@ -317,13 +317,19 @@ blockquote {
   padding-top: 20px;
 }
 #header-logo a.logo {
-  background-image: url("../images/sprites.png?v=5");
+  background-image: url("../images/sprites.png?v=6");
+  background-size: 500px;
   height: 67px;
   width: 300px;
   display: block;
   overflow: hidden;
   white-space: nowrap;
   background-position: 0px -600px;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
+  #header-logo a.logo {
+    background-image: url("../images/sprites2x.png?v=6");
+  }
 }
 #header-typography {
   text-align: center;
@@ -869,7 +875,7 @@ body.resources-dashboard #zone-preface .view-display-id-block_5 .dashboard-lead-
   border-radius: 0 3px 3px 0;
 }
 .pager li.pager-current {
-  background: #e05400 url("../images/sprites.png?v=5");
+  background: #e05400 url("../images/sprites.png?v=6");
   background-position: 0px -700px;
   color: #FFFFFF;
   outline: 0 none;
@@ -957,7 +963,7 @@ input[type="button"],
 aside .block .flag {
   /*background: -moz-linear-gradient(center top , #e05400 0%, #e97101 100%) repeat scroll 0 0 transparent; */
   /*background-image: none; */
-  background: #e05400 url("../images/sprites.png?v=5");
+  background: #e05400 url("../images/sprites.png?v=6");
   background-position: 0px -700px;
   border-color: #e05400 #e05400 #e05400;
   border-radius: 1px 1px 1px 1px;
@@ -985,7 +991,7 @@ input[type="submit"]:hover,
 input[type="button"]:hover,
 .form-actions input:hover,
 aside .block .flag:hover {
-  background: #e05400 url("../images/sprites.png?v=5");
+  background: #e05400 url("../images/sprites.png?v=6");
   background-position: 0px -720px;
   border-color: #fff;
 }
@@ -1337,7 +1343,7 @@ div.fivestar-widget .cancel span.on {
 .summary-icon,
 .crl-icon,
 .message-icon {
-  background-image: url("../images/sprites.png?v=5");
+  background-image: url("../images/sprites.png?v=6");
   height: 25px;
   width: 25px;
   display: inline-block;
@@ -1349,7 +1355,7 @@ div.fivestar-widget .cancel span.on {
 .summary-icon-small,
 .crl-icon-small,
 .message-icon-small {
-  background-image: url("../images/sprites.png?v=5");
+  background-image: url("../images/sprites.png?v=6");
   height: 16px;
   width: 16px;
   display: inline-block;
