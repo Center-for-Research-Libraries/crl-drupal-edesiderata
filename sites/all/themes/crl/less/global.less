@@ -1151,44 +1151,59 @@ nav.node-links ul {
    Rating Stars
    -------------------------------------------------------------------------- */
 
+// Fivestar uses background images by default for the stars. We want to use
+// Fontello glyphs instead.
 div.fivestar-widget-static .star, div.fivestar-widget .star, div.fivestar-widget .cancel {
   width: 25px;
   height: 25px;
-  background: url("../images/sprites.png?v=5") no-repeat scroll 0px -250px transparent;
+  text-indent: 0;
+  background: none;
+  // Star input widgets wrap the star in an "a" tag (via JS) and the static
+  // star display just uses a span. Reset both and swap-in glyph.
+  a, span.on, span.off {
+    background: none;
+    color: #aaa !important;
+    &:before {
+      font-family: "fontello";
+      font-style: normal;
+      font-weight: normal;
+      font-size: 120%;
+      speak: none;
+      text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3);
+      white-space: pre;
+      content: "\e80e \A\A\A";
+    }
+  }
+  &.on a { // Widget input "on"
+    color: #6b29a0 !important;
+  }
+  &.hover a { // Widget input hover
+    color: #29449d !important;
+  }
+  span.on { // Static display "on"
+    color: #f68600 !important;
+  }
 }
-div.fivestar-widget-static .star span.off {
-  background: url("../images/sprites.png?v=5") no-repeat scroll 0px -250px transparent;
-}
-div.fivestar-widget-static .star span.on {
-  background: url("../images/sprites.png?v=5") no-repeat scroll -100px -250px transparent;
-}
-div.fivestar-widget .star, div.fivestar-widget .star a {
-  background: url("../images/sprites.png?v=5") no-repeat scroll -0px -250px transparent;
-}
-div.fivestar-widget div.on a {
-  background: url("../images/sprites.png?v=5") no-repeat scroll -150px -250px transparent;
-}
-div.fivestar-widget div.hover a, div.rating div a:hover {
-  background-position: -50px -250px;
-}
-/* Tighten-up some of the whitespace for the ratings group */
-.group_ratings .field-label {
-  display: block;
-  float: left;
-  width: 40%;
-  margin-bottom: 2em;
-}
-.group_ratings .field-items {
-  display: block;
-  float: left;
-  width: 58%;
-  margin-bottom: 2em;
-}
-.group_ratings .fivestar-combo-stars {
-  padding-left: 1.5em;
-}
-.group_ratings .field {
-  clear: both;
+// Also tighten-up some of the whitespace for the ratings group 
+.group_ratings {
+  .field-label {
+    display: block;
+    float: left;
+    width: 40%;
+    margin-bottom: 2em;
+  }
+  .field-items {
+    display: block;
+    float: left;
+    width: 58%;
+    margin-bottom: 2em;
+  }
+  .fivestar-combo-stars {
+    padding-left: 1.5em;
+  }
+  .field {
+    clear: both;
+  }
 }
 
 
@@ -1198,7 +1213,7 @@ div.fivestar-widget div.hover a, div.rating div a:hover {
 
 .icon {
   margin-right: 0.5em;
-  font-size: 100%;
+  font-size: 110%;
 }
 .icon-large {
   font-size: 140%;
