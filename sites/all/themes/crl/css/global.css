@@ -875,8 +875,7 @@ body.resources-dashboard #zone-preface .view-display-id-block_5 .dashboard-lead-
   border-radius: 0 3px 3px 0;
 }
 .pager li.pager-current {
-  background: #e05400 url("../images/sprites.png?v=6");
-  background-position: 0px -700px;
+  background-color: #e05300;
   color: #FFFFFF;
   outline: 0 none;
 }
@@ -961,17 +960,16 @@ input[type="reset"],
 input[type="submit"],
 input[type="button"],
 aside .block .flag {
-  /*background: -moz-linear-gradient(center top , #e05400 0%, #e97101 100%) repeat scroll 0 0 transparent; */
-  /*background-image: none; */
-  background: #e05400 url("../images/sprites.png?v=6");
-  background-position: 0px -700px;
-  border-color: #e05400 #e05400 #e05400;
-  border-radius: 1px 1px 1px 1px;
+  background-image: none;
+  border-radius: 2px;
   border-style: solid;
   border-width: 1px;
+  background-color: #e05300;
+  border-color: #e97100;
   color: #fff !important;
   cursor: pointer;
-  font: bold 13px/1.3 Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: smaller;
   outline: 0 none;
   overflow: visible;
   padding: 5px 10px 5px;
@@ -991,8 +989,7 @@ input[type="submit"]:hover,
 input[type="button"]:hover,
 .form-actions input:hover,
 aside .block .flag:hover {
-  background: #e05400 url("../images/sprites.png?v=6");
-  background-position: 0px -720px;
+  background-color: #fa5c00;
   border-color: #fff;
 }
 button a,
@@ -1339,31 +1336,6 @@ div.fivestar-widget .cancel span.on {
 .icon-inactive_declined {
   color: #ed9800;
 }
-/* Icon Sprites */
-.summary-icon,
-.crl-icon,
-.message-icon {
-  background-image: url("../images/sprites.png?v=6");
-  height: 25px;
-  width: 25px;
-  display: inline-block;
-  padding-right: 1em;
-  overflow: hidden;
-  white-space: nowrap;
-  vertical-align: middle;
-}
-.summary-icon-small,
-.crl-icon-small,
-.message-icon-small {
-  background-image: url("../images/sprites.png?v=6");
-  height: 16px;
-  width: 16px;
-  display: inline-block;
-  margin-right: 16px;
-  overflow: hidden;
-  white-space: nowrap;
-  vertical-align: middle;
-}
 /* Activity Report */
 #status-summary {
   margin-bottom: 3em;
@@ -1511,6 +1483,23 @@ form.shared-vote-input-form .form-notes {
 /* --------------------------------------------------------------------------
    Messages and Mydes icons
    -------------------------------------------------------------------------- */
+/* Icon Sprites */
+.message-icon-small {
+  background-image: url("../images/sprites.png?v=6");
+  background-size: 500px;
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  margin-right: 16px;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
+  .message-icon-small {
+    background-image: url("../images/sprites2x.png?v=6");
+  }
+}
 /* Default for mesages */
 .message-icon-small {
   background-position: -50px -450px;
@@ -1531,25 +1520,6 @@ form.shared-vote-input-form .form-notes {
 .message-icon-small.resource_new_review,
 .message-icon-small.resource_suggested {
   background-position: -350px -450px;
-}
-/* Other misc MyDes icons */
-.pulse-icon {
-  background-position: -300px -300px;
-}
-.pulse-icon-dark {
-  background-position: -350px -300px;
-}
-.download-icon {
-  background-position: -400px -300px;
-}
-.download-icon-dark {
-  background-position: -450px -300px;
-}
-.rss-icon {
-  background-position: 0px -350px;
-}
-.rss-icon-dark {
-  background-position: -50px -350px;
 }
 /* Style exposed filters for message lists */
 .view-crl-messages .views-exposed-form .views-exposed-widget .form-submit {
