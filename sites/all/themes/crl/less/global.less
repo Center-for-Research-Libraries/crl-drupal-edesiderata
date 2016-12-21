@@ -183,10 +183,15 @@ blockquote {
 #section-header {
   background-color: #474b6f;
   background-image: url('../images/world-bg.png');
+  background-size: 538px;
   background-repeat: no-repeat;
   background-position: center top;
   height: auto;
   position: relative;
+  // Retina support.
+  @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
+    background-image: url('../images/world-bg2x.png');
+  }
 }
 #zone-header {
   position: relative;
