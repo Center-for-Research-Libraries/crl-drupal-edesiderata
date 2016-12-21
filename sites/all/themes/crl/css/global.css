@@ -545,7 +545,6 @@ ul.facetapi-facet-crl-glossary-value li a.facetapi-active {
 /* --------------------------------------------------------------------------
    Blocks Content Styles - Misc
    -------------------------------------------------------------------------- */
-/* Tweaks for interest rate box and summary */
 #block-crl-helpers-crl-helpers-interest-input i.icon {
   font-size: 120%;
 }
@@ -553,7 +552,6 @@ ul.facetapi-facet-crl-glossary-value li a.facetapi-active {
   color: green;
   font-weight: bold;
 }
-/* Tweaks for custom facet breadcrumb */
 #block-crl-helpers-crl-helpers-facet-breadcrumb {
   background: url('../images/content.png') 0 0 repeat;
   border: 1px solid #b7b7b7;
@@ -608,7 +606,6 @@ ul.facetapi-facet-crl-glossary-value li a.facetapi-active {
 #search-api-saved-searches-save-form-wrapper input#edit-name {
   width: 50%;
 }
-/* Tweaks for back-to-index link block */
 a#back-to-index {
   font-size: 80%;
   text-decoration: none;
@@ -620,8 +617,6 @@ a#back-to-index i {
 /* --------------------------------------------------------------------------
    Main Content Styles
    -------------------------------------------------------------------------- */
-/* Embedded computed content should be stripped of padding so that it flows
-normally with the other fields around it */
 #region-content .field-type-computed article .content,
 #region-content article article.node .content {
   padding: 0px;
@@ -629,7 +624,6 @@ normally with the other fields around it */
 .group_activity_trial h2 {
   margin-top: 2em;
 }
-/* Breadcrumbs */
 #breadcrumb .breadcrumb {
   font-size: 80%;
   padding-bottom: 1em;
@@ -647,26 +641,21 @@ normally with the other fields around it */
 /* --------------------------------------------------------------------------
    Content-specific Field styles
    -------------------------------------------------------------------------- */
-/* Handle taxonomy lists with inline labels */
 .field-label-inline .field-item:after {
   content: ",";
 }
 .field-label-inline .field-item:last-child:after {
   content: "";
 }
-/* Table tweaks for resource tablefields */
 #node_resource_full_group_details .tablefield-wrapper td.col_0 {
   width: 40%;
 }
-/* Style the provider icon that lives in details tablefields */
 img.from-provider-icon {
   float: right;
 }
-/* Fieldgroups need some extra whitespace */
 .field-group-div {
   padding-bottom: 1em;
 }
-/* Styles for the "publisher provided" source legend */
 #publisher-legend {
   float: right;
   margin: 5px 0px 10px 10px;
@@ -674,7 +663,6 @@ img.from-provider-icon {
 #publisher-legend img {
   vertical-align: middle;
 }
-/* Contact field styles (field collection) */
 .field-name-field-contacts-group .field-collection-view,
 .field-name-field-contacts-group .field-collection-view .content {
   padding-left: 0 !important;
@@ -712,12 +700,11 @@ img.from-provider-icon {
   padding: 15px;
 }
 .view-resource-lists h2,
-.view-resource-lists h3,
 .view-provider-lists h2,
+.view-resource-lists h3,
 .view-provider-lists h3 {
   border: none;
 }
-/* Add some spacing for the components of the resource list teasers */
 .view-resource-lists .teaser-details,
 .view-provider-lists .teaser-details {
   margin-top: 1.5em;
@@ -728,7 +715,6 @@ img.from-provider-icon {
 .views-row {
   margin-bottom: 20px;
 }
-/* Views grouping headers */
 .view-content h3 {
   background-color: transparent;
   border-bottom: 1px solid #acbfb1;
@@ -903,7 +889,8 @@ body.resources-dashboard #zone-preface .view-display-id-block_5 .dashboard-lead-
   border-radius: 0 3px 3px 0;
 }
 .pager li.pager-current {
-  background-color: #e05300;
+  background: none;
+  background-color: #e05300 !important;
   color: #FFFFFF;
   outline: 0 none;
 }

@@ -331,22 +331,22 @@ footer#section-footer {
 
 // Normal content and sidebar blocks
 #zone-content h2.block-title {
-    color: #474848;
-    font-size: 100%;
-    font-weight: normal;
-    margin-bottom: 15px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #e3e3e3;
+  color: #474848;
+  font-size: 100%;
+  font-weight: normal;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e3e3e3;
 }
 #region-sidebar-first .block,
 #region-sidebar-second .block,
 .comment-nested-wrapper {
-    background-color: #FFFFFF;
-    border: 1px solid #b7b7b7;
-    margin-bottom: 20px;
-    margin-top: 24px;
-    margin-right: 15px;
-    padding: 18px;
+  background-color: #FFFFFF;
+  border: 1px solid #b7b7b7;
+  margin-bottom: 20px;
+  margin-top: 24px;
+  margin-right: 15px;
+  padding: 18px;
 }
 
 
@@ -448,7 +448,7 @@ ul.facetapi-facet-crl-glossary-value {
    Blocks Content Styles - Misc
    -------------------------------------------------------------------------- */
 
-/* Tweaks for interest rate box and summary */
+// Tweaks for interest rate box and summary
 #block-crl-helpers-crl-helpers-interest-input {
   i.icon { // Fontello icon
     font-size: 120%;
@@ -459,54 +459,55 @@ ul.facetapi-facet-crl-glossary-value {
   }
 }
 
-/* Tweaks for custom facet breadcrumb */
+// Tweaks for custom facet breadcrumb
 #block-crl-helpers-crl-helpers-facet-breadcrumb {
   background: url('../images/content.png') 0 0 repeat;
   border: 1px solid #b7b7b7;
   margin: 20px 0px;
   padding: 10px;
+  a {
+    text-decoration: none;
+  }
+  .active-facet-wrapper {
+    display: inline-block;
+    margin: 0.2em 1em 0.2em 0;
+    padding: 5px 8px;
+    background-color: #eee;
+  }
+  .facet-breadcrumb-facet {
+    float: left;
+    clear: left;
+  }
+  .facet-breadcrumb-misc {
+    font-weight: bold;
+    float: left;
+    background-color: transparent;
+  }
+  .facet-breadcrumb-reset {
+    background-color: transparent;
+    float: right;
+    margin-right: 0;
+  }
+  .facet-breadcrumb-facets {
+    display: block;
+  }
+  .facet-breadcrumb-extras {
+    display: block;
+    margin-top: 10px;
+    padding: 20px 10px 10px 0px;
+    border-top: 1px solid #acbfb1;
+    fieldset {
+      margin: 0;
+    }
+    .fieldset-wrapper {
+      margin: 15px 0 0 20px;
+    }
+    .fieldset-legend {
+      font-weight: normal;
+    }
+  }
 }
-#block-crl-helpers-crl-helpers-facet-breadcrumb a {
-  text-decoration: none;
-}
-#block-crl-helpers-crl-helpers-facet-breadcrumb .active-facet-wrapper {
-  display: inline-block;
-  margin: 0.2em 1em 0.2em 0;
-  padding: 5px 8px;
-  background-color: #eee;
-}
-#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-facet {
-  float: left;
-  clear: left;
-}
-#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-misc {
-  font-weight: bold;
-  float: left;
-  background-color: transparent;
-}
-#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-reset {
-  background-color: transparent;
-  float: right;
-  margin-right: 0;
-}
-#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-facets {
-  display: block;
-}
-#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-extras {
-  display: block;
-  margin-top: 10px;
-  padding: 20px 10px 10px 0px;
-  border-top: 1px solid #acbfb1;
-}
-#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-extras fieldset {
-  margin: 0;
-}
-#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-extras .fieldset-wrapper {
-  margin: 15px 0 0 20px;
-}
-#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-extras .fieldset-legend {
-  font-weight: normal;
-}
+
 .facet-breadcrumb-reset-icon {
   margin-right: 8px;
   color: red;
@@ -515,7 +516,7 @@ ul.facetapi-facet-crl-glossary-value {
   width: 50%;
 }
 
-/* Tweaks for back-to-index link block */
+// Tweaks for back-to-index link block
 a#back-to-index {
   font-size: 80%;
   text-decoration: none;
@@ -530,8 +531,8 @@ a#back-to-index {
    Main Content Styles
    -------------------------------------------------------------------------- */
 
-/* Embedded computed content should be stripped of padding so that it flows
-normally with the other fields around it */
+// Embedded computed content should be stripped of padding so that it flows
+// normally with the other fields around it
 #region-content .field-type-computed article .content,
 #region-content article article.node .content {
   padding: 0px;
@@ -541,7 +542,7 @@ normally with the other fields around it */
   margin-top: 2em;
 }
 
-/* Breadcrumbs */
+// Breadcrumbs
 #breadcrumb .breadcrumb {
   font-size: 80%;
   padding-bottom: 1em;
@@ -563,38 +564,40 @@ normally with the other fields around it */
    Content-specific Field styles
    -------------------------------------------------------------------------- */
 
-/* Handle taxonomy lists with inline labels */
-.field-label-inline .field-item:after {
-  content: ","
-}
-.field-label-inline .field-item:last-child:after {
-  content: ""
+// Handle taxonomy lists with inline labels
+.field-label-inline .field-item {
+  &:after {
+    content: ","
+  }
+  &:last-child:after {
+    content: ""
+  }
 }
 
-/* Table tweaks for resource tablefields */
+// Table tweaks for resource tablefields
 #node_resource_full_group_details .tablefield-wrapper td.col_0 {
   width: 40%;
 }
-/* Style the provider icon that lives in details tablefields */
+// Style the provider icon that lives in details tablefields
 img.from-provider-icon {
   float: right;
 }
 
-/* Fieldgroups need some extra whitespace */
+// Fieldgroups need some extra whitespace
 .field-group-div {
   padding-bottom: 1em;
 }
 
-/* Styles for the "publisher provided" source legend */
+// Styles for the "publisher provided" source legend
 #publisher-legend {
   float: right;
   margin: 5px 0px 10px 10px;
-}
-#publisher-legend img {
-  vertical-align: middle;
+  img {
+    vertical-align: middle;
+  }
 }
 
-/* Contact field styles (field collection) */
+// Contact field styles (field collection)
 .field-name-field-contacts-group .field-collection-view,
 .field-name-field-contacts-group .field-collection-view .content {
   padding-left: 0 !important;
@@ -636,17 +639,17 @@ img.from-provider-icon {
 	padding: 15px;
 }
 
-.view-resource-lists h2,
-.view-resource-lists h3,
-.view-provider-lists h2,
-.view-provider-lists h3 {
-  border: none;
+.view-resource-lists, .view-provider-lists {
+  h2, h3 {
+    border: none;
+  }
 }
 
-/* Add some spacing for the components of the resource list teasers */
-.view-resource-lists .teaser-details,
-.view-provider-lists .teaser-details {
-  margin-top: 1.5em;
+// Add some spacing for the components of the resource list teasers
+.view-resource-lists, .view-provider-lists {
+  .teaser-details {
+    margin-top: 1.5em;
+  }
 }
 
 .views-exposed-widgets {
@@ -656,7 +659,7 @@ img.from-provider-icon {
 	margin-bottom:20px;
 }
 
-/* Views grouping headers */
+// Views grouping headers
 .view-content h3 {
 	background-color: transparent;
 	border-bottom: 1px solid #acbfb1;
@@ -664,9 +667,9 @@ img.from-provider-icon {
 	color:#333;
 	display:block;
 	padding:5px 0 5px 20px;
-}
-.view-content h3 a {
-  text-decoration: none !important;
+  a {
+    text-decoration: none !important;
+  }
 }
 
 
@@ -817,26 +820,27 @@ body.resources-dashboard #zone-preface .view-display-id-block_5 .dashboard-lead-
 }
 
 .pager {
-    background: none repeat scroll 0 0 #EBEBEB;
-    border-color: #DDDDDD #BBBBBB #999999;
-    border-radius: 3px 3px 3px 3px;
-    border-style: solid;
-    border-width: 1px;
+  background: none repeat scroll 0 0 #EBEBEB;
+  border-color: #DDDDDD #BBBBBB #999999;
+  border-radius: 3px 3px 3px 3px;
+  border-style: solid;
+  border-width: 1px;
 }
 .pager li.first, .pager li.first a, .pager li.first a:hover {
-    border-radius: 3px 0 0 3px;
+  border-radius: 3px 0 0 3px;
 }
 .pager li.pager-last, .pager li.pager-last a, .pager li.pager-last a:hover {
-    border-radius: 0 3px 3px 0;
+  border-radius: 0 3px 3px 0;
 }
 .pager li.pager-current {
-    background-color: #e05300;
-    color: #FFFFFF;
-    outline: 0 none;
+  background: none; // Reset
+  background-color: #e05300 !important;
+  color: #FFFFFF;
+  outline: 0 none;
 }
 .pager li a:hover {
-    background: none repeat scroll 0 0 #FFFFFF;
-    color: #e05400;
+  background: none repeat scroll 0 0 #FFFFFF;
+  color: #e05400;
 }
 
 
