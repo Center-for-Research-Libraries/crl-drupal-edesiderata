@@ -917,7 +917,7 @@ body.resources-dashboard .super-num {
 }
 .horizontal-tabs ul.horizontal-tabs-list li {
   padding: 0px;
-  border-right: 2px solid #fff;
+  border-right: 1px solid #fff;
 }
 .horizontal-tabs ul.horizontal-tabs-list li.last {
   border-right: none;
@@ -1057,24 +1057,21 @@ input[type="week"] {
 textarea {
   height: inherit !important;
 }
-/* Fieldsets for custom-made sets (using fieldgroups on activity) as well as for
-tablefields (on reviews of resources) */
 body.page-node-edit fieldset.field-group-fieldset,
-body.page-node-edit fieldset.form-tablefield,
 body.page-node-add fieldset.field-group-fieldset,
+body.page-node-edit fieldset.form-tablefield,
 body.page-node-add fieldset.form-tablefield {
   border: 1px solid #b7b7b7;
   padding: 20px;
   background-color: #F5F5F5;
 }
 body.page-node-edit fieldset.field-group-fieldset > legend > span.fieldset-legend,
-body.page-node-edit fieldset.form-tablefield > legend > span.fieldset-legend,
 body.page-node-add fieldset.field-group-fieldset > legend > span.fieldset-legend,
+body.page-node-edit fieldset.form-tablefield > legend > span.fieldset-legend,
 body.page-node-add fieldset.form-tablefield > legend > span.fieldset-legend {
   font-size: 140%;
   margin: 0px 8px;
 }
-/* Webform fieldsets */
 .webform-client-form fieldset {
   border: 1px solid #b7b7b7;
   padding: 20px;
@@ -1084,12 +1081,11 @@ body.page-node-add fieldset.form-tablefield > legend > span.fieldset-legend {
   font-size: 120%;
   padding: 0 0.5em;
 }
-/* Date inputs should be side-by-side. See: https://www.drupal.org/node/1248720 */
 body.page-node-edit .date-padding,
-body.page-node-edit .date-padding div,
-body.page-node-edit .date-padding label,
 body.page-node-add .date-padding,
+body.page-node-edit .date-padding div,
 body.page-node-add .date-padding div,
+body.page-node-edit .date-padding label,
 body.page-node-add .date-padding label {
   padding: 0px !important;
 }
@@ -1105,8 +1101,6 @@ body.page-node-add .end-date-wrapper .form-item label {
   padding-right: 20px;
   padding-top: 0px;
 }
-/* Fieldset legends, used mostly on edit screens, should be bold to better
-match normal field labels */
 .fieldset-legend {
   font-weight: bold;
 }
@@ -1122,7 +1116,6 @@ match normal field labels */
 .tabs {
   padding-bottom: 20px;
 }
-/* Add some responsiveness to tabs */
 ul.tabs.primary li,
 ul.tabs.secondary li {
   white-space: nowrap;
@@ -1133,7 +1126,7 @@ ul.tabs.primary li a,
 ul.tabs.secondary li a {
   display: inline-block;
 }
-ul.tabs.primary {
+#page ul.tabs.primary {
   border-bottom: 2px solid #ACBFB1;
   border-collapse: collapse;
   line-height: 1.4em;
@@ -1141,15 +1134,17 @@ ul.tabs.primary {
   margin: 5px;
   padding: 0px 15px;
 }
-ul.tabs.secondary {
-  padding-bottom: 0px;
-}
 #page ul.tabs.primary li a {
   background-color: #ffffff;
+  transition: none;
   border: 1px solid #b7b7b7;
   border-bottom: none;
   color: #333333;
   padding: 5px 10px;
+}
+#page ul.tabs.primary li a:hover {
+  background-color: #8ca36b;
+  color: #fff;
 }
 #page ul.tabs.primary li.active a {
   background-color: #acbfb1;
@@ -1157,18 +1152,15 @@ ul.tabs.secondary {
   border-bottom: none;
   color: #ffffff;
 }
-#page ul.tabs.primary li a:hover {
-  background-color: #8ca36b;
-  color: #fff;
+#page ul.tabs.secondary {
+  padding-bottom: 0px;
 }
-/* Any tabs that are manually placed inside the "preface" are a little special
-and need thier own highlighting */
-#region-preface-first ul.tabs.primary {
+#page #region-preface-first ul.tabs.primary {
   border-bottom: 0px;
   margin-bottom: 0px;
   padding-left: 5px;
 }
-#region-preface-first ul.tabs.primary li {
+#page #region-preface-first ul.tabs.primary li {
   margin-bottom: -1px;
   padding-bottom: 0px;
 }
@@ -1176,16 +1168,14 @@ and need thier own highlighting */
   background-color: #ACBFB1;
   color: #fff;
 }
-#page #region-preface-first ul.tabs.primary li.active a {
-  background-color: #fff;
-  color: #333;
-}
 #page #region-preface-first ul.tabs.primary li a:hover {
   background-color: #8ca36b;
   color: #fff;
 }
-/* On the resoruce index we only want the manually placed tabs to appear, so
-hide the normal template-placed tabs. */
+#page #region-preface-first ul.tabs.primary li.active a {
+  background-color: #fff;
+  color: #333;
+}
 body.resources-index #zone-content ul.tabs {
   display: none;
 }
@@ -1201,33 +1191,30 @@ body.resources-index #zone-content ul.tabs {
 .comment footer span.username {
   font-weight: bold;
 }
+#comments {
+  margin: 1.5em 0em;
+}
 #comments span.username {
   color: #666;
   font-size: 1.1em;
 }
-#comments {
-  margin: 1.5em 0em;
-}
-nav.comment-links {
-  margin-top: 20px;
-}
-/* Node links tend to break the spacing before comments. This tries to adjust
-for that */
-nav.node-links ul {
-  display: block !important;
-  margin: 1.5em 0em;
-}
-.rating-wrapper {
-  margin-top: 2em;
-}
-/* Custom styles for nested replies */
-.indented {
+#comments .indented {
   margin-left: 50px;
 }
 #comments .indented article {
   border-top: 1px dotted #b7b7b7;
   margin-top: 20px;
   padding-top: 20px;
+}
+nav.comment-links {
+  margin-top: 20px;
+}
+nav.node-links ul {
+  display: block !important;
+  margin: 1.5em 0em;
+}
+.rating-wrapper {
+  margin-top: 2em;
 }
 /* --------------------------------------------------------------------------
    Rating Stars

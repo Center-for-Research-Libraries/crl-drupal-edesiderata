@@ -877,7 +877,7 @@ body.resources-dashboard {
     border: none;
     li {
       padding: 0px; // Critial for sane border management
-      border-right: 2px solid #fff;
+      border-right: 1px solid #fff;
       &.last {
         border-right: none;
       }
@@ -997,55 +997,52 @@ textarea {
 	height: inherit !important;
 }
 
-/* Fieldsets for custom-made sets (using fieldgroups on activity) as well as for
-tablefields (on reviews of resources) */
-body.page-node-edit fieldset.field-group-fieldset,
-body.page-node-edit fieldset.form-tablefield,
-body.page-node-add fieldset.field-group-fieldset,
-body.page-node-add fieldset.form-tablefield {
-  border: 1px solid #b7b7b7;
-  padding: 20px;
-  background-color: #F5F5F5;
-}
-body.page-node-edit fieldset.field-group-fieldset > legend > span.fieldset-legend,
-body.page-node-edit fieldset.form-tablefield > legend > span.fieldset-legend,
-body.page-node-add fieldset.field-group-fieldset > legend > span.fieldset-legend,
-body.page-node-add fieldset.form-tablefield > legend > span.fieldset-legend {
-  font-size: 140%;
-  margin: 0px 8px;
+// Fieldsets for custom-made sets (using fieldgroups on activity) as well as for
+// tablefields (on reviews of resources)
+body.page-node-edit, body.page-node-add {
+  fieldset.field-group-fieldset, fieldset.form-tablefield {
+    border: 1px solid #b7b7b7;
+    padding: 20px;
+    background-color: #F5F5F5;
+  }
+  fieldset.field-group-fieldset, fieldset.form-tablefield {
+    > legend > span.fieldset-legend {
+      font-size: 140%;
+      margin: 0px 8px;
+    }
+  }
 }
 
-/* Webform fieldsets */
+// Webform fieldsets
 .webform-client-form fieldset {
   border: 1px solid #b7b7b7;
   padding: 20px;
-}
-.webform-client-form fieldset legend {
-  font-weight: bold;
-  font-size: 120%;
-  padding: 0 0.5em;
-}
-
-/* Date inputs should be side-by-side. See: https://www.drupal.org/node/1248720 */
-body.page-node-edit .date-padding, body.page-node-edit .date-padding div, body.page-node-edit .date-padding label,
-body.page-node-add .date-padding, body.page-node-add .date-padding div, body.page-node-add .date-padding label{
-  padding:0px !important;
-}
-body.page-node-edit .date-no-float,
-body.page-node-add .date-no-float {
-  clear:none;
-  float:left;
-  width:auto;
-}
-body.page-node-edit .end-date-wrapper .form-item label,
-body.page-node-add .end-date-wrapper .form-item label {
-  float: left;
-  padding-right: 20px;
-  padding-top: 0px;
+  legend {
+    font-weight: bold;
+    font-size: 120%;
+    padding: 0 0.5em;
+  }
 }
 
-/* Fieldset legends, used mostly on edit screens, should be bold to better
-match normal field labels */
+// Date inputs should be side-by-side. See: https://www.drupal.org/node/1248720
+body.page-node-edit, body.page-node-add {
+  .date-padding, .date-padding div, .date-padding label {
+    padding:0px !important;
+  }
+  .date-no-float {
+    clear:none;
+    float:left;
+    width:auto;
+  }
+  .end-date-wrapper .form-item label {
+    float: left;
+    padding-right: 20px;
+    padding-top: 0px;
+  }
+}
+
+// Fieldset legends, used mostly on edit screens, should be bold to better
+// match normal field labels
 .fieldset-legend {
   font-weight: bold;
 }
@@ -1066,70 +1063,74 @@ match normal field labels */
   padding-bottom: 20px;
 }
 
-/* Add some responsiveness to tabs */
+// Add some responsiveness to tabs
 ul.tabs.primary li, ul.tabs.secondary li {
   white-space: nowrap;
   float: left;
   margin-top: 0.5em;
-}
-ul.tabs.primary li a, ul.tabs.secondary li a {
-  display: inline-block;
+  a {
+    display: inline-block;
+  }
 }
 
-ul.tabs.primary {
+#page ul.tabs.primary {
   border-bottom: 2px solid #ACBFB1;
   border-collapse: collapse;
   line-height: 1.4em;
   list-style: none outside none;
   margin: 5px;
   padding: 0px 15px;
+  li {
+    a {
+      background-color: #ffffff;
+      transition: none;
+      border: 1px solid #b7b7b7;
+      border-bottom: none;
+      color: #333333;
+      padding: 5px 10px;
+      &:hover {
+        background-color: #8ca36b;
+        color: #fff;
+      }
+    }
+    &.active a {
+      background-color: #acbfb1;
+      border: 1px solid #b7b7b7;
+      border-bottom: none;
+      color: #ffffff;
+    }
+  }
 }
-ul.tabs.secondary {
+#page ul.tabs.secondary {
   padding-bottom: 0px;
 }
-#page ul.tabs.primary li a {
-  background-color: #ffffff;
-  border: 1px solid #b7b7b7;
-  border-bottom: none;
-  color: #333333;
-  padding: 5px 10px;
-}
-#page ul.tabs.primary li.active a {
-  background-color: #acbfb1;
-  border: 1px solid #b7b7b7;
-  border-bottom: none;
-  color: #ffffff;
-}
-#page ul.tabs.primary li a:hover {
-  background-color: #8ca36b;
-  color: #fff;
-}
 
-/* Any tabs that are manually placed inside the "preface" are a little special
-and need thier own highlighting */
-#region-preface-first ul.tabs.primary {
+// Any tabs that are manually placed inside the "preface" are a little special
+// and need thier own highlighting
+#page #region-preface-first ul.tabs.primary {
   border-bottom: 0px;
   margin-bottom: 0px;
   padding-left: 5px;
+  li {
+    margin-bottom: -1px;
+    padding-bottom: 0px;
+    a {
+      background-color: #ACBFB1;
+      color: #fff;
+      &:hover {
+        background-color: #8ca36b;
+        color: #fff;
+      }
+    }
+    &.active a {
+      background-color: #fff;
+      color: #333;
+    }
+  }
 }
-#region-preface-first ul.tabs.primary li {
-  margin-bottom: -1px;
-  padding-bottom: 0px;
-}
-#page #region-preface-first ul.tabs.primary li a {
-  background-color: #ACBFB1;
-  color: #fff;
-}
-#page #region-preface-first ul.tabs.primary li.active a {
-  background-color: #fff;
-  color: #333;
-}
-#page #region-preface-first ul.tabs.primary li a:hover {
-  background-color: #8ca36b;
-  color: #fff;
-}
-/* On the resoruce index we only want the manually placed tabs to appear, so
-hide the normal template-placed tabs. */
+
+// On the resoruce index we only want the manually placed tabs to appear, so
+// hide the normal template-placed tabs.
 body.resources-index #zone-content ul.tabs {
   display: none;
 }
@@ -1149,36 +1150,34 @@ body.resources-index #zone-content ul.tabs {
   font-weight: bold;
 }
 
-#comments span.username {
-	color:#666;
-	font-size: 1.1em;
-}
-
 #comments {
   margin: 1.5em 0em;
+  span.username {
+    color: #666;
+    font-size: 1.1em;
+  }
+  // Custom styles for nested replies
+  .indented {
+    margin-left: 50px;
+    article {
+      border-top: 1px dotted #b7b7b7;
+      margin-top: 20px;
+      padding-top: 20px;
+    }
+  }
 }
-
 nav.comment-links {
   margin-top: 20px;
 }
-/* Node links tend to break the spacing before comments. This tries to adjust
-for that */
+
+// Node links tend to break the spacing before comments. This tries to adjust
+//for that
 nav.node-links ul {
   display: block !important;
   margin: 1.5em 0em;
 }
 .rating-wrapper {
   margin-top: 2em;
-}
-
-/* Custom styles for nested replies */
-.indented {
-  margin-left: 50px;
-}
-#comments .indented article {
-  border-top: 1px dotted #b7b7b7;
-  margin-top: 20px;
-  padding-top: 20px;
 }
 
 
