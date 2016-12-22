@@ -68,7 +68,9 @@ p.site-slogan {
   color: #333 !important;
   background-color: #fff !important;
 }
-#header-menus ul li a:hover {
+#header-menus ul li a:hover,
+#header-menus ul li a:active,
+#header-menus ul li a:focus {
   color: #fff !important;
   background-color: #8ca36b !important;
 }

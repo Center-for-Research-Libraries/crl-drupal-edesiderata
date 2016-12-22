@@ -1,3 +1,4 @@
+@import 'variables';
 @import 'fontello';
 
 /* --------------------------------------------------------------------------
@@ -49,7 +50,7 @@ body {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
   font-size: 0.8em;
   line-height: 1.5;
-  color: #333;
+  color: @text-color;
 }
 
 // Common header styles. Note that normal field labels in analysis group tabs
@@ -69,7 +70,7 @@ h1 {
 h2, .group-analysis > .fieldset-wrapper > .field-label-above .field-label {
   font-size: 150%;
   border-bottom: 1px solid #bbb;
-  color: #414169;
+  color: @colored-heading;
   text-transform: none;
 }
 h2.node-title {
@@ -78,7 +79,7 @@ h2.node-title {
 h3, .field-label, #node_resource_full_group_analysis .group_sources .field-label-above .field-label {
   font-size: 110%;
   border: none;
-  color: #333;
+  color: @text-color;
 }
 h4 {
   font-size: 100%;
@@ -90,14 +91,14 @@ label {
 	padding-bottom: 3px;
 }
 #page a {
-	color: #493986;
+	color: @link-color-primary;
   transition: color 100ms ease-out;
   &:hover {
-    color: darken(#e97100, 5%);
+    color: darken(@highlight-color, 5%);
   }
 }
 a.inline-button {
-  background-color: #9c9eb0;
+  background-color: @inline-button-color;
   transition: background-color 0.15s ease-in-out !important;
   font-size: 90%;
   padding: 5px;
@@ -107,15 +108,15 @@ a.inline-button {
   font-weight: bold;
   line-height: 2.5;
   &:hover {
-    background-color: lighten(#9c9eb0, 10%);
+    background-color: lighten(@inline-button-color, 10%);
   }
 }
 #page p {
-  color: #3b3b3b;
+  color: @text-color;
 }
 
 #region-content h1#page-title {
-	margin-left:10px;
+	margin-left: 10px;
 	font-weight: 300;
 }
 
@@ -189,7 +190,7 @@ blockquote {
    -------------------------------------------------------------------------- */
 
 #section-header {
-  background-color: #474b6f;
+  background-color: @header-background-color;
   background-image: url('../images/world-bg.png?v=6');
   background-size: 538px;
   background-repeat: no-repeat;
@@ -289,19 +290,19 @@ form#ctools-jump-menu {
 }
 footer#section-footer {
   margin-top: 30px;
-  background-color: #2B2A45;
-  color: #D1CFBD;
+  background-color: @footer-background-color;
+  color: @footer-text-color;
   font-size: 90%;
   position: relative;
   a {
     text-decoration: none;
     &:hover {
       background-color: #fff !important;
-      color: #333 !important;
+      color: @text-color !important;
     }
   }
   a, p {
-    color: #D1CFBD;
+    color: @footer-text-color;
   }
   ul li {
     list-style: none;
@@ -320,7 +321,7 @@ footer#section-footer {
     position: absolute;
     top: 0px;
     left: 0px;
-    border-bottom: 1px solid #66667B;
+    border-bottom: 1px solid @inline-button-color;
     text-align: center;
     h3 {
       margin: 20px 0px 10px 0px;
@@ -335,7 +336,7 @@ footer#section-footer {
 
 // Normal content and sidebar blocks
 #zone-content h2.block-title {
-  color: #474848;
+  color: @text-color;
   font-size: 100%;
   font-weight: normal;
   margin-bottom: 15px;
@@ -499,7 +500,7 @@ ul.facetapi-facet-crl-glossary-value {
     display: block;
     margin-top: 10px;
     padding: 20px 10px 10px 0px;
-    border-top: 1px solid #acbfb1;
+    border-top: 1px solid @subtle-fill-color;
     fieldset {
       margin: 0;
     }
@@ -555,7 +556,7 @@ a#back-to-index {
   float: right;
 }
 #breadcrumb .breadcrumb a {
-  color:#666;
+  color: #666;
   text-align: left;
 }
 
@@ -637,7 +638,6 @@ img.from-provider-icon {
 .view-resource-lists .views-row.views-row-even,
 .view-provider-lists .views-row.views-row-even,
 .views-row.item-list-box.views-row-even {
-	background-color: #f4f3ea;
   background-color: #eaeaea;
 	border: 1px dotted #999;
 	padding: 15px;
@@ -666,11 +666,11 @@ img.from-provider-icon {
 // Views grouping headers
 .view-content h3 {
 	background-color: transparent;
-	border-bottom: 1px solid #acbfb1;
-	border-top: 1px solid #acbfb1;
-	color:#333;
-	display:block;
-	padding:5px 0 5px 20px;
+	border-bottom: 1px solid @subtle-fill-color;
+	border-top: 1px solid @subtle-fill-color;
+	color: @text-color;
+	display: block;
+	padding: 5px 0 5px 20px;
   a {
     text-decoration: none !important;
   }
@@ -750,13 +750,13 @@ body.resources-dashboard {
       text-decoration: none !important;
     }
     .region-postscript-first {
-      outline: 1px solid #6e0097;
+      outline: 1px solid darken(@status-color-purple, 5%);
     }
     .region-postscript-second {
-      outline: 1px solid #397f2c;
+      outline: 1px solid darken(@status-color-green, 5%);
     }
     .region-postscript-third {
-      outline: 1px solid #b44c74;
+      outline: 1px solid darken(@status-color-pink, 5%);
     }
     .region {
       background: rgb(255,255,255); /* Old browsers */
@@ -846,7 +846,7 @@ body.resources-dashboard {
   }
   li a:hover {
     background: none repeat scroll 0 0 #FFFFFF;
-    color: #e05400;
+    color: @highlight-color;
   }
 }
 .item-list .pager {
@@ -882,7 +882,7 @@ body.resources-dashboard {
         border-right: none;
       }
       & a {
-        background-color: #8ca36b;
+        background-color: @secondary-button-color;
         color: #fff !important;
         transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
         &:hover {
@@ -915,12 +915,12 @@ input.form-checkbox, input.form-radio {
 .views-exposed-form .views-exposed-widget .form-submit {
   margin-top: 0.6em;
 }
-button, .button, input[type="reset"], input[type="submit"], input[type="button"], aside .block .flag {
+button, .button, input[type="reset"], input[type="submit"], input[type="button"], .form-actions input, aside .block .flag {
   background-image: none;
   border-radius: 2px;
   border-style: solid;
   border-width: 1px;
-  background-color: #e05300;
+  background-color: darken(@highlight-color, 3%);
   border-color: #fff;
   color: #fff !important;
   cursor: pointer;
@@ -934,13 +934,13 @@ button, .button, input[type="reset"], input[type="submit"], input[type="button"]
   width: auto;
   text-decoration: none !important;
   white-space: nowrap;
+  &:hover,&:active {
+    background-color: @highlight-color;
+    border-color: @highlight-color;
+  }
 }
 .button {
   line-height: 3em;
-}
-button:hover, .button:hover, input[type="reset"]:hover, input[type="submit"]:hover, input[type="button"]:hover, .form-actions input:hover, aside .block .flag:hover {
-  background-color: lighten(#e05300, 5%);
-  border-color: #e97100;
 }
 button a, .button a, a.button {
   color: #fff !important;
@@ -961,7 +961,7 @@ nav.links ul li a {
   display: inline-block;
   &:hover {
     background: #fff;
-    color: #29449d !important;
+    color: @link-color-primary !important;
   }
 }
 nav.comment-links ul li {
@@ -1048,9 +1048,9 @@ body.page-node-edit, body.page-node-add {
 }
 // Reset link styling for vertical tabs
 #page form .vertical-tabs ul.vertical-tabs-list a {
-  color: #493986;
+  color: @link-color-primary;
   &:hover {
-    color: #493986;
+    color: @link-color-primary;
   }
 }
 
@@ -1074,7 +1074,7 @@ ul.tabs.primary li, ul.tabs.secondary li {
 }
 
 #page ul.tabs.primary {
-  border-bottom: 2px solid #ACBFB1;
+  border-bottom: 2px solid @subtle-fill-color;
   border-collapse: collapse;
   line-height: 1.4em;
   list-style: none outside none;
@@ -1086,15 +1086,15 @@ ul.tabs.primary li, ul.tabs.secondary li {
       transition: none;
       border: 1px solid #b7b7b7;
       border-bottom: none;
-      color: #333333;
+      color: @text-color;
       padding: 5px 10px;
       &:hover {
-        background-color: #8ca36b;
+        background-color: @secondary-button-color;
         color: #fff;
       }
     }
     &.active a {
-      background-color: #acbfb1;
+      background-color: @subtle-fill-color;
       border: 1px solid #b7b7b7;
       border-bottom: none;
       color: #ffffff;
@@ -1115,16 +1115,16 @@ ul.tabs.primary li, ul.tabs.secondary li {
     margin-bottom: -1px;
     padding-bottom: 0px;
     a {
-      background-color: #ACBFB1;
+      background-color: @subtle-fill-color;
       color: #fff;
       &:hover {
-        background-color: #8ca36b;
+        background-color: @secondary-button-color;
         color: #fff;
       }
     }
     &.active a {
       background-color: #fff;
-      color: #333;
+      color: @text-color;
     }
   }
 }
@@ -1212,13 +1212,13 @@ div.fivestar-widget-static .star, div.fivestar-widget .star, div.fivestar-widget
     }
   }
   &.on a { // Widget input "on"
-    color: #6b29a0 !important;
+    color: @status-color-purple !important;
   }
   &.hover a { // Widget input hover
-    color: #29449d !important;
+    color: @status-color-blue !important;
   }
   span.on { // Static display "on"
-    color: #f68600 !important;
+    color: @status-color-orange !important;
   }
 }
 // Also tighten-up some of the whitespace for the ratings group
@@ -1256,28 +1256,28 @@ div.fivestar-widget-static .star, div.fivestar-widget .star, div.fivestar-widget
   font-size: 140%;
 }
 .icon-license_available {
-  color: #469c36
+  color: @status-color-green;
 }
 .icon-license_under_consideration {
-  color: #e77a22;
+  color: @status-color-orange;
 }
 .icon-trial_access_available {
-  color: #00369a;
+  color: @status-color-blue;
 }
 .icon-crl_desiderata {
-  color: #dc286c;
+  color: @status-color-pink;
 }
 .icon-crl_review_available {
-  color: #70009a;
+  color: @status-color-purple;
 }
 .icon-license_renewal_available {
-  color: #47aea7;
+  color: @status-color-aqua;
 }
 .icon-past_license_offer {
-  color: #a50808;
+  color: @status-color-red;
 }
 .icon-inactive_declined {
-  color: #ed9800;
+  color: @status-color-yellow;
 }
 
 
@@ -1514,7 +1514,7 @@ h2 span.crl-tag {
 }
 .crl-tag {
   &.urgent {
-    color: #ff1f22;
+    color: @status-color-bright-red;
   }
   &.expiration {
     white-space: nowrap;
@@ -1522,7 +1522,7 @@ h2 span.crl-tag {
   &.alert {
     color: #fff;
     padding: 1px 3px;
-    background-color: #ff1f22;
+    background-color: @status-color-bright-red;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     -khtml-border-radius: 5px;
@@ -1546,7 +1546,7 @@ h2 span.crl-tag {
 // Special highlight boxes (styled to avoid confusion with system message
 // boxes)
 body.page-node-add-resource #edit-field-provider, .notice-box {
-  border: 1px solid #e05400;
+  border: 1px solid darken(@highlight-color, 5%);
   padding: 10px;
   background-color: #f5f5f5;
   margin-bottom: 2em;
@@ -1654,8 +1654,8 @@ fieldset {
 span.provider-p {
   font-family: Raleway, sans-serif;
   font-size: 75%;
-  border: 1px solid #333;
-  background-color: #70009a;
+  border: 1px solid @text-color;
+  background-color: @status-color-purple;
   color: #fff;
   padding: 3px 6px;
   margin-right: 0.5em;

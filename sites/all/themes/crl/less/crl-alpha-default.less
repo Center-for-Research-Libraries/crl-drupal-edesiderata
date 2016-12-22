@@ -2,6 +2,8 @@
 // (i.e. not the mobile layout)
 
 
+@import 'variables';
+
 /* --------------------------------------------------------------------------
    Header Styles - General
    -------------------------------------------------------------------------- */
@@ -63,18 +65,18 @@ p.site-slogan {
       display: block;
       height: 29px;
       padding: 5px 15px;
-      background-color: #1a1c35;
+      background-color: @primary-button-color;
       color: #fff;
       font-weight: bold;
       text-decoration: none !important;
       transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
       &.active,&.active-trail {
-        color: #333 !important;
+        color: @text-color !important;
         background-color: #fff !important;
       }
-      &:hover {
+      &:hover,&:active,&:focus {
         color: #fff !important;
-        background-color: #8ca36b !important;
+        background-color: @secondary-button-color !important;
       }
     }
   }
