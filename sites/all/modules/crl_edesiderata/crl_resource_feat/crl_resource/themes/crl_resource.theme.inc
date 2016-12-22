@@ -93,7 +93,7 @@ function theme_crl_resource_field_status_summary($vars) {
     // Set values
     $rows[] = array(
       'data' => array(
-        '<span class="summary-icon-small ' . $status_key . ' ' . $active_class . '"></span>',
+        '<i class="icon icon-' . $status_key . ' ' . $active_class . '"></i>',
         $text,
         $current,
         $vars['status_descriptions'][$status_key],

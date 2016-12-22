@@ -49,8 +49,8 @@ function theme_crl_helpers_interest_widget($variables) {
     $output .= '<p>' . $display_options['description'] . '</p>';
   }
 
-  $yes_button = '<a class="rate-button button" id="rate-button-100" rel="nofollow" href="' . htmlentities($links[0]['href']) . '" title="' . $links[0]['text'] . '">' . '<span class="crl-icon-small thumbsup-icon"></span>' . $links[0]['text'] . '</a>';
-  $no_button = '<a class="rate-button button" id="rate-button-101" rel="nofollow" href="' . htmlentities($links[1]['href']) . '" title="' . $links[1]['text'] . '">' . '<span class="crl-icon-small thumbsdown-icon"></span>' . $links[1]['text'] . '</a>';
+  $yes_button = '<a class="rate-button button" id="rate-button-100" rel="nofollow" href="' . htmlentities($links[0]['href']) . '" title="' . $links[0]['text'] . '">' . '<i class="icon icon-thumbs-up-alt"></i>' . $links[0]['text'] . '</a>';
+  $no_button = '<a class="rate-button button" id="rate-button-101" rel="nofollow" href="' . htmlentities($links[1]['href']) . '" title="' . $links[1]['text'] . '">' . '<i class="icon icon-thumbs-down-alt"></i>' . $links[1]['text'] . '</a>';
   $output .= '<p class="interest-input">' . $yes_button . ' ' . $no_button . '</p>';
 
   if ($info) {
@@ -72,10 +72,10 @@ function theme_crl_helpers_facet_breadcrumb($variables) {
   $output = '';
   $output .= '<div class="facet-breadcrumb-content">';
   $output .= '<div class="facet-breadcrumb-facets clearfix">';
-  $output .= '<div class="active-facet-wrapper facet-breadcrumb-reset">' . l('<span class="facet-breadcrumb-reset-icon"></span>' . t('Clear all filters'), $variables['base_path'], array('html' => TRUE)) . '</div>';
+  $output .= '<div class="active-facet-wrapper facet-breadcrumb-reset">' . l('<i class="facet-breadcrumb-reset-icon icon-cancel"></i>' . t('Clear all filters'), $variables['base_path'], array('html' => TRUE)) . '</div>';
   $output .= '<div class="active-facet-wrapper facet-breadcrumb-misc">' . t('Active Filters:') . '</div>';
   foreach ($variables['active_facets'] as $facet) {
-    $output .= '<div class="active-facet-wrapper facet-breadcrumb-facet">' . l('<span class="facet-breadcrumb-reset-icon"></span><span class="facet-breadcrumb-label"></span>', $facet['path'], $facet['options']) . $facet['text'] . '</div>';
+    $output .= '<div class="active-facet-wrapper facet-breadcrumb-facet">' . l('<i class="facet-breadcrumb-reset-icon icon-cancel"></i>', $facet['path'], $facet['options']) . '<span class="facet-breadcrumb-label">' . $facet['text'] . '</span></div>';
   }
   $output .= '</div>';
   $extra = drupal_render($variables['extra']);
@@ -198,7 +198,7 @@ function theme_crl_helpers_summary($vars) {
     $highlights = array();
     if (!empty($vars['status'])) {
       foreach ($vars['status'] as $status) {
-        $highlights['one'][] = '<span class="summary-icon ' . $status . '"></span>' . $status_options[$status];
+        $highlights['one'][] = '<i class="icon icon-' . $status . ' icon-large"></i>' . $status_options[$status];
       }
     }
     // Get feedback row.
@@ -209,10 +209,10 @@ function theme_crl_helpers_summary($vars) {
       $highlights['two'][] = '<span class="big-num">' . $vars['vote_average'] . '</span> ' . t('Average Rating');
     }
     if (!empty($vars['interest_count_up'])) {
-      $highlights['two'][] = '<span class="big-num">' . $vars['interest_count_up'] . '</span><span title="Thumbs Up" alt="Thumbs Up" class="crl-icon-small thumbsup-icon-dark"></span>';
+      $highlights['two'][] = '<span class="big-num">' . $vars['interest_count_up'] . '</span><i title="Thumbs Up" alt="Thumbs Up" class="icon-large icon-thumbs-up-alt"></i>';
     }
     if (!empty($vars['interest_count_down'])) {
-      $highlights['two'][] = '<span class="big-num">' . $vars['interest_count_down'] . '</span><span title="Thumbs Down" alt="Thumbs Down" class="crl-icon-small thumbsdown-icon-dark"></span>';
+      $highlights['two'][] = '<span class="big-num">' . $vars['interest_count_down'] . '</span><i title="Thumbs Down" alt="Thumbs Down" class="icon-large icon-thumbs-down-alt"></i>';
     }
     foreach($highlights as $row_key => $row) {
       if ($row_key == 'one') {
@@ -247,5 +247,5 @@ function theme_crl_helpers_back_to_index(&$vars) {
   if ($vars['browser_back']) {
     $onclick = 'onclick="window.history.go(-1);return false;"';
   }
-  return '<strong>&larr;&nbsp;<a id="back-to-index" href="' . $vars['url'] . '" ' . $onclick . '>' . $vars['back_text'] . '</a></strong>';
+  return '<strong>&larr;&nbsp;&nbsp;<a id="back-to-index" href="' . $vars['url'] . '" ' . $onclick . '>' . $vars['back_text'] . '</a></strong>';
 }

@@ -47,7 +47,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['footer']['area']['id'] = 'area';
   $handler->display->display_options['footer']['area']['table'] = 'views';
   $handler->display->display_options['footer']['area']['field'] = 'area';
-  $handler->display->display_options['footer']['area']['content'] = '<p><a class="button" href="/activity/rss"><span class="crl-icon-small rss-icon"></span>Subscribe via RSS</a></p>';
+  $handler->display->display_options['footer']['area']['content'] = '<p><a class="button" href="/activity/rss"><i class="icon icon-rss"></i>Subscribe via RSS</a></p>';
   $handler->display->display_options['footer']['area']['format'] = 'full_html';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
@@ -83,7 +83,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['fields']['message_render_1']['ui_name'] = 'Short Message';
   $handler->display->display_options['fields']['message_render_1']['label'] = '';
   $handler->display->display_options['fields']['message_render_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="message-icon-small [type]"></span><span class="message-list-text">[message_render_1] ([timestamp])</span>';
+  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="icon icon-message message-icon-small [type]"></span><span class="message-list-text">[message_render_1] ([timestamp])</span>';
   $handler->display->display_options['fields']['message_render_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['message_render_1']['partials'] = 1;
   $handler->display->display_options['fields']['message_render_1']['partials_delta'] = '1';
@@ -200,7 +200,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['fields']['message_render_1']['ui_name'] = 'Long Message';
   $handler->display->display_options['fields']['message_render_1']['label'] = '';
   $handler->display->display_options['fields']['message_render_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="message-icon-small [type]"></span><span class="message-list-text">[message_render_1] ([timestamp])</span>';
+  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="icon icon-message message-icon-small [type]"></span><span class="message-list-text">[message_render_1] ([timestamp])</span>';
   $handler->display->display_options['fields']['message_render_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['message_render_1']['partials'] = 1;
   $handler->display->display_options['fields']['message_render_1']['partials_delta'] = '0';
@@ -270,7 +270,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['fields']['message_render_1']['ui_name'] = 'Long Message';
   $handler->display->display_options['fields']['message_render_1']['label'] = '';
   $handler->display->display_options['fields']['message_render_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="message-icon-small [type]"></span><span class="message-list-text">[message_render_1] ([timestamp_1])</span>';
+  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="icon icon-message message-icon-small [type]"></span><span class="message-list-text">[message_render_1] ([timestamp_1])</span>';
   $handler->display->display_options['fields']['message_render_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['message_render_1']['partials'] = 1;
   $handler->display->display_options['fields']['message_render_1']['partials_delta'] = '0';
@@ -425,7 +425,7 @@ function crl_message_feat_views_default_views() {
   $handler->display->display_options['fields']['message_render_1']['ui_name'] = 'Long Message';
   $handler->display->display_options['fields']['message_render_1']['label'] = '';
   $handler->display->display_options['fields']['message_render_1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="message-icon-small [type]"></span><span class="message-list-text">[message_render_1] ([timestamp_1])</span>';
+  $handler->display->display_options['fields']['message_render_1']['alter']['text'] = '<span class="icon icon-message message-icon-small [type]"></span><span class="message-list-text">[message_render_1] ([timestamp_1])</span>';
   $handler->display->display_options['fields']['message_render_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['message_render_1']['partials'] = 1;
   $handler->display->display_options['fields']['message_render_1']['partials_delta'] = '0';
