@@ -1347,20 +1347,20 @@ span.big-num {
    Purchase Proposal Index and Rating Widgets
    -------------------------------------------------------------------------- */
 
-/* PP vote - stars styles */
+// PP vote - stars styles
 .rate-user .rate-fivestar-btn-filled, .rate-fivestar-btn-filled, .rate-fivestar-btn-empty {
   background-image: url(../images/fivestar_alt.png);
 }
 .rate-widget-fivestar ul {
   margin: 0px;
   padding: 0px;
-}
-.rate-widget-fivestar ul li, .rate-widget-fivestar ul li a, .rate-widget-fivestar ul li span {
-  width: 1.3em;
-  height: 16px;
+  li, li a, li span {
+    width: 1.3em;
+    height: 16px;
+  }
 }
 
-/* PP vote - typography styles */
+// PP vote - typography styles
 .vote-result, .vote-results {
   font-size: 80%;
 }
@@ -1379,30 +1379,32 @@ span.big-num {
   list-style: none outside none;
 }
 
-/* PP vote - view index styles */
-.view-pp-resource-lists table td {
-  vertical-align: top;
-}
-.view-pp-resource-lists .views-field-value, .view-pp-resource-lists .views-field-value-1  {
-  min-width: 100px;
-}
-.view-pp-resource-lists .views-field-value {
-  border-right: 1px solid #ddd;
-  border-left: 1px solid #ddd;
-}
-.view-pp-resource-lists .vote-summary-wrapper, .view-pp-resource-lists .vote-user-wrapper {
-  float: left;
-}
-.view-pp-resource-lists .vote-user-wrapper {
-  min-width: 55%;
+// PP vote - view index styles
+.view-pp-resource-lists {
+  table td {
+    vertical-align: top;
+  }
+  .views-field-value {
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+  }
+  .views-field-value, .views-field-value-1  {
+    min-width: 100px;
+  }
+  .vote-user-wrapper {
+    min-width: 55%;
+  }
+  .vote-summary-wrapper, .vote-user-wrapper {
+    float: left;
+  }
 }
 
-/* PP vote - block styles */
+// PP vote - block styles
 .block-crl-pp-resource-feat .vote-user-wrapper {
   margin-bottom: 1em;
 }
 
-/* SPP vote */
+// SPP vote
 article form.shared-vote-input-form {
   width: 100%;
   float: none;
@@ -1411,20 +1413,18 @@ article form.shared-vote-input-form {
   border-left: none;
   border-bottom: 1px solid #bbb;
 }
-
-form.shared-vote-input-form .form-item-pledge {
-  margin-bottom: 0px;
-}
-
-form.shared-vote-input-form .form-item-pledge input,
-form.shared-vote-input-form .form-item-currency,
-form.shared-vote-input-form input.form-submit {
-  float: left;
-  margin: 5px 10px 5px 0px;
-}
-form.shared-vote-input-form .form-notes {
-  margin-top: 1em;
-  clear: both;
+form.shared-vote-input-form {
+  .form-item-pledge {
+    margin-bottom: 0px;
+  }
+  .form-item-pledge input, .form-item-currency, input.form-submit {
+    float: left;
+    margin: 5px 10px 5px 0px;
+  }
+  .form-notes {
+    margin-top: 1em;
+    clear: both;
+  }
 }
 
 
@@ -1503,7 +1503,7 @@ form.shared-vote-input-form .form-notes {
    Special CRL "tag" styles (alert and countdown text)
    -------------------------------------------------------------------------- */
 
-/* Base typography */
+// Base typography
 span.crl-tag {
   font-size: 75%;
   margin-left: 1em;
@@ -1512,26 +1512,28 @@ h2 span.crl-tag {
   font-size: 50%;
   vertical-align: middle;
 }
-.crl-tag.urgent {
-  color: #ff1f22;
+.crl-tag {
+  &.urgent {
+    color: #ff1f22;
+  }
+  &.expiration {
+    white-space: nowrap;
+  }
+  &.alert {
+    color: #fff;
+    padding: 1px 3px;
+    background-color: #ff1f22;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 0px 0px 2px 2px #ddd;
+    -webkit-box-shadow: 0px 0px 2px 2px #ddd;
+    box-shadow: 0px 0px 2px 2px #ddd;
+  }
 }
-.crl-tag.expiration {
-  white-space: nowrap;
-}
-.crl-tag.alert {
-  color: #fff;
-  padding: 1px 3px;
-  background-color: #ff1f22;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -khtml-border-radius: 5px;
-  border-radius: 5px;
-  -moz-box-shadow: 0px 0px 2px 2px #ddd;
-  -webkit-box-shadow: 0px 0px 2px 2px #ddd;
-  box-shadow: 0px 0px 2px 2px #ddd;
-}
-/* The tag appears on the left when shown with the alert message */
-#node_resource_full_group_overview .crl-tag.alert {
+// The tag appears on the left when shown with the alert message
+#crl-overview .crl-tag.alert {
   margin: 0em 1em 0em 0em;
   float: left;
 }
@@ -1541,32 +1543,32 @@ h2 span.crl-tag {
    Misc tweaks and adjustments
    -------------------------------------------------------------------------- */
 
-/* Special highlight boxes (styled to avoid confusion with system message
-boxes) */
+// Special highlight boxes (styled to avoid confusion with system message
+// boxes)
 body.page-node-add-resource #edit-field-provider, .notice-box {
   border: 1px solid #e05400;
   padding: 10px;
   background-color: #f5f5f5;
   margin-bottom: 2em;
 }
-/* For extreme cases where we need to be obnoxiously loud (while still not
-creating confusion with site message boxes) */
+// For extreme cases where we need to be obnoxiously loud (while still not
+// creating confusion with site message boxes)
 .notice-box.extreme {
   border-width: 3px;
 }
 
-/* Correct checkbox form highlighting error */
+// Correct checkbox form highlighting error
 .form-item input[type="checkbox"].error, .form-item input[type="radio"].error{
   outline: 2px solid red;
   -moz-appearance: none;
 }
 
-/* Correct weird borders on horizontal tab links in Safari and Chrome */
+// Correct weird borders on horizontal tab links in Safari and Chrome
 .horizontal-tabs :focus {
   outline: none;
 }
 
-/* Random helpers */
+// Random helpers
 #skip-link {
 	display:none;
 }
@@ -1578,14 +1580,14 @@ a.no-link-style {
   color: inherit !important;
 }
 
-/* Editor tools at top of page */
+// Editor tools at top of page
 .editor-tools {
   float: right;
   width: 300px;
   text-align: right;
 }
 
-/* Styles for flagging links */
+// Styles for flagging links
 .flag-message {
   position: static;
   float: left;
@@ -1597,8 +1599,8 @@ a.no-link-style {
   float: right;
 }
 
-/* Adjust zebra striping for tables and ensure that inline tables are also
-incldued via CSS3 */
+// Adjust zebra striping for tables and ensure that inline tables are also
+incldued via CSS3
 table tr.even td, table.zebra tr:nth-child(even) td {
   background-color: #f7f7f7;
   border-bottom: 1px solid #ccc;
@@ -1608,37 +1610,37 @@ table th {
   background-color: #eee;
 }
 
-/* Responsive wrapper for embedded video iframes */
+// Responsive wrapper for embedded video iframes
 .videoWrapper {
 	position: relative;
 	padding-bottom: 58.25%; /* 16:9 */
 	padding-top: 25px;
 	height: 0;
-}
-.videoWrapper iframe {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 
-/* Styles for embedded video highlight thumbnail */
+// Styles for embedded video highlight thumbnail
 .edes-vid-highlight {
   float: right;
   border: 1px solid #555;
   margin: 0px 0px 5px 30px;
   width: 225px;
   background-color: #555;
-}
-.edes-vid-highlight p {
-  font-size: smaller;
-  margin: 5px 8px;
-  color: #fafafa !important;
+  p {
+    font-size: smaller;
+    margin: 5px 8px;
+    color: #fafafa !important;
+  }
 }
 
-/* Allow for responsive images. A fieldset mod is also needed to ensure that the
-effect works propery inside of field group field sets. */
+// Allow for responsive images. A fieldset mod is also needed to ensure that the
+// effect works propery inside of field group field sets.
 img.img-responsive {
   display: block;
   height: auto !important;
@@ -1648,7 +1650,7 @@ fieldset {
   display: table-cell;
 }
 
-/* Special graphic label for provider title text */
+// Special graphic label for provider title text
 span.provider-p {
   font-family: Raleway, sans-serif;
   font-size: 75%;
@@ -1669,7 +1671,7 @@ span.provider-stem {
   display: none;
 }
 
-/* Uniqueness widgets */
+// Uniqueness widgets
 .uniqueness-dyn {
   background-position: 0 -1em !important;
   padding-left: 1em;
@@ -1677,10 +1679,10 @@ span.provider-stem {
 fieldset#edit-uniqueness {
   border-left: 3px solid #aaa;
   padding: 0px 15px;
-}
-fieldset#edit-uniqueness legend {
-  float: left;
-  margin-bottom: 15px;
+  legend {
+    float: left;
+    margin-bottom: 15px;
+  }
 }
 #edit-uniqueness-type {
   clear: both;
