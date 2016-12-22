@@ -1,10 +1,6 @@
-/* This file will hold styles for all layouts using the alpha grid (i.e. not the mobile layout). */
-
-
 /* --------------------------------------------------------------------------
    Header Styles - General
    -------------------------------------------------------------------------- */
-
 #section-header {
   height: 250px;
 }
@@ -30,8 +26,9 @@
   text-align: left;
   padding: 20px 0px 0px 15px;
 }
-h1.site-name, h2.site-name {
-	margin-top: 30px;
+h1.site-name,
+h2.site-name {
+  margin-top: 30px;
   font-size: 400%;
 }
 p.site-slogan {
@@ -39,16 +36,14 @@ p.site-slogan {
   font-size: 110%;
   font-weight: bold;
 }
-
-
 /* --------------------------------------------------------------------------
    Header Styles - Menu
    -------------------------------------------------------------------------- */
-
-#header-menus .main-menu, #header-menus .secondary-menu {
+#header-menus .main-menu,
+#header-menus .secondary-menu {
   display: block;
 }
-form#ctools-jump-menu {
+#header-menus form#ctools-jump-menu {
   display: none;
 }
 #header-menus ul li {
@@ -66,14 +61,16 @@ form#ctools-jump-menu {
   color: #fff;
   font-weight: bold;
   text-decoration: none !important;
-  border: 1px solid #000;
-  border-bottom-width: 0px;
+  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
 }
-#header-menus ul li a.active, #header-menus ul li a.active-trail {
+#header-menus ul li a.active,
+#header-menus ul li a.active-trail {
   color: #333 !important;
   background-color: #fff !important;
 }
-#header-menus ul li a:hover {
+#header-menus ul li a:hover,
+#header-menus ul li a:active,
+#header-menus ul li a:focus {
   color: #fff !important;
   background-color: #8ca36b !important;
 }
@@ -86,32 +83,25 @@ form#ctools-jump-menu {
   position: absolute;
   bottom: 0px;
   right: 0px;
-}
-#header-menus .secondary-menu {
   width: 340px;
+  display: block;
 }
 #header-menus .secondary-menu ul li {
   width: 170px;
   margin: 0px;
   padding: 0px;
 }
-#header-menus .secondary-menu {
-  display: block;
-}
 #header-menus .secondary-menu ul li a {
-  width: 168px;
+  width: 169px;
   padding-left: 0px;
   padding-right: 0px;
 }
 #header-menus .secondary-menu ul li.first a {
   border-right: 1px solid #aaa;
 }
-
-
 /* --------------------------------------------------------------------------
    Footer
    -------------------------------------------------------------------------- */
-
 footer#section-footer #region-footer-first {
   background: url('../images/footer-tools-bg.png') 0 0 repeat;
   min-height: 250px;
@@ -123,20 +113,16 @@ footer#section-footer #region-footer-first {
 #zone-footer .region-footer-second-inner {
   padding-left: 0px;
 }
-
-
 /* --------------------------------------------------------------------------
    Misc and Dashboard
    -------------------------------------------------------------------------- */
 body.resources-dashboard #zone-preface .block-inner {
   padding: 20px 50px;
 }
-
-.view-pp-resource-lists .views-field-value, .view-pp-resource-lists .views-field-value-1  {
+.view-pp-resource-lists .views-field-value,
+.view-pp-resource-lists .views-field-value-1 {
   min-width: 280px;
 }
-
-/* SPP vote */
 article form.shared-vote-input-form {
   width: 275px;
   float: right;
@@ -145,11 +131,13 @@ article form.shared-vote-input-form {
   border-left: 0px solid #E3E3E3;
   border-bottom: none;
 }
-
-
-/* Handle long lists of checkboxes that can be spread-out horizontally. This
-should be safe to do in most cases where "field-widget-options-buttons" are
-used*/
+body.page-node-edit .field-widget-options-buttons .form-checkboxes :after,
+body.page-node-add .field-widget-options-buttons .form-checkboxes :after,
+body.page-eform-submit .field-widget-options-buttons .form-checkboxes :after {
+  content: "";
+  display: table;
+  clear: both;
+}
 body.page-node-edit .field-widget-options-buttons .form-checkboxes .form-item,
 body.page-node-add .field-widget-options-buttons .form-checkboxes .form-item,
 body.page-eform-submit .field-widget-options-buttons .form-checkboxes .form-item {
@@ -157,22 +145,11 @@ body.page-eform-submit .field-widget-options-buttons .form-checkboxes .form-item
   margin-right: 2em;
   min-width: 25%;
 }
-/* One exception is the "CRL Status" checkbox selection, as the presentation
-order needs to be preserved there */
 body.page-node-edit .field-name-field-activity-crl-status.field-widget-options-buttons .form-checkboxes .form-item,
 body.page-node-add .field-name-field-activity-crl-status.field-widget-options-buttons .form-checkboxes .form-item,
 body.page-eform-submit .field-name-field-activity-crl-status.field-widget-options-buttons .form-checkboxes .form-item {
   float: none;
 }
-body.page-node-edit .field-widget-options-buttons .form-checkboxes:after,
-body.page-node-add .field-widget-options-buttons .form-checkboxes:after,
-body.page-eform-submit .field-widget-options-buttons .form-checkboxes:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* Special styling for activity docs fieldgroup */
 aside#activity-documents {
   background-color: #eee;
   padding: 15px;
@@ -182,8 +159,6 @@ aside#activity-documents {
   width: 40%;
   border: 1px solid #ddd;
 }
-
-/* Adjust alignment of active facet display */
 #block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-facet {
   clear: none;
 }
