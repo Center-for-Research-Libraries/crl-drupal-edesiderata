@@ -733,7 +733,6 @@ img.from-provider-icon {
 /* --------------------------------------------------------------------------
    Dashboard - General
    -------------------------------------------------------------------------- */
-/* Hide zone content styling for dashboard and related content padding */
 body.dashboard #zone-content {
   background: none;
   border: none;
@@ -744,7 +743,6 @@ body.dashboard #region-content .content {
   padding: 0px;
   margin-top: 0px;
 }
-/* Set dashboard "block" styles */
 body.dashboard #zone-preface .block-inner,
 body.dashboard #zone-user .block-inner,
 body.dashboard #zone-postscript .block-inner {
@@ -752,12 +750,12 @@ body.dashboard #zone-postscript .block-inner {
   outline: 1px solid #999;
   margin-bottom: 20px;
   padding: 20px;
+  transition: outline 0.15s ease-in-out;
 }
 body.dashboard #zone-preface .block-inner:hover,
 body.dashboard #zone-user .block-inner:hover,
 body.dashboard #zone-postscript .block-inner:hover {
   outline-width: 2px;
-  transition: outline 0.25s ease;
 }
 body.dashboard h3 a {
   text-decoration: none;
@@ -766,30 +764,27 @@ body.dashboard h3 a {
 body.dashboard .more-link {
   text-align: left;
 }
-/* In some dashboard cases we want the postscript blocks to be styled at the
-REGION level in order to implement equal heights */
 body.equal-postscript #zone-postscript .block-inner {
   background-color: transparent;
   outline: 0px;
   margin: 0px;
   padding: 0px;
 }
-body.equal-postscript #zone-postscript .region .block {
-  padding: 20px;
-}
 body.equal-postscript #zone-postscript .region {
   background-color: #fff;
   margin-bottom: 20px;
   outline: 1px solid #999;
+  transition: outline 0.15s ease-in-out;
 }
 body.equal-postscript #zone-postscript .region:hover {
   outline-width: 2px;
-  transition: outline 0.25s ease;
+}
+body.equal-postscript #zone-postscript .region .block {
+  padding: 20px;
 }
 /* --------------------------------------------------------------------------
    Dashboard - Resources / Homepage
    -------------------------------------------------------------------------- */
-/* The resources dashboard has some special styles and colors specific to it */
 body.resources-dashboard #zone-postscript a {
   text-decoration: none !important;
 }
@@ -824,23 +819,6 @@ body.resources-dashboard #zone-postscript .attachment-after {
   font-weight: bold;
   margin-top: 1.5em;
 }
-/* Set resource dashboard typography and word spacing */
-.dashboard-lead {
-  text-align: center;
-}
-.dashboard-lead h3 {
-  margin: 0px;
-  text-decoration: none;
-}
-.dashboard-lead h3 i.icon {
-  font-size: 110%;
-}
-.super-num {
-  font-family: Raleway;
-  font-size: 300%;
-  font-weight: 200;
-}
-/* Specific styles for the top-level dashboard block */
 body.resources-dashboard #zone-preface .block-inner {
   padding: 20px;
 }
@@ -859,10 +837,31 @@ body.resources-dashboard #zone-preface .view-display-id-block_4 .dashboard-lead-
 body.resources-dashboard #zone-preface .view-display-id-block_5 .dashboard-lead-top {
   margin-left: 20px;
 }
+body.resources-dashboard .dashboard-lead {
+  text-align: center;
+}
+body.resources-dashboard .dashboard-lead h3 {
+  margin: 0px;
+  text-decoration: none;
+}
+body.resources-dashboard .dashboard-lead h3 i.icon {
+  font-size: 110%;
+}
+body.resources-dashboard .super-num {
+  font-family: Raleway;
+  font-size: 300%;
+  font-weight: 200;
+}
 /* --------------------------------------------------------------------------
    Pagination
    -------------------------------------------------------------------------- */
-/* Views pager buttons need some adjusting */
+.pager {
+  background: none repeat scroll 0 0 #EBEBEB;
+  border-color: #DDDDDD #BBBBBB #999999;
+  border-radius: 3px 3px 3px 3px;
+  border-style: solid;
+  border-width: 1px;
+}
 .pager li.pager-first a,
 .pager li.pager-previous a,
 .pager li.pager-next a,
@@ -871,16 +870,6 @@ body.resources-dashboard #zone-preface .view-display-id-block_5 .dashboard-lead-
 }
 .pager li.pager-next {
   right: 80px;
-}
-.item-list .pager {
-  margin-bottom: 10px;
-}
-.pager {
-  background: none repeat scroll 0 0 #EBEBEB;
-  border-color: #DDDDDD #BBBBBB #999999;
-  border-radius: 3px 3px 3px 3px;
-  border-style: solid;
-  border-width: 1px;
 }
 .pager li.first,
 .pager li.first a,
@@ -901,6 +890,9 @@ body.resources-dashboard #zone-preface .view-display-id-block_5 .dashboard-lead-
 .pager li a:hover {
   background: none repeat scroll 0 0 #FFFFFF;
   color: #e05400;
+}
+.item-list .pager {
+  margin-bottom: 10px;
 }
 /* --------------------------------------------------------------------------
    Horizontal Tabs
@@ -1010,19 +1002,17 @@ textarea {
   margin: 0;
   vertical-align: middle;
 }
-/* We make general comment and node link buttons a bit more subtle */
 nav.links ul li a {
   background: whitesmoke;
   border-radius: 5px;
   font-weight: normal;
   font-size: 80%;
+  float: none;
+  display: inline-block;
 }
 nav.links ul li a:hover {
   background: #fff;
-}
-nav.links ul li a {
-  float: none;
-  display: inline-block;
+  color: #29449d !important;
 }
 nav.comment-links ul li {
   float: right;
