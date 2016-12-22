@@ -1,4 +1,3 @@
-/* This file will hold styles for all layouts using the alpha grid (i.e. not the mobile layout). */
 /* --------------------------------------------------------------------------
    Header Styles - General
    -------------------------------------------------------------------------- */
@@ -44,7 +43,7 @@ p.site-slogan {
 #header-menus .secondary-menu {
   display: block;
 }
-form#ctools-jump-menu {
+#header-menus form#ctools-jump-menu {
   display: none;
 }
 #header-menus ul li {
@@ -82,17 +81,13 @@ form#ctools-jump-menu {
   position: absolute;
   bottom: 0px;
   right: 0px;
-}
-#header-menus .secondary-menu {
   width: 340px;
+  display: block;
 }
 #header-menus .secondary-menu ul li {
   width: 170px;
   margin: 0px;
   padding: 0px;
-}
-#header-menus .secondary-menu {
-  display: block;
 }
 #header-menus .secondary-menu ul li a {
   width: 169px;
@@ -126,7 +121,6 @@ body.resources-dashboard #zone-preface .block-inner {
 .view-pp-resource-lists .views-field-value-1 {
   min-width: 280px;
 }
-/* SPP vote */
 article form.shared-vote-input-form {
   width: 275px;
   float: right;
@@ -135,9 +129,13 @@ article form.shared-vote-input-form {
   border-left: 0px solid #E3E3E3;
   border-bottom: none;
 }
-/* Handle long lists of checkboxes that can be spread-out horizontally. This
-should be safe to do in most cases where "field-widget-options-buttons" are
-used*/
+body.page-node-edit .field-widget-options-buttons .form-checkboxes :after,
+body.page-node-add .field-widget-options-buttons .form-checkboxes :after,
+body.page-eform-submit .field-widget-options-buttons .form-checkboxes :after {
+  content: "";
+  display: table;
+  clear: both;
+}
 body.page-node-edit .field-widget-options-buttons .form-checkboxes .form-item,
 body.page-node-add .field-widget-options-buttons .form-checkboxes .form-item,
 body.page-eform-submit .field-widget-options-buttons .form-checkboxes .form-item {
@@ -145,21 +143,11 @@ body.page-eform-submit .field-widget-options-buttons .form-checkboxes .form-item
   margin-right: 2em;
   min-width: 25%;
 }
-/* One exception is the "CRL Status" checkbox selection, as the presentation
-order needs to be preserved there */
 body.page-node-edit .field-name-field-activity-crl-status.field-widget-options-buttons .form-checkboxes .form-item,
 body.page-node-add .field-name-field-activity-crl-status.field-widget-options-buttons .form-checkboxes .form-item,
 body.page-eform-submit .field-name-field-activity-crl-status.field-widget-options-buttons .form-checkboxes .form-item {
   float: none;
 }
-body.page-node-edit .field-widget-options-buttons .form-checkboxes:after,
-body.page-node-add .field-widget-options-buttons .form-checkboxes:after,
-body.page-eform-submit .field-widget-options-buttons .form-checkboxes:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-/* Special styling for activity docs fieldgroup */
 aside#activity-documents {
   background-color: #eee;
   padding: 15px;
@@ -169,7 +157,6 @@ aside#activity-documents {
   width: 40%;
   border: 1px solid #ddd;
 }
-/* Adjust alignment of active facet display */
 #block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-facet {
   clear: none;
 }
