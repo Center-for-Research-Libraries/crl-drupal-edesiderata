@@ -1,0 +1,1689 @@
+@import 'variables';
+@import 'fontello';
+
+/* --------------------------------------------------------------------------
+   Main zones and regions
+   -------------------------------------------------------------------------- */
+
+#section-content {
+  margin-top: 20px;
+}
+#zone-content {
+  padding-top: 0px;
+}
+#region-content {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+#region-content .content {
+  padding: 0 10px;
+}
+
+#page {
+	background: url('../images/body-bg.png') top right repeat-y;
+}
+
+#zone-content {
+  background: url('../images/body-inner-bg.png') 0 0 repeat;
+  border: 1px solid #b7b7b7;
+  border-left: 0px;
+}
+
+#zone-preface-wrapper {
+	background-color: transparent;
+}
+
+// If only displaying post content we need to hide some border and background
+// stuff
+body.post-content-only {
+  #zone-content, #page {
+    background: none;
+    border: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Global Typography
+   -------------------------------------------------------------------------- */
+
+body {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 0.8em;
+  line-height: 1.5;
+  color: @text-color;
+}
+
+// Common header styles. Note that normal field labels in analysis group tabs
+// should also be styled as headers
+h1, h2, h2.block-title, h3, h4, h5, h6,
+.group-analysis > .fieldset-wrapper > .field-label-above .field-label {
+  letter-spacing: normal;
+  line-height: normal;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  margin: 10px 0 20px 0;
+}
+h1 {
+  font-size: 180%;
+}
+// Style h2. Note that normal field labels in analysis group tabs should
+// also be styled like h2 because they often contain headers in thier content
+h2, .group-analysis > .fieldset-wrapper > .field-label-above .field-label {
+  font-size: 150%;
+  border-bottom: 1px solid #bbb;
+  color: @colored-heading;
+  text-transform: none;
+}
+h2.node-title {
+  border: none !important;
+}
+h3, .field-label, #node_resource_full_group_analysis .group_sources .field-label-above .field-label {
+  font-size: 110%;
+  border: none;
+  color: @text-color;
+}
+h4 {
+  font-size: 100%;
+}
+.element-invisible {
+	display:none;
+}
+label {
+	padding-bottom: 3px;
+}
+#page a {
+	color: @link-color-primary;
+  transition: color 100ms ease-out;
+  &:hover {
+    color: darken(@highlight-color, 5%);
+  }
+}
+a.inline-button {
+  background-color: @inline-button-color;
+  transition: background-color 0.15s ease-in-out !important;
+  font-size: 90%;
+  padding: 5px;
+  margin: 2px;
+  text-decoration: none;
+  white-space: nowrap;
+  font-weight: bold;
+  line-height: 2.5;
+  &:hover {
+    background-color: lighten(@inline-button-color, 10%);
+  }
+}
+#page p {
+  color: @text-color;
+}
+
+#region-content h1#page-title {
+	margin-left: 10px;
+	font-weight: 300;
+}
+
+// "m" in meDesiderata
+span.m-edes {
+  font-style: italic;
+  font-family: Raleway, sans-serif;
+  font-weight: 500;
+  font-size: 107%;
+  margin-right: 0.12em;
+}
+
+// Common field label settings
+.field {
+  margin-top: 1em;
+}
+.field-label-inline > .field-label {
+  margin-top: -0.1em;
+}
+.field-label-above > .field-label {
+  margin-bottom: 0.5em;
+}
+.field-label > .field-colon {
+  display: none;
+}
+.field-label-inline .field-item {
+  padding-left: 0.5em;
+}
+
+// Super/sub-script
+sup {
+  vertical-align: super;
+  font-size: 80%;
+}
+sub {
+  vertical-align: sub;
+  font-size: 80%;
+}
+th {
+  font-weight: bold;
+}
+
+// List styles
+ol, ul {
+  margin-left: 1em;
+}
+ul li, .item-list ul li {
+  list-style: disc outside none;
+}
+ul li.vertical-tab-button, ul li.horizontal-tab-button, .rate-widget ul li {
+  list-style: none;
+}
+
+hr {
+  background: none repeat scroll 0 0 #bbb;
+}
+
+blockquote {
+  border-left-width: 3px;
+  border-color: #ccc;
+  border-style: solid;
+  margin-left: 20px;
+  padding-left: 20px;
+  padding-right: 8px;
+  font-style: italic;
+}
+
+
+/* --------------------------------------------------------------------------
+   Header Styles - General
+   -------------------------------------------------------------------------- */
+
+#section-header {
+  background-color: @header-background-color;
+  background-image: url('../images/world-bg.png?v=6');
+  background-size: 538px;
+  background-repeat: no-repeat;
+  background-position: center top;
+  height: auto;
+  position: relative;
+  // Retina support.
+  @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
+    background-image: url('../images/world-bg2x.png?v=6');
+  }
+}
+#zone-header {
+  position: relative;
+}
+#section-header {
+  color: #fff;
+  p, a, a.active, a:hover {
+    color: #fff !important;
+  }
+}
+#header-logo {
+  position: relative;
+  width: 300px;
+  margin: auto;
+  padding-top: 20px;
+  a.logo {
+    background-image: url("../images/sprites.png?v=6");
+    background-size: 500px;
+    height: 67px;
+    width: 300px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    background-position: 0px -600px;
+    // Retina support.
+    @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
+      background-image: url("../images/sprites2x.png?v=6");
+    }
+  }
+}
+#header-typography {
+  text-align: center;
+  padding-bottom: 10px;
+}
+#header-user-tools {
+  padding-bottom: 10px;
+  text-align: center;
+  font-size: 90%;
+}
+h1.site-name, h2.site-name {
+  margin: 0px 0px 10px 0px;
+  font-family: Raleway, sans-serif;
+  font-size: 300%;
+  font-weight: 100;
+  text-decoration: none;
+  border: none;
+}
+// Title registered trademark
+.site-name .rtm {
+  font-size: 30%;
+  vertical-align: super;
+}
+p.site-slogan {
+  display: none;
+}
+// Kill external link icons in this space
+header#section-header span.ext {
+  background: none !important;
+  padding: 0px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Header Styles - Menu
+   -------------------------------------------------------------------------- */
+
+#header-menus .main-menu, #header-menus .secondary-menu {
+  display: none;
+}
+form#ctools-jump-menu {
+  width: 100px;
+  margin: auto;
+  padding-bottom: 15px;
+
+}
+
+
+/* --------------------------------------------------------------------------
+   Footer Styles
+   -------------------------------------------------------------------------- */
+
+#zone-footer, #zone-footer-wrapper {
+  position: relative;
+}
+#zone-footer .region-footer-first-inner {
+  padding-top: 75px;
+}
+footer#section-footer {
+  margin-top: 30px;
+  background-color: @footer-background-color;
+  color: @footer-text-color;
+  font-size: 90%;
+  position: relative;
+  a {
+    text-decoration: none;
+    &:hover {
+      background-color: #fff !important;
+      color: @text-color !important;
+    }
+  }
+  a, p {
+    color: @footer-text-color;
+  }
+  ul li {
+    list-style: none;
+  }
+  // Kill external link icons in this space
+  span.ext {
+    background: none !important;
+    padding: 0px;
+  }
+  #region-footer-first a, .footer-topper a {
+    font-weight: bold;
+    color: #fff;
+  }
+  .footer-topper {
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border-bottom: 1px solid @inline-button-color;
+    text-align: center;
+    h3 {
+      margin: 20px 0px 10px 0px;
+    }
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Block Content Styles - Common
+   -------------------------------------------------------------------------- */
+
+// Normal content and sidebar blocks
+#zone-content h2.block-title {
+  color: @text-color;
+  font-size: 100%;
+  font-weight: normal;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e3e3e3;
+}
+#region-sidebar-first .block,
+#region-sidebar-second .block,
+.comment-nested-wrapper {
+  background-color: #FFFFFF;
+  border: 1px solid #b7b7b7;
+  margin-bottom: 20px;
+  margin-top: 24px;
+  margin-right: 15px;
+  padding: 18px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Blocks Content Styles - Facet Blocks
+   -------------------------------------------------------------------------- */
+
+// Get rid of bullets for facet block select items
+.block-facetapi .content li {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+// Tweaks for sidebar facet blocks to give better whitespace control, etc.
+section.block ul.facetapi-facetapi-links li {
+  clear: left;
+  float: left;
+  width: 100%;
+  padding: 0.3em 0em;
+  a {
+    text-decoration: none !important;
+  }
+}
+// Add remove icon for active facet selections
+.block ul.facetapi-facetapi-links li a.facetapi-active {
+  float: right;
+  display: inline-block;
+  white-space: nowrap;
+  i.icon { // Fontello icon
+    color: red;
+    font-size: larger;
+    margin-right: 0 !important;
+  }
+}
+#zone-content h2.block-title span.facet-group {
+	font-size: 110%;
+	font-weight: bold;
+}
+
+// Tweaks for crl status facet block only
+ul#facetapi-facet-search-apititle-search-index-block-crl-resource-status-backref {
+  i.icon { // Fontello icon
+    float: left;
+    margin-right: 8px;
+  }
+  a {
+    span.facet_api_text {
+      float: left;
+      max-width: 70%;
+    }
+  }
+}
+
+// Tweaks for alpha facet glossary and sort block content
+ul.facetapi-facet-field-resource-glossary,
+ul.facetapi-facet-crl-resource-glossary-value,
+ul.facetapi-facet-crl-glossary-value {
+  li {
+    display: inline;
+    padding: 3px 5px;
+    margin: 0 2px 0 0 !important;
+    border-right: 1px solid #999;
+    &.last {
+      border-right: none;
+    }
+    a {
+      text-decoration: none !important;
+    }
+  }
+  .facetapi_count_value {
+    display: none;
+  }
+  li a.facetapi-active {
+    float: none !important;
+    margin-right: 0.5em;
+  }
+}
+#resource_sort_opts,
+#helpers_sort_opts {
+  display: none; // Will activate display with javascript
+  float: right;
+  margin-bottom: 10px;
+}
+#resource_sort_opts_links,
+#helpers_sort_opts_links {
+  float: right;
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+// Make sure we get 100% with for text inputs that use facets
+.form-item-search-api-views-fulltext input {
+  width: 100% !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   Blocks Content Styles - Misc
+   -------------------------------------------------------------------------- */
+
+// Tweaks for interest rate box and summary
+#block-crl-helpers-crl-helpers-interest-input {
+  i.icon { // Fontello icon
+    font-size: 120%;
+  }
+  .interest-vote {
+    color: green;
+    font-weight: bold;
+  }
+}
+
+// Tweaks for custom facet breadcrumb
+#block-crl-helpers-crl-helpers-facet-breadcrumb {
+  background: url('../images/content.png') 0 0 repeat;
+  border: 1px solid #b7b7b7;
+  margin: 20px 0px;
+  padding: 10px;
+  a {
+    text-decoration: none;
+  }
+  .active-facet-wrapper {
+    display: inline-block;
+    margin: 0.2em 1em 0.2em 0;
+    padding: 5px 8px;
+    background-color: #eee;
+  }
+  .facet-breadcrumb-facet {
+    float: left;
+    clear: left;
+  }
+  .facet-breadcrumb-misc {
+    font-weight: bold;
+    float: left;
+    background-color: transparent;
+  }
+  .facet-breadcrumb-reset {
+    background-color: transparent;
+    float: right;
+    margin-right: 0;
+  }
+  .facet-breadcrumb-facets {
+    display: block;
+  }
+  .facet-breadcrumb-extras {
+    display: block;
+    margin-top: 10px;
+    padding: 20px 10px 10px 0px;
+    border-top: 1px solid @subtle-fill-color;
+    fieldset {
+      margin: 0;
+    }
+    .fieldset-wrapper {
+      margin: 15px 0 0 20px;
+    }
+    .fieldset-legend {
+      font-weight: normal;
+    }
+  }
+}
+
+.facet-breadcrumb-reset-icon {
+  margin-right: 8px;
+  color: red;
+}
+#search-api-saved-searches-save-form-wrapper input#edit-name {
+  width: 50%;
+}
+
+// Tweaks for back-to-index link block
+a#back-to-index {
+  font-size: 80%;
+  text-decoration: none;
+  i {
+    font-size: 130%;
+    color: #000;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Main Content Styles
+   -------------------------------------------------------------------------- */
+
+// Embedded computed content should be stripped of padding so that it flows
+// normally with the other fields around it
+#region-content .field-type-computed article .content,
+#region-content article article.node .content {
+  padding: 0px;
+}
+
+.group_activity_trial h2 {
+  margin-top: 2em;
+}
+
+// Breadcrumbs
+#breadcrumb .breadcrumb {
+  font-size: 80%;
+  padding-bottom: 1em;
+}
+#block-delta-blocks-breadcrumb {
+  float: right;
+}
+#breadcrumb .breadcrumb a {
+  color: #666;
+  text-align: left;
+}
+
+.hidden {
+  display: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   Content-specific Field styles
+   -------------------------------------------------------------------------- */
+
+// Handle taxonomy lists with inline labels
+.field-label-inline .field-item {
+  &:after {
+    content: ","
+  }
+  &:last-child:after {
+    content: ""
+  }
+}
+
+// Table tweaks for resource tablefields
+#node_resource_full_group_details .tablefield-wrapper td.col_0 {
+  width: 40%;
+}
+// Style the provider icon that lives in details tablefields
+img.from-provider-icon {
+  float: right;
+}
+
+// Fieldgroups need some extra whitespace
+.field-group-div {
+  padding-bottom: 1em;
+}
+
+// Styles for the "publisher provided" source legend
+#publisher-legend {
+  float: right;
+  margin: 5px 0px 10px 10px;
+  img {
+    vertical-align: middle;
+  }
+}
+
+// Contact field styles (field collection)
+.field-name-field-contacts-group .field-collection-view,
+.field-name-field-contacts-group .field-collection-view .content {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+  border: none;
+}
+.field-name-field-contacts-group .field-collection-view,
+.field-name-field-contacts-group .field-collection-view .field-label {
+  width: auto;
+  font-weight: normal;
+  font-size: 100%;
+}
+.field-name-field-contacts-group .field-collection-view .field {
+  margin: 0;
+}
+.field-collection-container {
+  border: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   Views Lists
+   -------------------------------------------------------------------------- */
+
+.view-resource-lists .views-row.views-row-odd,
+.view-provider-lists .views-row.views-row-odd,
+.views-row.item-list-box.views-row-odd {
+	background-color: #fff;
+  border: 1px dotted #999;
+	padding: 15px;
+}
+
+.view-resource-lists .views-row.views-row-even,
+.view-provider-lists .views-row.views-row-even,
+.views-row.item-list-box.views-row-even {
+  background-color: #eaeaea;
+	border: 1px dotted #999;
+	padding: 15px;
+}
+
+.view-resource-lists, .view-provider-lists {
+  h2, h3 {
+    border: none;
+  }
+}
+
+// Add some spacing for the components of the resource list teasers
+.view-resource-lists, .view-provider-lists {
+  .teaser-details {
+    margin-top: 1.5em;
+  }
+}
+
+.views-exposed-widgets {
+    margin-bottom: 0.5em;
+}
+.views-row {
+	margin-bottom:20px;
+}
+
+// Views grouping headers
+.view-content h3 {
+	background-color: transparent;
+	border-bottom: 1px solid @subtle-fill-color;
+	border-top: 1px solid @subtle-fill-color;
+	color: @text-color;
+	display: block;
+	padding: 5px 0 5px 20px;
+  a {
+    text-decoration: none !important;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Dashboard - General
+   -------------------------------------------------------------------------- */
+
+body.dashboard {
+  // Hide zone content styling for dashboard and related content padding
+  #zone-content {
+    background: none;
+    border: none;
+    margin-bottom: 10px;
+  }
+  #region-content,
+  #region-content .content {
+    padding: 0px;
+    margin-top: 0px;
+  }
+  //Set dashboard "block" styles
+  #zone-preface .block-inner,
+  #zone-user .block-inner,
+  #zone-postscript .block-inner {
+    background-color: #fff;
+    outline: 1px solid #999;
+    margin-bottom: 20px;
+    padding: 20px;
+    transition: outline 0.15s ease-in-out;
+    &:hover {
+      outline-width: 2px;
+    }
+  }
+  h3 a {
+    text-decoration: none;
+    font-size: 115%;
+  }
+  .more-link {
+    text-align: left;
+  }
+}
+
+// In some dashboard cases we want the postscript blocks to be styled at the
+// REGION level in order to implement equal heights
+body.equal-postscript #zone-postscript {
+  .block-inner {
+    background-color: transparent;
+    outline: 0px;
+    margin: 0px;
+    padding: 0px;
+  }
+  .region {
+    background-color: #fff;
+    margin-bottom: 20px;
+    outline: 1px solid #999;
+    transition: outline 0.15s ease-in-out;
+    &:hover {
+      outline-width: 2px;
+    }
+    .block {
+      padding: 20px;
+    }
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Dashboard - Resources / Homepage
+   -------------------------------------------------------------------------- */
+
+// The resources dashboard has some special styles and colors specific to it
+body.resources-dashboard {
+  #zone-postscript {
+    a {
+      text-decoration: none !important;
+    }
+    .region-postscript-first {
+      outline: 1px solid darken(@status-color-purple, 5%);
+    }
+    .region-postscript-second {
+      outline: 1px solid darken(@status-color-green, 5%);
+    }
+    .region-postscript-third {
+      outline: 1px solid darken(@status-color-pink, 5%);
+    }
+    .region {
+      background: rgb(255,255,255); /* Old browsers */
+      background: -moz-linear-gradient(top,  rgba(255,255,255,1) 90%, rgba(235,235,235,1) 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(70%,rgba(255,255,255,1)), color-stop(100%,rgba(235,235,235,1))); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top,  rgba(255,255,2551,1) 70%,rgba(235,235,235,1) 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top,  rgba(255,255,255,1) 70%,rgba(235,235,235,1) 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(top,  rgba(255,255,255,1) 70%,rgba(235,235,235,1) 100%); /* IE10+ */
+      background: linear-gradient(to bottom,  rgba(255,255,255,1) 90%,rgba(235,235,235,1) 100%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f4f4f4',GradientType=0 ); /* IE6-9 */
+    }
+    .attachment-after {
+      font-weight: bold;
+      margin-top: 1.5em;
+    }
+  }
+  // Specific styles for the top-level dashboard block */
+  #zone-preface {
+    .block-inner {
+      padding: 20px;
+    }
+    .view-display-id-block_4 {
+      width: 49%;
+      float: left;
+    }
+    .view-display-id-block_5 {
+      width: 50%;
+      float: right;
+      border-left: 1px dotted #999999;
+    }
+    .view-display-id-block_4 .dashboard-lead-top {
+      margin-right: 20px
+    }
+    .view-display-id-block_5 .dashboard-lead-top {
+      margin-left: 20px;
+    }
+  }
+  // Set resource dashboard typography and word spacing
+  .dashboard-lead {
+    text-align: center;
+    h3 {
+      margin: 0px;
+      text-decoration: none;
+      i.icon {
+        font-size: 110%;
+      }
+    }
+  }
+  .super-num {
+    font-family: Raleway;
+    font-size: 300%;
+    font-weight: 200;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Pagination
+   -------------------------------------------------------------------------- */
+
+// Views pager buttons need some adjusting
+.pager {
+  background: none repeat scroll 0 0 #EBEBEB;
+  border-color: #DDDDDD #BBBBBB #999999;
+  border-radius: 3px 3px 3px 3px;
+  border-style: solid;
+  border-width: 1px;
+  li.pager-first, li.pager-previous, li.pager-next, li.pager-last {
+    a {
+      width: 80px;
+    }
+  }
+  li.pager-next {
+    right: 80px;
+  }
+  li.first, li.first a, li.first a:hover {
+    border-radius: 3px 0 0 3px;
+  }
+  li.pager-last, li.pager-last a, li.pager-last a:hover {
+    border-radius: 0 3px 3px 0;
+  }
+  li.pager-current {
+    background: none; // Reset
+    background-color: #e05300 !important;
+    color: #FFFFFF;
+    outline: 0 none;
+  }
+  li a:hover {
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: @highlight-color;
+  }
+}
+.item-list .pager {
+	margin-bottom:10px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Horizontal Tabs
+   -------------------------------------------------------------------------- */
+
+.field-group-htabs-wrapper {
+  background-color: #fff;
+}
+.horizontal-tabs {
+  box-shadow: 1px 1px 2px 1px #ccc;
+  background: rgb(255,255,255); // Old browsers
+  background: -moz-linear-gradient(top,  rgba(255,255,255,1) 90%, rgba(235,235,235,1) 30px); // FF3.6+
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(90%,rgba(255,255,255,1)), color-stop(100%,rgba(235,235,235,1))); // Chrome,Safari4+
+  background: -webkit-linear-gradient(top,  rgba(255,255,2551,1) 90%,rgba(235,235,235,1) 100%); // Chrome10+,Safari5.1+
+  background: -o-linear-gradient(top,  rgba(255,255,255,1) 90%,rgba(235,235,235,1) 100%); // Opera 11.10+
+  background: -ms-linear-gradient(top,  rgba(255,255,255,1) 90%,rgba(235,235,235,1) 100%); // IE10+
+  background: linear-gradient(to bottom,  rgba(255,255,255,1) 90%,rgba(235,235,235,1) 100%); // W3C
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f4f4f4',GradientType=0 ); // IE6-9
+  // Style tab buttons
+  ul.horizontal-tabs-list {
+    background-color: #eff2eb;
+    border: none;
+    li {
+      padding: 0px; // Critial for sane border management
+      border-right: 1px solid #fff;
+      &.last {
+        border-right: none;
+      }
+      & a {
+        background-color: @secondary-button-color;
+        color: #fff !important;
+        transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
+        &:hover {
+          background-color: #fff;
+          color: #444 !important;
+        }
+      }
+      &.selected {
+        padding: 0px; // Critial for sane border management
+        a {
+          background-color: #fff;
+          color: #000 !important;
+        }
+      }
+    }
+  }
+  fieldset.horizontal-tabs-pane {
+    padding: 18px;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+
+input.form-checkbox, input.form-radio {
+  margin-right:3px;
+}
+.views-exposed-form .views-exposed-widget .form-submit {
+  margin-top: 0.6em;
+}
+button, .button, input[type="reset"], input[type="submit"], input[type="button"], .form-actions input, aside .block .flag {
+  background-image: none;
+  border-radius: 2px;
+  border-style: solid;
+  border-width: 1px;
+  background-color: darken(@highlight-color, 3%);
+  border-color: #fff;
+  color: #fff !important;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: smaller;
+  outline: 0 none;
+  overflow: visible;
+  padding: 5px 10px 5px;
+  margin: 0px 5px 5px 0px !important;
+  text-shadow: none;
+  width: auto;
+  text-decoration: none !important;
+  white-space: nowrap;
+  &:hover,&:active {
+    background-color: @highlight-color;
+    border-color: @highlight-color;
+  }
+}
+.button {
+  line-height: 3em;
+}
+button a, .button a, a.button {
+  color: #fff !important;
+  text-decoration: none !important;
+}
+input, button, select, textarea {
+  margin: 0;
+  vertical-align: middle;
+}
+
+// We make general comment and node link buttons a bit more subtle
+nav.links ul li a {
+  background: whitesmoke;
+  border-radius: 5px;
+  font-weight: normal;
+  font-size: 80%;
+  float: none;
+  display: inline-block;
+  &:hover {
+    background: #fff;
+    color: @link-color-primary !important;
+  }
+}
+nav.comment-links ul li {
+  float: right;
+}
+
+
+/* --------------------------------------------------------------------------
+   Form fields and edit modes
+   -------------------------------------------------------------------------- */
+
+/* Common input styling */
+textarea, select, input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="email"], input[type="month"], input[type="number"], input[type="password"], input[type="search"], input[type="tel"], input[type="text"], input[type="time"], input[type="url"], input[type="week"] {
+  -moz-border-bottom-colors: none;
+  -moz-border-image: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  -moz-box-sizing: border-box;
+  background-clip: padding-box;
+  background-color: #FFFFFF;
+  border-color: #848484 #C1C1C1 #E1E1E1;
+  border-radius: 3px 3px 3px 3px;
+  border-style: solid;
+  border-width: 1px;
+  color: #444;
+  font-size: 80%;
+  height: 2em;
+  outline: 0 none;
+  padding: 2px 3px;
+}
+textarea {
+	height: inherit !important;
+}
+
+// Fieldsets for custom-made sets (using fieldgroups on activity) as well as for
+// tablefields (on reviews of resources)
+body.page-node-edit, body.page-node-add {
+  fieldset.field-group-fieldset, fieldset.form-tablefield {
+    border: 1px solid #b7b7b7;
+    padding: 20px;
+    background-color: #F5F5F5;
+  }
+  fieldset.field-group-fieldset, fieldset.form-tablefield {
+    > legend > span.fieldset-legend {
+      font-size: 140%;
+      margin: 0px 8px;
+    }
+  }
+}
+
+// Webform fieldsets
+.webform-client-form fieldset {
+  border: 1px solid #b7b7b7;
+  padding: 20px;
+  legend {
+    font-weight: bold;
+    font-size: 120%;
+    padding: 0 0.5em;
+  }
+}
+
+// Date inputs should be side-by-side. See: https://www.drupal.org/node/1248720
+body.page-node-edit, body.page-node-add {
+  .date-padding, .date-padding div, .date-padding label {
+    padding:0px !important;
+  }
+  .date-no-float {
+    clear:none;
+    float:left;
+    width:auto;
+  }
+  .end-date-wrapper .form-item label {
+    float: left;
+    padding-right: 20px;
+    padding-top: 0px;
+  }
+}
+
+// Fieldset legends, used mostly on edit screens, should be bold to better
+// match normal field labels
+.fieldset-legend {
+  font-weight: bold;
+}
+// Reset link styling for vertical tabs
+#page form .vertical-tabs ul.vertical-tabs-list a {
+  color: @link-color-primary;
+  &:hover {
+    color: @link-color-primary;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Drupal Tabs
+   -------------------------------------------------------------------------- */
+
+.tabs {
+  padding-bottom: 20px;
+}
+
+// Add some responsiveness to tabs
+ul.tabs.primary li, ul.tabs.secondary li {
+  white-space: nowrap;
+  float: left;
+  margin-top: 0.5em;
+  a {
+    display: inline-block;
+  }
+}
+
+#page ul.tabs.primary {
+  border-bottom: 2px solid @subtle-fill-color;
+  border-collapse: collapse;
+  line-height: 1.4em;
+  list-style: none outside none;
+  margin: 5px;
+  padding: 0px 15px;
+  li {
+    a {
+      background-color: #ffffff;
+      transition: none;
+      border: 1px solid #b7b7b7;
+      border-bottom: none;
+      color: @text-color;
+      padding: 5px 10px;
+      &:hover {
+        background-color: @secondary-button-color;
+        color: #fff;
+      }
+    }
+    &.active a {
+      background-color: @subtle-fill-color;
+      border: 1px solid #b7b7b7;
+      border-bottom: none;
+      color: #ffffff;
+    }
+  }
+}
+#page ul.tabs.secondary {
+  padding-bottom: 0px;
+}
+
+// Any tabs that are manually placed inside the "preface" are a little special
+// and need thier own highlighting
+#page #region-preface-first ul.tabs.primary {
+  border-bottom: 0px;
+  margin-bottom: 0px;
+  padding-left: 5px;
+  li {
+    margin-bottom: -1px;
+    padding-bottom: 0px;
+    a {
+      background-color: @subtle-fill-color;
+      color: #fff;
+      &:hover {
+        background-color: @secondary-button-color;
+        color: #fff;
+      }
+    }
+    &.active a {
+      background-color: #fff;
+      color: @text-color;
+    }
+  }
+}
+
+// On the resoruce index we only want the manually placed tabs to appear, so
+// hide the normal template-placed tabs.
+body.resources-index #zone-content ul.tabs {
+  display: none;
+}
+
+
+
+/* --------------------------------------------------------------------------
+   Comments
+   -------------------------------------------------------------------------- */
+
+#region-content .submitted, .comment footer {
+  font-style: italic;
+  padding: 0 0 1em 0;
+}
+
+#region-content .submitted, .comment footer span.username {
+  font-weight: bold;
+}
+
+#comments {
+  margin: 1.5em 0em;
+  span.username {
+    color: #666;
+    font-size: 1.1em;
+  }
+  // Custom styles for nested replies
+  .indented {
+    margin-left: 50px;
+    article {
+      border-top: 1px dotted #b7b7b7;
+      margin-top: 20px;
+      padding-top: 20px;
+    }
+  }
+}
+nav.comment-links {
+  margin-top: 20px;
+}
+
+// Node links tend to break the spacing before comments. This tries to adjust
+//for that
+nav.node-links ul {
+  display: block !important;
+  margin: 1.5em 0em;
+}
+.rating-wrapper {
+  margin-top: 2em;
+}
+
+
+/* --------------------------------------------------------------------------
+   Rating Stars
+   -------------------------------------------------------------------------- */
+
+// Fivestar uses background images by default for the stars. We want to use
+// Fontello glyphs instead.
+div.fivestar-widget-static .star, div.fivestar-widget .star, div.fivestar-widget .cancel {
+  width: 25px;
+  height: 25px;
+  text-indent: 0;
+  background: none;
+  // Star input widgets wrap the star in an "a" tag (via JS) and the static
+  // star display just uses a span. Reset both and swap-in glyph.
+  a, span.on, span.off {
+    background: none;
+    color: #aaa !important;
+    &:before {
+      font-family: "fontello";
+      font-style: normal;
+      font-weight: normal;
+      font-size: 120%;
+      speak: none;
+      text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3);
+      white-space: pre;
+      // We need to explicitly define the content value here in order to add
+      // some line-breaks (\A) to it that push down the noscript text that
+      // fivestar injects.
+      content: "\e80e \A\A\A";
+    }
+  }
+  &.on a { // Widget input "on"
+    color: @status-color-purple !important;
+  }
+  &.hover a { // Widget input hover
+    color: @status-color-blue !important;
+  }
+  span.on { // Static display "on"
+    color: @status-color-orange !important;
+  }
+}
+// Also tighten-up some of the whitespace for the ratings group
+.group_ratings {
+  .field-label {
+    display: block;
+    float: left;
+    width: 40%;
+    margin-bottom: 2em;
+  }
+  .field-items {
+    display: block;
+    float: left;
+    width: 58%;
+    margin-bottom: 2em;
+  }
+  .fivestar-combo-stars {
+    padding-left: 1.5em;
+  }
+  .field {
+    clear: both;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Flagging and Status Icons
+   -------------------------------------------------------------------------- */
+
+.icon {
+  margin-right: 0.5em;
+  font-size: 110%;
+}
+.icon-large {
+  font-size: 140%;
+}
+.icon-license_available {
+  color: @status-color-green;
+}
+.icon-license_under_consideration {
+  color: @status-color-orange;
+}
+.icon-trial_access_available {
+  color: @status-color-blue;
+}
+.icon-crl_desiderata {
+  color: @status-color-pink;
+}
+.icon-crl_review_available {
+  color: @status-color-purple;
+}
+.icon-license_renewal_available {
+  color: @status-color-aqua;
+}
+.icon-past_license_offer {
+  color: @status-color-red;
+}
+.icon-inactive_declined {
+  color: @status-color-yellow;
+}
+
+
+/* Activity Report */
+#status-summary {
+  margin-bottom: 3em;
+}
+#status-summary table, #status-summary tr {
+  border: none;
+}
+#status-summary .status-inactive {
+  color: #aaa;
+}
+#status-summary .status-active {
+  font-weight: bold;
+}
+
+/* Icon containers */
+.view-teaser-status-highlight {
+  display: inline-block;
+  float: left;
+}
+.res_highlight .summary-icon {
+  float: left;
+}
+.view-teaser-status-icons i.icon {
+  float: left;
+}
+.view-teaser-status-icons {
+  margin-top: 20px;
+}
+/* Styles for numbers used as icons */
+span.big-num {
+  font-size: 26px; /* Should be pixel size to match icons */
+  margin-right: 0.2em;
+  font-weight: normal;
+  color: #555;
+  display: inline-block;
+}
+// Resource summary highlight on resource pages
+#block-crl-resource-crl-resource-summary {
+  .res-highlight-row {
+    line-height: 1.5em;
+    .icon-thumbs-up-alt, .icon-thumbs-down-alt {
+      color: #555;
+    }
+  }
+  .res-highlight-row-items {
+    float: left;
+    max-width: 75%;
+  }
+  .res-highlight-row-label, .res-highlight {
+    font-size: 100%;
+    margin: 1em 1.8em 1em 0;
+    float: left;
+  }
+  .res-highlight-row-label {
+    padding-top: 0.2em;
+  }
+  .two .res-highlight-row-label {
+    margin-right: 2.7em;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Purchase Proposal Index and Rating Widgets
+   -------------------------------------------------------------------------- */
+
+// PP vote - stars styles
+.rate-user .rate-fivestar-btn-filled, .rate-fivestar-btn-filled, .rate-fivestar-btn-empty {
+  background-image: url(../images/fivestar_alt.png);
+}
+.rate-widget-fivestar ul {
+  margin: 0px;
+  padding: 0px;
+  li, li a, li span {
+    width: 1.3em;
+    height: 16px;
+  }
+}
+
+// PP vote - typography styles
+.vote-result, .vote-results {
+  font-size: 80%;
+}
+.vote-pending {
+  border: 1px solid red;
+  padding: 0px 3px;
+  color: red;
+}
+.vote-filled, .vote-filled a {
+  color: green !important;
+  font-weight: bold;
+  text-decoration: none !important;
+}
+.rate-widget ul li {
+  margin: 0px;
+  list-style: none outside none;
+}
+
+// PP vote - view index styles
+.view-pp-resource-lists {
+  table td {
+    vertical-align: top;
+  }
+  .views-field-value {
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+  }
+  .views-field-value, .views-field-value-1  {
+    min-width: 100px;
+  }
+  .vote-user-wrapper {
+    min-width: 55%;
+  }
+  .vote-summary-wrapper, .vote-user-wrapper {
+    float: left;
+  }
+}
+
+// PP vote - block styles
+.block-crl-pp-resource-feat .vote-user-wrapper {
+  margin-bottom: 1em;
+}
+
+// SPP vote
+article form.shared-vote-input-form {
+  width: 100%;
+  float: none;
+  margin: 0px 0px 20px 0px;
+  padding: 0px 0px 20px 0px;
+  border-left: none;
+  border-bottom: 1px solid #bbb;
+}
+form.shared-vote-input-form {
+  .form-item-pledge {
+    margin-bottom: 0px;
+  }
+  .form-item-pledge input, .form-item-currency, input.form-submit {
+    float: left;
+    margin: 5px 10px 5px 0px;
+  }
+  .form-notes {
+    margin-top: 1em;
+    clear: both;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Messages and Related icons
+   -------------------------------------------------------------------------- */
+
+.icon-message {
+  width: 20px;
+  font-size: 100%;
+  margin-right: 1em;
+  display: block;
+  float: left;
+  // Some message icons use glyphs
+  &:extend(.icon-pencil all); // Default icon if not overriden below
+  &.resource_update {
+    &:extend(.icon-pencil all);
+  }
+  &.resource_new {
+    &:extend(.icon-doc-add all);
+  }
+  &.resource_new_comment {
+    &:extend(.icon-comment all);
+  }
+}
+// Some message icons us sprites
+.message-icon-small.resource_new_alert,
+.message-icon-small.resource_expires_soon,
+.message-icon-small.resource_status_update,
+.message-icon-small.resource_new_review,
+.message-icon-small.resource_suggested {
+  &:before {
+    content: '';
+  }
+  margin-top: 0.2em;
+  background-image: url("../images/sprites.png?v=6");
+  background-size: 500px;
+  height: 20px;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: middle;
+  // Retina support.
+  @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
+    background-image: url("../images/sprites2x.png?v=6");
+  }
+  background-position: 0px -450px;
+}
+
+.view-crl-messages {
+  // Style exposed filters for message lists
+  .views-exposed-form .views-exposed-widget .form-submit {
+    margin-top: 0px;
+  }
+  .views-exposed-widgets label, .views-exposed-widgets .views-widget {
+    float: left;
+    margin-bottom: 1em;
+  }
+  // Tweaks for list displays of messages
+  .views-row, .more-link {
+    padding: 2px 0px;
+    margin-bottom: 15px;
+  }
+  span.message-list-text {
+    display: block;
+    float: left;
+    max-width: 80%;
+  }
+   h3 {
+    padding-left: 32px;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Special CRL "tag" styles (alert and countdown text)
+   -------------------------------------------------------------------------- */
+
+// Base typography
+span.crl-tag {
+  font-size: 75%;
+  margin-left: 1em;
+}
+h2 span.crl-tag {
+  font-size: 50%;
+  vertical-align: middle;
+}
+.crl-tag {
+  &.urgent {
+    color: @status-color-bright-red;
+  }
+  &.expiration {
+    white-space: nowrap;
+  }
+  &.alert {
+    color: #fff;
+    padding: 1px 3px;
+    background-color: @status-color-bright-red;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 0px 0px 2px 2px #ddd;
+    -webkit-box-shadow: 0px 0px 2px 2px #ddd;
+    box-shadow: 0px 0px 2px 2px #ddd;
+  }
+}
+// The tag appears on the left when shown with the alert message
+#crl-overview .crl-tag.alert {
+  margin: 0em 1em 0em 0em;
+  float: left;
+}
+
+
+/* --------------------------------------------------------------------------
+   Misc tweaks and adjustments
+   -------------------------------------------------------------------------- */
+
+// Special highlight boxes (styled to avoid confusion with system message
+// boxes)
+body.page-node-add-resource #edit-field-provider, .notice-box {
+  border: 1px solid darken(@highlight-color, 5%);
+  padding: 10px;
+  background-color: #f5f5f5;
+  margin-bottom: 2em;
+}
+// For extreme cases where we need to be obnoxiously loud (while still not
+// creating confusion with site message boxes)
+.notice-box.extreme {
+  border-width: 3px;
+}
+
+// Correct checkbox form highlighting error
+.form-item input[type="checkbox"].error, .form-item input[type="radio"].error{
+  outline: 2px solid red;
+  -moz-appearance: none;
+}
+
+// Correct weird borders on horizontal tab links in Safari and Chrome
+.horizontal-tabs :focus {
+  outline: none;
+}
+
+// Random helpers
+#skip-link {
+	display:none;
+}
+.clearer {
+  clear: both;
+}
+a.no-link-style {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+// Editor tools at top of page
+.editor-tools {
+  float: right;
+  width: 300px;
+  text-align: right;
+}
+
+// Styles for flagging links
+.flag-message {
+  position: static;
+  float: left;
+  clear: both;
+  padding: 0.5em;
+  width: auto;
+}
+.view-resource-lists .flag-wrapper {
+  float: right;
+}
+
+// Adjust zebra striping for tables and ensure that inline tables are also
+incldued via CSS3
+table tr.even td, table.zebra tr:nth-child(even) td {
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+table th {
+  background-color: #eee;
+}
+
+// Responsive wrapper for embedded video iframes
+.videoWrapper {
+	position: relative;
+	padding-bottom: 58.25%; /* 16:9 */
+	padding-top: 25px;
+	height: 0;
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Styles for embedded video highlight thumbnail
+.edes-vid-highlight {
+  float: right;
+  border: 1px solid #555;
+  margin: 0px 0px 5px 30px;
+  width: 225px;
+  background-color: #555;
+  p {
+    font-size: smaller;
+    margin: 5px 8px;
+    color: #fafafa !important;
+  }
+}
+
+// Allow for responsive images. A fieldset mod is also needed to ensure that the
+// effect works propery inside of field group field sets.
+img.img-responsive {
+  display: block;
+  height: auto !important;
+  max-width: 100% !important;
+}
+fieldset {
+  display: table-cell;
+}
+
+// Special graphic label for provider title text
+span.provider-p {
+  font-family: Raleway, sans-serif;
+  font-size: 75%;
+  border: 1px solid @text-color;
+  background-color: @status-color-purple;
+  color: #fff;
+  padding: 3px 6px;
+  margin-right: 0.5em;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-shadow: 0px 0px 2px 2px #ddd;
+  -webkit-box-shadow: 0px 0px 2px 2px #ddd;
+  box-shadow: 0px 0px 2px 2px #ddd;
+}
+span.provider-stem {
+  display: none;
+}
+
+// Uniqueness widgets
+.uniqueness-dyn {
+  background-position: 0 -1em !important;
+  padding-left: 1em;
+}
+fieldset#edit-uniqueness {
+  border-left: 3px solid #aaa;
+  padding: 0px 15px;
+  legend {
+    float: left;
+    margin-bottom: 15px;
+  }
+}
+#edit-uniqueness-type {
+  clear: both;
+}

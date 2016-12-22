@@ -21,7 +21,7 @@ function crl_facetapi_link_inactive($variables) {
     $status_options = crl_resource_activity_status_property_oplist();
     $status = array_search(t($variables['text']), $status_options);
     if ($status) {
-      $icon_span = '<span class="summary-icon-small ' . $status . '"></span>';
+      $icon_span = '<i class="icon icon-' . $status . '"></i>';
     }
   }
   // Builds accessible markup.
@@ -54,14 +54,6 @@ function crl_facetapi_link_inactive($variables) {
 
 // Facet API: Also process active items.
 function crl_facetapi_link_active($variables) {
-  $icon_span = '';
-  if (function_exists('crl_resource_activity_status_property_oplist')) {
-    $status_options = crl_resource_activity_status_property_oplist();
-    $status = array_search(t($variables['text']), $status_options);
-    if ($status) {
-      $icon_span = '<span class="summary-icon-small ' . $status . '"></span>';
-    }
-  }
   // Sanitizes the link text if necessary.
   $sanitize = empty($variables['options']['html']);
   $link_text = ($sanitize) ? check_plain($variables['text']) : $variables['text'];
@@ -90,7 +82,7 @@ function crl_facetapi_link_active($variables) {
 
 // Facet API: Tweaks the decativate text/button that appears next to active item.
 function crl_facetapi_deactivate_widget($variables) {
-  return '<span class="facet-api-remove"></span>';
+  return '<i class="icon icon-cancel"></i>';
 }
 
 

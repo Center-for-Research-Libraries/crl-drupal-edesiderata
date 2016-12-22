@@ -52,7 +52,7 @@ function crl_resource_dashboard_feat_preprocess_views_view_fields__resource_dash
 */
 function theme_crl_resource_dashboard_feat_view_head($vars) {
   $markup = '<div class="dashboard-lead">';
-  $markup .= '<h3><a href="' . $vars['url'] . '"><span class="summary-icon ' . $vars['status'] . '"></span>' . $vars['title'] . '</a></h3>';
+  $markup .= '<h3><a href="' . $vars['url'] . '"><i class="icon icon-' . $vars['status'] . '"></i>' . $vars['title'] . '</a></h3>';
   $markup .= '<a href="' . $vars['url'] . '" class="no-link-style"><span class="super-num">' . $vars['count'] . '</span></a>';
   $markup .= '<p>' . $vars['tagline'];
   $markup .= '<br /><sup>(' . $vars['aux_text'] . ')</sup></p>  </div>';
