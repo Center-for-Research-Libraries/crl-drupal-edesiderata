@@ -223,6 +223,7 @@ label {
 }
 a.inline-button {
   background-color: #9c9eb0;
+  transition: background-color 0.15s ease-in-out !important;
   font-size: 90%;
   padding: 5px;
   margin: 2px;
@@ -230,6 +231,9 @@ a.inline-button {
   white-space: nowrap;
   font-weight: bold;
   line-height: 2.5;
+}
+a.inline-button:hover {
+  background-color: #b8bac7;
 }
 #page p {
   color: #3b3b3b;
@@ -904,60 +908,46 @@ body.resources-dashboard #zone-preface .view-display-id-block_5 .dashboard-lead-
 .field-group-htabs-wrapper {
   background-color: #fff;
 }
-div.horizontal-tabs {
+.horizontal-tabs {
   box-shadow: 1px 1px 2px 1px #ccc;
   background: #ffffff;
-  /* Old browsers */
   background: -moz-linear-gradient(top, #ffffff 90%, #ebebeb 30px);
-  /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(90%, #ffffff), color-stop(100%, #ebebeb));
-  /* Chrome,Safari4+ */
   background: -webkit-linear-gradient(top, #ffffff 90%, #ebebeb 100%);
-  /* Chrome10+,Safari5.1+ */
   background: -o-linear-gradient(top, #ffffff 90%, #ebebeb 100%);
-  /* Opera 11.10+ */
   background: -ms-linear-gradient(top, #ffffff 90%, #ebebeb 100%);
-  /* IE10+ */
   background: linear-gradient(to bottom, #ffffff 90%, #ebebeb 100%);
-  /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f4', GradientType=0);
-  /* IE6-9 */
 }
-div.horizontal-tabs,
 .horizontal-tabs ul.horizontal-tabs-list {
-  border-color: #b7b7b7;
-}
-div.horizontal-tabs ul.horizontal-tabs-list {
-  border-width: 0px 1px 0px 0px;
-}
-.horizontal-tabs fieldset.horizontal-tabs-pane {
-  padding: 18px;
+  background-color: #eff2eb;
+  border: none;
 }
 .horizontal-tabs ul.horizontal-tabs-list li {
-  background: none repeat scroll 0 0 #8ca36b;
-  border-right: 2px solid #FFF;
+  padding: 0px;
+  border-right: 2px solid #fff;
 }
 .horizontal-tabs ul.horizontal-tabs-list li.last {
   border-right: none;
 }
-#page .horizontal-tabs ul.horizontal-tabs-list li a {
-  color: #fff;
+.horizontal-tabs ul.horizontal-tabs-list li a {
+  background-color: #8ca36b;
+  color: #fff !important;
+  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
+}
+.horizontal-tabs ul.horizontal-tabs-list li a:hover {
+  background-color: #fff;
+  color: #444 !important;
 }
 .horizontal-tabs ul.horizontal-tabs-list li.selected {
-  background: none repeat scroll 0 0 #fff;
+  padding: 0px;
 }
-#page .horizontal-tabs ul.horizontal-tabs-list li.selected a {
-  color: #333;
-}
-#page .horizontal-tabs ul.horizontal-tabs-list li a:hover,
-#page .horizontal-tabs ul.horizontal-tabs-list li:hover,
-#page .horizontal-tabs ul.horizontal-tabs-list li:hover a {
+.horizontal-tabs ul.horizontal-tabs-list li.selected a {
   background-color: #fff;
-  outline: medium none;
-  color: #333;
+  color: #000 !important;
 }
-.horizontal-tabs ul.horizontal-tabs-list {
-  background-color: #eff2eb;
+.horizontal-tabs fieldset.horizontal-tabs-pane {
+  padding: 18px;
 }
 /* --------------------------------------------------------------------------
    Buttons
@@ -1129,6 +1119,12 @@ body.page-node-add .end-date-wrapper .form-item label {
 match normal field labels */
 .fieldset-legend {
   font-weight: bold;
+}
+#page form .vertical-tabs ul.vertical-tabs-list a {
+  color: #493986;
+}
+#page form .vertical-tabs ul.vertical-tabs-list a:hover {
+  color: #493986;
 }
 /* --------------------------------------------------------------------------
    Drupal Tabs

@@ -62,8 +62,7 @@ form#ctools-jump-menu {
   color: #fff;
   font-weight: bold;
   text-decoration: none !important;
-  border: 1px solid #000;
-  border-bottom-width: 0px;
+  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
 }
 #header-menus ul li a.active,
 #header-menus ul li a.active-trail {
@@ -96,7 +95,7 @@ form#ctools-jump-menu {
   display: block;
 }
 #header-menus .secondary-menu ul li a {
-  width: 168px;
+  width: 169px;
   padding-left: 0px;
   padding-right: 0px;
 }
