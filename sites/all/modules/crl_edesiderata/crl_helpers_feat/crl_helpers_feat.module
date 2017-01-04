@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the CRL Helpers Feature feature.
- */
-
-include_once 'crl_helpers_feat.features.inc';
