@@ -46,34 +46,6 @@ p.site-slogan {
 #header-menus form#ctools-jump-menu {
   display: none;
 }
-#header-menus ul li {
-  display: inline-block;
-  float: left;
-  margin: 0px 5px 0px 0px;
-  padding: 0px;
-  text-align: center;
-}
-#header-menus ul li a {
-  display: block;
-  height: 29px;
-  padding: 5px 15px;
-  background-color: #1a1c35;
-  color: #fff;
-  font-weight: bold;
-  text-decoration: none !important;
-  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
-}
-#header-menus ul li a.active,
-#header-menus ul li a.active-trail {
-  color: #333 !important;
-  background-color: #fff !important;
-}
-#header-menus ul li a:hover,
-#header-menus ul li a:active,
-#header-menus ul li a:focus {
-  color: #fff !important;
-  background-color: #8ca36b !important;
-}
 #header-menus .main-menu {
   position: absolute;
   bottom: 0px;

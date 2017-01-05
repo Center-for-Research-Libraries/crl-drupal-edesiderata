@@ -148,10 +148,10 @@
   padding: 0 10px;
 }
 #page {
-  background: url('../images/body-bg.png') top right repeat-y;
+  background: url("../images/body-bg.png?v=6") top right repeat-y;
 }
 #zone-content {
-  background: url('../images/body-inner-bg.png') 0 0 repeat;
+  background: url("../images/body-inner-bg.png?v=6") 0 0 repeat;
   border: 1px solid #b7b7b7;
   border-left: 0px;
 }
@@ -305,7 +305,7 @@ blockquote {
    -------------------------------------------------------------------------- */
 #section-header {
   background-color: #474b6f;
-  background-image: url('../images/world-bg.png?v=6');
+  background-image: url("../images/world-bg.png?v=6");
   background-size: 538px;
   background-repeat: no-repeat;
   background-position: center top;
@@ -314,7 +314,7 @@ blockquote {
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
   #section-header {
-    background-image: url('../images/world-bg2x.png?v=6');
+    background-image: url("../images/world-bg2x.png?v=6");
   }
 }
 #zone-header {
@@ -385,6 +385,41 @@ header#section-header span.ext {
 #header-menus .main-menu,
 #header-menus .secondary-menu {
   display: none;
+}
+#header-menus .main-menu ul li,
+#header-menus .secondary-menu ul li {
+  display: inline-block;
+  float: left;
+  margin: 0px 5px 0px 0px;
+  padding: 0px;
+  text-align: center;
+}
+#header-menus .main-menu ul li a,
+#header-menus .secondary-menu ul li a {
+  display: block;
+  height: 29px;
+  padding: 5px 15px;
+  background-color: #1a1c35;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none !important;
+  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
+}
+#header-menus .main-menu ul li a.active,
+#header-menus .secondary-menu ul li a.active,
+#header-menus .main-menu ul li a.active-trail,
+#header-menus .secondary-menu ul li a.active-trail {
+  color: #333 !important;
+  background-color: #fff !important;
+}
+#header-menus .main-menu ul li a:hover,
+#header-menus .secondary-menu ul li a:hover,
+#header-menus .main-menu ul li a:active,
+#header-menus .secondary-menu ul li a:active,
+#header-menus .main-menu ul li a:focus,
+#header-menus .secondary-menu ul li a:focus {
+  color: #fff !important;
+  background-color: #8ca36b !important;
 }
 form#ctools-jump-menu {
   width: 100px;
