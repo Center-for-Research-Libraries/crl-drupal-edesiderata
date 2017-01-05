@@ -60,12 +60,12 @@ function crl_mydes_feat_theme() {
 function crl_mydes_feat_block_info() {
   // Block for use on resources pages to flag/watch a resource.
   $blocks['crl_mydes_feat_flag'] = array(
-    'info' => t('Watch Resource via My eDesiderata'), 
+    'info' => t('Watch Resource via My eDesiderata'),
     'cache' => DRUPAL_NO_CACHE,
   );
   // Block for My eDes page to allow users to control their mail settings.
   $blocks['crl_mydes_email_settings'] = array(
-    'info' => t('Manage My eDesiderata mail settings'), 
+    'info' => t('Manage My eDesiderata mail settings'),
     'cache' => DRUPAL_NO_CACHE,
   );
   return $blocks;
@@ -106,7 +106,7 @@ function crl_mydes_feat_block_view($delta = '') {
 /**
  * Utility to generate a "watch resource" form option (usually to be shown in
  * a block).
- * 
+ *
  * @param object $node
  *   The resource node that can be watched.
  * @return string
@@ -122,7 +122,7 @@ function crl_mydes_feat_generate_widget($node) {
 /**
  * Utility to generate a collapsible "save search" form (wrapping the existing
  * "save search" block) that can be added to a filtered resource index.
- * 
+ *
  * @return string
  *   Returns markup for the collapsible form.
  */
@@ -198,7 +198,7 @@ function crl_mydes_feat_form_alter(&$form, &$form_state, $form_id) {
 
 /**
  * Page callback for meDesiderata dashboard page.
- * 
+ *
  * @todo Theme the output.
  */
 function crl_mydes_feat_dashboard_page() {
@@ -217,7 +217,8 @@ function crl_mydes_feat_dashboard_page() {
     else {
       // Add login block. We could place this with the normal block system or
       // context, but this is a bit easier.
-      $text .= render(module_invoke('user', 'block_view', 'login'));
+      $login_block = module_invoke('user', 'block_view', 'login');
+      $text .= !empty($login_block['content']) ? render($login_block['content']) : '';
     }
   }
   return $text;
@@ -289,15 +290,15 @@ function crl_mydes_feat_email_settings_form() {
 
 /**
  * Access check for the change mail settings form.
- * 
+ *
  * This function first tests to see if the email settings form can be
  * generated for the current logged-in user. If not, it checks for an
  * appropriate URL pattern which identifies the user along with a token that
  * grants them access without actaully being logging-in.
- * 
+ *
  * @return mixed
  *   Returns an interger uid if access for that uid should be granted, FALSE
- *   otherwise. 
+ *   otherwise.
  */
 function crl_mydes_feat_email_mod_access() {
   global $user;
@@ -321,12 +322,12 @@ function crl_mydes_feat_email_mod_access() {
 /**
  * Helper to generate a Drupal path that will grant access to the change email
  * settings form while a user is not logged-in.
- * 
+ *
  * @param int $uid
  *   The user id for which to generate the path.
  * @return string
  *   Returns a user-specific Drupal path that can be used to access the email
- *   settings form without being logged-in. 
+ *   settings form without being logged-in.
  */
 function crl_mydes_feat_get_email_mod_path($uid) {
   // Build the path with an hmac token. Note that the use of
@@ -340,7 +341,7 @@ function crl_mydes_feat_get_email_mod_path($uid) {
 
 /**
  * Implements hook_preprocess_mimemail_message()
- * 
+ *
  * Add handy variabels that can be used within a mimemail template as needed,
  * such as our unsubscribe link variable.
  */
@@ -358,7 +359,7 @@ function crl_mydes_feat_preprocess_mimemail_message(&$vars) {
 
 /**
  * Submit handler for the change mail settings form.
- * 
+ *
  * This provides custom processing for changes to email preferences and ensures
  * that BOTH watchlist digest and saved search mail preferences are changed.
  */
@@ -410,7 +411,7 @@ function crl_mydes_feat_email_settings_form_submit_handler($form, &$form_state) 
 
 /**
  * Helper to get the current meDesiderata email setting for a user.
- * 
+ *
  * @param object $account
  *   The user account to check. If empty the current user will be checked.
  * @param boolean $seconds
@@ -437,7 +438,7 @@ function crl_mydes_feat_email_settings_user_setting($account = NULL, $seconds = 
 
 /**
  * Helper to convert a known main interval setting to seconds.
- * 
+ *
  * @param string $setting
  *   The current interval setting as a key value (such as "day" or "week").
  * @return mixed
@@ -461,7 +462,7 @@ function crl_mydes_feat_email_settings_convert_seconds($setting) {
 
 /**
  * Implements hook_preprocess_menu_link()
- * 
+ *
  * Used to add styling to special menu links (e.g. meDesiderata). We don't
  * include this in a separate theme file because it's a preprocessor for a core
  * theme function and will need to be included on almost every page anyway.
@@ -478,7 +479,7 @@ function crl_mydes_feat_preprocess_menu_link(&$vars) {
 
 /**
  * Implements hook_preprocess_delta_blocks_page_title()
- * 
+ *
  * Used to add styling to special title links (e.g. meDesiderata). We don't
  * include this in a separate theme file because it's a preprocessor for a main
  * theme function and will need to be included on almost every page anyway.
@@ -490,7 +491,7 @@ function crl_mydes_feat_preprocess_delta_blocks_page_title(&$vars) {
 
 /**
  * Helper to alter meDesiderata menu and title link text.
- * 
+ *
  * @param string $text
  *   The text to check for the meDesiderata string.
  * @return string

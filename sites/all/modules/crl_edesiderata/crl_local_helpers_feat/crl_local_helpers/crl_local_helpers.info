@@ -1,0 +1,9 @@
+; $Id$
+name = CRL Local Helpers
+description = Provide instance-specific functionality
+core = 7.x
+package = CRL
+
+dependencies[] = crl_local_helpers_feat
+dependencies[] = entity
+dependencies[] = entityreference
