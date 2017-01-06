@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * crl_local_helpers_feat.views_default.inc
+ * crl_helpers_feat.views_default.inc
  */
 
 /**
  * Implements hook_views_default_views().
  */
-function crl_local_helpers_feat_views_default_views() {
+function crl_helpers_feat_views_default_views() {
   $export = array();
 
   $view = new view();

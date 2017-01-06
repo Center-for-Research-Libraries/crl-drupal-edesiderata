@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * crl_local_helpers_feat.features.user_permission.inc
+ * crl_helpers_feat.features.user_permission.inc
  */
 
 /**
  * Implements hook_user_default_permissions().
  */
-function crl_local_helpers_feat_user_default_permissions() {
+function crl_helpers_feat_user_default_permissions() {
   $permissions = array();
 
   // Exported permission: 'access comments'.
