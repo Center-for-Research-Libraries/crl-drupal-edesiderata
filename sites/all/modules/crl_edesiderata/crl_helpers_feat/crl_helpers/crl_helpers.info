@@ -1,0 +1,13 @@
+; $Id$
+name = CRL Helpers
+description = Shared functionality for eDesiderata and gCollections
+core = 7.x
+package = CRL
+
+dependencies[] = crl_helpers_feat
+dependencies[] = entity
+dependencies[] = entityreference
+dependencies[] = search_api
+dependencies[] = rate
+
+files[] = includes/CrlHelpersBlocks.inc

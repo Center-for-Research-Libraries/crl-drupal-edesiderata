@@ -1,0 +1,538 @@
+<?php
+
+
+/**
+ * @file
+ * General case-specific customizations for the eDesiderata site.
+ */
+
+
+/**
+ * Implements hook_menu().
+ */
+function crl_helpers_menu() {
+  $items['admin/config/crl'] = array(
+    'title' => 'CRL Customizations',
+    'description' => 'Options for CRL-specific Functionality.',
+    'position' => 'right',
+    'weight' => -100,
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
+  return $items;
+}
+
+
+/**
+ * Implements hook_theme().
+ *
+ * Declare new theme hooks.
+ */
+function crl_helpers_theme() {
+  $hooks = array(
+    // Theme hook to generate our custom facet breadcrumb.
+    'crl_helpers_facet_breadcrumb' => array(
+      'variables' => array('active_facets' => array(), 'base_path' => '', 'extra' => ''),
+    ),
+    // Theme hook to generate editor tools.
+    'crl_helpers_editor_tools' => array(
+      'variables' => array(),
+    ),
+    // Theme hook to generate the alpha facet and sort switch to be displayed
+    // at the top of an index.
+    'crl_helpers_alpha_facet_sort' => array(
+      'variables' => array('alpha_block' => '', 'form_options' => array()),
+    ),
+    // Theme hook to generate a full entry summary block.
+    'crl_helpers_summary' => array(
+      'variables' => array('status' => array(), 'status_options' => array(), 'comment_count' => 0, 'vote_average' => 0, 'interest_count_up' => 0, 'interest_count_down' => 0),
+    ),
+    // Theme hook to generate a "back to index" link.
+    'crl_helpers_back_to_index' => array(
+      'variables' => array('url' => '', 'back_text' => t('Back to index'), 'browser_back' => FALSE),
+    ),
+    // Theme hook for a generic pseudo field.
+    'crl_helpers_pseudo_field' => array(
+      'variables' => array('output' => '', 'label' => '', 'inline' => FALSE),
+    ),
+    // Theme hook to generate an interest voting widget (used by rate).
+    // This will automatically get used by rate based on its name and the
+    // standard template suggestion rules. We must formally declare it to ensure
+    // our custom preprocess functions get used, etc.
+    'crl_helpers_interest_widget' => array(
+      'variables' => array('links' => NULL, 'results' => NULL, 'mode' => NULL, 'just_voted' => FALSE, 'content_type' => NULL, 'content_id' => NULL, 'display_options' => NULL),
+    ),
+  );
+  foreach ($hooks as &$hook) {
+    $hook['path'] = drupal_get_path('module', 'crl_helpers') . '/themes';
+    $hook['file'] = 'crl_helpers.theme.inc';
+  }
+  return $hooks;
+}
+
+
+/**
+ * Implements hook_theme_registry_alter.
+ *
+ * Override some existing theme hooks via this module directly. Because these
+ * hooks are already declared, we use hook_theme_registry_alter().
+ */
+function crl_helpers_theme_registry_alter(&$theme_registry) {
+  $theme_path = drupal_get_path('module', 'crl_helpers') . '/themes';
+  // Override the template for a mimemail message.
+  if (isset($theme_registry['mimemail_message']) ) {
+    // Becuase this is a template, we need to explicitly change the path.
+    $theme_registry['mimemail_message']['path'] = $theme_path;
+  }
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function crl_helpers_permission() {
+  return array(
+    'crl access member features' => array(
+      'title' => 'CRL access member features',
+      'description' => 'Access member-specific features that are defined in local modules',
+    )
+  );
+}
+
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function crl_helpers_entity_info_alter(&$entity_info) {
+  // Add an optional "embedded" view mode to some content types.
+  $entity_info['node']['view modes']['embedded'] = array(
+    'label' => t('Embedded'),
+    'custom settings' => TRUE,
+  );
+}
+
+
+/**
+* Implements hook_block_info().
+*/
+function crl_helpers_block_info() {
+  // The facet breadcrumb is a block that can be displayed on the top of a
+  // resoruce index.
+  $blocks['crl_helpers_facet_breadcrumb'] = array(
+    'info' => t('CRL Facet Breadcrumb'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // The editor tools block shows links and info just for editors.
+  $blocks['crl_helpers_editor_tools'] = array(
+    'info' => t('CRL Editor Tools'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // The alpha facet sort block shows various A-Z filter and sort options.
+  $blocks['crl_helpers_alpha_facet_sort'] = array(
+    'info' => t('CRL Index Alpha Facet and Sort Options'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // The "back to index" block shows a caclulated back link for navigation.
+  $blocks['crl_helpers_back_to_index'] = array(
+    'info' => t('CRL Back to Index'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // The common input block shows thumbs up/down vote options.
+  $blocks['crl_helpers_interest_input'] = array(
+    'info' => t('CRL Common Vote and Rate Input'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  // The limited access message block shows a special message to users that
+  // cannot access member features.
+  $blocks['crl_helpers_lim_access_mess'] = array(
+    'info' => t('CRL Limited Access Message'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+
+/**
+* Implements hook_block_view().
+*/
+function crl_helpers_block_view($delta = '') {
+  // Lazy-load our block build methods via an object.
+  static $blocks;
+  if (!is_object($blocks)) {
+    $blocks = new CrlHelpersBlocks();
+  }
+  return $blocks->buildBlock($delta);
+}
+
+
+/**
+ * Implements hook_filter_info().
+ */
+function crl_helpers_filter_info() {
+  $filters['crl_content_tokens'] = array(
+    'title' => t('CRL content tokens'),
+    'description' => t('Replace tokens in content areas with fixed values.'),
+    'process callback' => '_crl_helpers_content_tokens',
+    'cache' => FALSE,
+  );
+  return $filters;
+}
+
+
+/**
+ * Implements hook_field_group_build_pre_render_alter().
+ */
+function crl_helpers_field_group_build_pre_render_alter(& $element) {
+  // Add some custom js additions for field group tab rendering.
+  // @see https://www.drupal.org/node/1747804
+  $element['#attached']['js'][] = drupal_get_path('module', 'crl_helpers') . '/js/crl_helpers_field_group.js';
+}
+
+
+/**
+ * Callback to process the custom "crl content tokens" filter.
+ *
+ * @see crl_helpers_filter_info().
+ */
+function _crl_helpers_content_tokens($text, $filter, $format, $langcode, $cache, $cache_id) {
+  $text = str_replace('[provider]', '<img class="from-provider-icon" title="Direct from Publisher" src="/' . drupal_get_path('module', 'crl_helpers') . '/images/icon_publisher.png">', $text);
+  $text = str_replace('[crl_login_url]', url('user', array('query' => drupal_get_destination())), $text);
+  $text = str_replace('[crl_signup_url]', url('user/register', array('query' => drupal_get_destination())), $text);
+  // Also integrate with meDesiderarta features to include a token that adds
+  // a video highlight.
+  if (module_exists('crl_mydes_feat')) {
+    $text = str_replace('[crl_medes_video]', theme('crl_mydes_feat_video_link', array('text' => t('Intro to meDesiderata'))), $text);
+  }
+  return $text;
+}
+
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function crl_helpers_form_comment_form_alter(&$form, &$form_state, $form_id) {
+  // When previewing a comment Drupal insists on showing the full node (being
+  // commented on) below the preview. This seems unecessary, cluttered, and
+  // potentially problamatic. Simple remove that part of the form.
+  unset($form['comment_output_below']);
+  // We want to force all comments to be plain text when an input filter is
+  // used. For non-editors plain_text will likely be the default, but for
+  // editors the default will likely be something else, like full_html. To keep
+  // the comment experience consistent for all users (including editors), and to
+  // ensure clean/simple comment formatting, we detect cases where the format
+  // may be defaulting to something other than plain_text (editors making a new
+  // comment or changing an old comment that had a NULL format value), and
+  // default to plain_text. Editors will still have the power to override this
+  // manually, we are just changing defaults. Tools like better_formats could
+  // help here, but that's overkill since we can do this in just a couple lines.
+  if (empty($form['cid']['#value']) || empty($form['comment_body'][$form['comment_body']['#language']][0]['#format']) ) {
+    $form['comment_body'][$form['comment_body']['#language']][0]['#format'] = filter_fallback_format();
+  }
+}
+
+
+/**
+ * Implements hook_preprocess_comment().
+ *
+ * Alter some comment variables before they are themed. Used primarily to
+ * implement some ad hoc "private comments" features.
+ */
+function crl_helpers_preprocess_comment(&$vars) {
+  // Add the inst to the author's name if possible.
+  $user_inst = crl_user_get_institution($vars['comment']->uid, NULL);
+  if (!empty($user_inst)) {
+    $vars['author'] = $vars['author'] . ' (' . $user_inst . ')';
+  }
+  // Hide the title/subject line.
+  $vars['title'] = NULL;
+  // See if any "privacy" details are set via a special "comment_privacy" field.
+  $wrapper = entity_metadata_wrapper('comment', $vars['comment']);
+  $privacy = isset($wrapper->field_comment_privacy) ? $wrapper->field_comment_privacy->value() : NULL;
+  // Toggle the removal/addition of text based on any privacy settings and user
+  // rights.
+  if ($privacy == 'anon') { // Hide submitter name.
+    // Don't hide anything from admins, but show a notice.
+    if (user_access('administer comments')) {
+      $vars['content']['privacy_note'] = array('#markup' => t('<strong>Privacy note:</strong> The submitter has chosen to hide their name from everyone except CRL staff.'));
+    }
+    else {
+      $vars['author'] = t('(name hidden)');
+      $vars['submitted'] = t('Submission details hidden');
+    }
+  }
+  elseif ($privacy == 'private') { // Hide entire comment.
+    global $user;
+    // Remove "reply" option.
+    if (isset($vars['content']['links']['comment']['#links']['comment-reply'])) {
+      unset($vars['content']['links']['comment']['#links']['comment-reply']);
+    }
+    // Don't hide anything from admins or author, but show a notice.
+    if (user_access('administer comments') || $vars['comment']->uid == $user->uid) {
+      $vars['content']['privacy_note'] = array('#markup' => t('<strong>Privacy note:</strong> This comment has been hidden from all users except CRL staff and the original author.'));
+    }
+    else {
+      $vars['author'] = t('(name hidden)');
+      $vars['submitted'] = t('Submission details hidden');
+      $vars['content']['comment_body'] = array('#markup' => t('Comment hidden - this is a private comment to CRL.'));
+    }
+  }
+}
+
+
+/**
+ * Implements hook_views_data_export_xls_header().
+ *
+ * Alter some export header structures.
+ */
+function crl_helpers_preprocess_views_data_export_xls_header(&$variables) {
+  $output = '';
+  $output .= "<h2>eDesiderata - Informed Investment in Electronic Resources</h2>";
+  $output .= "<h3>Center for Research Libraries</h3>";
+  $output .= "<p><b>Exported from eDesiderata on " . format_date(time(), 'medium')." </b></p>";
+  $output .= "<p>&nbsp;</p>" . $variables['header_row'];
+  $variables['header_row'] = $output;
+}
+
+
+/**
+ * Implements hook_rate_widget_alter().
+ */
+function crl_helpers_rate_widget_alter($widget, $context) {
+  // Ensure that we use the same theme function for all interest input widgets.
+  if (strpos($widget->name, '_interest') !== FALSE) {
+    $widget->theme = 'crl_helpers_interest_widget';
+  }
+}
+
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Alter node edit forms. Note that this form_alter will fire last thanks to
+ * crl_helpers_module_implements_alter(). This is critical so that we can
+ * make alterations AFTER other module's alterations (e.g. revisioning). We
+ * could usually use hook_form_FORM_ID_alter() to ensure our alterations go
+ * after other hook_form_alters(), but for node edit forms the FORM_ID is
+ * dynamic and dependent on the node type, so doing it this way is easier.
+ *
+ * @see crl_helpers_module_implements_alter()
+ */
+function crl_helpers_form_alter(&$form, $form_state) {
+  // For the node edit form we make some adjustments to the "revisioning"
+  // elements.
+  if (!empty($form['#node_edit_form'])) {
+    $node = &$form['#node'];
+    if (isset($node->nid)) {
+      // If revisioning is installed it will already have altered the form, so
+      // we alter it's alterations.
+      if (isset($form['revision_information']['revision_operation'])) {
+        // Rebuild the options shown in a custom order and with custom text.
+        // Note that we need to retain the keys and ensure that we don't remove
+        // any options.
+        $new_ordered_options = array(
+          REVISIONING_NEW_REVISION_NO_MODERATION => t('Regular Update'),
+          REVISIONING_NO_REVISION => t('Minor update (do NOT notify watchers, alter activity feeds or create a new revision)'),
+          REVISIONING_NEW_REVISION_WITH_MODERATION => t('Update with moderation (used rarely)'),
+        );
+        $top_options = array();
+        foreach ($new_ordered_options as $key => $value) {
+          if (isset($form['revision_information']['revision_operation']['#options'][$key])) {
+            unset($form['revision_information']['revision_operation']['#options'][$key]);
+            $top_options[$key] = $value;
+          }
+        }
+        $form['revision_information']['revision_operation']['#options'] = $top_options + $form['revision_information']['revision_operation']['#options'];
+        $form['revision_information']['revision_operation']['#title'] = t('Update and revision details');
+        // Temporarily hide the moderation option if it's not yet active. Doing
+        // this sort-of negates the usefulness of the revisioning module (as it
+        // means we can't fork existing entities into moderated states), but
+        // until CRL fully embraces moderation workflows this should be hidden
+        // to avoid confusion.
+        if (isset($form['revision_information']['revision_operation']['#options'][REVISIONING_NEW_REVISION_WITH_MODERATION]) && $form['revision_information']['revision_operation']['#default_value'] != REVISIONING_NEW_REVISION_WITH_MODERATION) {
+          unset($form['revision_information']['revision_operation']['#options'][REVISIONING_NEW_REVISION_WITH_MODERATION]);
+          $form['revision_information']['revision_operation']['#description'] = '';
+        }
+        // Highlight the revisioning options for resources and activity types.
+        // These warrent special attention because they may trigger messages.
+        if ($node->type == 'resource' || $node->type == 'activity') {
+          $form['revision_information']['revision_operation']['#prefix'] = '<div class="notice-box extreme">';
+          $form['revision_information']['revision_operation']['#suffix'] = '</div>';
+        }
+      }
+      // If revisioning is not installed, just alter the core "revision"
+      // checkbox.
+      else {
+        $form['revision_information']['#collapsed'] = FALSE;
+        $form['revision_information']['#weight'] = -3;
+        $form['revision_information']['revision']['#weight'] = 10;
+        $form['revision_information']['revision']['#prefix'] = '<div class="notice-box">';
+        $form['revision_information']['revision']['#suffix'] = '</div>';
+        $form['revision_information']['revision']['#title'] = t('Notify watchers, alter activity feeds and create a new revision (uncheck for minor updates)');
+      }
+    }
+    // Also add some alters specific to the uniqueness widget.
+    if (!empty($form['uniqueness'])) {
+      $form['uniqueness']['#collapsible'] = FALSE;
+      unset($form['uniqueness']['#collapsed']);
+    }
+  }
+}
+
+
+/**
+ * Implements hook_module_implements_alter().
+ *
+ * Used to force this module's hook_form_alter to fire last.
+ *
+ * @see crl_helpers_form_alter()
+ */
+function crl_helpers_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'form_alter' && array_key_exists('crl_helpers', $implementations)) {
+    $group = $implementations['crl_helpers'];
+    unset($implementations['crl_helpers']);
+    $implementations['crl_helpers'] = $group;
+  }
+}
+
+
+/**
+ * Helper to get a country list in a format friendly for select lists.
+ *
+ * This is really just a wrapper for country_get_list() that ensures this
+ * function is available without enabling special modules.
+ */
+function crl_helpers_country_list() {
+  require_once DRUPAL_ROOT . '/includes/locale.inc';
+  return country_get_list();
+}
+
+
+/**
+ * Implements hook_entity_property_info_alter().
+ *
+ * Define some "common" node properties. Note that most of these are just
+ * meant to be used when displaying a single entity or for use in a Search API
+ * index. None of these have a schema so they aren't meant for display with
+ * SQL-based views.
+ */
+function crl_helpers_entity_property_info_alter(&$info) {
+  $properties = &$info['node']['properties'];
+  // Captures the glossary value for a node. This is incldued as a property
+  // so that it can be indexed and used as a facet.
+  $properties['crl_glossary_value'] = array(
+    'label' => t("CRL Glossary Value"),
+    'type' => 'text',
+    'description' => t("Gets CRL glossary value based on the first letter of the sort name."),
+    'getter callback' => 'crl_helpers_get_glossary_value',
+  );
+  // Get the interest count (positive). NOTE: requires extra queries (does not
+  // just use loaded entity data).
+  $properties['crl_helpers_interest_count_up'] = array(
+    'label' => t("CRL Entity Interest Count"),
+    'type' => 'integer',
+    'description' => t("Get the aggregate positive interest count."),
+    'getter callback' => 'crl_helpers_get_interest_count_up',
+  );
+  // Get the interest count (negative). NOTE: requires extra queries (does not
+  // just use loaded entity data).
+  $properties['crl_helpers_interest_count_down'] = array(
+    'label' => t("CRL Entity Interest Count"),
+    'type' => 'integer',
+    'description' => t("Get the aggregate negative interest count."),
+    'getter callback' => 'crl_helpers_get_interest_count_down',
+  );
+}
+
+
+/**
+ * Properties callback: get glossary value.
+ *
+ * @see crl_helpers_entity_property_info_alter().
+ */
+function crl_helpers_get_glossary_value($entity, array $options, $name, $type, $info) {
+  // If we are not working with something that has a title we can just return.
+  if (empty($entity->title)) {
+    return;
+  }
+  $string = '';
+  // See if we have a sorting title to work with.
+  $entity_wrapper = entity_metadata_wrapper('node', $entity);
+  // Look for the sorting field.
+  $string = isset($entity_wrapper->field_title_sort) ? $entity_wrapper->field_title_sort->value() : '';
+  // If we don't have a sorting field use the normal title.
+  $string = empty($string) ? $entity->title : $string;
+  $string = trim($string);
+  // Get first character in a multibyte-safe way.
+  if (!empty($string) && mb_strlen($string)) {
+    return strtoupper(mb_substr($string, 0, 1));
+  }
+  return NULL;
+}
+
+
+/**
+ * Properties getter callback: get interest count positive.
+ *
+ * NOTE: requires extra queries (does not just use loaded entity data). So it's
+ * probably not a good idea to fetch this property over and over on one page.
+ *
+ * @see crl_helpers_entity_property_info_alter().
+ */
+function crl_helpers_get_interest_count_up($entity, array $options, $name, $type, $info) {
+  return crl_helpers_get_interest_count($entity, '1');
+}
+
+
+/**
+ * Properties getter callback: get interest count negative.
+ *
+ * NOTE: requires extra queries (does not just use loaded entity data). So it's
+ * probably not a good idea to fetch this property over and over on one page.
+ *
+ * @see crl_helpers_entity_property_info_alter().
+ */
+function crl_helpers_get_interest_count_down($entity, array $options, $name, $type, $info) {
+  return crl_helpers_get_interest_count($entity, '-1');
+}
+
+
+/**
+ * Helper to get an interest count based on an option key.
+ */
+function crl_helpers_get_interest_count($entity, $option) {
+  if (empty($entity->type)) {
+    return;
+  }
+  // Get the vote data for the interest widget. We use a static cache as this
+  // query really only needs to happen once per entity.
+  static $results = array();
+  if (function_exists('votingapi_select_results') && empty($results[$entity->nid])) {
+    $criteria['entity_id'] = $entity->nid;
+    $criteria['tag'] = $entity->type . '_interest';
+    $criteria['value_type'] = 'option';
+    $results[$entity->nid] = votingapi_select_results($criteria);
+  }
+  foreach ($results[$entity->nid] as $result) {
+    if (!empty($result['function']) && $result['function'] == 'option-' . $option && !empty($result['value'])) {
+      return (int)$result['value'];
+    }
+  }
+  return 0;
+}
+
+
+/**
+ * Implements hook_node_presave().
+ */
+function crl_helpers_node_presave($node) {
+  // During some save efforts we want to preserve the original updated
+  // timestamp, or set one manually. If we have programmatic logic that sets the
+  // manual_changed_timestamp property the following lines will ensure that this
+  // gets used as the "Updated" value once the node is saved (instead of
+  // REQUEST_TIME which node_save tries to set automatically).
+  if (isset($node->manual_changed_timestamp)) {
+    $node->changed = $node->manual_changed_timestamp;
+  }
+}

@@ -1,0 +1,113 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the crl_helpers module.
+ */
+
+
+/**
+ * Implements hook_install.
+ */
+function crl_helpers_install() {
+  // Assuming field_country is in place already (probably as part of helpers
+  // feature), set its oplist.
+  crl_helpers_set_oplist_function('field_country', 'crl_helpers_country_list');
+}
+
+
+/**
+ * Set custom allowed values function for field_institution.
+ * 
+ * This handleing has been moved to crl_user, but we keep the record here to
+ * ensure hook_update_n counts are consistent.
+ */
+function crl_helpers_update_7100() {
+  // Set oplist function for field_institution.
+  // crl_helpers_set_oplist_function('field_institution', 'crl_helpers_inst_oplist');
+}
+
+
+/**
+ * Set custom allowed values function for field_country.
+ */
+function crl_helpers_update_7101() {
+  // Set oplist function for field_country.
+  crl_helpers_set_oplist_function('field_country', 'crl_helpers_country_list');
+}
+
+
+/**
+ * Fix bogus or corrupt message bundle info.
+ */
+function crl_helpers_update_7102() {
+  // Somehow we ended up with some message bundles that still contain defined
+  // field instances, even though the bundles have been removed. This cleans
+  // that up.
+  $to_fix = array(
+    // entity_type => bundle_name
+    'message' => array('resource_new_vote', 'resource_update_activity'),
+  );
+  foreach ($to_fix as $entity_type => $bundles) {
+    foreach ($bundles as $bundle) {
+      $fields = field_info_fields();
+      $field_instances = field_info_instances($entity_type, $bundle);
+      foreach($field_instances as $instance) {
+        field_delete_instance($instance);
+      }
+    }
+  }
+}
+
+
+/**
+ * Add custom date formats and types.
+ */
+function crl_helpers_update_7103() {
+  // Add custom date formats and types. Note that a format is tied to a type
+  // via a system variable, which we can track with features/strongarm, but any
+  // NEW format and type data must be manually added to the DB here.
+  db_insert('date_formats')
+    ->fields(array(
+      'format' => 'r',
+      'type' => 'custom',
+      'locked' => 0,
+    ))
+    ->execute();
+  db_insert('date_format_type')
+     ->fields(array(
+       'type' => 'rfc_2822',
+       'title' => 'RFC 2822',
+       'locked' => 0,
+    ))
+  ->execute();
+  db_insert('date_formats')
+    ->fields(array(
+      'format' => 'l, F d, Y',
+      'type' => 'custom',
+      'locked' => 0,
+    ))
+    ->execute();
+  db_insert('date_format_type')
+     ->fields(array(
+       'type' => 'long_no_time',
+       'title' => 'Long - no time',
+       'locked' => 0,
+    ))
+  ->execute();
+}
+
+
+/**
+ * Helper to associate a custom oplist function with a field.
+ */
+function crl_helpers_set_oplist_function($field_name, $function_name) {
+  $field = field_info_field($field_name);
+  if (!empty($field)) {
+    if (isset($field['settings']['allowed_values'])) {
+      unset($field['settings']['allowed_values']);
+    }
+    $field['settings']['allowed_values_function'] = $function_name;
+    field_update_field($field);
+  }
+}
