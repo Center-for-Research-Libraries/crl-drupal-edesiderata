@@ -157,6 +157,12 @@ aside#activity-documents {
 }
 
 // Adjust alignment of active facet display
-#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-facet {
-  clear: none;
+#block-crl-helpers-crl-helpers-facet-breadcrumb {
+  .facet-breadcrumb-facet {
+    clear: none;
+  }
+  // Some parts are only used in the mobile view.
+  &.no-active-filters, & .facet-breadcrumb-add {
+    display: none;
+  }
 }

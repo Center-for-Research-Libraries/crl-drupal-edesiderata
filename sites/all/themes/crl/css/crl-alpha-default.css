@@ -134,3 +134,7 @@ aside#activity-documents {
 #block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-facet {
   clear: none;
 }
+#block-crl-helpers-crl-helpers-facet-breadcrumb.no-active-filters,
+#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-add {
+  display: none;
+}

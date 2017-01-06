@@ -610,6 +610,9 @@ ul.facetapi-facet-crl-glossary-value li a.facetapi-active {
   float: left;
   clear: left;
 }
+#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-add {
+  background-color: transparent;
+}
 #block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-misc {
   font-weight: bold;
   float: left;
