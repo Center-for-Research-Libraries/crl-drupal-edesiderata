@@ -55,31 +55,6 @@ p.site-slogan {
   form#ctools-jump-menu {
     display: none;
   }
-  ul li {
-    display: inline-block;
-    float: left;
-    margin: 0px 5px 0px 0px;
-    padding: 0px;
-    text-align: center;
-    a {
-      display: block;
-      height: 29px;
-      padding: 5px 15px;
-      background-color: @primary-button-color;
-      color: #fff;
-      font-weight: bold;
-      text-decoration: none !important;
-      transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
-      &.active,&.active-trail {
-        color: @text-color !important;
-        background-color: #fff !important;
-      }
-      &:hover,&:active,&:focus {
-        color: #fff !important;
-        background-color: @secondary-button-color !important;
-      }
-    }
-  }
   .main-menu {
     position: absolute;
     bottom: 0px;
@@ -182,6 +157,12 @@ aside#activity-documents {
 }
 
 // Adjust alignment of active facet display
-#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-facet {
-  clear: none;
+#block-crl-helpers-crl-helpers-facet-breadcrumb {
+  .facet-breadcrumb-facet {
+    clear: none;
+  }
+  // Some parts are only used in the mobile view.
+  &.no-active-filters, & .facet-breadcrumb-add {
+    display: none;
+  }
 }
