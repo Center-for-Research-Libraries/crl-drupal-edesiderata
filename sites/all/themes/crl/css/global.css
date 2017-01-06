@@ -723,9 +723,9 @@ img.from-provider-icon {
 /* --------------------------------------------------------------------------
    Views Lists
    -------------------------------------------------------------------------- */
-.view-resource-lists .views-row.views-row-odd,
-.view-provider-lists .views-row.views-row-odd,
-.views-row.item-list-box.views-row-odd {
+.view-resource-lists .views-row,
+.view-provider-lists .views-row,
+.views-row.item-list-box {
   background-color: #fff;
   border: 1px dotted #999;
   padding: 15px;
@@ -734,8 +734,6 @@ img.from-provider-icon {
 .view-provider-lists .views-row.views-row-even,
 .views-row.item-list-box.views-row-even {
   background-color: #eaeaea;
-  border: 1px dotted #999;
-  padding: 15px;
 }
 .view-resource-lists h2,
 .view-provider-lists h2,
