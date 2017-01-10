@@ -936,17 +936,6 @@ function crl_permissions_feat_user_default_permissions() {
     'module' => 'message_ui',
   );
 
-  // Exported permission: 'create field_pp_related'.
-  $permissions['create field_pp_related'] = array(
-    'name' => 'create field_pp_related',
-    'roles' => array(
-      'administrator' => 'administrator',
-      'editor basic' => 'editor basic',
-      'editor power' => 'editor power',
-    ),
-    'module' => 'field_permissions',
-  );
-
   // Exported permission: 'create field_resource_reference'.
   $permissions['create field_resource_reference'] = array(
     'name' => 'create field_resource_reference',
@@ -954,15 +943,6 @@ function crl_permissions_feat_user_default_permissions() {
       'administrator' => 'administrator',
       'editor basic' => 'editor basic',
       'editor power' => 'editor power',
-    ),
-    'module' => 'field_permissions',
-  );
-
-  // Exported permission: 'create field_voting_results'.
-  $permissions['create field_voting_results'] = array(
-    'name' => 'create field_voting_results',
-    'roles' => array(
-      'administrator' => 'administrator',
     ),
     'module' => 'field_permissions',
   );
@@ -1643,17 +1623,6 @@ function crl_permissions_feat_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: 'edit field_pp_related'.
-  $permissions['edit field_pp_related'] = array(
-    'name' => 'edit field_pp_related',
-    'roles' => array(
-      'administrator' => 'administrator',
-      'editor basic' => 'editor basic',
-      'editor power' => 'editor power',
-    ),
-    'module' => 'field_permissions',
-  );
-
   // Exported permission: 'edit field_resource_reference'.
   $permissions['edit field_resource_reference'] = array(
     'name' => 'edit field_resource_reference',
@@ -1661,15 +1630,6 @@ function crl_permissions_feat_user_default_permissions() {
       'administrator' => 'administrator',
       'editor basic' => 'editor basic',
       'editor power' => 'editor power',
-    ),
-    'module' => 'field_permissions',
-  );
-
-  // Exported permission: 'edit field_voting_results'.
-  $permissions['edit field_voting_results'] = array(
-    'name' => 'edit field_voting_results',
-    'roles' => array(
-      'administrator' => 'administrator',
     ),
     'module' => 'field_permissions',
   );
@@ -1720,17 +1680,6 @@ function crl_permissions_feat_user_default_permissions() {
     'module' => 'entityform',
   );
 
-  // Exported permission: 'edit own field_pp_related'.
-  $permissions['edit own field_pp_related'] = array(
-    'name' => 'edit own field_pp_related',
-    'roles' => array(
-      'administrator' => 'administrator',
-      'editor basic' => 'editor basic',
-      'editor power' => 'editor power',
-    ),
-    'module' => 'field_permissions',
-  );
-
   // Exported permission: 'edit own field_resource_reference'.
   $permissions['edit own field_resource_reference'] = array(
     'name' => 'edit own field_resource_reference',
@@ -1738,15 +1687,6 @@ function crl_permissions_feat_user_default_permissions() {
       'administrator' => 'administrator',
       'editor basic' => 'editor basic',
       'editor power' => 'editor power',
-    ),
-    'module' => 'field_permissions',
-  );
-
-  // Exported permission: 'edit own field_voting_results'.
-  $permissions['edit own field_voting_results'] = array(
-    'name' => 'edit own field_voting_results',
-    'roles' => array(
-      'administrator' => 'administrator',
     ),
     'module' => 'field_permissions',
   );
@@ -2484,17 +2424,6 @@ function crl_permissions_feat_user_default_permissions() {
     'module' => 'message_ui',
   );
 
-  // Exported permission: 'view field_pp_related'.
-  $permissions['view field_pp_related'] = array(
-    'name' => 'view field_pp_related',
-    'roles' => array(
-      'administrator' => 'administrator',
-      'editor basic' => 'editor basic',
-      'editor power' => 'editor power',
-    ),
-    'module' => 'field_permissions',
-  );
-
   // Exported permission: 'view field_resource_reference'.
   $permissions['view field_resource_reference'] = array(
     'name' => 'view field_resource_reference',
@@ -2502,18 +2431,6 @@ function crl_permissions_feat_user_default_permissions() {
       'administrator' => 'administrator',
       'anonymous user' => 'anonymous user',
       'authenticated user' => 'authenticated user',
-      'editor basic' => 'editor basic',
-      'editor power' => 'editor power',
-    ),
-    'module' => 'field_permissions',
-  );
-
-  // Exported permission: 'view field_voting_results'.
-  $permissions['view field_voting_results'] = array(
-    'name' => 'view field_voting_results',
-    'roles' => array(
-      'administrator' => 'administrator',
-      'crl-staff' => 'crl-staff',
       'editor basic' => 'editor basic',
       'editor power' => 'editor power',
     ),
@@ -2532,18 +2449,6 @@ function crl_permissions_feat_user_default_permissions() {
     'module' => 'entityform',
   );
 
-  // Exported permission: 'view own field_pp_related'.
-  $permissions['view own field_pp_related'] = array(
-    'name' => 'view own field_pp_related',
-    'roles' => array(
-      'administrator' => 'administrator',
-      'authenticated user' => 'authenticated user',
-      'editor basic' => 'editor basic',
-      'editor power' => 'editor power',
-    ),
-    'module' => 'field_permissions',
-  );
-
   // Exported permission: 'view own field_resource_reference'.
   $permissions['view own field_resource_reference'] = array(
     'name' => 'view own field_resource_reference',
@@ -2552,15 +2457,6 @@ function crl_permissions_feat_user_default_permissions() {
       'authenticated user' => 'authenticated user',
       'editor basic' => 'editor basic',
       'editor power' => 'editor power',
-    ),
-    'module' => 'field_permissions',
-  );
-
-  // Exported permission: 'view own field_voting_results'.
-  $permissions['view own field_voting_results'] = array(
-    'name' => 'view own field_voting_results',
-    'roles' => array(
-      'administrator' => 'administrator',
     ),
     'module' => 'field_permissions',
   );

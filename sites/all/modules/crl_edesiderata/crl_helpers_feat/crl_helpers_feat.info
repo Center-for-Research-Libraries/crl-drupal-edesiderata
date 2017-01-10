@@ -27,6 +27,7 @@ features[box][] = footer1
 features[box][] = footer2
 features[box][] = footer3
 features[box][] = footer4
+features[box][] = general_disclaimer
 features[context][] = editors
 features[context][] = layout_default
 features[ctools][] = boxes:box:1

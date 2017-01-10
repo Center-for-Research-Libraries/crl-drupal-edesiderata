@@ -15,7 +15,7 @@ function crl_helpers_feat_default_box() {
   $box->api_version = 1;
   $box->delta = 'footer1';
   $box->plugin_key = 'simple';
-  $box->title = '<none>';
+  $box->title = '';
   $box->description = 'Footer 1 (box)';
   $box->options = array(
     'body' => array(
@@ -39,7 +39,7 @@ function crl_helpers_feat_default_box() {
   $box->api_version = 1;
   $box->delta = 'footer2';
   $box->plugin_key = 'simple';
-  $box->title = '<none>';
+  $box->title = '';
   $box->description = 'Footer 2 (box)';
   $box->options = array(
     'body' => array(
@@ -50,6 +50,7 @@ function crl_helpers_feat_default_box() {
 ',
       'format' => 'full_html',
     ),
+    'additional_classes' => '',
   );
   $export['footer2'] = $box;
 
@@ -58,7 +59,7 @@ function crl_helpers_feat_default_box() {
   $box->api_version = 1;
   $box->delta = 'footer3';
   $box->plugin_key = 'simple';
-  $box->title = '<none>';
+  $box->title = '';
   $box->description = 'Footer 3 (box)';
   $box->options = array(
     'body' => array(
@@ -70,6 +71,7 @@ function crl_helpers_feat_default_box() {
 ',
       'format' => 'full_html',
     ),
+    'additional_classes' => '',
   );
   $export['footer3'] = $box;
 
@@ -78,7 +80,7 @@ function crl_helpers_feat_default_box() {
   $box->api_version = 1;
   $box->delta = 'footer4';
   $box->plugin_key = 'simple';
-  $box->title = '<none>';
+  $box->title = '';
   $box->description = 'Footer 4 (box)';
   $box->options = array(
     'body' => array(
@@ -90,8 +92,27 @@ function crl_helpers_feat_default_box() {
 ',
       'format' => 'full_html',
     ),
+    'additional_classes' => '',
   );
   $export['footer4'] = $box;
+
+  $box = new stdClass();
+  $box->disabled = FALSE; /* Edit this to true to make a default box disabled initially */
+  $box->api_version = 1;
+  $box->delta = 'general_disclaimer';
+  $box->plugin_key = 'simple';
+  $box->title = '';
+  $box->description = 'General disclaimer (box)';
+  $box->options = array(
+    'body' => array(
+      'value' => '<p><br />
+	While CRL makes every effort to verify statements made herein, the opinions expressed and evaluative information provided here represent the considered viewpoints of individual librarians and specialists at CRL and in the CRL community.&nbsp; They do not necessarily reflect the views of CRL management, its board, and/or its officers.</p>
+',
+      'format' => 'full_html',
+    ),
+    'additional_classes' => '',
+  );
+  $export['general_disclaimer'] = $box;
 
   return $export;
 }

@@ -32,17 +32,17 @@ function crl_provider_feat_context_default_contexts() {
           'region' => 'content',
           'weight' => '-49',
         ),
-        'block-33' => array(
-          'module' => 'block',
-          'delta' => '33',
+        'boxes-general_disclaimer' => array(
+          'module' => 'boxes',
+          'delta' => 'general_disclaimer',
           'region' => 'user_first',
-          'weight' => '-10',
+          'weight' => '-9',
         ),
         'views--exp-provider_lists-page' => array(
           'module' => 'views',
           'delta' => '-exp-provider_lists-page',
           'region' => 'sidebar_first',
-          'weight' => '-57',
+          'weight' => '-56',
         ),
         'facetapi-Nxm1aeATzfIB5ca0QPnt5kntjby5XDX0' => array(
           'module' => 'facetapi',
@@ -56,12 +56,6 @@ function crl_provider_feat_context_default_contexts() {
           'region' => 'sidebar_first',
           'weight' => '-54',
         ),
-        'block-31' => array(
-          'module' => 'block',
-          'delta' => '31',
-          'region' => 'preface_first',
-          'weight' => '-10',
-        ),
         'crl_helpers-crl_helpers_facet_breadcrumb' => array(
           'module' => 'crl_helpers',
           'delta' => 'crl_helpers_facet_breadcrumb',
@@ -73,6 +67,12 @@ function crl_provider_feat_context_default_contexts() {
           'delta' => 'tabs',
           'region' => 'preface_first',
           'weight' => '-8',
+        ),
+        'boxes-providers_intro' => array(
+          'module' => 'boxes',
+          'delta' => 'providers_intro',
+          'region' => 'preface_first',
+          'weight' => '-10',
         ),
       ),
     ),
