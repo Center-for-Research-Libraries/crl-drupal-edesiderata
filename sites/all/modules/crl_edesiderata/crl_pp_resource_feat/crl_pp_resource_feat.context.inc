@@ -109,9 +109,9 @@ function crl_pp_resource_feat_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'block-29' => array(
-          'module' => 'block',
-          'delta' => '29',
+        'boxes-pp_vote_instructions' => array(
+          'module' => 'boxes',
+          'delta' => 'pp_vote_instructions',
           'region' => 'sidebar_second',
           'weight' => '10',
         ),

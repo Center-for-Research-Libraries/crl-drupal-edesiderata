@@ -53,9 +53,11 @@ class CrlHelpersBlocks {
         ),
       );
     }
-    if ($active_facets) {
-      $base_path = current_path();
-      $extra = array();
+    $extra = array();
+    $base_path = current_path();
+    // In some displays, when facets are active, we also want to display saved
+    // search options.
+    if ($active_facets) {      
       if (drupal_match_path(current_path(), 'resources/*')) {
         // Integration with the crl_mydes_feat module to inject a save this
         // search option into the breadcrumb block.
@@ -63,15 +65,20 @@ class CrlHelpersBlocks {
           $extra['save_search'] = crl_mydes_feat_build_saved_search_form();
         }
       }
-      $output = array(
-        'facet_breadcrumb' => array(
-          '#active_facets' => $active_facets,
-          '#base_path' => $base_path,
-          '#extra' => $extra,
-          '#theme' => 'crl_helpers_facet_breadcrumb',
-        ),
-      );
     }
+    // When no facets are active set a class that can be used to control
+    // visibility in CSS if needed.
+    else {
+      $block['attributes']['class'] = array('no-active-filters');
+    }
+    $output = array(
+      'facet_breadcrumb' => array(
+        '#active_facets' => $active_facets,
+        '#base_path' => $base_path,
+        '#extra' => $extra,
+        '#theme' => 'crl_helpers_facet_breadcrumb',
+      ),
+    );
     $block['content'] = $output;
     return $block;
   }

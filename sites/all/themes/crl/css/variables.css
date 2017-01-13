@@ -1,0 +1,29 @@
+.card {
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 2px 3px rgba(0, 0, 0, 0.24);
+}
+.card-pop {
+  border-radius: 2px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.card-pop:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25), 0 4px 4px rgba(0, 0, 0, 0.22);
+}
+.card-reset {
+  border-radius: none;
+  box-shadow: none;
+}
+.card-reset:hover {
+  box-shadow: none;
+}
+.bottom-grad {
+  background: #ffffff;
+  background: -moz-linear-gradient(top, #ffffff 90%, #ebebeb 30px);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(90%, #ffffff), color-stop(100%, #ebebeb));
+  background: -webkit-linear-gradient(top, #ffffff 90%, #ebebeb 100%);
+  background: -o-linear-gradient(top, #ffffff 90%, #ebebeb 100%);
+  background: -ms-linear-gradient(top, #ffffff 90%, #ebebeb 100%);
+  background: linear-gradient(to bottom, #ffffff 90%, #ebebeb 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f4', GradientType=0);
+}

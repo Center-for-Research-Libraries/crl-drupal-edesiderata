@@ -32,11 +32,11 @@ function crl_resource_feat_context_default_contexts() {
           'region' => 'content',
           'weight' => '-49',
         ),
-        'block-33' => array(
-          'module' => 'block',
-          'delta' => '33',
+        'boxes-general_disclaimer' => array(
+          'module' => 'boxes',
+          'delta' => 'general_disclaimer',
           'region' => 'user_first',
-          'weight' => '-10',
+          'weight' => '-9',
         ),
         'views--exp-resource_lists-page' => array(
           'module' => 'views',
@@ -74,12 +74,6 @@ function crl_resource_feat_context_default_contexts() {
           'region' => 'sidebar_first',
           'weight' => '-5',
         ),
-        'block-32' => array(
-          'module' => 'block',
-          'delta' => '32',
-          'region' => 'preface_first',
-          'weight' => '-10',
-        ),
         'crl_helpers-crl_helpers_facet_breadcrumb' => array(
           'module' => 'crl_helpers',
           'delta' => 'crl_helpers_facet_breadcrumb',
@@ -91,6 +85,12 @@ function crl_resource_feat_context_default_contexts() {
           'delta' => 'tabs',
           'region' => 'preface_first',
           'weight' => '-7',
+        ),
+        'boxes-resources_intro' => array(
+          'module' => 'boxes',
+          'delta' => 'resources_intro',
+          'region' => 'preface_first',
+          'weight' => '-10',
         ),
       ),
     ),

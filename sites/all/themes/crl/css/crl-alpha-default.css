@@ -1,3 +1,32 @@
+.card {
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 2px 3px rgba(0, 0, 0, 0.24);
+}
+.card-pop {
+  border-radius: 2px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.card-pop:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25), 0 4px 4px rgba(0, 0, 0, 0.22);
+}
+.card-reset {
+  border-radius: none;
+  box-shadow: none;
+}
+.card-reset:hover {
+  box-shadow: none;
+}
+.bottom-grad {
+  background: #ffffff;
+  background: -moz-linear-gradient(top, #ffffff 90%, #ebebeb 30px);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(90%, #ffffff), color-stop(100%, #ebebeb));
+  background: -webkit-linear-gradient(top, #ffffff 90%, #ebebeb 100%);
+  background: -o-linear-gradient(top, #ffffff 90%, #ebebeb 100%);
+  background: -ms-linear-gradient(top, #ffffff 90%, #ebebeb 100%);
+  background: linear-gradient(to bottom, #ffffff 90%, #ebebeb 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f4', GradientType=0);
+}
 /* --------------------------------------------------------------------------
    Header Styles - General
    -------------------------------------------------------------------------- */
@@ -45,34 +74,6 @@ p.site-slogan {
 }
 #header-menus form#ctools-jump-menu {
   display: none;
-}
-#header-menus ul li {
-  display: inline-block;
-  float: left;
-  margin: 0px 5px 0px 0px;
-  padding: 0px;
-  text-align: center;
-}
-#header-menus ul li a {
-  display: block;
-  height: 29px;
-  padding: 5px 15px;
-  background-color: #1a1c35;
-  color: #fff;
-  font-weight: bold;
-  text-decoration: none !important;
-  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
-}
-#header-menus ul li a.active,
-#header-menus ul li a.active-trail {
-  color: #333 !important;
-  background-color: #fff !important;
-}
-#header-menus ul li a:hover,
-#header-menus ul li a:active,
-#header-menus ul li a:focus {
-  color: #fff !important;
-  background-color: #8ca36b !important;
 }
 #header-menus .main-menu {
   position: absolute;
@@ -161,4 +162,8 @@ aside#activity-documents {
 }
 #block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-facet {
   clear: none;
+}
+#block-crl-helpers-crl-helpers-facet-breadcrumb.no-active-filters,
+#block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-add {
+  display: none;
 }

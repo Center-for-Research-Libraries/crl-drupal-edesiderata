@@ -1,4 +1,5 @@
 @import 'variables';
+@import 'variables-@{theme}';
 @import 'fontello';
 
 /* --------------------------------------------------------------------------
@@ -17,16 +18,6 @@
 }
 #region-content .content {
   padding: 0 10px;
-}
-
-#page {
-	background: url('../images/body-bg.png') top right repeat-y;
-}
-
-#zone-content {
-  background: url('../images/body-inner-bg.png') 0 0 repeat;
-  border: 1px solid #b7b7b7;
-  border-left: 0px;
 }
 
 #zone-preface-wrapper {
@@ -191,7 +182,7 @@ blockquote {
 
 #section-header {
   background-color: @header-background-color;
-  background-image: url('../images/world-bg.png?v=6');
+  background-image: url("@{header-background-image-url}?v=@{image-version}");
   background-size: 538px;
   background-repeat: no-repeat;
   background-position: center top;
@@ -199,8 +190,9 @@ blockquote {
   position: relative;
   // Retina support.
   @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
-    background-image: url('../images/world-bg2x.png?v=6');
+    background-image: url("@{header-background-image-url-retina}?v=@{image-version}");
   }
+  box-shadow: inset 0 -4px 15px -6px #333;
 }
 #zone-header {
   position: relative;
@@ -217,7 +209,7 @@ blockquote {
   margin: auto;
   padding-top: 20px;
   a.logo {
-    background-image: url("../images/sprites.png?v=6");
+    background-image: url("@{sprite-image-url}?v=@{image-version}");
     background-size: 500px;
     height: 67px;
     width: 300px;
@@ -227,7 +219,7 @@ blockquote {
     background-position: 0px -600px;
     // Retina support.
     @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
-      background-image: url("../images/sprites2x.png?v=6");
+      background-image: url("@{sprite-image-url-retina}?v=@{image-version}");
     }
   }
 }
@@ -269,6 +261,31 @@ header#section-header span.ext {
 
 #header-menus .main-menu, #header-menus .secondary-menu {
   display: none;
+  ul li { // For desktop only as base parent is hidden above.
+    display: inline-block;
+    float: left;
+    margin: 0px 5px 0px 0px;
+    padding: 0px;
+    text-align: center;
+    a {
+      display: block;
+      height: 29px;
+      padding: 5px 15px;
+      background-color: @primary-button-color;
+      color: #fff;
+      font-weight: bold;
+      text-decoration: none !important;
+      transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
+      &.active,&.active-trail {
+        color: @text-color !important;
+        background-color: @page-background-color !important;
+      }
+      &:hover,&:active,&:focus {
+        color: #fff !important;
+        background-color: @secondary-button-color !important;
+      }
+    }
+  }
 }
 form#ctools-jump-menu {
   width: 100px;
@@ -292,6 +309,7 @@ footer#section-footer {
   margin-top: 30px;
   background-color: @footer-background-color;
   color: @footer-text-color;
+  box-shadow: inset 0 8px 15px -6px #222;
   font-size: 90%;
   position: relative;
   a {
@@ -346,7 +364,7 @@ footer#section-footer {
 #region-sidebar-first .block,
 #region-sidebar-second .block,
 .comment-nested-wrapper {
-  background-color: #FFFFFF;
+  background-color: #fff;
   border: 1px solid #b7b7b7;
   margin-bottom: 20px;
   margin-top: 24px;
@@ -466,7 +484,7 @@ ul.facetapi-facet-crl-glossary-value {
 
 // Tweaks for custom facet breadcrumb
 #block-crl-helpers-crl-helpers-facet-breadcrumb {
-  background: url('../images/content.png') 0 0 repeat;
+  background-color: #fff;
   border: 1px solid #b7b7b7;
   margin: 20px 0px;
   padding: 10px;
@@ -482,6 +500,9 @@ ul.facetapi-facet-crl-glossary-value {
   .facet-breadcrumb-facet {
     float: left;
     clear: left;
+  }
+  .facet-breadcrumb-add {
+    background-color: transparent;
   }
   .facet-breadcrumb-misc {
     font-weight: bold;
@@ -500,7 +521,7 @@ ul.facetapi-facet-crl-glossary-value {
     display: block;
     margin-top: 10px;
     padding: 20px 10px 10px 0px;
-    border-top: 1px solid @subtle-fill-color;
+    border-top: 1px solid @divider-color;
     fieldset {
       margin: 0;
     }
@@ -627,20 +648,15 @@ img.from-provider-icon {
    Views Lists
    -------------------------------------------------------------------------- */
 
-.view-resource-lists .views-row.views-row-odd,
-.view-provider-lists .views-row.views-row-odd,
-.views-row.item-list-box.views-row-odd {
+.view-resource-lists .views-row,
+.view-provider-lists .views-row,
+.views-row.item-list-box {
 	background-color: #fff;
   border: 1px dotted #999;
 	padding: 15px;
-}
-
-.view-resource-lists .views-row.views-row-even,
-.view-provider-lists .views-row.views-row-even,
-.views-row.item-list-box.views-row-even {
-  background-color: #eaeaea;
-	border: 1px dotted #999;
-	padding: 15px;
+  &.views-row-even {
+    background-color: #eaeaea;
+  }
 }
 
 .view-resource-lists, .view-provider-lists {
@@ -666,8 +682,8 @@ img.from-provider-icon {
 // Views grouping headers
 .view-content h3 {
 	background-color: transparent;
-	border-bottom: 1px solid @subtle-fill-color;
-	border-top: 1px solid @subtle-fill-color;
+	border-bottom: 1px solid @divider-color;
+	border-top: 1px solid @divider-color;
 	color: @text-color;
 	display: block;
 	padding: 5px 0 5px 20px;
@@ -693,7 +709,7 @@ body.dashboard {
     padding: 0px;
     margin-top: 0px;
   }
-  //Set dashboard "block" styles
+  // Set dashboard "block" styles
   #zone-preface .block-inner,
   #zone-user .block-inner,
   #zone-postscript .block-inner {
@@ -702,9 +718,6 @@ body.dashboard {
     margin-bottom: 20px;
     padding: 20px;
     transition: outline 0.15s ease-in-out;
-    &:hover {
-      outline-width: 2px;
-    }
   }
   h3 a {
     text-decoration: none;
@@ -728,10 +741,6 @@ body.equal-postscript #zone-postscript {
     background-color: #fff;
     margin-bottom: 20px;
     outline: 1px solid #999;
-    transition: outline 0.15s ease-in-out;
-    &:hover {
-      outline-width: 2px;
-    }
     .block {
       padding: 20px;
     }
@@ -745,34 +754,6 @@ body.equal-postscript #zone-postscript {
 
 // The resources dashboard has some special styles and colors specific to it
 body.resources-dashboard {
-  #zone-postscript {
-    a {
-      text-decoration: none !important;
-    }
-    .region-postscript-first {
-      outline: 1px solid darken(@status-color-purple, 5%);
-    }
-    .region-postscript-second {
-      outline: 1px solid darken(@status-color-green, 5%);
-    }
-    .region-postscript-third {
-      outline: 1px solid darken(@status-color-pink, 5%);
-    }
-    .region {
-      background: rgb(255,255,255); /* Old browsers */
-      background: -moz-linear-gradient(top,  rgba(255,255,255,1) 90%, rgba(235,235,235,1) 100%); /* FF3.6+ */
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(70%,rgba(255,255,255,1)), color-stop(100%,rgba(235,235,235,1))); /* Chrome,Safari4+ */
-      background: -webkit-linear-gradient(top,  rgba(255,255,2551,1) 70%,rgba(235,235,235,1) 100%); /* Chrome10+,Safari5.1+ */
-      background: -o-linear-gradient(top,  rgba(255,255,255,1) 70%,rgba(235,235,235,1) 100%); /* Opera 11.10+ */
-      background: -ms-linear-gradient(top,  rgba(255,255,255,1) 70%,rgba(235,235,235,1) 100%); /* IE10+ */
-      background: linear-gradient(to bottom,  rgba(255,255,255,1) 90%,rgba(235,235,235,1) 100%); /* W3C */
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f4f4f4',GradientType=0 ); /* IE6-9 */
-    }
-    .attachment-after {
-      font-weight: bold;
-      margin-top: 1.5em;
-    }
-  }
   // Specific styles for the top-level dashboard block */
   #zone-preface {
     .block-inner {
@@ -862,15 +843,7 @@ body.resources-dashboard {
   background-color: #fff;
 }
 .horizontal-tabs {
-  box-shadow: 1px 1px 2px 1px #ccc;
-  background: rgb(255,255,255); // Old browsers
-  background: -moz-linear-gradient(top,  rgba(255,255,255,1) 90%, rgba(235,235,235,1) 30px); // FF3.6+
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(90%,rgba(255,255,255,1)), color-stop(100%,rgba(235,235,235,1))); // Chrome,Safari4+
-  background: -webkit-linear-gradient(top,  rgba(255,255,2551,1) 90%,rgba(235,235,235,1) 100%); // Chrome10+,Safari5.1+
-  background: -o-linear-gradient(top,  rgba(255,255,255,1) 90%,rgba(235,235,235,1) 100%); // Opera 11.10+
-  background: -ms-linear-gradient(top,  rgba(255,255,255,1) 90%,rgba(235,235,235,1) 100%); // IE10+
-  background: linear-gradient(to bottom,  rgba(255,255,255,1) 90%,rgba(235,235,235,1) 100%); // W3C
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f4f4f4',GradientType=0 ); // IE6-9
+  &:extend(.card all);
   // Style tab buttons
   ul.horizontal-tabs-list {
     background-color: #eff2eb;
@@ -1074,7 +1047,7 @@ ul.tabs.primary li, ul.tabs.secondary li {
 }
 
 #page ul.tabs.primary {
-  border-bottom: 2px solid @subtle-fill-color;
+  border-bottom: 2px solid @primary-button-color;
   border-collapse: collapse;
   line-height: 1.4em;
   list-style: none outside none;
@@ -1082,6 +1055,7 @@ ul.tabs.primary li, ul.tabs.secondary li {
   padding: 0px 15px;
   li {
     a {
+      transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
       background-color: #ffffff;
       transition: none;
       border: 1px solid #b7b7b7;
@@ -1094,7 +1068,7 @@ ul.tabs.primary li, ul.tabs.secondary li {
       }
     }
     &.active a {
-      background-color: @subtle-fill-color;
+      background-color: @primary-button-color;
       border: 1px solid #b7b7b7;
       border-bottom: none;
       color: #ffffff;
@@ -1115,7 +1089,7 @@ ul.tabs.primary li, ul.tabs.secondary li {
     margin-bottom: -1px;
     padding-bottom: 0px;
     a {
-      background-color: @subtle-fill-color;
+      background-color: @primary-button-color;
       color: #fff;
       &:hover {
         background-color: @secondary-button-color;
@@ -1460,7 +1434,7 @@ form.shared-vote-input-form {
     content: '';
   }
   margin-top: 0.2em;
-  background-image: url("../images/sprites.png?v=6");
+  background-image: url("@{sprite-image-url}?v=@{image-version}");
   background-size: 500px;
   height: 20px;
   display: inline-block;
@@ -1469,7 +1443,7 @@ form.shared-vote-input-form {
   vertical-align: middle;
   // Retina support.
   @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
-    background-image: url("../images/sprites2x.png?v=6");
+    background-image: url("@{sprite-image-url-retina}?v=@{image-version}");
   }
   background-position: 0px -450px;
 }
@@ -1687,3 +1661,5 @@ fieldset#edit-uniqueness {
 #edit-uniqueness-type {
   clear: both;
 }
+
+@import 'local-@{theme}';
