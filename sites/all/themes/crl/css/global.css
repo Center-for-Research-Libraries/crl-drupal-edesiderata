@@ -1,3 +1,35 @@
+.card,
+.horizontal-tabs {
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 2px 3px rgba(0, 0, 0, 0.24);
+}
+.card-pop {
+  border-radius: 2px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.card-pop:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25), 0 4px 4px rgba(0, 0, 0, 0.22);
+}
+.card-reset {
+  border-radius: none;
+  box-shadow: none;
+}
+.card-reset:hover {
+  box-shadow: none;
+}
+.bottom-grad,
+body.resources-dashboard #zone-postscript .region,
+.horizontal-tabs {
+  background: #ffffff;
+  background: -moz-linear-gradient(top, #ffffff 90%, #ebebeb 30px);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(90%, #ffffff), color-stop(100%, #ebebeb));
+  background: -webkit-linear-gradient(top, #ffffff 90%, #ebebeb 100%);
+  background: -o-linear-gradient(top, #ffffff 90%, #ebebeb 100%);
+  background: -ms-linear-gradient(top, #ffffff 90%, #ebebeb 100%);
+  background: linear-gradient(to bottom, #ffffff 90%, #ebebeb 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f4', GradientType=0);
+}
 @font-face {
   font-family: 'fontello';
   src: url('../font/fontello.eot?62178208');
@@ -146,14 +178,6 @@
 }
 #region-content .content {
   padding: 0 10px;
-}
-#page {
-  background: url("../images/body-bg.png?v=6") top right repeat-y;
-}
-#zone-content {
-  background: url("../images/body-inner-bg.png?v=6") 0 0 repeat;
-  border: 1px solid #b7b7b7;
-  border-left: 0px;
 }
 #zone-preface-wrapper {
   background-color: transparent;
@@ -311,6 +335,7 @@ blockquote {
   background-position: center top;
   height: auto;
   position: relative;
+  box-shadow: inset 0 -4px 15px -6px #333;
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
   #section-header {
@@ -410,7 +435,7 @@ header#section-header span.ext {
 #header-menus .main-menu ul li a.active-trail,
 #header-menus .secondary-menu ul li a.active-trail {
   color: #333 !important;
-  background-color: #fff !important;
+  background-color: #fbfbfa !important;
 }
 #header-menus .main-menu ul li a:hover,
 #header-menus .secondary-menu ul li a:hover,
@@ -440,6 +465,7 @@ footer#section-footer {
   margin-top: 30px;
   background-color: #2B2A45;
   color: #D1CFBD;
+  box-shadow: inset 0 8px 15px -6px #222;
   font-size: 90%;
   position: relative;
 }
@@ -491,7 +517,7 @@ footer#section-footer .footer-topper h3 {
 #region-sidebar-first .block,
 #region-sidebar-second .block,
 .comment-nested-wrapper {
-  background-color: #FFFFFF;
+  background-color: #fff;
   border: 1px solid #b7b7b7;
   margin-bottom: 20px;
   margin-top: 24px;
@@ -592,7 +618,7 @@ ul.facetapi-facet-crl-glossary-value li a.facetapi-active {
   font-weight: bold;
 }
 #block-crl-helpers-crl-helpers-facet-breadcrumb {
-  background: url('../images/content.png') 0 0 repeat;
+  background-color: #fff;
   border: 1px solid #b7b7b7;
   margin: 20px 0px;
   padding: 10px;
@@ -787,11 +813,6 @@ body.dashboard #zone-postscript .block-inner {
   padding: 20px;
   transition: outline 0.15s ease-in-out;
 }
-body.dashboard #zone-preface .block-inner:hover,
-body.dashboard #zone-user .block-inner:hover,
-body.dashboard #zone-postscript .block-inner:hover {
-  outline-width: 2px;
-}
 body.dashboard h3 a {
   text-decoration: none;
   font-size: 115%;
@@ -809,10 +830,6 @@ body.equal-postscript #zone-postscript .region {
   background-color: #fff;
   margin-bottom: 20px;
   outline: 1px solid #999;
-  transition: outline 0.15s ease-in-out;
-}
-body.equal-postscript #zone-postscript .region:hover {
-  outline-width: 2px;
 }
 body.equal-postscript #zone-postscript .region .block {
   padding: 20px;
@@ -820,40 +837,6 @@ body.equal-postscript #zone-postscript .region .block {
 /* --------------------------------------------------------------------------
    Dashboard - Resources / Homepage
    -------------------------------------------------------------------------- */
-body.resources-dashboard #zone-postscript a {
-  text-decoration: none !important;
-}
-body.resources-dashboard #zone-postscript .region-postscript-first {
-  outline: 1px solid #5d0081;
-}
-body.resources-dashboard #zone-postscript .region-postscript-second {
-  outline: 1px solid #3e892f;
-}
-body.resources-dashboard #zone-postscript .region-postscript-third {
-  outline: 1px solid #ca2161;
-}
-body.resources-dashboard #zone-postscript .region {
-  background: #ffffff;
-  /* Old browsers */
-  background: -moz-linear-gradient(top, #ffffff 90%, #ebebeb 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(70%, #ffffff), color-stop(100%, #ebebeb));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #ffffff 70%, #ebebeb 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #ffffff 70%, #ebebeb 100%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #ffffff 70%, #ebebeb 100%);
-  /* IE10+ */
-  background: linear-gradient(to bottom, #ffffff 90%, #ebebeb 100%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f4', GradientType=0);
-  /* IE6-9 */
-}
-body.resources-dashboard #zone-postscript .attachment-after {
-  font-weight: bold;
-  margin-top: 1.5em;
-}
 body.resources-dashboard #zone-preface .block-inner {
   padding: 20px;
 }
@@ -934,17 +917,6 @@ body.resources-dashboard .super-num {
    -------------------------------------------------------------------------- */
 .field-group-htabs-wrapper {
   background-color: #fff;
-}
-.horizontal-tabs {
-  box-shadow: 1px 1px 2px 1px #ccc;
-  background: #ffffff;
-  background: -moz-linear-gradient(top, #ffffff 90%, #ebebeb 30px);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(90%, #ffffff), color-stop(100%, #ebebeb));
-  background: -webkit-linear-gradient(top, #ffffff 90%, #ebebeb 100%);
-  background: -o-linear-gradient(top, #ffffff 90%, #ebebeb 100%);
-  background: -ms-linear-gradient(top, #ffffff 90%, #ebebeb 100%);
-  background: linear-gradient(to bottom, #ffffff 90%, #ebebeb 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f4', GradientType=0);
 }
 .horizontal-tabs ul.horizontal-tabs-list {
   background-color: #eff2eb;
@@ -1170,7 +1142,7 @@ ul.tabs.secondary li a {
   display: inline-block;
 }
 #page ul.tabs.primary {
-  border-bottom: 2px solid #ACBFB1;
+  border-bottom: 2px solid #1a1c35;
   border-collapse: collapse;
   line-height: 1.4em;
   list-style: none outside none;
@@ -1178,6 +1150,7 @@ ul.tabs.secondary li a {
   padding: 0px 15px;
 }
 #page ul.tabs.primary li a {
+  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
   background-color: #ffffff;
   transition: none;
   border: 1px solid #b7b7b7;
@@ -1190,7 +1163,7 @@ ul.tabs.secondary li a {
   color: #fff;
 }
 #page ul.tabs.primary li.active a {
-  background-color: #ACBFB1;
+  background-color: #1a1c35;
   border: 1px solid #b7b7b7;
   border-bottom: none;
   color: #ffffff;
@@ -1208,7 +1181,7 @@ ul.tabs.secondary li a {
   padding-bottom: 0px;
 }
 #page #region-preface-first ul.tabs.primary li a {
-  background-color: #ACBFB1;
+  background-color: #1a1c35;
   color: #fff;
 }
 #page #region-preface-first ul.tabs.primary li a:hover {
@@ -1723,4 +1696,34 @@ fieldset#edit-uniqueness legend {
 }
 #edit-uniqueness-type {
   clear: both;
+}
+#page {
+  background: url("../images/body-bg.png?v=6") top right repeat-y;
+}
+#zone-content {
+  background: url("../images/body-inner-bg.png?v=6") 0 0 repeat;
+  border: 1px solid #b7b7b7;
+  border-left: 0px;
+}
+body.resources-dashboard #zone-postscript a {
+  text-decoration: none !important;
+}
+body.resources-dashboard #zone-postscript .region-postscript-first {
+  outline: 1px solid #5d0081;
+}
+body.resources-dashboard #zone-postscript .region-postscript-second {
+  outline: 1px solid #3e892f;
+}
+body.resources-dashboard #zone-postscript .region-postscript-third {
+  outline: 1px solid #ca2161;
+}
+body.resources-dashboard #zone-postscript .attachment-after {
+  font-weight: bold;
+  margin-top: 1.5em;
+}
+body.resources-dashboard #zone-postscript .region {
+  transition: outline 0.15s ease-in-out;
+}
+body.resources-dashboard #zone-postscript .region:hover {
+  outline-width: 2px;
 }

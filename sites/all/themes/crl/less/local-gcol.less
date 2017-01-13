@@ -1,0 +1,40 @@
+
+// use neutral page background (no gradient)
+#page {
+  background: @page-background-color;
+}
+
+// Convert views lists to cards
+.view-resource-lists .views-row,
+.view-provider-lists .views-row,
+.views-row.item-list-box {
+  border: none;
+    &.views-row-even {
+    background-color: #f3f3f3;
+  }
+  &:extend(.card all);
+}
+
+// Convert dashboard blocks to cards
+body.dashboard {
+  // Set dashboard "block" styles
+  #zone-preface .block-inner,
+  #zone-user .block-inner,
+  #zone-postscript .block-inner {
+    outline: none;
+    &:extend(.card-pop all);
+  }
+}
+body.equal-postscript #zone-postscript {
+  .block-inner {
+    &:extend(.card-reset all);
+  }
+  .region {
+    &:extend(.card-pop all);
+  }
+}
+
+// Hide the logo trademark
+#header-typography h2 .rtm {
+  display: none;
+}

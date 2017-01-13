@@ -1,0 +1,44 @@
+
+
+#page {
+	background: url("@{body-background}?v=@{image-version}") top right repeat-y;
+}
+
+#zone-content {
+  background: url("@{body-background-inner}?v=@{image-version}") 0 0 repeat;
+  border: 1px solid #b7b7b7;
+  border-left: 0px;
+}
+
+// Specialized styling for the homepage dashboard, specifically the
+// equal-heights status boxes.
+body.resources-dashboard #zone-postscript {
+  a {
+    text-decoration: none !important;
+  }
+  .region-postscript-first {
+    outline: 1px solid darken(@status-color-purple, 5%);
+  }
+  .region-postscript-second {
+    outline: 1px solid darken(@status-color-green, 5%);
+  }
+  .region-postscript-third {
+    outline: 1px solid darken(@status-color-pink, 5%);
+  }
+  .attachment-after {
+    font-weight: bold;
+    margin-top: 1.5em;
+  }
+  .region {
+    &:extend(.bottom-grad all);
+    transition: outline 0.15s ease-in-out;
+    &:hover {
+      outline-width: 2px;
+    }
+  }
+}
+
+// Horizontal tabss also get a bottom gradient
+.horizontal-tabs {
+  &:extend(.bottom-grad all);
+}
