@@ -8,6 +8,9 @@
  * Implements hook_ctools_plugin_api().
  */
 function crl_resource_feat_ctools_plugin_api($module = NULL, $api = NULL) {
+  if ($module == "boxes" && $api == "box") {
+    return array("version" => "1");
+  }
   if ($module == "context" && $api == "context") {
     return array("version" => "3");
   }

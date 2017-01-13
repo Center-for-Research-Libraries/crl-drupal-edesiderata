@@ -60,29 +60,29 @@ function crl_helpers_feat_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'block-19' => array(
-          'module' => 'block',
-          'delta' => '19',
+        'boxes-footer1' => array(
+          'module' => 'boxes',
+          'delta' => 'footer1',
           'region' => 'footer_first',
-          'weight' => '-10',
+          'weight' => '-9',
         ),
-        'block-20' => array(
-          'module' => 'block',
-          'delta' => '20',
+        'boxes-footer2' => array(
+          'module' => 'boxes',
+          'delta' => 'footer2',
           'region' => 'footer_second',
-          'weight' => '-10',
+          'weight' => '-9',
         ),
-        'block-21' => array(
-          'module' => 'block',
-          'delta' => '21',
+        'boxes-footer3' => array(
+          'module' => 'boxes',
+          'delta' => 'footer3',
           'region' => 'footer_third',
-          'weight' => '-10',
+          'weight' => '-9',
         ),
-        'block-22' => array(
-          'module' => 'block',
-          'delta' => '22',
+        'boxes-footer4' => array(
+          'module' => 'boxes',
+          'delta' => 'footer4',
           'region' => 'footer_fourth',
-          'weight' => '-10',
+          'weight' => '-9',
         ),
       ),
     ),

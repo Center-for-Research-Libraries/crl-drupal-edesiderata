@@ -1,6 +1,6 @@
 ; $Id$
 name = CRL Helpers
-description = Shared functionality for eDesiderata and gCollections
+description = Shared functionality across all features local modules.
 core = 7.x
 package = CRL
 
