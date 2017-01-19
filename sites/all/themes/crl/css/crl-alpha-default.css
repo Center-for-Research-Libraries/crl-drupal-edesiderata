@@ -132,9 +132,9 @@ article form.shared-vote-input-form {
   border-left: 0px solid #E3E3E3;
   border-bottom: none;
 }
-body.page-node-edit .field-widget-options-buttons .form-checkboxes :after,
-body.page-node-add .field-widget-options-buttons .form-checkboxes :after,
-body.page-eform-submit .field-widget-options-buttons .form-checkboxes :after {
+body.page-node-edit .field-widget-options-buttons .form-checkboxes:after,
+body.page-node-add .field-widget-options-buttons .form-checkboxes:after,
+body.page-eform-submit .field-widget-options-buttons .form-checkboxes:after {
   content: "";
   display: table;
   clear: both;
@@ -148,7 +148,10 @@ body.page-eform-submit .field-widget-options-buttons .form-checkboxes .form-item
 }
 body.page-node-edit .field-name-field-activity-crl-status.field-widget-options-buttons .form-checkboxes .form-item,
 body.page-node-add .field-name-field-activity-crl-status.field-widget-options-buttons .form-checkboxes .form-item,
-body.page-eform-submit .field-name-field-activity-crl-status.field-widget-options-buttons .form-checkboxes .form-item {
+body.page-eform-submit .field-name-field-activity-crl-status.field-widget-options-buttons .form-checkboxes .form-item,
+body.page-node-edit .field-name-field-resource-status.field-widget-options-buttons .form-checkboxes .form-item,
+body.page-node-add .field-name-field-resource-status.field-widget-options-buttons .form-checkboxes .form-item,
+body.page-eform-submit .field-name-field-resource-status.field-widget-options-buttons .form-checkboxes .form-item {
   float: none;
 }
 aside#activity-documents {

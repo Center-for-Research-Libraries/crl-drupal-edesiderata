@@ -127,7 +127,7 @@ article form.shared-vote-input-form {
 // used
 body.page-node-edit, body.page-node-add, body.page-eform-submit {
   .field-widget-options-buttons .form-checkboxes {
-    :after {
+    &:after {
       content: "";
       display: table;
       clear: both;
@@ -140,8 +140,10 @@ body.page-node-edit, body.page-node-add, body.page-eform-submit {
   }
   // One exception is the "CRL Status" checkbox selection, as the presentation
   // order needs to be preserved there
-  .field-name-field-activity-crl-status.field-widget-options-buttons .form-checkboxes .form-item {
-    float: none;
+  .field-name-field-activity-crl-status, .field-name-field-resource-status {
+    &.field-widget-options-buttons .form-checkboxes .form-item {
+      float: none;
+    }
   }
 }
 
