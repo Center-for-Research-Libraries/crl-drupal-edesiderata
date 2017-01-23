@@ -100,6 +100,7 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'access dashboard',
     'roles' => array(
       'administrator' => 'administrator',
+      'crl-staff' => 'crl-staff',
       'editor basic' => 'editor basic',
       'editor power' => 'editor power',
     ),
@@ -2515,7 +2516,9 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'view the administration theme',
     'roles' => array(
       'administrator' => 'administrator',
+      'crl-staff' => 'crl-staff',
       'crowd admin' => 'crowd admin',
+      'editor basic' => 'editor basic',
       'editor power' => 'editor power',
     ),
     'module' => 'system',
