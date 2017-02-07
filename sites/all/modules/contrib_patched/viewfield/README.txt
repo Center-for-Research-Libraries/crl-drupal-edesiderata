@@ -26,6 +26,11 @@ To submit bug reports and feature suggestions, or to track changes:
 
 * Install as usual, see http://drupal.org/node/70151 for further information.
 
+-- NOTE --
+When you have attached a view with a pager to an entity type via a viewfield and
+you wish to display rendered entities of that type in another view, also with a
+pager, make sure to set different pager IDs in each view to avoid pagers being
+erroneously hidden in some scenarios.
 
 -- CONTACT --
 
@@ -36,4 +41,3 @@ Current maintainers:
 Previous maintainers:
 * Jeremiah Davis (jerdavis) - http://drupal.org/user/228997
 * Mark Fredrickson (mfredrickson) - http://drupal.org/user/31994
-
