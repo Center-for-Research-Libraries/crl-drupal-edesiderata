@@ -30,16 +30,18 @@ class CrlHelpersBlocks {
         list($facet_name, $item) = explode(':', $f);
         $adapter = facetapi_adapter_load('search_api@title_search_index');
         $processor = $adapter->getProcessor($facet_name);
-        $build = $processor->getBuild();
-        $item_build = $build[$item];
-        $active_facets[] = array(
-          'path' => $item_build['#path'],
-          'text' => $item_build['#markup'],
-          'options' => array(
-            'html' => TRUE,
-            'query' => isset($item_build['#query']) ? $item_build['#query'] : array(),
-          ),
-        );
+        if ($processor) {
+          $build = $processor->getBuild();
+          $item_build = $build[$item];
+          $active_facets[] = array(
+            'path' => $item_build['#path'],
+            'text' => $item_build['#markup'],
+            'options' => array(
+              'html' => TRUE,
+              'query' => isset($item_build['#query']) ? $item_build['#query'] : array(),
+            ),
+          );
+        }
       }
     }
     // Also treat any fulltext search inputs as a facet.
