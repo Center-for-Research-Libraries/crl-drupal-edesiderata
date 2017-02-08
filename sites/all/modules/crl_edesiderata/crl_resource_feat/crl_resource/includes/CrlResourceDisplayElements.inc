@@ -57,7 +57,7 @@ class CrlResourceDisplayElements {
         '#action_links' => array('#theme' => 'item_list', '#items' => $action_links_list),
         '#status' => $backref_status,
         '#status_options' => crl_resource_activity_status_property_oplist(),
-        '#status_descriptions' => $this->get_status_descriptions()
+        '#status_descriptions' => crl_activity_status_calc_descriptions()
       );
     }
     return $built;
@@ -206,23 +206,6 @@ class CrlResourceDisplayElements {
       }
     }
     return $built;
-  }
-
-  /**
-   * Helper to centrally define description values to associate with each CRL
-   * status option.
-   */
-  protected function get_status_descriptions() {
-    return array(
-      'crl_desiderata' => t('Potential interest to CRL community'),
-      'license_under_consideration' => t('Currently a candidate for CRL offer'),
-      'license_available' => t('Currently offered for purchase or new subscription'),
-      'license_renewal_available' => t('Currently offered for renewal'),
-      'trial_access_available' => t('Available for trial'),
-      'past_license_offer' => t('Past offers'),
-      'inactive_declined' => t('No longer under consideration by CRL'),
-      'crl_review_available' => t('Evaluation available by CRL and community'),
-    );
   }
 
   /**

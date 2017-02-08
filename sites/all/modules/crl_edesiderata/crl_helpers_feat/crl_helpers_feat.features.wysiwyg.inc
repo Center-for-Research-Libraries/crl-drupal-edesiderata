@@ -15,10 +15,6 @@ function crl_helpers_feat_wysiwyg_default_profiles() {
     'format' => 'full_html',
     'editor' => 'ckeditor',
     'settings' => array(
-      'default' => 1,
-      'user_choose' => 0,
-      'show_toggle' => 0,
-      'add_to_summaries' => 1,
       'theme' => 'advanced',
       'language' => 'en',
       'buttons' => array(
@@ -66,6 +62,14 @@ function crl_helpers_feat_wysiwyg_default_profiles() {
       'advanced__active_tab' => 'edit-css',
       'forcePasteAsPlainText' => 1,
     ),
+    'preferences' => array(
+      'add_to_summaries' => 1,
+      'default' => 1,
+      'show_toggle' => 0,
+      'user_choose' => 0,
+      'version' => '4.4.7.3a35b3d',
+    ),
+    'name' => 'formatfull_html',
     'rdf_mapping' => array(),
   );
 

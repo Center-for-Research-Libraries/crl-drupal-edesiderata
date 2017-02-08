@@ -47,7 +47,7 @@ function crl_helpers_theme() {
     ),
     // Theme hook to generate a full entry summary block.
     'crl_helpers_summary' => array(
-      'variables' => array('status' => array(), 'status_options' => array(), 'comment_count' => 0, 'vote_average' => 0, 'interest_count_up' => 0, 'interest_count_down' => 0),
+      'variables' => array('status' => array(), 'status_options' => array(), 'status_descriptions' => array(), 'comment_count' => 0, 'vote_average' => 0, 'interest_count_up' => 0, 'interest_count_down' => 0),
     ),
     // Theme hook to generate a "back to index" link.
     'crl_helpers_back_to_index' => array(

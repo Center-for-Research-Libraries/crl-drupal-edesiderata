@@ -317,6 +317,22 @@ function crl_activity_status_property_oplist() {
   );
 }
 
+/**
+ * Helper to centrally define description values for a CRL status.
+ */
+function crl_activity_status_calc_descriptions() {
+  return array(
+    'crl_desiderata' => t('Potential interest to CRL community'),
+    'license_under_consideration' => t('Currently a candidate for CRL offer'),
+    'license_available' => t('Currently offered for purchase or new subscription'),
+    'license_renewal_available' => t('Currently offered for renewal'),
+    'trial_access_available' => t('Available for trial'),
+    'past_license_offer' => t('Past offers'),
+    'inactive_declined' => t('No longer under consideration by CRL'),
+    'crl_review_available' => t('Evaluation available by CRL and community'),
+  );
+}
+
 
 /**
  * Helper to define which status are considered "inactive".

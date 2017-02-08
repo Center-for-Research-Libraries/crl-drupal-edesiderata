@@ -198,10 +198,11 @@ function theme_crl_helpers_summary($vars) {
   if (!empty($vars)) {
     // Get status row.
     $status_options = $vars['status_options'];
+    $status_descriptions = $vars['status_descriptions'];
     $highlights = array();
     if (!empty($vars['status'])) {
       foreach ($vars['status'] as $status) {
-        $highlights['one'][] = '<i class="icon icon-' . $status . ' icon-large"></i>' . $status_options[$status];
+        $highlights['one'][] = '<span title="' . $status_descriptions[$status] . '"><i class="icon icon-' . $status . ' icon-large"></i>' . $status_options[$status] . "</span>";
       }
     }
     // Get feedback row.

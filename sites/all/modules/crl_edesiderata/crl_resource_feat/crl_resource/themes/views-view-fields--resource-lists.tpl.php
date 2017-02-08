@@ -43,7 +43,7 @@
   if (!empty($status)) {
     print '<div class="view-teaser-status-icons">';
     foreach ($status as $stat) {
-      print '<i class="icon icon-' . $stat . '" title="' . $status_options[$stat] . '"></i>';
+      print '<i class="icon icon-' . $stat . '" title="' . $status_options[$stat] . ': ' . $status_descriptions[$stat] . '"></i>';
     }
     print '</div>';
   } 
