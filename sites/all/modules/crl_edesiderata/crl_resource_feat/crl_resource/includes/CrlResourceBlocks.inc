@@ -27,6 +27,7 @@ class CrlResourceBlocks {
       if (!empty($node) && $node->type == 'resource') {
         $entity_wrapper = entity_metadata_wrapper('node', $node);
         $status_options = crl_resource_activity_status_property_oplist();
+        $status_descriptions = crl_activity_status_calc_descriptions();
         $status = isset($entity_wrapper->crl_resource_status_backref) ? $entity_wrapper->crl_resource_status_backref->value() : array();
         $vote_average = isset($entity_wrapper->crl_resource_vote_average) ? $entity_wrapper->crl_resource_vote_average->value() : 0;
         $interest_count_up = isset($entity_wrapper->crl_helpers_interest_count_up) ? $entity_wrapper->crl_helpers_interest_count_up->value() : 0;
@@ -38,6 +39,7 @@ class CrlResourceBlocks {
             '#theme' => 'crl_helpers_summary',
             '#status' => $status,
             '#status_options' => $status_options,
+            '#status_descriptions' => $status_descriptions,
             '#comment_count' => $comment_count,
             '#vote_average' => $vote_average,
             '#interest_count_up' => $interest_count_up,

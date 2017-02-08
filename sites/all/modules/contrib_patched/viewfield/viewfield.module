@@ -105,7 +105,7 @@ function viewfield_field_prepare_view($entity_type, $entities, $field, $instance
 
     // Loop through each items to check if the view returns any result or,
     // at least, has something to output if no result.
-    foreach($instance_items as $delta => &$item) {
+    foreach ($instance_items as $delta => &$item) {
       // @todo Store name and display separately.
       list($view_name, $view_display) = explode('|', $item['vname'], 2);
       // @todo Store views arguments serialized.
@@ -113,7 +113,8 @@ function viewfield_field_prepare_view($entity_type, $entities, $field, $instance
 
       // Get and execute the view here to check for it's results or at least
       // an empty value if is set.
-      $view = views_get_view($view_name);
+      $view = views_get_view($view_name, TRUE);
+
       // Override the view's path to the current path. Otherwise, exposed
       // views filters would submit to the front page.
       $view->override_path = current_path();
@@ -122,9 +123,27 @@ function viewfield_field_prepare_view($entity_type, $entities, $field, $instance
       $item['vdisplay'] = $view_display;
       $item['view'] = $view;
 
+      $empty_view = FALSE;
+
+      // When view has more then one result, we always have something to print.
+      if (count($view->result) < 2) {
+        $empty_view = TRUE;
+        foreach ($view->field as $field_name => $field) {
+          $field_value = $field->get_value(reset($view->result));
+
+          // Looking for the field field_name array if it is empty.
+          if (!empty($field_value)) {
+            // If it is not empty, we do not have a empty view,
+            // and we can break the foreach for performance.
+            $empty_view = FALSE;
+            break;
+          }
+        }
+      }
+
       // If we don't have any results or an empty value for this item, unset
       // it's delta because is an empty row in fact.
-      if (empty($view->result) && empty($view->empty)) {
+      if ($empty_view && empty($view->empty)) {
         unset($instance_items[$delta]);
       }
     }
@@ -187,10 +206,9 @@ function theme_viewfield_formatter_default($variables) {
   $element = $variables['element'];
   $view = $element['#view'];
 
-  // No need to reexecute the view here. If other module needs it
-  // to be reexecuted it must reinvoke $view->preview and store it
-  // back in the element.
-  return $view->display_handler->output;;
+  // Do not re-execute the view here. If another module needs to, it can call
+  // $view->preview() again and store the view back in the element.
+  return $view->display_handler->output;
 }
 
 /**
@@ -253,6 +271,7 @@ function viewfield_field_widget_form(&$form, &$form_state, $field, $instance, $l
         '#theme' => 'token_tree',
         '#token_types' => array($element['#entity_type']),
         '#global_types' => TRUE,
+        '#dialog' => TRUE,
       );
     }
   }

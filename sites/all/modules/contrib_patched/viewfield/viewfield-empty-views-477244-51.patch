@@ -1,13 +1,36 @@
+diff --git a/README.txt b/README.txt
+index e7c5057..9becda4 100644
+--- a/README.txt
++++ b/README.txt
+@@ -26,6 +26,11 @@ To submit bug reports and feature suggestions, or to track changes:
+ 
+ * Install as usual, see http://drupal.org/node/70151 for further information.
+ 
++-- NOTE --
++When you have attached a view with a pager to an entity type via a viewfield and
++you wish to display rendered entities of that type in another view, also with a
++pager, make sure to set different pager IDs in each view to avoid pagers being
++erroneously hidden in some scenarios.
+ 
+ -- CONTACT --
+ 
+@@ -36,4 +41,3 @@ Current maintainers:
+ Previous maintainers:
+ * Jeremiah Davis (jerdavis) - http://drupal.org/user/228997
+ * Mark Fredrickson (mfredrickson) - http://drupal.org/user/31994
+-
 diff --git a/viewfield.module b/viewfield.module
-index 7c9cecd..e94007f 100644
+index 67e2176..76785b4 100644
 --- a/viewfield.module
 +++ b/viewfield.module
-@@ -104,2 +104,30 @@
+@@ -102,6 +102,53 @@ function viewfield_field_prepare_view($entity_type, $entities, $field, $instance
+     if ($instances[$entity_id]['settings']['force_default']) {
+       $instance_items = $instances[$entity_id]['default_value'];
      }
 +
 +    // Loop through each items to check if the view returns any result or,
 +    // at least, has something to output if no result.
-+    foreach($instance_items as $delta => &$item) {
++    foreach ($instance_items as $delta => &$item) {
 +      // @todo Store name and display separately.
 +      list($view_name, $view_display) = explode('|', $item['vname'], 2);
 +      // @todo Store views arguments serialized.
@@ -15,7 +38,8 @@ index 7c9cecd..e94007f 100644
 +
 +      // Get and execute the view here to check for it's results or at least
 +      // an empty value if is set.
-+      $view = views_get_view($view_name);
++      $view = views_get_view($view_name, TRUE);
++
 +      // Override the view's path to the current path. Otherwise, exposed
 +      // views filters would submit to the front page.
 +      $view->override_path = current_path();
@@ -24,16 +48,38 @@ index 7c9cecd..e94007f 100644
 +      $item['vdisplay'] = $view_display;
 +      $item['view'] = $view;
 +
++      $empty_view = FALSE;
++
++      // When view has more then one result, we always have something to print.
++      if (count($view->result) < 2) {
++        $empty_view = TRUE;
++        foreach ($view->field as $field_name => $field) {
++          $field_value = $field->get_value(reset($view->result));
++
++          // Looking for the field field_name array if it is empty.
++          if (!empty($field_value)) {
++            // If it is not empty, we do not have a empty view,
++            // and we can break the foreach for performance.
++            $empty_view = FALSE;
++            break;
++          }
++        }
++      }
++
 +      // If we don't have any results or an empty value for this item, unset
 +      // it's delta because is an empty row in fact.
-+      if (empty($view->result) && empty($view->empty)) {
++      if ($empty_view && empty($view->empty)) {
 +        unset($instance_items[$delta]);
 +      }
 +    }
 +    // Ensure consecutive deltas.
 +    $instance_items = array_values($instance_items);
    }
-@@ -128,5 +156,4 @@
+ }
+ 
+@@ -126,20 +173,13 @@ function viewfield_field_formatter_view($entity_type, $entity, $field, $instance
+   switch ($display['type']) {
+     case 'viewfield_default':
        foreach ($items as $delta => $item) {
 -        // @todo Store name and display separately.
 -        list($view_name, $view_display) = explode('|', $item['vname'], 2);
@@ -41,7 +87,9 @@ index 7c9cecd..e94007f 100644
 +        $view = $item['view'];
 +        $view_display = $item['vdisplay'];
  
-@@ -136,8 +163,2 @@
+         $elements[$delta] = array(
+           '#type' => 'viewfield',
+           '#access' => $view && $view->access($view_display),
            '#view' => $view,
 -          '#view_name' => $view_name,
 -          '#view_display' => $view_display,
@@ -50,16 +98,20 @@ index 7c9cecd..e94007f 100644
 -          '#entity_id' => $entity_id,
 -          '#entity' => $entity,
          );
-@@ -154,53 +175,5 @@
+       }
+       break;
+@@ -152,68 +192,23 @@ function viewfield_field_formatter_view($entity_type, $entity, $field, $instance
+  */
+ function viewfield_element_info() {
    $types['viewfield'] = array(
 -    '#pre_render' => array('viewfield_pre_render'),
      '#theme' => 'viewfield_formatter_default',
 -    '#post_render' => array('viewfield_post_render'),
    );
    return $types;
--}
--
--/**
+ }
+ 
+ /**
 - * #pre_render callback for a viewfield field.
 - *
 - * @see viewfield_field_formatter_view()
@@ -103,15 +155,21 @@ index 7c9cecd..e94007f 100644
 -  unset($stack[$element['#entity_type']][$element['#entity_id']]);
 -
 -  return $content;
- }
-@@ -214,4 +187,8 @@
+-}
+-
+-/**
+  * Return HTML for a view in a field.
+  *
+  * @see views_embed_view()
+  */
+ function theme_viewfield_formatter_default($variables) {
    $element = $variables['element'];
 +  $view = $element['#view'];
  
 -  return $element['#view']->preview($element['#view_display'], $element['#view_arguments']);
-+  // No need to reexecute the view here. If other module needs it
-+  // to be reexecuted it must reinvoke $view->preview and store it
-+  // back in the element.
-+  return $view->display_handler->output;;
++  // Do not re-execute the view here. If another module needs to, it can call
++  // $view->preview() again and store the view back in the element.
++  return $view->display_handler->output;
  }
  
+ /**
