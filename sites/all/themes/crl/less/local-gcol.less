@@ -42,3 +42,28 @@ body.equal-postscript #zone-postscript {
     }
   }
 }
+
+// Custom formatting for ballot lists
+.view-ballot-lists {
+  td {
+    padding: 15px;
+  }
+  #comments {
+    h2.title {
+      display: none;
+    }
+    li.comment-reply {
+      display: none;
+    }
+    .comment-nested-wrapper {
+      border: none;
+      background: none;
+    }
+  }
+}
+
+
+// Edit form tweaks.
+#edit-field-countries select.form-select {
+  height: 25em;
+}

@@ -17,9 +17,9 @@
 // facet terms
 function crl_facetapi_link_inactive($variables) {
   $icon_span = '';
-  if (function_exists('crl_resource_activity_status_property_oplist')) {
-    $status_options = crl_resource_activity_status_property_oplist();
-    $status_descriptions = crl_activity_status_calc_descriptions();
+  if (function_exists('crl_resource_status_calc_property_oplist')) {
+    $status_options = crl_resource_status_calc_property_oplist();
+    $status_descriptions = crl_resource_status_calc_descriptions();
     $status = array_search(t($variables['text']), $status_options);
     if ($status) {
       $icon_span = '<i class="icon icon-' . $status . '"></i>';
