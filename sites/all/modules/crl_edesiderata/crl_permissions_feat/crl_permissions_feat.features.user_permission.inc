@@ -258,6 +258,15 @@ function crl_permissions_feat_user_default_permissions() {
     'module' => 'block',
   );
 
+  // Exported permission: 'administer boxes'.
+  $permissions['administer boxes'] = array(
+    'name' => 'administer boxes',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'boxes',
+  );
+
   // Exported permission: 'administer comments'.
   $permissions['administer comments'] = array(
     'name' => 'administer comments',
@@ -1397,27 +1406,9 @@ function crl_permissions_feat_user_default_permissions() {
     'module' => 'taxonomy',
   );
 
-  // Exported permission: 'delete terms in resource_grouping'.
-  $permissions['delete terms in resource_grouping'] = array(
-    'name' => 'delete terms in resource_grouping',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'taxonomy',
-  );
-
   // Exported permission: 'delete terms in resource_languages'.
   $permissions['delete terms in resource_languages'] = array(
     'name' => 'delete terms in resource_languages',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'taxonomy',
-  );
-
-  // Exported permission: 'delete terms in resource_subjects'.
-  $permissions['delete terms in resource_subjects'] = array(
-    'name' => 'delete terms in resource_subjects',
     'roles' => array(
       'administrator' => 'administrator',
     ),
@@ -1624,6 +1615,15 @@ function crl_permissions_feat_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: 'edit boxes'.
+  $permissions['edit boxes'] = array(
+    'name' => 'edit boxes',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'boxes',
+  );
+
   // Exported permission: 'edit field_resource_reference'.
   $permissions['edit field_resource_reference'] = array(
     'name' => 'edit field_resource_reference',
@@ -1820,27 +1820,9 @@ function crl_permissions_feat_user_default_permissions() {
     'module' => 'taxonomy',
   );
 
-  // Exported permission: 'edit terms in resource_grouping'.
-  $permissions['edit terms in resource_grouping'] = array(
-    'name' => 'edit terms in resource_grouping',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'taxonomy',
-  );
-
   // Exported permission: 'edit terms in resource_languages'.
   $permissions['edit terms in resource_languages'] = array(
     'name' => 'edit terms in resource_languages',
-    'roles' => array(
-      'administrator' => 'administrator',
-    ),
-    'module' => 'taxonomy',
-  );
-
-  // Exported permission: 'edit terms in resource_subjects'.
-  $permissions['edit terms in resource_subjects'] = array(
-    'name' => 'edit terms in resource_subjects',
     'roles' => array(
       'administrator' => 'administrator',
     ),
