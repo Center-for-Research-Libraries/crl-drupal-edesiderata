@@ -63,6 +63,10 @@ h2, .group-analysis > .fieldset-wrapper > .field-label-above .field-label {
   border-bottom: 1px solid #bbb;
   color: @colored-heading;
   text-transform: none;
+  &.clean {
+    border-bottom: none;
+    color: inherit;
+  }
 }
 h2.node-title {
   border: none !important;
@@ -1138,6 +1142,10 @@ body.resources-index #zone-content ul.tabs {
       margin-top: 20px;
       padding-top: 20px;
     }
+  }
+  ul li a {
+    border: none !important;
+    background: none !important;
   }
 }
 nav.comment-links {
