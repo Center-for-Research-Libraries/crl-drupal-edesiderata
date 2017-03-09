@@ -159,7 +159,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['relationships']['field_pp_related_target_id']['field'] = 'field_pp_related_target_id';
   /* Field: Bulk operations: Entityform Submission */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'entityform';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_entityform';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
   $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
