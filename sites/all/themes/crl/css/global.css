@@ -1042,17 +1042,19 @@ textarea {
   margin: 0;
   vertical-align: middle;
 }
+nav.links ul {
+  margin-top: 0em !important;
+}
 nav.links ul li a {
-  background: whitesmoke;
-  border-radius: 5px;
+  background: none;
+  border: none;
   font-weight: normal;
-  font-size: 80%;
-  float: none;
+  font-size: 90%;
+  float: right;
   display: inline-block;
 }
 nav.links ul li a:hover {
-  background: #fff;
-  color: #493986 !important;
+  background: transparent;
 }
 nav.comment-links ul li {
   float: right;

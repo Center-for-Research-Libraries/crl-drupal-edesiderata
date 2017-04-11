@@ -170,6 +170,39 @@ function crl_resource_update_7104() {
 
 
 /**
+ * Enable print option for all proposals.
+ */
+function crl_resource_update_7105() {
+  $query = new EntityFieldQuery();
+  $query
+      ->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'resource')
+      ->addTag('DANGEROUS_ACCESS_CHECK_OPT_OUT'); // Needed for drush/cron execution.
+  $result = $query->execute();
+  if (!empty($result['node'])) {
+    $count = 0;
+    // Ideally we would just alter $node->print_html_display and then do a save
+    // on the node to allow print_ui_node_update() to do the rest. However that
+    // node_update hook does some permissions checking which means this would
+    // not work via Drush. So we brute-force our way to the change by directly
+    // adjusing the appropraite print settings in the DB directly.
+    foreach ($result['node'] as $data) {
+      db_merge('print_node_conf')
+        ->key(array('nid' => $data->nid))
+        ->fields(array(
+          'link' => 1,
+          'comments' => 0,
+          'url_list' => 1,
+        ))
+        ->execute();
+      $count++;
+    }
+    watchdog('crl resource', 'Added print link to @count resource records.', array('@count' => $count));
+  }
+}
+
+
+/**
  * Helper to associate a custom oplist function with a field.
  */
 function crl_resource_set_oplist_function($field_name, $function_name) {
