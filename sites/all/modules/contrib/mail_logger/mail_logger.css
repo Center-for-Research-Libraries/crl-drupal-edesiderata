@@ -9,21 +9,29 @@
   margin-right: 3px;
 }
 
+#mail-logger-log td {
+  vertical-align: top;
+}
+
+.mail_system_label,
 .mail_ipaddr_label,
 .mail_subject_label,
+.mail_body_label,
 .mail_to_label,
 .mail_from_label,
 .date_sent_label,
 .mail_type_label  {
-  float: left;
-  margin: 0 15px 0 0;
-  width: 100px;
   clear: both;
+  float: left;
+  font-weight: bold;
+  margin: 0 15px 0 0;
+  width: 150px;
 }
 
-.mail_body_label,
+.mail_ipaddr_label,
 .mail_ipaddr_data,
-.mail_body_data,
+.mail_subject_label,
+.mail_subject_data,
 .mail_from_label,
 .mail_from_data,
 .mail_type_label,
@@ -31,13 +39,16 @@
   background-color: #eee;   /* Lighter gray */
 }
 
-.mail_subject_label,
-.mail_subject_data,
+.mail_system_label,
+.mail_system_data,
+.mail_body_label,
+.mail_body_data,
 .mail_to_label,
 .mail_to_data,
 .date_sent_label,
 .date_sent_data  {
-  background-color: #ddd;   /* Darker gray */
+/*  background-color: #ddd;   /* Darker gray */
+  background-color: #fff;   /* white */
 }
 
 .mail_body_label  {

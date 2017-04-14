@@ -141,6 +141,8 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'access print',
     'roles' => array(
       'administrator' => 'administrator',
+      'anonymous user' => 'anonymous user',
+      'authenticated user' => 'authenticated user',
       'crowd admin' => 'crowd admin',
       'editor power' => 'editor power',
       'pp-main' => 'pp-main',
@@ -1968,7 +1970,7 @@ function crl_permissions_feat_user_default_permissions() {
     'roles' => array(
       'administrator' => 'administrator',
     ),
-    'module' => 'print',
+    'module' => 'print_ui',
   );
 
   // Exported permission: 'notify of path changes'.

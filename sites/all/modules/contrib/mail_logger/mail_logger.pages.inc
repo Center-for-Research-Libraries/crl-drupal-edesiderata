@@ -13,6 +13,9 @@ function mail_logger_overview() {
   $output = drupal_render($form);
   $date_format = variable_get('mail_logger_log_date_format', 'short');
 
+  // Fix the annoying lower casing by the menu module.
+  drupal_set_title(t('Outgoing Mail Log'));
+
   $table = array(
     'header' => array(
       array('data' => t('Date Sent'), 'field' => 'date_sent', 'sort' => 'desc'),
@@ -74,13 +77,21 @@ function mail_logger_overview() {
 
   foreach ($result as $mail_logger) {
     $subject = (empty($mail_logger->subject) ? t('Missing subject') : $mail_logger->subject);
+    $mailto = $mail_logger->mailto;
+    if (strpos($mailto, ';') !== FALSE) {
+      $list = explode(';', $mailto);
+    }
+    else {
+      $list = explode(',', $mailto);
+    }
+
     $table['rows'][] = array('data' =>
       array(
         // Cells
         format_date($mail_logger->date_sent, $date_format),
         $mail_logger->mailkey,
         $mail_logger->language,
-        $mail_logger->mailto,
+        implode('<br />', $list),
         $mail_logger->mailfrom,
         l(truncate_utf8($subject, 56, TRUE, TRUE), 'admin/reports/mail-logger/mail/' . $mail_logger->mlid),
         $mail_logger->ipaddr,

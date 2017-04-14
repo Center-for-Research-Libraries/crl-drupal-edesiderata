@@ -48,6 +48,7 @@ dependencies[] = path
 dependencies[] = pathauto
 dependencies[] = print
 dependencies[] = print_mail
+dependencies[] = print_ui
 dependencies[] = rate
 dependencies[] = realname
 dependencies[] = recaptcha

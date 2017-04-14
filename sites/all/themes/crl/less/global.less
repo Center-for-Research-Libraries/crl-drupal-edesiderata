@@ -929,17 +929,19 @@ input, button, select, textarea {
 }
 
 // We make general comment and node link buttons a bit more subtle
-nav.links ul li a {
-  background: whitesmoke;
-  border-radius: 5px;
-  font-weight: normal;
-  font-size: 80%;
-  float: none;
-  display: inline-block;
-  &:hover {
-    background: #fff;
-    color: @link-color-primary !important;
-  }
+nav.links ul {
+  margin-top: 0em !important;
+  li a {
+   background: none;
+   border: none;
+   font-weight: normal;
+   font-size: 90%;
+   float: right;
+   display: inline-block;
+   &:hover {
+     background: transparent;
+   }
+ }
 }
 nav.comment-links ul li {
   float: right;
