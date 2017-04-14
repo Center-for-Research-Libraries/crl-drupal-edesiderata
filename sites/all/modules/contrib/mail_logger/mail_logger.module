@@ -32,7 +32,7 @@ function mail_logger_permission() {
 function mail_logger_menu() {
   $items = array();
   $items['admin/reports/mail-logger'] = array(
-    'title'             => 'Outgoing Mail log',
+    'title'             => 'Outgoing Mail Log',
     'description'       => 'View Mails that have been sent from this site.',
     'page callback'     => 'mail_logger_overview',
     'access arguments'  => array('access mail logger'),
@@ -46,7 +46,7 @@ function mail_logger_menu() {
   );
 
   $items['admin/reports/mail-logger/mail/%'] = array(
-    'title'             => 'Outgoing Mail log entries',
+    'title'             => 'Outgoing Mail Log Entry',
     'description'       => 'View information about a single logged mail entry',
     'page callback'     => 'mail_logger_read_mail',
     'page arguments'    => array(4),
@@ -87,6 +87,7 @@ function mail_logger_theme() {
 function mail_logger_mail_alter(&$message) {
   if (!empty($message['send'])) {
     $system = drupal_mail_system($message['module'], $message['key']);
+    $mail_system = get_class($system);
     $logger = $system->format($message);
     $logger['date_sent'] = REQUEST_TIME;
     if (!isset($logger['language'])) {
@@ -96,20 +97,36 @@ function mail_logger_mail_alter(&$message) {
       $language = (is_object($logger['language']) ? $logger['language']->language : $logger['language']);
     }
 
-    $logger['to'] = (empty($logger['to']) ? t('* empty *') : $logger['to']);
+    // Process headers with mime_header_decode() in case they are encoded.
+    $logger['to'] = mime_header_decode(empty($logger['to']) ? t('* empty *') : $logger['to']);
+    $logger['from'] = mime_header_decode($logger['from']);
+    foreach ($logger['headers'] as $key => $val) {
+      $logger['headers'][$key] = mime_header_decode($val);
+    }
 
-    db_insert('mail_logger', array())
-      ->fields(array(
-        'mailkey'   => $logger['id'],
-        'mailto'    => $logger['to'],
-        'subject'   => $logger['subject'],
-        'body'      => $logger['body'],
-        'mailfrom'  => $logger['from'],
-        'headers'   => serialize($logger['headers']),
-        'date_sent' => $logger['date_sent'],
-        'language'  => $language,
-        'ipaddr'    => $_SERVER['REMOTE_ADDR'],
-      ))
+    $record = array(
+      'mailkey'     => $logger['id'],
+      'mailto'      => $logger['to'],
+      'subject'     => $logger['subject'],
+      'body'        => $logger['body'],
+      'mailfrom'    => $logger['from'],
+      'headers'     => serialize($logger['headers']),
+      'date_sent'   => $logger['date_sent'],
+      'language'    => $language,
+      'ipaddr'      => $_SERVER['REMOTE_ADDR'],
+      'mail_system' => $mail_system,
+      );
+
+    $db_specs = drupal_get_schema('mail_logger');
+
+    foreach ($record as $field_name => $value) {
+      if (isset($db_specs[$field_name]['length'])) {
+        $record[$field_name] = substr($value, $db_specs[$field_name]['length']);
+      }
+    }
+
+    db_insert('mail_logger')
+      ->fields($record)
       ->execute();
 
     // Fire 'mail_logger' 'mail_sent' action.
