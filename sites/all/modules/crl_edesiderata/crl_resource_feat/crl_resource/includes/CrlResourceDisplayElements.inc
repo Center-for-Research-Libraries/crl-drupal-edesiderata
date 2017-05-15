@@ -56,8 +56,8 @@ class CrlResourceDisplayElements {
         '#theme' => 'crl_resource_field_status_summary',
         '#action_links' => array('#theme' => 'item_list', '#items' => $action_links_list),
         '#status' => $backref_status,
-        '#status_options' => crl_resource_activity_status_property_oplist(),
-        '#status_descriptions' => crl_activity_status_calc_descriptions()
+        '#status_options' => crl_resource_status_calc_property_oplist(),
+        '#status_descriptions' => crl_resource_status_calc_descriptions()
       );
     }
     return $built;

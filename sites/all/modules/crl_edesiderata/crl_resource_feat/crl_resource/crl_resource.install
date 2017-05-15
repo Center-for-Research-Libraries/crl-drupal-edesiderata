@@ -12,7 +12,7 @@
 function crl_resource_install() {
   // Assuming field_activity_crl_status is in place already, set the oplist
   // function.
-  crl_resource_set_oplist_function('field_activity_crl_status', 'crl_resource_activity_status_property_oplist');
+  crl_resource_set_oplist_function('field_activity_crl_status', 'crl_resource_status_calc_property_oplist');
 }
 
 
@@ -21,7 +21,7 @@ function crl_resource_install() {
  */
 function crl_resource_update_7100() {
   // Set oplist function for field_activity_crl_status.
-  crl_resource_set_oplist_function('field_activity_crl_status', 'crl_resource_activity_status_property_oplist');
+  crl_resource_set_oplist_function('field_activity_crl_status', 'crl_resource_status_calc_property_oplist');
 }
 
 
