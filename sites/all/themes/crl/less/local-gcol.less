@@ -67,3 +67,27 @@ body.equal-postscript #zone-postscript {
 #edit-field-countries select.form-select {
   height: 25em;
 }
+
+// Tweak the id inputs for proposals to fit on one line.
+#edit-field-oclc, #edit-field-lccn, #edit-field-isbn, #edit-field-issn {
+  float: left;
+  min-width: 200px;
+  width: 25%;
+  .tabledrag-toggle-weight {
+    display: none;
+  }
+  .form-item {
+    margin-right: 1em;
+  }
+  input.form-text {
+    width: 100% !important;
+  }
+}
+#edit-field-misc-ids {
+  clear: both;
+}
+
+// Allow site title to wrap will still appearing like one word
+h1.site-name a, h2.site-name a {
+  word-spacing: -0.2em !important;
+}
