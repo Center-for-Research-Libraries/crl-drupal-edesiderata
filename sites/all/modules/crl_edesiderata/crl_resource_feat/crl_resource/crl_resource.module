@@ -215,7 +215,7 @@ function crl_resource_entity_property_info_alter(&$info) {
     'type' => 'list<text>',
     'description' => t("Gets CRL resource status through backreference."),
     'getter callback' => 'crl_resource_get_status_backref',
-    'options list' => 'crl_resource_activity_status_property_oplist',
+    'options list' => 'crl_resource_status_calc_property_oplist',
     'entity views field' => TRUE,
   );
   // Get the "master" update timestamp (the most recent timestamp between a
@@ -584,10 +584,18 @@ function crl_resource_get_wrappers($entity) {
  *
  * @see crl_resource_entity_property_info_alter().
  */
-function crl_resource_activity_status_property_oplist() {
+function crl_resource_status_calc_property_oplist() {
   return crl_activity_status_property_oplist() + array(
     'crl_review_available' => t('Reviewed by CRL'),
   );
+}
+
+
+/**
+ * Helper to centrally define description values for a CRL status.
+ */
+function crl_resource_status_calc_descriptions() {
+  return crl_activity_status_calc_descriptions();
 }
 
 
@@ -614,7 +622,7 @@ function crl_resource_facetapi_sort_info() {
 function crl_resource_activity_status_property_sort(array $a, array $b) {
   // The ordering we want should be taken straight from the hard-coded ordering
   // of the initial CRL status options array.
-  $options = crl_resource_activity_status_property_oplist();
+  $options = crl_resource_status_calc_property_oplist();
   $weights = array();
   $i = 0;
   foreach ($options as $op_key => $op_value) {
