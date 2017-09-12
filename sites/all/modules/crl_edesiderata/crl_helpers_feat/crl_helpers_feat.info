@@ -103,6 +103,7 @@ features[variable][] = uniqueness_searching_string
 features[variable][] = uniqueness_widgets
 features[views_view][] = comment_summary
 features[views_view][] = content_summary
+features[views_view][] = data_exports
 features[wysiwyg][] = full_html
 features_exclude[dependencies][crl_helpers] = crl_helpers
 features_exclude[dependencies][crl_pp_resource_feat] = crl_pp_resource_feat
