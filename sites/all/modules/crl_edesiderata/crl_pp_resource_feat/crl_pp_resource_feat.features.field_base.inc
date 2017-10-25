@@ -405,6 +405,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
         'Brazil' => 'Brazil',
         'Broadcasting' => 'Broadcasting',
         'Canada' => 'Canada',
+        'Caribbean' => 'Caribbean',
         'Census' => 'Census',
         'China' => 'China',
         'Cities' => 'Cities',

@@ -156,6 +156,13 @@ function crl_pp_resource_feat_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'diff_enable_revisions_page_node_spp_resource';
+  $strongarm->value = 1;
+  $export['diff_enable_revisions_page_node_spp_resource'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'diff_show_preview_changes_node_pp_resource';
   $strongarm->value = 1;
   $export['diff_show_preview_changes_node_pp_resource'] = $strongarm;
@@ -163,9 +170,23 @@ function crl_pp_resource_feat_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'diff_show_preview_changes_node_spp_resource';
+  $strongarm->value = 1;
+  $export['diff_show_preview_changes_node_spp_resource'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'diff_view_mode_preview_node_pp_resource';
   $strongarm->value = 'full';
   $export['diff_view_mode_preview_node_pp_resource'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'diff_view_mode_preview_node_spp_resource';
+  $strongarm->value = 'full';
+  $export['diff_view_mode_preview_node_spp_resource'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
