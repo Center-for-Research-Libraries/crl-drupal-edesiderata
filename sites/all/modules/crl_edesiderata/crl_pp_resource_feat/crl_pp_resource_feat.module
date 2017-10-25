@@ -431,14 +431,17 @@ function crl_pp_resource_feat_page_build(&$vars) {
 function crl_pp_resource_feat_form_purchase_proposal_nomination_entityform_edit_form_alter(&$form, &$form_state, $form_id) {
   // Revalidating Only for the purchase proposal nomination entiyform
   if ($form_id == "purchase_proposal_nomination_entityform_edit_form"){
-    // Get the information for logged in user
-    global $user;
-    $user_fields = user_load($user->uid);
-    $inst = crl_user_get_institution($user->uid, NULL);
-    // Setting the default values for nominator based on the logged in user
-    $form['field_contact_name'][LANGUAGE_NONE][0]['value']['#default_value'] = $user_fields->realname;
-    $form['field_contact_email'][LANGUAGE_NONE][0]['email']['#default_value'] = $user_fields->mail;
-    $form['field_pp_nominator_institution'][LANGUAGE_NONE][0]['value']['#default_value'] = $inst;
+    // Get the information for logged in user, but only if this is a new form
+    // without previously submitted values.
+    if (empty($form['field_contact_name'][LANGUAGE_NONE][0]['value']['#default_value'])) {
+      global $user;
+      $user_fields = user_load($user->uid);
+      $inst = crl_user_get_institution($user->uid, NULL);
+      // Setting the default values for nominator based on the logged in user
+      $form['field_contact_name'][LANGUAGE_NONE][0]['value']['#default_value'] = $user_fields->realname;
+      $form['field_contact_email'][LANGUAGE_NONE][0]['email']['#default_value'] = $user_fields->mail;
+      $form['field_pp_nominator_institution'][LANGUAGE_NONE][0]['value']['#default_value'] = $inst;
+    }
   }
 }
 
