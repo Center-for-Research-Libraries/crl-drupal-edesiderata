@@ -877,7 +877,7 @@ function crl_pp_resource_feat_views_default_views() {
 
 <p><strong>Voting for FY2018 will close on Wednesday November 22, 2017.</strong></p>
 
-<p>All voting must take place online, but a <a href="https://www.crl.edu/sites/default/files/attachments/pages/FY18_PP_Ballot_Description.pdf.pdf">pdf version</a> of the ballot is also available for reference.</p>
+<p>All voting must take place online, but a <a href="https://www.crl.edu/sites/default/files/attachments/pages/FY18_PP_Ballot_Description.pdf">pdf version</a> of the ballot is also available for reference.</p>
 
 <div id="ballot"></div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
