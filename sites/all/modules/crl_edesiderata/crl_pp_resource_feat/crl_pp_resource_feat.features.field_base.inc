@@ -311,6 +311,7 @@ function crl_pp_resource_feat_field_default_field_bases() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
+        'not_balloted' => 'Not Balloted',
         'no' => 'Not Purchased',
         'yes' => 'Purchased',
         'spp' => 'Deferred to Shared Purchase',
