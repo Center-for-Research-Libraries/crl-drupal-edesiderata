@@ -242,12 +242,7 @@ function crl_resource_feat_field_default_field_bases() {
     'indexes' => array(),
     'locked' => 0,
     'module' => 'tablefield',
-    'settings' => array(
-      'cell_processing' => 1,
-      'export' => 0,
-      'lock_values' => 0,
-      'restrict_rebuild' => 1,
-    ),
+    'settings' => array(),
     'translatable' => 0,
     'type' => 'tablefield',
   );
@@ -350,12 +345,7 @@ function crl_resource_feat_field_default_field_bases() {
     'indexes' => array(),
     'locked' => 0,
     'module' => 'tablefield',
-    'settings' => array(
-      'cell_processing' => 1,
-      'export' => 0,
-      'lock_values' => 0,
-      'restrict_rebuild' => 1,
-    ),
+    'settings' => array(),
     'translatable' => 0,
     'type' => 'tablefield',
   );
@@ -400,12 +390,7 @@ function crl_resource_feat_field_default_field_bases() {
     'indexes' => array(),
     'locked' => 0,
     'module' => 'tablefield',
-    'settings' => array(
-      'cell_processing' => 1,
-      'export' => 0,
-      'lock_values' => 0,
-      'restrict_rebuild' => 1,
-    ),
+    'settings' => array(),
     'translatable' => 0,
     'type' => 'tablefield',
   );
@@ -569,12 +554,7 @@ function crl_resource_feat_field_default_field_bases() {
     'indexes' => array(),
     'locked' => 0,
     'module' => 'tablefield',
-    'settings' => array(
-      'cell_processing' => 1,
-      'export' => 0,
-      'lock_values' => 0,
-      'restrict_rebuild' => 1,
-    ),
+    'settings' => array(),
     'translatable' => 0,
     'type' => 'tablefield',
   );
@@ -611,12 +591,7 @@ function crl_resource_feat_field_default_field_bases() {
     'indexes' => array(),
     'locked' => 0,
     'module' => 'tablefield',
-    'settings' => array(
-      'cell_processing' => 1,
-      'export' => 0,
-      'lock_values' => 0,
-      'restrict_rebuild' => 1,
-    ),
+    'settings' => array(),
     'translatable' => 0,
     'type' => 'tablefield',
   );

@@ -153,6 +153,7 @@ features[user_permission][] = administer url aliases
 features[user_permission][] = administer users
 features[user_permission][] = administer views
 features[user_permission][] = administer voting api
+features[user_permission][] = always use additional datasources
 features[user_permission][] = block IP addresses
 features[user_permission][] = bypass honeypot protection
 features[user_permission][] = bypass message access control
