@@ -98,7 +98,8 @@ function mail_logger_mail_alter(&$message) {
     }
 
     // Process headers with mime_header_decode() in case they are encoded.
-    $logger['to'] = mime_header_decode(empty($logger['to']) ? t('* empty *') : $logger['to']);
+    $empty = variable_get('mail_logger_log_empty_to', '* empty *');
+    $logger['to'] = mime_header_decode(empty($logger['to']) ? t($empty) : $logger['to']);
     $logger['from'] = mime_header_decode($logger['from']);
     foreach ($logger['headers'] as $key => $val) {
       $logger['headers'][$key] = mime_header_decode($val);

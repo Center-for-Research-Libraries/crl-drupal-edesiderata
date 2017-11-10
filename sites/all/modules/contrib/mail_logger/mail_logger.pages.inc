@@ -5,7 +5,7 @@
  */
 
 /**
- * Menu callback; displays a listing of log mails.
+ * Menu callback; displays a listing of logged mails.
  */
 function mail_logger_overview() {
   drupal_add_css(drupal_get_path('module', 'mail_logger') . '/mail_logger.css');
@@ -88,13 +88,13 @@ function mail_logger_overview() {
     $table['rows'][] = array('data' =>
       array(
         // Cells
-        format_date($mail_logger->date_sent, $date_format),
-        $mail_logger->mailkey,
-        $mail_logger->language,
-        implode('<br />', $list),
-        $mail_logger->mailfrom,
-        l(truncate_utf8($subject, 56, TRUE, TRUE), 'admin/reports/mail-logger/mail/' . $mail_logger->mlid),
-        $mail_logger->ipaddr,
+        array('data' => format_date($mail_logger->date_sent, $date_format), 'class' => array('date-sent')),
+        array('data' => $mail_logger->mailkey, 'class' => array('mail-key')),
+        array('data' => $mail_logger->language, 'class' => array('mail-language')),
+        array('data' => implode('<br />', $list), 'class' => array('mail-to')),
+        array('data' => $mail_logger->mailfrom, 'class' => array('mail-from')),
+        array('data' => l(truncate_utf8($subject, 56, TRUE, TRUE), 'admin/reports/mail-logger/mail/' . $mail_logger->mlid), 'class' => array('mail-subject')),
+        array('data' => $mail_logger->ipaddr, 'class' => array('mail-ipaddr')),
         ),
       );
   }
@@ -161,7 +161,7 @@ function mail_logger_form_overview() {
 
   $form['filter_logs'] = array(
     '#type' => 'fieldset',
-    '#title' => 'Filter Mail Log',
+    '#title' => t('Filter Mail Log'),
     '#collapsible' => TRUE,
     '#collapsed' => !$is_filtering,
   );

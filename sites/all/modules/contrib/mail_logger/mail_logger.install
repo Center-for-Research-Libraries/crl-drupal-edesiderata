@@ -70,6 +70,7 @@ function mail_logger_schema() {
         'description'   => 'IP Address of User',
         'type'          => 'varchar',
         'length'        => 45,              // Long enough for IPv6.
+        'not null'      => TRUE,
       ),
       'mail_system'     => array(
         'description'   => 'Mail System Class',
@@ -80,7 +81,8 @@ function mail_logger_schema() {
     'primary key'     => array('mlid'),
     'indexes'         => array(
       'mailto'          => array(array('mailto', 200)),
-      'mailfrom'        => array('mailfrom', 100),
+      'mailfrom'        => array(array('mailfrom', 100)),
+      'mail_system'     => array('mail_system'),
       'subject'         => array(array('subject', 20)),
       'date_sent'       => array('date_sent'),
       'language'        => array('language'),
@@ -232,4 +234,19 @@ function mail_logger_update_7004() {
   db_add_index('mail_logger', 'mailfrom', array(array('mailfrom', 100)));
 
   return t('The Mail_logger "mailfrom" and "subject" columns have been expanded.');
+}
+
+/**
+ * Update the mail subject field definition.
+ */
+function mail_logger_update_7005() {
+  db_change_field('mail_logger', 'subject', 'subject',
+    array(
+      'description' => 'Mail subject',
+      'type' => 'varchar',
+      'length' => 2047,
+      'not null' => TRUE,
+    ),
+    array('subject' => array(array('subject', 20)))
+  );
 }
