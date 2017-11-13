@@ -272,6 +272,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => 1,
         ),
         'type' => 'entityreference_label',
@@ -443,6 +444,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
@@ -812,6 +814,7 @@ function crl_resource_feat_field_default_field_instances() {
         'label' => 'inline',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => 1,
         ),
         'type' => 'entityreference_label',
@@ -1123,15 +1126,26 @@ function crl_resource_feat_field_default_field_instances() {
     'default_value' => array(
       0 => array(
         'tablefield' => array(
-          'cell_0_0' => '',
+          'caption' => '',
           'import' => array(
-            'rebuild_field_resource_coll_content_tb_0' => 'Upload CSV',
-            'tablefield_csv_field_resource_coll_content_tb_0' => '',
+            'file' => '',
+            'import' => 'Upload CSV',
+          ),
+          'paste' => array(
+            'data' => '',
+            'paste_delimiter' => '',
+            'paste_import' => 'Import & Rebuild',
           ),
           'rebuild' => array(
             'count_cols' => 1,
             'count_rows' => 1,
             'rebuild' => 'Rebuild Table',
+          ),
+          'tabledata' => array(
+            'row_0' => array(
+              'col_0' => '',
+              'weight' => 1,
+            ),
           ),
         ),
         'format' => 'full_html',
@@ -1145,6 +1159,15 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'module' => 'tablefield',
         'settings' => array(
+          'export_csv' => 0,
+          'header_orientation' => 'Horizontal',
+          'hide_cols_skip_head' => FALSE,
+          'hide_empty_cols' => FALSE,
+          'hide_empty_rows' => FALSE,
+          'hide_header' => 0,
+          'sortable' => FALSE,
+          'sticky_header' => TRUE,
+          'striping' => TRUE,
           'trim_trailing_cols' => FALSE,
           'trim_trailing_rows' => FALSE,
         ),
@@ -1153,13 +1176,19 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       ),
       'embedded' => array(
         'label' => 'above',
-        'settings' => array(),
+        'settings' => array(
+          'export_csv' => 0,
+          'hide_header' => 0,
+        ),
         'type' => 'hidden',
         'weight' => 57,
       ),
       'teaser' => array(
         'label' => 'above',
-        'settings' => array(),
+        'settings' => array(
+          'export_csv' => 0,
+          'hide_header' => 0,
+        ),
         'type' => 'hidden',
         'weight' => 61,
       ),
@@ -1172,9 +1201,19 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       'user_register_form' => FALSE,
     ),
     'widget' => array(
-      'active' => 0,
+      'active' => 1,
       'module' => 'tablefield',
-      'settings' => array(),
+      'settings' => array(
+        'cell_processing' => 1,
+        'data_sources' => array(
+          'paste' => 'paste',
+          'upload' => 'upload',
+        ),
+        'input_type' => 'textfield',
+        'lock_values' => 0,
+        'max_length' => 2048,
+        'restrict_rebuild' => 1,
+      ),
       'type' => 'tablefield',
       'weight' => 124,
     ),
@@ -1370,15 +1409,21 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     'default_value' => array(
       0 => array(
         'tablefield' => array(
-          'cell_0_0' => '',
+          'caption' => NULL,
           'import' => array(
             'file' => '',
             'import' => 'Upload CSV',
           ),
+          'paste' => NULL,
           'rebuild' => array(
             'count_cols' => 1,
             'count_rows' => 1,
             'rebuild' => 'Rebuild Table',
+          ),
+          'tabledata' => array(
+            'row_0' => array(
+              'col_0' => '',
+            ),
           ),
         ),
         'format' => 'full_html',
@@ -1392,6 +1437,15 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'module' => 'tablefield',
         'settings' => array(
+          'export_csv' => 0,
+          'header_orientation' => 'Horizontal',
+          'hide_cols_skip_head' => FALSE,
+          'hide_empty_cols' => FALSE,
+          'hide_empty_rows' => FALSE,
+          'hide_header' => 0,
+          'sortable' => FALSE,
+          'sticky_header' => TRUE,
+          'striping' => TRUE,
           'trim_trailing_cols' => FALSE,
           'trim_trailing_rows' => FALSE,
         ),
@@ -1400,13 +1454,19 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       ),
       'embedded' => array(
         'label' => 'above',
-        'settings' => array(),
+        'settings' => array(
+          'export_csv' => 0,
+          'hide_header' => 0,
+        ),
         'type' => 'hidden',
         'weight' => 51,
       ),
       'teaser' => array(
         'label' => 'above',
-        'settings' => array(),
+        'settings' => array(
+          'export_csv' => 0,
+          'hide_header' => 0,
+        ),
         'type' => 'hidden',
         'weight' => 52,
       ),
@@ -1421,7 +1481,11 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     'widget' => array(
       'active' => 0,
       'module' => 'tablefield',
-      'settings' => array(),
+      'settings' => array(
+        'cell_processing' => 1,
+        'lock_values' => 0,
+        'restrict_rebuild' => 1,
+      ),
       'type' => 'tablefield',
       'weight' => 127,
     ),
@@ -1479,15 +1543,21 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     'default_value' => array(
       0 => array(
         'tablefield' => array(
-          'cell_0_0' => '',
+          'caption' => NULL,
           'import' => array(
             'rebuild_field_resource_metadata_tb_0' => 'Upload CSV',
             'tablefield_csv_field_resource_metadata_tb_0' => '',
           ),
+          'paste' => NULL,
           'rebuild' => array(
             'count_cols' => 1,
             'count_rows' => 1,
             'rebuild' => 'Rebuild Table',
+          ),
+          'tabledata' => array(
+            'row_0' => array(
+              'col_0' => '',
+            ),
           ),
         ),
         'format' => 'full_html',
@@ -1501,6 +1571,15 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'module' => 'tablefield',
         'settings' => array(
+          'export_csv' => 0,
+          'header_orientation' => 'Horizontal',
+          'hide_cols_skip_head' => FALSE,
+          'hide_empty_cols' => FALSE,
+          'hide_empty_rows' => FALSE,
+          'hide_header' => 0,
+          'sortable' => FALSE,
+          'sticky_header' => TRUE,
+          'striping' => TRUE,
           'trim_trailing_cols' => FALSE,
           'trim_trailing_rows' => FALSE,
         ),
@@ -1509,13 +1588,19 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       ),
       'embedded' => array(
         'label' => 'above',
-        'settings' => array(),
+        'settings' => array(
+          'export_csv' => 0,
+          'hide_header' => 0,
+        ),
         'type' => 'hidden',
         'weight' => 56,
       ),
       'teaser' => array(
         'label' => 'above',
-        'settings' => array(),
+        'settings' => array(
+          'export_csv' => 0,
+          'hide_header' => 0,
+        ),
         'type' => 'hidden',
         'weight' => 57,
       ),
@@ -1530,7 +1615,11 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     'widget' => array(
       'active' => 0,
       'module' => 'tablefield',
-      'settings' => array(),
+      'settings' => array(
+        'cell_processing' => 1,
+        'lock_values' => 0,
+        'restrict_rebuild' => 1,
+      ),
       'type' => 'tablefield',
       'weight' => 125,
     ),
@@ -1724,15 +1813,21 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     'default_value' => array(
       0 => array(
         'tablefield' => array(
-          'cell_0_0' => '',
+          'caption' => NULL,
           'import' => array(
             'file' => '',
             'import' => 'Upload CSV',
           ),
+          'paste' => NULL,
           'rebuild' => array(
             'count_cols' => 1,
             'count_rows' => 1,
             'rebuild' => 'Rebuild Table',
+          ),
+          'tabledata' => array(
+            'row_0' => array(
+              'col_0' => '',
+            ),
           ),
         ),
         'format' => 'full_html',
@@ -1746,6 +1841,15 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'module' => 'tablefield',
         'settings' => array(
+          'export_csv' => 0,
+          'header_orientation' => 'Horizontal',
+          'hide_cols_skip_head' => FALSE,
+          'hide_empty_cols' => FALSE,
+          'hide_empty_rows' => FALSE,
+          'hide_header' => 0,
+          'sortable' => FALSE,
+          'sticky_header' => TRUE,
+          'striping' => TRUE,
           'trim_trailing_cols' => FALSE,
           'trim_trailing_rows' => FALSE,
         ),
@@ -1754,13 +1858,19 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       ),
       'embedded' => array(
         'label' => 'above',
-        'settings' => array(),
+        'settings' => array(
+          'export_csv' => 0,
+          'hide_header' => 0,
+        ),
         'type' => 'hidden',
         'weight' => 52,
       ),
       'teaser' => array(
         'label' => 'above',
-        'settings' => array(),
+        'settings' => array(
+          'export_csv' => 0,
+          'hide_header' => 0,
+        ),
         'type' => 'hidden',
         'weight' => 56,
       ),
@@ -1775,7 +1885,11 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     'widget' => array(
       'active' => 0,
       'module' => 'tablefield',
-      'settings' => array(),
+      'settings' => array(
+        'cell_processing' => 1,
+        'lock_values' => 0,
+        'restrict_rebuild' => 1,
+      ),
       'type' => 'tablefield',
       'weight' => 126,
     ),
@@ -1833,15 +1947,21 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     'default_value' => array(
       0 => array(
         'tablefield' => array(
-          'cell_0_0' => '',
+          'caption' => NULL,
           'import' => array(
             'file' => '',
             'import' => 'Upload CSV',
           ),
+          'paste' => NULL,
           'rebuild' => array(
             'count_cols' => 1,
             'count_rows' => 1,
             'rebuild' => 'Rebuild Table',
+          ),
+          'tabledata' => array(
+            'row_0' => array(
+              'col_0' => '',
+            ),
           ),
         ),
         'format' => 'full_html',
@@ -1855,6 +1975,15 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'module' => 'tablefield',
         'settings' => array(
+          'export_csv' => 0,
+          'header_orientation' => 'Horizontal',
+          'hide_cols_skip_head' => FALSE,
+          'hide_empty_cols' => FALSE,
+          'hide_empty_rows' => FALSE,
+          'hide_header' => 0,
+          'sortable' => FALSE,
+          'sticky_header' => TRUE,
+          'striping' => TRUE,
           'trim_trailing_cols' => FALSE,
           'trim_trailing_rows' => FALSE,
         ),
@@ -1863,13 +1992,19 @@ You may append the token <strong>[provider]</strong> after any line of text to a
       ),
       'embedded' => array(
         'label' => 'above',
-        'settings' => array(),
+        'settings' => array(
+          'export_csv' => 0,
+          'hide_header' => 0,
+        ),
         'type' => 'hidden',
         'weight' => 53,
       ),
       'teaser' => array(
         'label' => 'above',
-        'settings' => array(),
+        'settings' => array(
+          'export_csv' => 0,
+          'hide_header' => 0,
+        ),
         'type' => 'hidden',
         'weight' => 51,
       ),
@@ -1884,7 +2019,11 @@ You may append the token <strong>[provider]</strong> after any line of text to a
     'widget' => array(
       'active' => 0,
       'module' => 'tablefield',
-      'settings' => array(),
+      'settings' => array(
+        'cell_processing' => 1,
+        'lock_values' => 0,
+        'restrict_rebuild' => 1,
+      ),
       'type' => 'tablefield',
       'weight' => 128,
     ),
@@ -1992,6 +2131,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => 1,
         ),
         'type' => 'entityreference_label',
@@ -2041,6 +2181,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => 1,
         ),
         'type' => 'entityreference_label',
@@ -2459,6 +2600,8 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   t('TEMP - Topics from Review');
   t('Technical Platform');
   t('Terms');
+  t('The first row will appear as the table header. Leave the first row blank if you do not need a header.<br />
+You may append the token <strong>[provider]</strong> after any line of text to add a "Direct from publisher" icon to that cell.');
   t('The first row will appear as the table header. Leave the first row blank if you do not need a header.<br />
 You may append the token <strong>[provider]</strong> after any line of text to add a "Direct from publisher" icon to that cell.');
   t('The message to display along with the "update alert" when a user views the related resource.');

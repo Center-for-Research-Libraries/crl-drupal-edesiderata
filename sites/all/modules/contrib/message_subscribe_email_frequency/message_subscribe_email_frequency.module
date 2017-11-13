@@ -23,6 +23,8 @@ function message_subscribe_email_frequency_allowed_values() {
     $allowed_values['digest_day'] = t('Once a day in an email digest');
     $allowed_values['digest_week'] = t('Once a week in an email digest');
   }
+  drupal_alter('message_subscribe_email_frequency_allowed_values', $allowed_values);
+
   return $allowed_values;
 }
 

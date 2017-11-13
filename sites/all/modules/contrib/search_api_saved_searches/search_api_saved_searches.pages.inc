@@ -198,6 +198,18 @@ function search_api_saved_searches_search_edit_form(array $form, array &$form_st
     '#required' => TRUE,
     '#default_value' => $search->name,
   );
+  if (!empty($settings->options['allow_keys_change'])) {
+    $keywords = $search->query['keys'];
+    if (is_array($keywords)) {
+      $keywords = search_api_saved_searches_unparse_keys($keywords);
+    }
+    $form['keys'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Keywords'),
+      '#description' => t('The keywords to use for this search.'),
+      '#default_value' => $keywords,
+    );
+  }
   if ($settings->options['user_select_interval'] && count($settings->options['interval_options']) > 1) {
     $form['notify_interval'] = array(
       '#type' => 'select',
@@ -225,18 +237,54 @@ function search_api_saved_searches_search_edit_form(array $form, array &$form_st
 }
 
 /**
+ * Reverses the search keywords parsing to get string keywords.
+ *
+ * @param array $keys
+ *   An array with search keys, as defined by
+ *   SearchApiQueryInterface::getKeys().
+ *
+ * @return string
+ *   A guess regarding the original keys used to come up with the given keys
+ *   array.
+ */
+function search_api_saved_searches_unparse_keys(array $keys) {
+  $simple_keys = array();
+
+  foreach (element_children($keys) as $i) {
+    $key = $keys[$i];
+    if (is_scalar($key)) {
+      if (strpos($key, ' ')) {
+        $key = '"' . $key . '"';
+      }
+      $simple_keys[] = $key;
+    }
+  }
+
+  return implode(' ', $simple_keys);
+}
+
+/**
  * Submission handler for search_api_saved_searches_search_edit_form().
  *
  * @see search_api_saved_searches_search_edit_form()
  */
 function search_api_saved_searches_search_edit_form_submit(array $form, array &$form_state) {
   $values = $form_state['values'];
+  /** @var SearchApiSavedSearch $search */
   $search = $form_state['search'];
   $search->name = $values['name'];
   $search->enabled = $values['enabled'];
   if (isset($values['notify_interval'])) {
     $search->notify_interval = $values['notify_interval'];
   }
+
+  if (!empty($form['keys']) && $values['keys'] != $form['keys']['#default_value']) {
+    $search->query['keys'] = ($values['keys'] === '') ? NULL : $values['keys'];
+    // Unsetting the results array will automatically re-calculate the current
+    // results when saving.
+    $search->results = NULL;
+  }
+
   if ($search->save()) {
     drupal_set_message(t('Successfully saved your changes.'));
     if (!empty($form_state['destination'])) {

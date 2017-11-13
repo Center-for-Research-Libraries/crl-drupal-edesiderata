@@ -160,6 +160,7 @@ function search_api_saved_searches_schema() {
  */
 function search_api_saved_searches_uninstall() {
   variable_del('search_api_saved_searches_search_ids');
+  variable_del('search_api_saved_search_queue_item_time');
 }
 
 /**

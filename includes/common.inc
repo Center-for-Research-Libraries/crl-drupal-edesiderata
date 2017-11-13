@@ -459,7 +459,7 @@ function drupal_get_query_array($query) {
   if (!empty($query)) {
     foreach (explode('&', $query) as $param) {
       $param = explode('=', $param, 2);
-      $result[$param[0]] = isset($param[1]) ? rawurldecode($param[1]) : '';
+      $result[rawurldecode($param[0])] = isset($param[1]) ? rawurldecode($param[1]) : '';
     }
   }
   return $result;
@@ -487,7 +487,7 @@ function drupal_http_build_query(array $query, $parent = '') {
   $params = array();
 
   foreach ($query as $key => $value) {
-    $key = ($parent ? $parent . '[' . rawurlencode($key) . ']' : rawurlencode($key));
+    $key = $parent ? $parent . rawurlencode('[' . $key . ']') : rawurlencode($key);
 
     // Recurse into children.
     if (is_array($value)) {
