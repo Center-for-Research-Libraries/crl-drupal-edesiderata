@@ -1,3 +1,22 @@
+Search API Saved Searches 1.6 (2017-07-18):
+-------------------------------------------
+- #1118138 by MorinLuc0, drunken monkey: Added Rules integration for sending
+  notifications.
+- #2856331 by drunken monkey: Fixed access check for the "Create saved search"
+  page.
+- #2216453 by drunken monkey: Fixed exception for saved searches after fulltext
+  fields change.
+- #2665578 by drunken monkey: Fixed notices caused by missing $original in
+  hook_user_update().
+- #2597143 by drunken monkey: Added an option to allow users to edit a saved
+  search's keywords.
+- #2532078 by krishna savithraj: Added a hidden setting to give the cron job
+  more time to execute.
+- #2602532 by kaptenkolja, drunken monkey: Fixed handling of multi-valued
+  fields when creating a new saved search manually.
+- #2564969 by drunken monkey: Fixed escaping of fields option labels.
+- #1306622 by drunken monkey: Fixed token handling for anonymous users.
+
 Search API Saved Searches 1.5 (2015-06-08):
 -------------------------------------------
 - #2346679 by drunken monkey, dcmul: Added display of saved search
