@@ -1,0 +1,39 @@
+From 855f332510d2ca7715c885225ba4a945279767b1 Mon Sep 17 00:00:00 2001
+From: Axel Rutz <axel.rutz@clever-systems.net>
+Date: Mon, 18 Sep 2017 19:09:41 +0200
+Subject: [PATCH] Issue #2909714 by axel.rutz: drupal_get_query_array() does
+ not urldecode query names
+
+---
+ includes/common.inc                  | 2 +-
+ modules/simpletest/tests/common.test | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/includes/common.inc b/includes/common.inc
+index a32930a..a07cdf1 100644
+--- a/includes/common.inc
++++ b/includes/common.inc
+@@ -459,7 +459,7 @@ function drupal_get_query_array($query) {
+   if (!empty($query)) {
+     foreach (explode('&', $query) as $param) {
+       $param = explode('=', $param, 2);
+-      $result[$param[0]] = isset($param[1]) ? rawurldecode($param[1]) : '';
++      $result[rawurldecode($param[0])] = isset($param[1]) ? rawurldecode($param[1]) : '';
+     }
+   }
+   return $result;
+diff --git a/modules/simpletest/tests/common.test b/modules/simpletest/tests/common.test
+index 83161fa..8672ee4 100644
+--- a/modules/simpletest/tests/common.test
++++ b/modules/simpletest/tests/common.test
+@@ -170,6 +170,7 @@ class CommonURLUnitTest extends DrupalWebTestCase {
+     $this->assertEqual(drupal_http_build_query(array(' &#//+%20@۞' => 'a')), '%20%26%23%2F%2F%2B%2520%40%DB%9E=a', 'Key was properly encoded.');
+     $this->assertEqual(drupal_http_build_query(array('a' => '1', 'b' => '2', 'c' => '3')), 'a=1&b=2&c=3', 'Multiple values were properly concatenated.');
+     $this->assertEqual(drupal_http_build_query(array('a' => array('b' => '2', 'c' => '3'), 'd' => 'foo')), 'a%5Bb%5D=2&a%5Bc%5D=3&d=foo', 'Nested array was properly encoded.');
++    $this->assertEqual(drupal_get_query_array(drupal_http_build_query(array('a' => array('b' => 'c')))), array('a[b]' => 'c'), 'Nested array was properly decoded.');
+   }
+ 
+   /**
+-- 
+2.7.4
+
