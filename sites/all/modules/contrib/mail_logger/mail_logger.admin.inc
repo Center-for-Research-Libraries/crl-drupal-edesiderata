@@ -13,13 +13,20 @@ function mail_logger_admin_settings_form($form, &$form_state) {
   );
   $time_intervals = array(
     0,
-    86400,
-    604800,
-    1209600,
-    2592000,
-    7776000,
-    15552000,
-    31536000,
+    86400,     // 1 day.
+    172800,    // 2 days.
+    259200,    // 3 days.
+    604800,    // 7 days.
+    1209600,   // 14 days (2 weeks).
+    2592000,   // 30 days (1 month).
+    5184000,   // 60 days (2 months).
+    7776000,   // 90 days (3 months).
+    15552000,  // 180 days (6 months).
+    31536000,  // 365 days (1 year).
+    63072000,  // 730 days (2 years).
+    94608000,  // 1095 days (3 years).
+    157680000, // 1825 days (5 years).
+    315360000, // 3650 days (10 years),
   );
   $options_log_maximum_age += drupal_map_assoc($time_intervals, 'format_interval');
   $form['mail_logger_log_maximum_age'] = array(
@@ -48,6 +55,13 @@ function mail_logger_admin_settings_form($form, &$form_state) {
     '#title' => t('Lines per page'),
     '#default_value' => variable_get('mail_logger_log_lines_per_page', 50),
     '#description' => t('This is the number of lines that will appear on the log display page.'),
+    );
+
+  $form['mail_logger_log_empty_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Empty TO text'),
+    '#default_value' => variable_get('mail_logger_log_empty_to', '* empty *'),
+    '#description' => t('This will be used when there are no recipients in the "To" field.'),
     );
 
   $form = system_settings_form($form);

@@ -1,61 +1,37 @@
-.mail_logger_wrapper  {
+.mail-logger_wrapper  {
   margin: 0 0 10px 0;
+  width: 100%;
 }
 
-.mail_logger_wrapper div  {
-}
-
-#mail-logger-form-overview .form-item label:not(.option) {
-  margin-right: 3px;
+.mail-logger-wrapper td {
+  text-align: left;
+  vertical-align: top;
 }
 
 #mail-logger-log td {
   vertical-align: top;
 }
 
-.mail_system_label,
-.mail_ipaddr_label,
-.mail_subject_label,
-.mail_body_label,
-.mail_to_label,
-.mail_from_label,
-.date_sent_label,
-.mail_type_label  {
-  clear: both;
-  float: left;
-  font-weight: bold;
-  margin: 0 15px 0 0;
+.mail-logger-wrapper td:first-child {
   width: 150px;
+  margin: 5px 10px;
+  font-weight: bold;
 }
 
-.mail_ipaddr_label,
-.mail_ipaddr_data,
-.mail_subject_label,
-.mail_subject_data,
-.mail_from_label,
-.mail_from_data,
-.mail_type_label,
-.mail_type_data  {
+.mail-logger-wrapper tr:nth-child(2n+1) {
   background-color: #eee;   /* Lighter gray */
 }
 
-.mail_system_label,
-.mail_system_data,
-.mail_body_label,
-.mail_body_data,
-.mail_to_label,
-.mail_to_data,
-.date_sent_label,
-.date_sent_data  {
-/*  background-color: #ddd;   /* Darker gray */
-  background-color: #fff;   /* white */
+.mail-logger-wrapper tr:nth-child(2n) {
+  background-color: #fff;   /* White */
 }
 
-.mail_body_label  {
+.mail-body-label  {
   font-weight: bold;
 }
 
-.mail_body_data  {
+.mail-body-data  {
+  background-color: #fff;   /* White */
   padding: 10px;
 }
 

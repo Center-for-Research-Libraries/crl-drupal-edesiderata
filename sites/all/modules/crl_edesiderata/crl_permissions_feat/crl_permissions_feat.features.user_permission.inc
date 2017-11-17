@@ -760,6 +760,17 @@ function crl_permissions_feat_user_default_permissions() {
     'module' => 'votingapi',
   );
 
+  // Exported permission: 'always use additional datasources'.
+  $permissions['always use additional datasources'] = array(
+    'name' => 'always use additional datasources',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
+      'editor power' => 'editor power',
+    ),
+    'module' => 'tablefield',
+  );
+
   // Exported permission: 'block IP addresses'.
   $permissions['block IP addresses'] = array(
     'name' => 'block IP addresses',
