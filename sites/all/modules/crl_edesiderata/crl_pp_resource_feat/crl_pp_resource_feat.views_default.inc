@@ -469,13 +469,13 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_publisher']['id'] = 'field_pp_publisher';
   $handler->display->display_options['fields']['field_pp_publisher']['table'] = 'field_data_field_pp_publisher';
   $handler->display->display_options['fields']['field_pp_publisher']['field'] = 'field_pp_publisher';
-  /* Field: Field: Vendor Contact */
+  /* Field: Field: Provider Contact */
   $handler->display->display_options['fields']['field_contacts']['id'] = 'field_contacts';
   $handler->display->display_options['fields']['field_contacts']['table'] = 'field_data_field_contacts';
   $handler->display->display_options['fields']['field_contacts']['field'] = 'field_contacts';
   $handler->display->display_options['fields']['field_contacts']['type'] = 'text_plain';
   $handler->display->display_options['fields']['field_contacts']['delta_offset'] = '0';
-  /* Field: Field: Provider URL */
+  /* Field: Field: Website */
   $handler->display->display_options['fields']['field_link']['id'] = 'field_link';
   $handler->display->display_options['fields']['field_link']['table'] = 'field_data_field_link';
   $handler->display->display_options['fields']['field_link']['field'] = 'field_link';
@@ -875,9 +875,7 @@ function crl_pp_resource_feat_views_default_views() {
 </div>
 <p>CRL\'s <a href="http://www.crl.edu/collections/collection-building/cooperative-resource-development/pp-program">Purchase Proposal program</a> is an annual cooperative collection development activity. Member libraries nominate and vote for CRL to purchase microform and hard copy collections that may be too costly or esoteric for individual institutions to acquire. CRL collections are developed by and for the member community, with input and participation of all voting members.</p>
 
-<p><strong>Voting for FY2018 will close on Wednesday November 22, 2017.</strong></p>
-
-<p>All voting must take place online, but a <a href="https://www.crl.edu/sites/default/files/attachments/pages/FY18_PP_Ballot_Description.pdf">pdf version</a> of the ballot is also available for reference.</p>
+<p><strong>The ballot is currently closed.</strong></p>
 
 <div id="ballot"></div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
@@ -887,8 +885,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = '<hr />
-<p>The Purchase Proposal Ballot is only available for logged-in CRL Members.</p>';
+  $handler->display->display_options['empty']['area']['content'] = '<hr />';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
   $handler->display->display_options['path'] = 'pp';
   $handler->display->display_options['menu']['type'] = 'normal';

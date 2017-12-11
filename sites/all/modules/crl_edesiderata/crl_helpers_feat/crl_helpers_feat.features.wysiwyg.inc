@@ -10,7 +10,7 @@
 function crl_helpers_feat_wysiwyg_default_profiles() {
   $profiles = array();
 
-  // Exported profile: full_html
+  // Exported profile: full_html.
   $profiles['full_html'] = array(
     'format' => 'full_html',
     'editor' => 'ckeditor',
