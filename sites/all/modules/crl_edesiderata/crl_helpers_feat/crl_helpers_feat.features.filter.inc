@@ -39,7 +39,9 @@ function crl_helpers_feat_filter_default_formats() {
         'weight' => 50,
         'status' => 1,
         'settings' => array(
-          'local_paths' => '',
+          'local_paths' => 'http://edesiderata.crl.edu
+https://edesiderata.crl.edu
+/',
           'protocol_style' => 'full',
         ),
       ),
