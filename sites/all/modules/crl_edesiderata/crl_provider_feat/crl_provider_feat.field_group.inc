@@ -261,20 +261,14 @@ function crl_provider_feat_field_group_info() {
       1 => 'field_subject_area',
       2 => 'field_source_guid',
     ),
-    'format_type' => 'div',
+    'format_type' => 'tab',
     'format_settings' => array(
-      'label' => 'System Fields',
+      'formatter' => 'closed',
       'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => ' group-system-fields field-group-div',
         'description' => '',
-        'show_label' => '1',
-        'label_element' => 'h3',
-        'effect' => 'none',
-        'speed' => 'fast',
-        'id' => 'node_provider_form_group_system_fields',
+        'classes' => '',
+        'required_fields' => 1,
       ),
-      'formatter' => 'collapsed',
     ),
   );
   $field_groups['group_system_fields|node|provider|form'] = $field_group;
