@@ -469,24 +469,18 @@ function crl_pp_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'System Fields',
-    'weight' => '5',
+    'weight' => '8',
     'children' => array(
       0 => 'field_voting_results',
     ),
-    'format_type' => 'div',
+    'format_type' => 'tab',
     'format_settings' => array(
-      'label' => 'System Fields',
+      'formatter' => 'closed',
       'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => ' group-system-fields field-group-div',
         'description' => '',
-        'show_label' => '1',
-        'label_element' => 'h3',
-        'effect' => 'none',
-        'speed' => 'fast',
-        'id' => 'node_pp_resource_form_group_system_fields',
+        'classes' => '',
+        'required_fields' => 1,
       ),
-      'formatter' => 'collapsed',
     ),
   );
   $field_groups['group_system_fields|node|pp_resource|form'] = $field_group;
@@ -506,20 +500,14 @@ function crl_pp_resource_feat_field_group_info() {
     'children' => array(
       0 => 'field_voting_results',
     ),
-    'format_type' => 'div',
+    'format_type' => 'tab',
     'format_settings' => array(
-      'label' => 'System Fields',
+      'formatter' => 'closed',
       'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => ' group-system-fields field-group-div',
         'description' => '',
-        'show_label' => '1',
-        'label_element' => 'h3',
-        'effect' => 'none',
-        'speed' => 'fast',
-        'id' => 'node_spp_resource_form_group_system_fields',
+        'classes' => '',
+        'required_fields' => 1,
       ),
-      'formatter' => 'collapsed',
     ),
   );
   $field_groups['group_system_fields|node|spp_resource|form'] = $field_group;

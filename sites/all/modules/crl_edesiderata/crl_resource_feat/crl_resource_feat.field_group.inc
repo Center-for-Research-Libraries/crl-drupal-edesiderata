@@ -587,20 +587,14 @@ function crl_resource_feat_field_group_info() {
       3 => 'field_resource_activity_history',
       4 => 'field_source_guid',
     ),
-    'format_type' => 'div',
+    'format_type' => 'tab',
     'format_settings' => array(
-      'label' => 'System Fields',
+      'formatter' => 'closed',
       'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => ' group-system-fields field-group-div',
         'description' => '',
-        'show_label' => '1',
-        'label_element' => 'h3',
-        'effect' => 'none',
-        'speed' => 'fast',
-        'id' => 'node_resource_form_group_system_fields',
+        'classes' => '',
+        'required_fields' => 1,
       ),
-      'formatter' => 'collapsed',
     ),
   );
   $field_groups['group_system_fields|node|resource|form'] = $field_group;
@@ -678,20 +672,14 @@ function crl_resource_feat_field_group_info() {
       0 => 'field_temp_subjects_covered',
       1 => 'field_temp_topics_from_review',
     ),
-    'format_type' => 'div',
+    'format_type' => 'tab',
     'format_settings' => array(
-      'label' => 'Temporary Data from Old Reviews',
+      'formatter' => 'closed',
       'instance_settings' => array(
-        'required_fields' => 1,
-        'id' => '',
-        'classes' => 'group-temp-old-reviews field-group-div',
         'description' => '',
-        'show_label' => '1',
-        'label_element' => 'h3',
-        'effect' => 'none',
-        'speed' => 'fast',
+        'classes' => '',
+        'required_fields' => 1,
       ),
-      'formatter' => 'collapsed',
     ),
   );
   $field_groups['group_temp_old_reviews|node|resource|form'] = $field_group;
@@ -712,20 +700,14 @@ function crl_resource_feat_field_group_info() {
       0 => 'field_update_alert',
       1 => 'field_update_alert_message',
     ),
-    'format_type' => 'div',
+    'format_type' => 'tab',
     'format_settings' => array(
-      'label' => 'Update Alert',
+      'formatter' => 'closed',
       'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => ' group-update-alerts field-group-div',
         'description' => '',
-        'show_label' => '1',
-        'label_element' => 'h3',
-        'effect' => 'none',
-        'speed' => 'fast',
-        'id' => 'node_resource_form_group_update_alerts',
+        'classes' => '',
+        'required_fields' => 1,
       ),
-      'formatter' => 'collapsed',
     ),
   );
   $field_groups['group_update_alerts|node|resource|form'] = $field_group;
