@@ -475,7 +475,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_contacts']['field'] = 'field_contacts';
   $handler->display->display_options['fields']['field_contacts']['type'] = 'text_plain';
   $handler->display->display_options['fields']['field_contacts']['delta_offset'] = '0';
-  /* Field: Field: Provider URL */
+  /* Field: Field: Website */
   $handler->display->display_options['fields']['field_link']['id'] = 'field_link';
   $handler->display->display_options['fields']['field_link']['table'] = 'field_data_field_link';
   $handler->display->display_options['fields']['field_link']['field'] = 'field_link';
@@ -494,7 +494,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_subject_area']['table'] = 'field_data_field_pp_subject_area';
   $handler->display->display_options['fields']['field_pp_subject_area']['field'] = 'field_pp_subject_area';
   $handler->display->display_options['fields']['field_pp_subject_area']['delta_offset'] = '0';
-  /* Field: Entityform Submission: Description */
+  /* Field: Entityform Submission: Background Information */
   $handler->display->display_options['fields']['field_further_description']['id'] = 'field_further_description';
   $handler->display->display_options['fields']['field_further_description']['table'] = 'field_data_field_further_description';
   $handler->display->display_options['fields']['field_further_description']['field'] = 'field_further_description';
@@ -875,7 +875,9 @@ function crl_pp_resource_feat_views_default_views() {
 </div>
 <p>CRL\'s <a href="http://www.crl.edu/collections/collection-building/cooperative-resource-development/pp-program">Purchase Proposal program</a> is an annual cooperative collection development activity. Member libraries nominate and vote for CRL to purchase microform and hard copy collections that may be too costly or esoteric for individual institutions to acquire. CRL collections are developed by and for the member community, with input and participation of all voting members.</p>
 
-<p><strong>The ballot is currently closed.</strong></p>
+<p><strong>The ballot is open until Wednesday November 21st, 2018.</strong></p>
+
+<p>All voting must take place online, but a <a href="https://www.crl.edu/sites/default/files/attachments/pages/FY19_PP_Ballot_Description.pdf">pdf version</a> of the ballot is also available for reference.</p>
 
 <div id="ballot"></div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
@@ -885,7 +887,8 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = '<hr />';
+  $handler->display->display_options['empty']['area']['content'] = '<hr />
+The Purchase Proposal Ballot is only available for logged-in CRL Members.';
   $handler->display->display_options['empty']['area']['format'] = 'full_html';
   $handler->display->display_options['path'] = 'pp';
   $handler->display->display_options['menu']['type'] = 'normal';
@@ -1152,7 +1155,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['field_fy_tid']['table'] = 'field_data_field_fy';
   $handler->display->display_options['filters']['field_fy_tid']['field'] = 'field_fy_tid';
   $handler->display->display_options['filters']['field_fy_tid']['value'] = array(
-    158 => '158',
+    159 => '159',
   );
   $handler->display->display_options['filters']['field_fy_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_fy_tid']['expose']['operator_id'] = 'field_fy_tid_op';
@@ -2021,7 +2024,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['filters']['field_fy_tid']['table'] = 'field_data_field_fy';
   $handler->display->display_options['filters']['field_fy_tid']['field'] = 'field_fy_tid';
   $handler->display->display_options['filters']['field_fy_tid']['value'] = array(
-    158 => '158',
+    159 => '159',
   );
   $handler->display->display_options['filters']['field_fy_tid']['group'] = 1;
   $handler->display->display_options['filters']['field_fy_tid']['exposed'] = TRUE;
