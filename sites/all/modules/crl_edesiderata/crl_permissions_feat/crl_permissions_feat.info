@@ -330,6 +330,7 @@ features[user_permission][] = view a resource_update message instance
 features[user_permission][] = view any entityform
 features[user_permission][] = view any message instance
 features[user_permission][] = view field_resource_reference
+features[user_permission][] = view mimemail user settings
 features[user_permission][] = view own entityform
 features[user_permission][] = view own field_resource_reference
 features[user_permission][] = view own unpublished content
