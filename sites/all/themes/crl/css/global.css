@@ -312,6 +312,7 @@ span.m-edes {
 }
 .field-label-inline .field-item {
   padding-left: 0.5em;
+  display: inline-block;
 }
 sup {
   vertical-align: super;
@@ -742,6 +743,9 @@ a#back-to-index i {
 }
 #node_resource_full_group_details .tablefield-wrapper td.col_0 {
   width: 40%;
+}
+.field-type-tablefield caption {
+  text-align: left;
 }
 img.from-provider-icon {
   float: right;
