@@ -229,7 +229,9 @@ function crl_permissions_feat_user_default_permissions() {
   // Exported permission: 'add JS snippets for google analytics'.
   $permissions['add JS snippets for google analytics'] = array(
     'name' => 'add JS snippets for google analytics',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'googleanalytics',
   );
 
@@ -928,7 +930,9 @@ function crl_permissions_feat_user_default_permissions() {
   // Exported permission: 'create a resource_suggested message instance'.
   $permissions['create a resource_suggested message instance'] = array(
     'name' => 'create a resource_suggested message instance',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'message_ui',
   );
 
@@ -1143,7 +1147,9 @@ function crl_permissions_feat_user_default_permissions() {
   // Exported permission: 'delete a resource_suggested message instance'.
   $permissions['delete a resource_suggested message instance'] = array(
     'name' => 'delete a resource_suggested message instance',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'message_ui',
   );
 
@@ -1512,7 +1518,9 @@ function crl_permissions_feat_user_default_permissions() {
   // Exported permission: 'edit a resource_suggested message instance'.
   $permissions['edit a resource_suggested message instance'] = array(
     'name' => 'edit a resource_suggested message instance',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'message_ui',
   );
 
@@ -2387,7 +2395,9 @@ function crl_permissions_feat_user_default_permissions() {
   // Exported permission: 'view a resource_suggested message instance'.
   $permissions['view a resource_suggested message instance'] = array(
     'name' => 'view a resource_suggested message instance',
-    'roles' => array(),
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
     'module' => 'message_ui',
   );
 
@@ -2431,6 +2441,15 @@ function crl_permissions_feat_user_default_permissions() {
       'editor power' => 'editor power',
     ),
     'module' => 'field_permissions',
+  );
+
+  // Exported permission: 'view mimemail user settings'.
+  $permissions['view mimemail user settings'] = array(
+    'name' => 'view mimemail user settings',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'mimemail',
   );
 
   // Exported permission: 'view own entityform'.
