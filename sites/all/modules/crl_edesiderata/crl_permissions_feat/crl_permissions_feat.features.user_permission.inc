@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * crl_permissions_feat.features.user_permission.inc
@@ -105,6 +106,15 @@ function crl_permissions_feat_user_default_permissions() {
       'editor power' => 'editor power',
     ),
     'module' => 'dashboard',
+  );
+
+  // Exported permission: 'access library reports'.
+  $permissions['access library reports'] = array(
+    'name' => 'access library reports',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'libraries',
   );
 
   // Exported permission: 'access mail logger'.
