@@ -3,6 +3,7 @@
 
 
 @import 'variables';
+@import 'variables-@{theme}';
 
 /* --------------------------------------------------------------------------
    Header Styles - General
@@ -149,13 +150,14 @@ body.page-node-edit, body.page-node-add, body.page-eform-submit {
 
 // Special styling for activity docs fieldgroup
 aside#activity-documents {
-  background-color: #eee;
+  border: 1px solid darken(@page-background-color, 15%);
+  border-radius: 3px;
+  background-color: @page-background-color;
   padding: 15px;
   padding-top: 0px;
   float: right;
-  margin: 0px 0px 10px 10px;
+  margin: 0px 0px 15px 15px;
   width: 40%;
-  border: 1px solid #ddd;
 }
 
 // Adjust alignment of active facet display

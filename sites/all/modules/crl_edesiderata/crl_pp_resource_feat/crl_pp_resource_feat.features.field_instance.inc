@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * crl_pp_resource_feat.features.field_instance.inc
@@ -1161,7 +1162,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     'bundle' => 'pp_resource',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Quoted or discounted price',
+    'description' => 'Quoted or discounted price rounded to the nearest dollar.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1627,7 +1628,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     'bundle' => 'pp_resource',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Enter the target price for purchase price in US Dollar($)',
+    'description' => 'Enter the target price for purchase price in US Dollars($) rounded to the nearest dollar.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -2659,7 +2660,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
     'bundle' => 'spp_resource',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Enter the target price for shared purchase in US Dollar($)',
+    'description' => 'Enter the target price for shared purchase in US Dollars($) rounded to the nearest dollar.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -2969,8 +2970,8 @@ function crl_pp_resource_feat_field_default_field_instances() {
   t('Enter the email address of the individual who nominated this resource. This will not be displayed in any public pages.');
   t('Enter the email of the individual who nominated this resource. This will not be displayed in any public pages.');
   t('Enter the name of the individual who nominated this resource. This will not be displayed in any public pages.');
-  t('Enter the target price for purchase price in US Dollar($)');
-  t('Enter the target price for shared purchase in US Dollar($)');
+  t('Enter the target price for purchase price in US Dollars($) rounded to the nearest dollar.');
+  t('Enter the target price for shared purchase in US Dollars($) rounded to the nearest dollar.');
   t('Exchange rate for Canadian Dollar (CAD) to US Dollar USD');
   t('Fiscal Year');
   t('Hold down ctrl/command while clicking to select multiple.');
@@ -2993,7 +2994,7 @@ function crl_pp_resource_feat_field_default_field_instances() {
   t('Publisher, Micropublisher, Vendor or Source');
   t('Purchase Proposal Comments Summary');
   t('Purchase Status');
-  t('Quoted or discounted price');
+  t('Quoted or discounted price rounded to the nearest dollar.');
   t('Reasons for Consideration');
   t('Related Purchase Proposal Title');
   t('Requesting Library');

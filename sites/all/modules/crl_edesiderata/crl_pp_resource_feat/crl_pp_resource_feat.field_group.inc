@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * crl_pp_resource_feat.field_group.inc
@@ -640,7 +641,7 @@ function crl_pp_resource_feat_field_group_info() {
       'instance_settings' => array(
         'id' => '',
         'classes' => ' group-vote-results field-group-htab',
-        'description' => '',
+        'description' => '<strong>The details in this tab are only visible to CRL staff</strong>',
       ),
       'formatter' => 'closed',
     ),
@@ -669,7 +670,7 @@ function crl_pp_resource_feat_field_group_info() {
       'instance_settings' => array(
         'id' => '',
         'classes' => ' group-vote-results field-group-htab',
-        'description' => '',
+        'description' => '<strong>The details in this tab are only visible to CRL staff</strong>',
       ),
       'formatter' => 'closed',
     ),
