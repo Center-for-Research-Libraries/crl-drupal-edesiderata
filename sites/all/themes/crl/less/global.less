@@ -699,6 +699,12 @@ img.from-provider-icon {
     text-decoration: none !important;
   }
 }
+.view-content table.views-table caption {
+  text-align: left;
+  //font-weight: bold;
+  font-size: larger;
+  margin-top: 20px;
+}
 
 
 /* --------------------------------------------------------------------------
@@ -1692,6 +1698,13 @@ fieldset#edit-uniqueness {
 }
 #edit-uniqueness-type {
   clear: both;
+}
+
+// Special styling for activity docs fieldgroup
+aside#activity-documents {
+  border-bottom: 1px solid darken(@page-background-color, 15%);
+  padding-bottom: 15px;
+  word-wrap: break-word;
 }
 
 @import 'local-@{theme}';

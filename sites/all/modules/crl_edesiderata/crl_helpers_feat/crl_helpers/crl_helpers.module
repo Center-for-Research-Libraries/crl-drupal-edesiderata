@@ -95,8 +95,8 @@ function crl_helpers_theme_registry_alter(&$theme_registry) {
 function crl_helpers_permission() {
   return array(
     'crl access member features' => array(
-      'title' => 'CRL access member features',
-      'description' => 'Access member-specific features that are defined in local modules',
+      'title' => t('CRL access member features'),
+      'description' => t('Access member-specific features that are defined in local modules'),
     )
   );
 }

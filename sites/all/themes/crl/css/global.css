@@ -820,6 +820,11 @@ img.from-provider-icon {
 .view-content h3 a {
   text-decoration: none !important;
 }
+.view-content table.views-table caption {
+  text-align: left;
+  font-size: larger;
+  margin-top: 20px;
+}
 /* --------------------------------------------------------------------------
    Dashboard - General
    -------------------------------------------------------------------------- */
@@ -1754,6 +1759,11 @@ fieldset#edit-uniqueness legend {
 }
 #edit-uniqueness-type {
   clear: both;
+}
+aside#activity-documents {
+  border-bottom: 1px solid #d9d9d0;
+  padding-bottom: 15px;
+  word-wrap: break-word;
 }
 #page {
   background: url("../images/body-bg.png?v=6") top right repeat-y;
