@@ -1653,7 +1653,7 @@ body.page-node-add-resource #edit-field-provider,
 .form-item input[type="checkbox"].error,
 .form-item input[type="radio"].error {
   outline: 2px solid red;
-  -moz-appearance: none;
+  border: none;
 }
 .horizontal-tabs :focus {
   outline: none;
