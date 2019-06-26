@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * crl_provider_feat.features.field_instance.inc
@@ -433,6 +434,7 @@ function crl_provider_feat_field_default_field_instances() {
           'delete' => '',
           'description' => 1,
           'edit' => '',
+          'translate' => 'Translate',
           'view_mode' => 'full',
         ),
         'type' => 'field_collection_view',
