@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * crl_resource_dashboard_feat.views_default.inc
@@ -169,7 +170,6 @@ function crl_resource_dashboard_feat_views_default_views() {
   $handler->display->display_options['filters']['crl_resource_master_update_timestamp']['table'] = 'search_api_index_title_search_index';
   $handler->display->display_options['filters']['crl_resource_master_update_timestamp']['field'] = 'crl_resource_master_update_timestamp';
   $handler->display->display_options['filters']['crl_resource_master_update_timestamp']['operator'] = '>=';
-  $handler->display->display_options['filters']['crl_resource_master_update_timestamp']['value'] = 'now - 30 days';
 
   /* Display: Reviews - Main */
   $handler = $view->new_display('block', 'Reviews - Main', 'block_1');
