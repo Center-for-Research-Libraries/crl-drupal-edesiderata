@@ -514,7 +514,7 @@ function crl_pp_resource_feat_views_pre_render(&$view) {
 function crl_pp_resource_feat_init() {
   // Implement some redirects and admin messages related to the fact that the PP
   // and SPP have moved to gCollections.
-  $gcol_domain = 'http://gcol-dev7.crl.edu/';
+  $gcol_domain = 'http://gcollections-staging.crl.edu/';
   $path = drupal_get_path_alias(current_path());
   if ($path == 'pp' || $path == 'spp' || strpos($path, 'pp/') === 0 || strpos($path, 'spp/') === 0) {
     drupal_goto($gcol_domain . $path);
