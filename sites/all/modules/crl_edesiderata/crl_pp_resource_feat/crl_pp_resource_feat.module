@@ -506,3 +506,28 @@ function crl_pp_resource_feat_views_pre_render(&$view) {
   }
 
 }
+
+
+/*
+ * Implements hook_init().
+ */
+function crl_pp_resource_feat_init() {
+  // Implement some redirects and admin messages related to the fact that the PP
+  // and SPP have moved to gCollections.
+  $gcol_domain = 'http://gcollections.crl.edu/';
+  $path = drupal_get_path_alias(current_path());
+  // General public pages all redirect.
+  if ($path == 'pp' || $path == 'spp' || strpos($path, 'pp/') === 0 || strpos($path, 'spp/') === 0) {
+    drupal_goto($gcol_domain . $path);
+  }
+  // Admin pages redirect too, but not for admins. Admins shold still be able
+  // to see old data with a warning message.
+  if (strpos($path, 'admin/pp') === 0 || strpos($path, 'admin/spp') === 0) {
+    if (user_has_role(3)) {
+      drupal_set_message('Offical PP and SPP resources and statistics have been migrated to ' . l('gCollections', $gcol_domain . 'admin/pp') . '. The information shown here is only complete through FY19 and is available as a temporary reference.', 'warning', FALSE);
+    }
+    else {
+      drupal_goto($gcol_domain . $path);
+    }
+  }
+}
