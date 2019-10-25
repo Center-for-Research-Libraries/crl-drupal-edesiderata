@@ -1462,6 +1462,16 @@ function crl_permissions_feat_user_default_permissions() {
     'module' => 'taxonomy',
   );
 
+  // Exported permission: 'diff view changes'.
+  $permissions['diff view changes'] = array(
+    'name' => 'diff view changes',
+    'roles' => array(
+      'anonymous user' => 'anonymous user',
+      'authenticated user' => 'authenticated user',
+    ),
+    'module' => 'diff',
+  );
+
   // Exported permission: 'display drupal links'.
   $permissions['display drupal links'] = array(
     'name' => 'display drupal links',
@@ -2438,6 +2448,89 @@ function crl_permissions_feat_user_default_permissions() {
       'administrator' => 'administrator',
     ),
     'module' => 'message_ui',
+  );
+
+  // Exported permission: 'view any unpublished activity content'.
+  $permissions['view any unpublished activity content'] = array(
+    'name' => 'view any unpublished activity content',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'view_unpublished',
+  );
+
+  // Exported permission: 'view any unpublished content'.
+  $permissions['view any unpublished content'] = array(
+    'name' => 'view any unpublished content',
+    'roles' => array(
+      'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
+      'editor power' => 'editor power',
+    ),
+    'module' => 'view_unpublished',
+  );
+
+  // Exported permission: 'view any unpublished institution content'.
+  $permissions['view any unpublished institution content'] = array(
+    'name' => 'view any unpublished institution content',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'view_unpublished',
+  );
+
+  // Exported permission: 'view any unpublished page content'.
+  $permissions['view any unpublished page content'] = array(
+    'name' => 'view any unpublished page content',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'view_unpublished',
+  );
+
+  // Exported permission: 'view any unpublished pp_resource content'.
+  $permissions['view any unpublished pp_resource content'] = array(
+    'name' => 'view any unpublished pp_resource content',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'view_unpublished',
+  );
+
+  // Exported permission: 'view any unpublished provider content'.
+  $permissions['view any unpublished provider content'] = array(
+    'name' => 'view any unpublished provider content',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'view_unpublished',
+  );
+
+  // Exported permission: 'view any unpublished resource content'.
+  $permissions['view any unpublished resource content'] = array(
+    'name' => 'view any unpublished resource content',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'view_unpublished',
+  );
+
+  // Exported permission: 'view any unpublished spp_resource content'.
+  $permissions['view any unpublished spp_resource content'] = array(
+    'name' => 'view any unpublished spp_resource content',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'view_unpublished',
+  );
+
+  // Exported permission: 'view any unpublished webform content'.
+  $permissions['view any unpublished webform content'] = array(
+    'name' => 'view any unpublished webform content',
+    'roles' => array(
+      'administrator' => 'administrator',
+    ),
+    'module' => 'view_unpublished',
   );
 
   // Exported permission: 'view field_resource_reference'.
