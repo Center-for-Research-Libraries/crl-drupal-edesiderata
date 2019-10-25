@@ -262,6 +262,15 @@ function crl_resource_entity_property_info_alter(&$info) {
     'description' => t("Get the average of votes across all fivestar dimentions that apply to resoruces."),
     'getter callback' => 'crl_resource_get_vote_average',
   );
+  // Get the offer days remaining for a resource that has backreferenced
+  // activity with soon-to-be expiration.
+  $properties['crl_resource_expiration_countdown'] = array(
+    'label' => t("CRL Resource Expiration Countdown"),
+    'type' => 'integer',
+    'entity views field' => TRUE,
+    'description' => t("Get the offer days remaining for a resource that has backreferenced activity with soon-to-be expiration."),
+    'getter callback' => 'crl_resource_get_expiration_countdown',
+  );
 }
 
 
