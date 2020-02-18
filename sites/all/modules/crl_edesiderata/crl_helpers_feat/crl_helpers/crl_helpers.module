@@ -476,7 +476,7 @@ function crl_helpers_get_glossary_value($entity, array $options, $name, $type, $
 
 
 /**
- * Properties getter callback: get interest count positive.
+ * Properties getter callback: get interest count positive from last year.
  *
  * NOTE: requires extra queries (does not just use loaded entity data). So it's
  * probably not a good idea to fetch this property over and over on one page.
@@ -489,7 +489,7 @@ function crl_helpers_get_interest_count_up($entity, array $options, $name, $type
 
 
 /**
- * Properties getter callback: get interest count negative.
+ * Properties getter callback: get interest count negative from last year.
  *
  * NOTE: requires extra queries (does not just use loaded entity data). So it's
  * probably not a good idea to fetch this property over and over on one page.
@@ -502,7 +502,7 @@ function crl_helpers_get_interest_count_down($entity, array $options, $name, $ty
 
 
 /**
- * Helper to get an interest count based on an option key.
+ * Helper to get an interest count from last year based on an option key.
  */
 function crl_helpers_get_interest_count($entity, $option) {
   if (empty($entity->type)) {
@@ -511,16 +511,18 @@ function crl_helpers_get_interest_count($entity, $option) {
   // Get the vote data for the interest widget. We use a static cache as this
   // query really only needs to happen once per entity.
   static $results = array();
-  if (function_exists('votingapi_select_results') && empty($results[$entity->nid])) {
+  if (function_exists('votingapi_select_votes') && empty($results[$entity->nid . '-' . $option])) {
     $criteria['entity_id'] = $entity->nid;
     $criteria['tag'] = $entity->type . '_interest';
     $criteria['value_type'] = 'option';
-    $results[$entity->nid] = votingapi_select_results($criteria);
-  }
-  foreach ($results[$entity->nid] as $result) {
-    if (!empty($result['function']) && $result['function'] == 'option-' . $option && !empty($result['value'])) {
-      return (int)$result['value'];
-    }
+    $criteria['value'] = $option;
+    $criteria['timestamp'] = time() - 60 * 60 * 24 * 365;
+    // Note that votingapi_select_results() may be a more efficient call to get
+    // vote counts as it queries a table that's already aggregated. Unfortunatly
+    // that aggregate data cannot be filterd by vote timestamps, so we have to
+    // query the full vote data set with votingapi_select_votes().
+    $results[$entity->nid . '-' . $option] = count(votingapi_select_votes($criteria));
+    return $results[$entity->nid . '-' . $option];
   }
   return 0;
 }

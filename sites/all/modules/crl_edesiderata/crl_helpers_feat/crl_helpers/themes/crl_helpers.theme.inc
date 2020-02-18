@@ -213,10 +213,10 @@ function theme_crl_helpers_summary($vars) {
       $highlights['two'][] = '<span class="big-num">' . $vars['vote_average'] . '</span> ' . t('Average Rating');
     }
     if (!empty($vars['interest_count_up'])) {
-      $highlights['two'][] = '<span class="big-num">' . $vars['interest_count_up'] . '</span><i title="Thumbs Up" alt="Thumbs Up" class="icon-large icon-thumbs-up-alt"></i>';
+      $highlights['two'][] = '<span class="big-num">' . $vars['interest_count_up'] . '</span><i title="Positive Interest in Last Year" alt="Thumbs Up" class="icon-large icon-thumbs-up-alt"></i>';
     }
     if (!empty($vars['interest_count_down'])) {
-      $highlights['two'][] = '<span class="big-num">' . $vars['interest_count_down'] . '</span><i title="Thumbs Down" alt="Thumbs Down" class="icon-large icon-thumbs-down-alt"></i>';
+      $highlights['two'][] = '<span class="big-num">' . $vars['interest_count_down'] . '</span><i title="Negative Interest in Last Year" alt="Thumbs Down" class="icon-large icon-thumbs-down-alt"></i>';
     }
     foreach($highlights as $row_key => $row) {
       if ($row_key == 'one') {
