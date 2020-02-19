@@ -45,13 +45,6 @@ function comment_goodness_form_node_type_form_alter(&$form, $form_state) {
                        2 => t('Newer first')),
     '#default_value' => variable_get('comment_default_sorting_' . $form['#node_type']->type, comment_goodness_OLDER_FIRST),
   );
-  $form['comment']['comment_reply_default_sorting'] = array(
-    '#title' => t('Sort order for replies'),
-    '#type' => 'select',
-    '#options' => array(1 => t('Older first'),
-                       2 => t('Newer first')),
-    '#default_value' => variable_get('comment_reply_default_sorting_' . $form['#node_type']->type, comment_goodness_OLDER_FIRST),
-  );
   $form['comment']['comment_form_placement'] = array(
     '#title' => t('Comment form location'),
     '#type' => 'select',
@@ -129,24 +122,11 @@ function comment_goodness_node_type_form_submit($form, &$form_state) {
  * 1.1
  * 1.1.1
  *
- *
- * REPLY ordering similar to Facebook.
- * 2
- * 2.0
- * 2.1
- * 2.1.0
- * 2.1.1
- * 1
- *
  */
 function comment_goodness_query_comment_filter_alter(QueryAlterableInterface $query){
   if (($node = $query->getMetaData('node')) && (get_class($query) == 'PagerDefault')) {
     // Get the configured default sort ordering for this node type.
     $sort = variable_get('comment_default_sorting_' . $node->type, comment_goodness_OLDER_FIRST);
-
-    // Get the configured default reply sort ordering for this node type.
-    $reply_sort = variable_get('comment_reply_default_sorting_' . $node->type, comment_goodness_OLDER_FIRST);
-
     // The default ordering is ASC (older on top). If the configured sorting is
     // newer on top, change the ordering to DESC.
     if ($sort == comment_goodness_NEWER_FIRST) {
@@ -157,18 +137,8 @@ function comment_goodness_query_comment_filter_alter(QueryAlterableInterface $qu
         // Get rid of the expressions that prepare the threads for ASC ordering.
         unset($expressions['torder']);
         unset($orderby['torder']);
-
-        // Sorting for replies to comments
-        if ($reply_sort == comment_goodness_OLDER_FIRST) {
-          $query->addExpression('SUBSTRING(c.thread, 1, 2)', 'corder');
-          $query->orderBy('corder', 'DESC');
-          $query->addExpression('SUBSTRING(c.thread, 1, (LENGTH(c.thread) - 1))', 'rorder');
-          $query->orderBy('rorder', 'ASC');
-        }
         // Simply order by the thread field.
-        else {
-          $orderby['c.thread'] = 'DESC';
-        }
+        $orderby['c.thread'] = 'DESC';
       }
       // Sorting for flat comments.
       else {

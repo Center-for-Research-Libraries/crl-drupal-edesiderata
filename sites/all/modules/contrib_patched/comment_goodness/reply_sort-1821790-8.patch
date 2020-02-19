@@ -1,15 +1,5 @@
-From ab3f2ec510ac5277f7f7f009ec76d8b991327cd9 Mon Sep 17 00:00:00 2001
-From: Chris Smith <chris.smith@opin.ca>
-Date: Sat, 3 Nov 2012 15:10:23 -0400
-Subject: [PATCH] Added a new administration control for setting the order of
- the comment reply.
-
----
- comment_goodness.module | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
-
 diff --git a/comment_goodness.module b/comment_goodness.module
-index 73af4ba..cf339d7 100644
+index e7ddcd1..ff2293b 100644
 --- a/comment_goodness.module
 +++ b/comment_goodness.module
 @@ -45,6 +45,13 @@ function comment_goodness_form_node_type_form_alter(&$form, $form_state) {
@@ -26,12 +16,12 @@ index 73af4ba..cf339d7 100644
    $form['comment']['comment_form_placement'] = array(
      '#title' => t('Comment form location'),
      '#type' => 'select',
-@@ -122,6 +129,15 @@ function comment_goodness_node_type_form_submit($form, &$form_state) {
+@@ -123,11 +130,24 @@ function comment_goodness_node_type_form_submit($form, &$form_state) {
   * 1.1
   * 1.1.1
   *
 + *
-+ * REPLY ordering similar to Facbeook.
++ * REPLY ordering similar to Facebook.
 + * 2
 + * 2.0
 + * 2.1
@@ -42,26 +32,32 @@ index 73af4ba..cf339d7 100644
   */
  function comment_goodness_query_comment_filter_alter(QueryAlterableInterface $query){
    if (($node = $query->getMetaData('node')) && (get_class($query) == 'PagerDefault')) {
-@@ -137,8 +153,17 @@ function comment_goodness_query_comment_filter_alter(QueryAlterableInterface $qu
+     // Get the configured default sort ordering for this node type.
+     $sort = variable_get('comment_default_sorting_' . $node->type, comment_goodness_OLDER_FIRST);
++
++    // Get the configured default reply sort ordering for this node type.
++    $reply_sort = variable_get('comment_reply_default_sorting_' . $node->type, comment_goodness_OLDER_FIRST);
++
+     // The default ordering is ASC (older on top). If the configured sorting is
+     // newer on top, change the ordering to DESC.
+     if ($sort == comment_goodness_NEWER_FIRST) {
+@@ -138,8 +158,18 @@ function comment_goodness_query_comment_filter_alter(QueryAlterableInterface $qu
          // Get rid of the expressions that prepare the threads for ASC ordering.
          unset($expressions['torder']);
          unset($orderby['torder']);
--        // Simply order by the thread field.
--        $orderby['c.thread'] = 'DESC';
-+		if ($reply_sort == comment_goodness_NEWER_FIRST) {
-+          // My addition for the reply commenting order stuff.
-+	      $query->addExpression('SUBSTRING(c.thread, 1, 2)', 'corder');
-+	      $query->orderBy('corder', 'DESC');
-+	      $query->addExpression('SUBSTRING(c.thread, 1, (LENGTH(c.thread) - 1))', 'rorder');
-+	      $query->orderBy('rorder', 'ASC'); 
++
++        // Sorting for replies to comments
++        if ($reply_sort == comment_goodness_OLDER_FIRST) {
++          $query->addExpression('SUBSTRING(c.thread, 1, 2)', 'corder');
++          $query->orderBy('corder', 'DESC');
++          $query->addExpression('SUBSTRING(c.thread, 1, (LENGTH(c.thread) - 1))', 'rorder');
++          $query->orderBy('rorder', 'ASC');
 +        }
-+		// Simply order by the thread field.
-+		else {
+         // Simply order by the thread field.
+-        $orderby['c.thread'] = 'DESC';
++        else {
 +          $orderby['c.thread'] = 'DESC';
 +        }
        }
        // Sorting for flat comments.
        else {
--- 
-1.7.11.1
-
