@@ -35,6 +35,13 @@ function crl_provider_feat_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'comment_default_sorting_provider';
+  $strongarm->value = '2';
+  $export['comment_default_sorting_provider'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'comment_form_location_provider';
   $strongarm->value = 1;
   $export['comment_form_location_provider'] = $strongarm;
@@ -52,6 +59,13 @@ function crl_provider_feat_strongarm() {
   $strongarm->name = 'comment_provider';
   $strongarm->value = '2';
   $export['comment_provider'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'comment_reply_default_sorting_provider';
+  $strongarm->value = '1';
+  $export['comment_reply_default_sorting_provider'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */

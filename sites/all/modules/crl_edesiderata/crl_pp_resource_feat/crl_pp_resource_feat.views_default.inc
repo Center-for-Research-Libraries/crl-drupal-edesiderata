@@ -376,7 +376,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_related']['settings'] = array(
     'link' => 1,
   );
-  /* Field: Content: Published */
+  /* Field: Content: Published status */
   $handler->display->display_options['fields']['status']['id'] = 'status';
   $handler->display->display_options['fields']['status']['table'] = 'node';
   $handler->display->display_options['fields']['status']['field'] = 'status';
@@ -470,13 +470,13 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_publisher']['id'] = 'field_pp_publisher';
   $handler->display->display_options['fields']['field_pp_publisher']['table'] = 'field_data_field_pp_publisher';
   $handler->display->display_options['fields']['field_pp_publisher']['field'] = 'field_pp_publisher';
-  /* Field: Field: Vendor Contact */
+  /* Field: Field: Provider Contact */
   $handler->display->display_options['fields']['field_contacts']['id'] = 'field_contacts';
   $handler->display->display_options['fields']['field_contacts']['table'] = 'field_data_field_contacts';
   $handler->display->display_options['fields']['field_contacts']['field'] = 'field_contacts';
   $handler->display->display_options['fields']['field_contacts']['type'] = 'text_plain';
   $handler->display->display_options['fields']['field_contacts']['delta_offset'] = '0';
-  /* Field: Field: Provider URL */
+  /* Field: Field: Website */
   $handler->display->display_options['fields']['field_link']['id'] = 'field_link';
   $handler->display->display_options['fields']['field_link']['table'] = 'field_data_field_link';
   $handler->display->display_options['fields']['field_link']['field'] = 'field_link';
@@ -495,7 +495,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['field_pp_subject_area']['table'] = 'field_data_field_pp_subject_area';
   $handler->display->display_options['fields']['field_pp_subject_area']['field'] = 'field_pp_subject_area';
   $handler->display->display_options['fields']['field_pp_subject_area']['delta_offset'] = '0';
-  /* Field: Entityform Submission: Background Information */
+  /* Field: Entityform Submission: Description */
   $handler->display->display_options['fields']['field_further_description']['id'] = 'field_further_description';
   $handler->display->display_options['fields']['field_further_description']['table'] = 'field_data_field_further_description';
   $handler->display->display_options['fields']['field_further_description']['field'] = 'field_further_description';
@@ -621,7 +621,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -848,7 +848,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['sorts']['field_title_sort_value']['id'] = 'field_title_sort_value';
   $handler->display->display_options['sorts']['field_title_sort_value']['table'] = 'field_data_field_title_sort';
   $handler->display->display_options['sorts']['field_title_sort_value']['field'] = 'field_title_sort_value';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -958,7 +958,7 @@ function crl_pp_resource_feat_views_default_views() {
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -2999,7 +2999,7 @@ Note that the results below are aggregated by both institution and submitter. Th
   $handler->display->display_options['fields']['timestamp']['date_format'] = 'short';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -3219,7 +3219,7 @@ Note that the results below are aggregated by both institution and submitter. Th
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -3400,7 +3400,7 @@ Note that the results below are aggregated by both institution and submitter. Th
   $handler->display->display_options['fields']['timestamp']['date_format'] = 'short';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: Content: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
