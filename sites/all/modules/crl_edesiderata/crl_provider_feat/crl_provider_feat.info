@@ -111,7 +111,6 @@ features[variable][] = comment_default_sorting_provider
 features[variable][] = comment_form_location_provider
 features[variable][] = comment_preview_provider
 features[variable][] = comment_provider
-features[variable][] = comment_reply_default_sorting_provider
 features[variable][] = comment_subject_field_provider
 features[variable][] = diff_enable_revisions_page_node_provider
 features[variable][] = diff_show_preview_changes_node_provider

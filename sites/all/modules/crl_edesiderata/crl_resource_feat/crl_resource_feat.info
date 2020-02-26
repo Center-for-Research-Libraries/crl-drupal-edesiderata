@@ -174,7 +174,6 @@ features[variable][] = comment_default_per_page_resource
 features[variable][] = comment_default_sorting_resource
 features[variable][] = comment_form_location_resource
 features[variable][] = comment_preview_resource
-features[variable][] = comment_reply_default_sorting_resource
 features[variable][] = comment_resource
 features[variable][] = comment_subject_field_resource
 features[variable][] = diff_enable_revisions_page_node_resource
