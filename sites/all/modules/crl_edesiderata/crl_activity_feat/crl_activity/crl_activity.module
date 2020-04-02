@@ -329,7 +329,6 @@ function crl_activity_status_calc_descriptions() {
     'trial_access_available' => t('Available for trial'),
     'past_license_offer' => t('Past offers'),
     'inactive_declined' => t('No longer under consideration by CRL'),
-    'crl_review_available' => t('Evaluation available by CRL and community'),
   );
 }
 
