@@ -537,7 +537,7 @@ function comment_goodness_preprocess_comment_wrapper(&$variables) {
 
       // Indicate that the comment form should be rendered above the comments
       // if the sort order is newest to oldest (ASC).
-      if ($sort == comment_goodness_NEWER_FIRST) {
+      if ($sort != comment_goodness_OLDER_FIRST) {
         $variables['comment_form_placement'] = 'top';
       }
       break;
@@ -637,7 +637,7 @@ function comment_goodness_get_display_ordinal($cid, $node_type) {
 
   // Get the configured default sort ordering for this node type.
   $sort = variable_get('comment_default_sorting_' . $node_type, comment_goodness_OLDER_FIRST);
-  $operation = ($sort == comment_goodness_NEWER_FIRST) ? '>' : '<';
+  $operation = ($sort == comment_goodness_OLDER_FIRST) ? '<' : '>';
   $mode = variable_get('comment_default_mode_' . $node_type, COMMENT_MODE_THREADED);
 
   if ($mode == COMMENT_MODE_FLAT) {
@@ -645,20 +645,33 @@ function comment_goodness_get_display_ordinal($cid, $node_type) {
     // unpredicatable behavior with timestamp, so we make the same assumption
     // here.
     $query->condition('c1.cid', $cid, $operation);
+    return $query->execute()->fetchField();
   }
   else {
-    // For threaded comments, the c.thread column is used for ordering.
-    if ($sort == comment_goodness_NEWER_FIRST) {
-      // For newer to older sorted comments, we look for how many comments have
-      // a higher thread value than the current comment.
-      $query->where('c1.thread ' . $operation . ' c2.thread');
+    // For threaded comments, the c.thread column is used for ordering. The
+    // exact handling depends on the sort option.
+    switch ($sort) {
+      case comment_goodness_NEWER_FIRST:
+        // For newer to older sorted comments, we look for how many comments
+        // have a higher thread value than the current comment.
+        $query->where('c1.thread ' . $operation . ' c2.thread');
+        return $query->execute()->fetchField();
+      case comment_goodness_OLDER_FIRST:
+        // For older to newer sorted comments we can use the vancode for
+        // comparison, but must remove the trailing slash.
+        // See comment_view_multiple().
+        $query->where('SUBSTRING(c1.thread, 1, (LENGTH(c1.thread) -1)) ' . $operation . ' SUBSTRING(c2.thread, 1, (LENGTH(c2.thread) -1))');
+        return $query->execute()->fetchField();
+      case comment_goodness_CONVERSATIONAL:
+        // Conversational comments are special.
+        $expressions = &$query->getExpressions();
+        unset($expressions['count']);
+          $query->addExpression("SUBSTRING_INDEX(c1.thread, '.', 1)", 'corder');
+          $query->addExpression("SUBSTRING(c1.thread, 1, (LENGTH(c1.thread) - 1))", 'rorder');
+          $query->orderBy('corder', 'DESC');
+          $query->orderBy('rorder', 'ASC');  
     }
-    else {
-      // We can use the vancode for comparison, but must remove the
-      // trailing slash.
-      // See comment_view_multiple().
-      $query->where('SUBSTRING(c1.thread, 1, (LENGTH(c1.thread) -1)) ' . $operation . ' SUBSTRING(c2.thread, 1, (LENGTH(c2.thread) -1))');
-    }
+    
   }
 
   return $query->execute()->fetchField();
