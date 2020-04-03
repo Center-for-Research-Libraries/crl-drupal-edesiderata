@@ -29,6 +29,7 @@ dependencies[] = viewfield
 dependencies[] = views
 dependencies[] = views_data_export
 features[box][] = resources_intro
+features[box][] = special_access
 features[context][] = resource_index
 features[context][] = resource_index_auth
 features[context][] = resource_page
