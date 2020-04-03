@@ -347,11 +347,16 @@ function crl_resource_get_status_backref($entity, array $options, $name, $type, 
       }
     }
   }
-  // Also see if this resource has a source status that indicates it's a
-  // full CRL review (that status value is always calculated dynamically).
+  // If this resource has a source status that indicates it's a full CRL review
+  // (that status value is always calculated dynamically).
   $source_status = isset($r_entity_wrapper->field_resource_source_status) ? $r_entity_wrapper->field_resource_source_status->value() : NULL;
   if ($source_status == 'crl_review' && !in_array('crl_review_available', $computed_status)) {
     $computed_status[] = 'crl_review_available';
+  }
+  // If this field has an access link it's a special access status.
+  $access_link = $r_entity_wrapper->field_link->url->value();
+  if (isset($access_link)) {
+    $computed_status[] = 'special_access';
   }
   return $computed_status;
 }

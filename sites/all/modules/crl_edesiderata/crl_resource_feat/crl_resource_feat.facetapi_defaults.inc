@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * crl_resource_feat.facetapi_defaults.inc

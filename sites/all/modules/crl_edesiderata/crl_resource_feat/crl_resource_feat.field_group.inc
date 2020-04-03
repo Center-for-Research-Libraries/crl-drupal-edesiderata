@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * crl_resource_feat.field_group.inc
@@ -511,7 +512,7 @@ function crl_resource_feat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Community Ratings',
-    'weight' => '2',
+    'weight' => '1',
     'children' => array(
       0 => 'field_platform_and_user_interfac',
       1 => 'field_content_scope_and_complete',
@@ -586,6 +587,7 @@ function crl_resource_feat_field_group_info() {
       2 => 'field_cost_and_price_structure',
       3 => 'field_resource_activity_history',
       4 => 'field_source_guid',
+      5 => 'field_link',
     ),
     'format_type' => 'tab',
     'format_settings' => array(

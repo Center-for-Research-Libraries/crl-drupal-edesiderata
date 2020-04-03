@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * crl_resource_feat.features.field_instance.inc
@@ -601,7 +602,7 @@ function crl_resource_feat_field_default_field_instances() {
       'module' => 'fivestar',
       'settings' => array(),
       'type' => 'exposed',
-      'weight' => 147,
+      'weight' => 148,
     ),
   );
 
@@ -656,7 +657,7 @@ function crl_resource_feat_field_default_field_instances() {
       'module' => 'fivestar',
       'settings' => array(),
       'type' => 'exposed',
-      'weight' => 145,
+      'weight' => 146,
     ),
   );
 
@@ -748,6 +749,69 @@ function crl_resource_feat_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-resource-field_link'.
+  $field_instances['node-resource-field_link'] = array(
+    'bundle' => 'resource',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
+      'embedded' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_link',
+    'label' => 'Access Link',
+    'required' => 0,
+    'settings' => array(
+      'absolute_url' => 1,
+      'attributes' => array(
+        'class' => '',
+        'configurable_class' => 0,
+        'configurable_title' => 0,
+        'rel' => '',
+        'target' => '_blank',
+        'title' => '',
+      ),
+      'display' => array(
+        'url_cutoff' => 80,
+      ),
+      'enable_tokens' => 1,
+      'rel_remove' => 'default',
+      'title' => 'none',
+      'title_allowed_values' => '',
+      'title_label_use_field_label' => 0,
+      'title_maxlength' => 128,
+      'title_value' => '',
+      'url' => 0,
+      'user_register_form' => FALSE,
+      'validate_url' => 1,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'link',
+      'settings' => array(),
+      'type' => 'link_field',
+      'weight' => 144,
+    ),
+  );
+
   // Exported field_instance: 'node-resource-field_platform_and_user_interfac'.
   $field_instances['node-resource-field_platform_and_user_interfac'] = array(
     'bundle' => 'resource',
@@ -799,7 +863,7 @@ function crl_resource_feat_field_default_field_instances() {
       'module' => 'fivestar',
       'settings' => array(),
       'type' => 'exposed',
-      'weight' => 146,
+      'weight' => 147,
     ),
   );
 
@@ -930,7 +994,7 @@ function crl_resource_feat_field_default_field_instances() {
       'module' => 'viewfield',
       'settings' => array(),
       'type' => 'viewfield_select',
-      'weight' => 144,
+      'weight' => 145,
     ),
   );
 
@@ -2545,6 +2609,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
   // Translatables
   // Included for use with string extractors like potx.
   t('Abstract');
+  t('Access Link');
   t('Action');
   t('Additional Reviews in Other Sources');
   t('Appendix Notes');
