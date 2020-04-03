@@ -1275,7 +1275,7 @@ div.fivestar-widget-static .star, div.fivestar-widget .star, div.fivestar-widget
   color: @status-color-yellow;
 }
 .icon-special_access {
-  color: red;
+  color: @status-color-bright-red;
 }
 // gCol-centric status
 .icon-flagged {
@@ -1708,6 +1708,20 @@ aside#activity-documents {
   border-bottom: 1px solid darken(@page-background-color, 15%);
   padding-bottom: 15px;
   word-wrap: break-word;
+}
+
+// Generic accent box for misc use.
+.accent-box {
+  background-color: #eaeaea;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px, rgba(0, 0, 0, 0.05) 0px 1px 4px 0px, rgba(0, 0, 0, 0.05) 0px 2px 8px 0px;
+  padding: 15px;
+  // Kill external link icons in this space
+  & span.ext {
+    background: none !important;
+    padding: 0px;
+  }
 }
 
 @import 'local-@{theme}';

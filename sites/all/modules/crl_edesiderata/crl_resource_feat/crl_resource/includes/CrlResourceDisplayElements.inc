@@ -81,7 +81,11 @@ class CrlResourceDisplayElements {
       // Also show the "embedded" view mode for the provider node itself. First
       // make sure we can view the actual provider node.
       if (entity_access('view', 'node', $provider)) {
-        $provider_build = node_view($provider, 'embedded');
+        // We are going to manipulate the provider node object directly while
+        // modifying the output to be built. We must do this on a clone of the
+        // node so as not to corrupt the static cache and other future
+        // references to the provider node.
+        $provider_build = node_view(clone $provider, 'embedded');
         // Drop the title from this view.
         $provider_build['#node']->title = '';
         $output['provider_embed'] = $provider_build;
@@ -207,9 +211,28 @@ class CrlResourceDisplayElements {
     }
     return $built;
   }
+  
+  /**
+   * Build custom field: pseudo_field_resource_alerts
+   */
+  protected function build_pseudo_field_resource_special_access() {
+    $access_link = isset($this->entity_wrapper->field_link) && !empty($this->entity_wrapper->field_link->value()) ? $this->entity_wrapper->field_link->url->value() : NULL;
+    $provider = isset($this->entity_wrapper->field_provider) ? $this->entity_wrapper->field_provider->value()->title : '';
+    $build = [];
+    if (!empty($access_link)) {
+      $label = t('Special Member Access Available');
+      $desc = t('@provider is offering CRL members free access to this database through <strong>June 30</strong>. Patrons must be using an on-campus IP address or proxy server for access.', array('@provider' => $provider));
+      $btn_text = t('Access this Resource');
+      $build = array(
+        '#prefix' => '<div class="accent-box">',
+        '#suffix' => '</div>',
+        '#theme' => 'crl_helpers_pseudo_field', '#output' => '<p>' . $desc . '</p><a href="' . $access_link . '" target="_blank" class="button">' . $btn_text . '</a><br/>', '#label' => '<i class="icon icon-special_access"></i>' . $label);
+    }
+    return $build;
+  }
 
   /**
-   * Helper to generate fixed "source" text based on resoruce status.
+   * Helper to generate fixed "source" text based on resource status.
    */
   protected function get_source_text() {
     $jisc_id = isset($this->entity_wrapper->field_jisc_id) ? $this->entity_wrapper->field_jisc_id->value() : NULL;

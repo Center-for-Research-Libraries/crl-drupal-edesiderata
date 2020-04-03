@@ -25,6 +25,7 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
   $vars['status_descriptions'] = array();
   $vars['days_left'] = NULL;
   $vars['extra'] = '';
+  $vars['access_link'] = '';
   // Search API will have bulk-loaded all of our entities already (based on the
   // main view index and any relationships defined there), so we can work with
   // entity data directly after loading it from the static cache.
@@ -63,6 +64,8 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
     if (module_exists('crl_mydes_feat') && user_access('crl access member features')) {
       $vars['extra'] = flag_create_link(CRL_WATCH_FLAG, $indexed_entity->nid);
     }
+    $vars['access_link'] = isset($r_entity_wrapper->field_link) && !empty($r_entity_wrapper->field_link->value()) ? $r_entity_wrapper->field_link->url->value() : NULL;
+    
   }
 }
 

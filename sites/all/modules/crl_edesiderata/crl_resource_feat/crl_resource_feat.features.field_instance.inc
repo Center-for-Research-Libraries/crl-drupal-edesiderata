@@ -512,7 +512,7 @@ function crl_resource_feat_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 921,
+        'weight' => 923,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -882,7 +882,7 @@ function crl_resource_feat_field_default_field_instances() {
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 922,
+        'weight' => 925,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2153,7 +2153,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_plain',
-        'weight' => 926,
+        'weight' => 929,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2199,7 +2199,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 928,
+        'weight' => 931,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2249,7 +2249,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
           'link' => 1,
         ),
         'type' => 'entityreference_label',
-        'weight' => 929,
+        'weight' => 932,
       ),
       'embedded' => array(
         'label' => 'above',
@@ -2341,7 +2341,7 @@ You may append the token <strong>[provider]</strong> after any line of text to a
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_plain',
-        'weight' => 925,
+        'weight' => 928,
       ),
       'embedded' => array(
         'label' => 'above',

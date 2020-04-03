@@ -1385,7 +1385,7 @@ div.fivestar-widget .cancel span.on {
   color: #ed9800;
 }
 .icon-special_access {
-  color: red;
+  color: #ff1f22;
 }
 .icon-flagged {
   color: #dc286c;
@@ -1771,6 +1771,17 @@ aside#activity-documents {
   border-bottom: 1px solid #d9d9d0;
   padding-bottom: 15px;
   word-wrap: break-word;
+}
+.accent-box {
+  background-color: #eaeaea;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px, rgba(0, 0, 0, 0.05) 0px 1px 4px 0px, rgba(0, 0, 0, 0.05) 0px 2px 8px 0px;
+  padding: 15px;
+}
+.accent-box span.ext {
+  background: none !important;
+  padding: 0px;
 }
 #page {
   background: url("../images/body-bg.png?v=6") top right repeat-y;

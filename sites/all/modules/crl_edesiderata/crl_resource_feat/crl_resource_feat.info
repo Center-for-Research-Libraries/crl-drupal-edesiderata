@@ -17,6 +17,7 @@ dependencies[] = field_group
 dependencies[] = file
 dependencies[] = fivestar
 dependencies[] = flag
+dependencies[] = link
 dependencies[] = list
 dependencies[] = mimemail
 dependencies[] = number

@@ -59,6 +59,11 @@ function crl_resource_field_extra_fields() {
         'description' => t('Show any resource alert details.'),
         'weight' => 910,
       ),
+      'pseudo_field_resource_special_access' => array(
+        'label' => t('Special access message'),
+        'description' => t('Show a message when an access link is available.'),
+        'weight' => 920,
+      ),
     ),
   );
   return $extra;
@@ -354,8 +359,8 @@ function crl_resource_get_status_backref($entity, array $options, $name, $type, 
     $computed_status[] = 'crl_review_available';
   }
   // If this field has an access link it's a special access status.
-  $access_link = $r_entity_wrapper->field_link->url->value();
-  if (isset($access_link)) {
+  $access_link = isset($r_entity_wrapper->field_link) && !empty($r_entity_wrapper->field_link->value()) ? $r_entity_wrapper->field_link->url->value() : NULL;
+  if (!empty($access_link)) {
     $computed_status[] = 'special_access';
   }
   return $computed_status;
@@ -612,7 +617,7 @@ function crl_resource_status_calc_property_oplist() {
 function crl_resource_status_calc_descriptions() {
   return crl_activity_status_calc_descriptions() + array(
     'crl_review_available' => t('Evaluation available by CRL and community'),
-    'special_access' => t('Special member-only access available during COVID-19'),
+    'special_access' => t('Member-only access available for a limited time'),
   );
 }
 

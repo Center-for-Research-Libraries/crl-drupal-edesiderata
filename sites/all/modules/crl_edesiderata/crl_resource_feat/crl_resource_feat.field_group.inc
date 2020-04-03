@@ -422,6 +422,7 @@ function crl_resource_feat_field_group_info() {
       7 => 'pseudo_field_resource_added',
       8 => 'pseudo_field_resource_updated',
       9 => 'pseudo_field_resource_alerts',
+      10 => 'pseudo_field_resource_special_access',
     ),
     'format_type' => 'htab',
     'format_settings' => array(

@@ -33,7 +33,11 @@
     print theme('crl_resource_countdown_alert_tag', array('url' => $resource_url, 'days_left' => $days_left, 'long' => TRUE));
   } ?>
 </h2>
-<?php print $summary ?>
+<?php print $summary;
+  if (!empty($access_link)) {
+    print '<p><strong>' . t('Special Member Access Available.') . ' <a href="' . $resource_url . '">' . t('View Full Details.') . '</a></strong></p>';
+  }
+?>
 <div class="teaser-details">
 <?php print $provider ?>
 <br />
