@@ -224,7 +224,7 @@ class CrlResourceDisplayElements {
       $desc = t('@provider is offering CRL members free access to this database through <strong>June 30</strong>. Patrons must be using an on-campus IP address or proxy server for access.', array('@provider' => $provider));
       $btn_text = t('Access this Resource');
       $build = array(
-        '#prefix' => '<div class="accent-box">',
+        '#prefix' => '<div class="accent-box accent-grey">',
         '#suffix' => '</div>',
         '#theme' => 'crl_helpers_pseudo_field', '#output' => '<p>' . $desc . '</p><a href="' . $access_link . '" target="_blank" class="button">' . $btn_text . '</a><br/>', '#label' => '<i class="icon icon-special_access"></i>' . $label);
     }
