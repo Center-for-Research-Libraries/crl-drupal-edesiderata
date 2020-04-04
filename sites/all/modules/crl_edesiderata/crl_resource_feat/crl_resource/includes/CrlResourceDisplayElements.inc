@@ -219,14 +219,20 @@ class CrlResourceDisplayElements {
     $access_link = isset($this->entity_wrapper->field_link) && !empty($this->entity_wrapper->field_link->value()) ? $this->entity_wrapper->field_link->url->value() : NULL;
     $provider = isset($this->entity_wrapper->field_provider) ? $this->entity_wrapper->field_provider->value()->title : '';
     $build = [];
-    if (!empty($access_link)) {
+    // Only show message if an access link is available or the resource is
+    // promoted.
+    if (!empty($access_link) || $this->entity->promote) {
       $label = t('Special Member Access Available');
       $desc = t('@provider is offering CRL members free access to this database through <strong>June 30</strong>. Patrons must be using an on-campus IP address or proxy server for access.', array('@provider' => $provider));
-      $btn_text = t('Access this Resource');
+      $btn = '';
+      // Only show button with access link.
+      if (!empty($access_link)) {
+        $btn = '<a href="' . $access_link . '" target="_blank" class="button">' . t('Access this Resource') . '</a>';
+      }
       $build = array(
         '#prefix' => '<div class="accent-box accent-grey">',
         '#suffix' => '</div>',
-        '#theme' => 'crl_helpers_pseudo_field', '#output' => '<p>' . $desc . '</p><a href="' . $access_link . '" target="_blank" class="button">' . $btn_text . '</a><br/>', '#label' => '<i class="icon icon-special_access"></i>' . $label);
+        '#theme' => 'crl_helpers_pseudo_field', '#output' => '<p>' . $desc . '</p>' . $btn, '#label' => '<i class="icon icon-special_access"></i>' . $label);
     }
     return $build;
   }

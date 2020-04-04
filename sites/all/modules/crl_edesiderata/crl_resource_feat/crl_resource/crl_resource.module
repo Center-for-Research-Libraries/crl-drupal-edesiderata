@@ -383,9 +383,9 @@ function crl_resource_get_status_backref($entity, array $options, $name, $type, 
   if ($source_status == 'crl_review' && !in_array('crl_review_available', $computed_status)) {
     $computed_status[] = 'crl_review_available';
   }
-  // If this field has an access link it's a special access status.
+  // If the field has an access link or is promoted it's special access status.
   $access_link = isset($r_entity_wrapper->field_link) && !empty($r_entity_wrapper->field_link->value()) ? $r_entity_wrapper->field_link->url->value() : NULL;
-  if (!empty($access_link)) {
+  if (!empty($access_link) || $r_entity_wrapper->value()->promote) {
     $computed_status[] = 'special_access';
   }
   return $computed_status;

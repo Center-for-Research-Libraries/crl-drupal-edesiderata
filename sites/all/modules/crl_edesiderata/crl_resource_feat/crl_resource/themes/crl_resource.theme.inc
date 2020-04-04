@@ -64,8 +64,10 @@ function crl_resource_preprocess_views_view_fields__resource_lists(&$vars) {
     if (module_exists('crl_mydes_feat') && user_access('crl access member features')) {
       $vars['extra'] = flag_create_link(CRL_WATCH_FLAG, $indexed_entity->nid);
     }
-    $vars['access_link'] = isset($r_entity_wrapper->field_link) && !empty($r_entity_wrapper->field_link->value()) ? $r_entity_wrapper->field_link->url->value() : NULL;
-    
+    // Pass through a flag if special access applies (access link is available
+    // or the resource is promoted).
+    $access_link = isset($r_entity_wrapper->field_link) && !empty($r_entity_wrapper->field_link->value()) ? $r_entity_wrapper->field_link->url->value() : NULL;
+    $vars['special_access'] = (!empty($access_link) || $r_entity_wrapper->value()->promote);
   }
 }
 

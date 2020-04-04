@@ -34,7 +34,7 @@
   } ?>
 </h2>
 <?php print $summary;
-  if (!empty($access_link)) {
+  if (!empty($special_access)) {
     print '<p><strong>' . t('Special Member Access Available.') . ' <a href="' . $resource_url . '">' . t('View Full Details.') . '</a></strong></p>';
   }
 ?>
