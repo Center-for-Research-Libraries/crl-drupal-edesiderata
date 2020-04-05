@@ -1563,7 +1563,8 @@ form.shared-vote-input-form .form-notes {
 .message-icon-small.resource_expires_soon,
 .message-icon-small.resource_status_update,
 .message-icon-small.resource_new_review,
-.message-icon-small.resource_suggested {
+.message-icon-small.resource_suggested,
+.message-icon-small.resource_special_access {
   margin-top: 0.2em;
   background-image: url("../images/sprites.png?v=6");
   background-size: 500px;
@@ -1578,7 +1579,8 @@ form.shared-vote-input-form .form-notes {
 .message-icon-small.resource_expires_soon:before,
 .message-icon-small.resource_status_update:before,
 .message-icon-small.resource_new_review:before,
-.message-icon-small.resource_suggested:before {
+.message-icon-small.resource_suggested:before,
+.message-icon-small.resource_special_access:before {
   content: '';
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
@@ -1586,7 +1588,8 @@ form.shared-vote-input-form .form-notes {
   .message-icon-small.resource_expires_soon,
   .message-icon-small.resource_status_update,
   .message-icon-small.resource_new_review,
-  .message-icon-small.resource_suggested {
+  .message-icon-small.resource_suggested,
+  .message-icon-small.resource_special_access {
     background-image: url("../images/sprites2x.png?v=6");
   }
 }

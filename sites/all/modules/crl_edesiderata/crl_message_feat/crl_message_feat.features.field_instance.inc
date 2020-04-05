@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * crl_message_feat.features.field_instance.inc
@@ -198,6 +199,7 @@ function crl_message_feat_field_default_field_instances() {
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
@@ -311,6 +313,65 @@ function crl_message_feat_field_default_field_instances() {
   // 'message-resource_new_review-field_resource_reference'.
   $field_instances['message-resource_new_review-field_resource_reference'] = array(
     'bundle' => 'resource_new_review',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
+      'message_notify_daily_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
+      'message_notify_email_body' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
+      'message_notify_email_subject' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
+      'message_notify_weekly_digest' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => 'message',
+    'field_name' => 'field_resource_reference',
+    'label' => 'Related resource',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'message-resource_special_access-field_resource_reference'.
+  $field_instances['message-resource_special_access-field_resource_reference'] = array(
+    'bundle' => 'resource_special_access',
     'default_value' => NULL,
     'deleted' => 0,
     'description' => '',

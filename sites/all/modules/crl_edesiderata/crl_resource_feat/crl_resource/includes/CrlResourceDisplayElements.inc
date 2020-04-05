@@ -223,7 +223,7 @@ class CrlResourceDisplayElements {
     // promoted.
     if (!empty($access_link) || $this->entity->promote) {
       $label = t('Special Member Access Available');
-      $desc = t('@provider is offering CRL members free access to this database through <strong>June 30</strong>. Patrons must be using an on-campus IP address or proxy server for access.', array('@provider' => $provider));
+      $desc = t('@provider is offering CRL members complementary access to this database through <strong>June 30</strong>. Patrons can access these resources through their institution’s EBSCO host platform using an on-campus IP address, proxy or OpenAthens.', array('@provider' => $provider));
       $btn = '';
       // Only show button with access link.
       if (!empty($access_link)) {
