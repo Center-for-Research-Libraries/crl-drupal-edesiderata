@@ -1274,6 +1274,9 @@ div.fivestar-widget-static .star, div.fivestar-widget .star, div.fivestar-widget
 .icon-inactive_declined {
   color: @status-color-yellow;
 }
+.icon-special_access {
+  color: @status-color-bright-red;
+}
 // gCol-centric status
 .icon-flagged {
   color: @status-color-pink;
@@ -1467,7 +1470,8 @@ form.shared-vote-input-form {
 .message-icon-small.resource_expires_soon,
 .message-icon-small.resource_status_update,
 .message-icon-small.resource_new_review,
-.message-icon-small.resource_suggested {
+.message-icon-small.resource_suggested,
+.message-icon-small.resource_special_access {
   &:before {
     content: '';
   }
@@ -1705,6 +1709,27 @@ aside#activity-documents {
   border-bottom: 1px solid darken(@page-background-color, 15%);
   padding-bottom: 15px;
   word-wrap: break-word;
+}
+
+// Generic accent box for misc use.
+.accent-box {
+
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px, rgba(0, 0, 0, 0.05) 0px 1px 4px 0px, rgba(0, 0, 0, 0.05) 0px 2px 8px 0px;
+  padding: 15px;
+  // Kill external link icons in this space
+  & span.ext {
+    background: none !important;
+    padding: 0px;
+  }
+  &.accent-grey {
+    background-color: #eaeaea;
+    border: 1px solid #ddd;
+  }
+  &.accent-yellow {
+    background-color: rgb(253, 247, 227);
+    border: 1px solid rgb(241, 229, 188);
+  }
 }
 
 @import 'local-@{theme}';
