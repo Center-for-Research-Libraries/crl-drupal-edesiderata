@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * crl_message_feat.features.inc
@@ -203,6 +204,33 @@ function crl_message_feat_default_message_type() {
           "value" : "CRL staff posted a new \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#crl-review\\u0027\\u003Ereview\\u003C\\/a\\u003E.",
           "format" : "literal",
           "safe_value" : "CRL staff posted a new \\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]#crl-review\\u0027\\u003Ereview\\u003C\\/a\\u003E."
+        }
+      ]
+    },
+    "rdf_mapping" : []
+  }');
+  $items['resource_special_access'] = entity_import('message_type', '{
+    "name" : "resource_special_access",
+    "description" : "New special access",
+    "argument_keys" : [],
+    "argument" : [],
+    "category" : "message_type",
+    "data" : {
+      "token options" : { "clear" : 0 },
+      "purge" : { "override" : 0, "enabled" : 0, "quota" : "", "days" : "" }
+    },
+    "language" : "",
+    "arguments" : null,
+    "message_text" : { "und" : [
+        {
+          "value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: Special member access was granted.",
+          "format" : "literal",
+          "safe_value" : "\\u003Ca href=\\u0027[message:field-resource-reference:url:absolute]\\u0027\\u003E[message:field-resource-reference:title]\\u003C\\/a\\u003E: Special member access was granted."
+        },
+        {
+          "value" : "Special member access was granted.",
+          "format" : "literal",
+          "safe_value" : "Special member access was granted."
         }
       ]
     },

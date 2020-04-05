@@ -161,6 +161,14 @@ if (($node->type == 'resource' || $node->type == 'activity') && $node->status) {
             $messages[] = array('type' => 'resource_new_review', 'fields' => array('field_resource_reference' => $r_entity_wrapper->value()));
             $update_set = TRUE;
           }
+          // Check if special member access was granted (access link added or
+          // change to promoted).
+          $access_link = isset($entity_wrapper->field_link) && !empty($entity_wrapper->field_link->value()) ? $entity_wrapper->field_link->url->value() : NULL;
+          $access_link_orig = isset($entity_wrapper_orig->field_link) && !empty($entity_wrapper_orig->field_link->value()) ? $entity_wrapper_orig->field_link->url->value() : NULL;
+          if ((!empty($access_link) && empty($access_link_orig)) || $entity_wrapper->value()->promote && !$entity_wrapper_orig->value()->promote) {
+            $messages[] = array('type' => 'resource_special_access', 'fields' => array('field_resource_reference' => $r_entity_wrapper->value()));
+            $update_set = TRUE;
+          }
           // Add other special-case resource update messages here.
           break;
       }

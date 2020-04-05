@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * crl_resource_feat.strongarm.inc
@@ -194,7 +195,7 @@ function crl_resource_feat_strongarm() {
         ),
         'pseudo_field_resource_source_summary' => array(
           'default' => array(
-            'weight' => '927',
+            'weight' => '930',
             'visible' => TRUE,
           ),
           'teaser' => array(
@@ -236,7 +237,7 @@ function crl_resource_feat_strongarm() {
         ),
         'pseudo_field_resource_added' => array(
           'default' => array(
-            'weight' => '923',
+            'weight' => '926',
             'visible' => TRUE,
           ),
           'teaser' => array(
@@ -250,7 +251,7 @@ function crl_resource_feat_strongarm() {
         ),
         'pseudo_field_resource_updated' => array(
           'default' => array(
-            'weight' => '924',
+            'weight' => '927',
             'visible' => TRUE,
           ),
           'teaser' => array(
@@ -264,7 +265,7 @@ function crl_resource_feat_strongarm() {
         ),
         'pseudo_field_resource_alerts' => array(
           'default' => array(
-            'weight' => '920',
+            'weight' => '922',
             'visible' => TRUE,
           ),
           'teaser' => array(
@@ -293,6 +294,12 @@ function crl_resource_feat_strongarm() {
         'pseudo_field_resource_improve_widget' => array(
           'default' => array(
             'weight' => '911',
+            'visible' => TRUE,
+          ),
+        ),
+        'pseudo_field_resource_special_access' => array(
+          'default' => array(
+            'weight' => '924',
             'visible' => TRUE,
           ),
         ),
