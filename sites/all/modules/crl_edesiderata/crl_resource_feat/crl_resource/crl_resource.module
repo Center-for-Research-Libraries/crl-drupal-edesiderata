@@ -59,6 +59,11 @@ function crl_resource_field_extra_fields() {
         'description' => t('Show any resource alert details.'),
         'weight' => 910,
       ),
+      'pseudo_field_resource_special_access' => array(
+        'label' => t('Special access message'),
+        'description' => t('Show a message when an access link is available.'),
+        'weight' => 920,
+      ),
     ),
   );
   return $extra;
@@ -98,18 +103,43 @@ function crl_resource_page_build(&$page) {
   if (!empty($query['f'][0])) {
     switch ($query['f'][0]) {
       case 'crl_resource_status_backref:crl_review_available':
-        drupal_set_title(t('Resources - CRL Reviews'));
+        drupal_set_title(t('Resources: CRL Reviews'));
         break;
       case 'crl_resource_status_backref:license_available':
-        drupal_set_title(t('Resources - CRL Offers'));
+        drupal_set_title(t('Resources: CRL Offers'));
         break;
       case 'crl_resource_status_backref:crl_desiderata':
-        drupal_set_title(t('Resources - CRL Pipeline'));
+        drupal_set_title(t('Resources: CRL Pipeline'));
+        break;
+      case 'crl_resource_status_backref:special_access':
+        drupal_set_title(t('Resources: Special Access Available'));
         break;
     }
   }
 }
 
+
+/**
+ * Implements hook_block_view_alter().
+ */
+function crl_resource_block_view_alter(&$data, $block) {
+  // Do some custom resource intro block alteractions when select filter
+  // combinations are active. Essentially override content of resources_intro
+  // box.
+  if ($block->module == 'boxes' && $block->delta == 'resources_intro') {
+    // Ensure alterations are not cached across pages.
+    $data['cache'] = DRUPAL_CACHE_PER_PAGE;
+    $query = drupal_get_query_parameters();
+    if (!empty($query['f'][0])) {
+      switch ($query['f'][0]) {
+        case 'crl_resource_status_backref:special_access':
+          // Load alternate box content.
+          $data = boxes_box_load('special_access')->render();
+          break;
+      }
+    }
+  }
+}
 
 /**
  * Implements hook_menu().
@@ -347,11 +377,16 @@ function crl_resource_get_status_backref($entity, array $options, $name, $type, 
       }
     }
   }
-  // Also see if this resource has a source status that indicates it's a
-  // full CRL review (that status value is always calculated dynamically).
+  // If this resource has a source status that indicates it's a full CRL review
+  // (that status value is always calculated dynamically).
   $source_status = isset($r_entity_wrapper->field_resource_source_status) ? $r_entity_wrapper->field_resource_source_status->value() : NULL;
   if ($source_status == 'crl_review' && !in_array('crl_review_available', $computed_status)) {
     $computed_status[] = 'crl_review_available';
+  }
+  // If the field has an access link or is promoted it's special access status.
+  $access_link = isset($r_entity_wrapper->field_link) && !empty($r_entity_wrapper->field_link->value()) ? $r_entity_wrapper->field_link->url->value() : NULL;
+  if (!empty($access_link) || $r_entity_wrapper->value()->promote) {
+    $computed_status[] = 'special_access';
   }
   return $computed_status;
 }
@@ -596,6 +631,7 @@ function crl_resource_get_wrappers($entity) {
 function crl_resource_status_calc_property_oplist() {
   return crl_activity_status_property_oplist() + array(
     'crl_review_available' => t('Reviewed by CRL'),
+    'special_access' => t('Special Access'),
   );
 }
 
@@ -604,7 +640,10 @@ function crl_resource_status_calc_property_oplist() {
  * Helper to centrally define description values for a CRL status.
  */
 function crl_resource_status_calc_descriptions() {
-  return crl_activity_status_calc_descriptions();
+  return crl_activity_status_calc_descriptions() + array(
+    'crl_review_available' => t('Evaluation available by CRL and community'),
+    'special_access' => t('Member-only access available for a limited time'),
+  );
 }
 
 

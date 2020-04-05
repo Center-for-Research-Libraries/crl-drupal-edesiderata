@@ -32,8 +32,8 @@ body.resources-dashboard #zone-postscript .region,
 }
 @font-face {
   font-family: 'fontello';
-  src: url('../font/fontello.eot?12465468');
-  src: url('../font/fontello.eot?12465468#iefix') format('embedded-opentype'), url('../font/fontello.woff2?12465468') format('woff2'), url('../font/fontello.woff?12465468') format('woff'), url('../font/fontello.ttf?12465468') format('truetype'), url('../font/fontello.svg?12465468#fontello') format('svg');
+  src: url('../font/fontello.eot?34168827');
+  src: url('../font/fontello.eot?34168827#iefix') format('embedded-opentype'), url('../font/fontello.woff2?34168827') format('woff2'), url('../font/fontello.woff?34168827') format('woff'), url('../font/fontello.ttf?34168827') format('truetype'), url('../font/fontello.svg?34168827#fontello') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -43,7 +43,7 @@ body.resources-dashboard #zone-postscript .region,
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontello';
-    src: url('../font/fontello.svg?12465468#fontello') format('svg');
+    src: url('../font/fontello.svg?34168827#fontello') format('svg');
   }
 }
 */
@@ -56,7 +56,7 @@ body.resources-dashboard #zone-postscript .region,
   display: inline-block;
   text-decoration: inherit;
   width: 1em;
-  margin-right: .2em;
+  margin-right: 0.2em;
   text-align: center;
   /* opacity: .8; */
   /* For safety - reset parent styles, that can break glyph codes*/
@@ -66,7 +66,7 @@ body.resources-dashboard #zone-postscript .region,
   line-height: 1em;
   /* Animation center compensation - margins should be symmetric */
   /* remove if not needed */
-  margin-left: .2em;
+  margin-left: 0.2em;
   /* you can be more comfortable with increased icons size */
   /* font-size: 120%; */
   /* Font smoothing. That was taken from TWBS */
@@ -155,6 +155,10 @@ body.resources-dashboard #zone-postscript .region,
   content: '\e812';
 }
 /* '' */
+.icon-special_access:before {
+  content: '\e813';
+}
+/* '' */
 .icon-rss:before {
   content: '\f09e';
 }
@@ -1380,6 +1384,9 @@ div.fivestar-widget .cancel span.on {
 .icon-inactive_declined {
   color: #ed9800;
 }
+.icon-special_access {
+  color: #ff1f22;
+}
 .icon-flagged {
   color: #dc286c;
 }
@@ -1556,7 +1563,8 @@ form.shared-vote-input-form .form-notes {
 .message-icon-small.resource_expires_soon,
 .message-icon-small.resource_status_update,
 .message-icon-small.resource_new_review,
-.message-icon-small.resource_suggested {
+.message-icon-small.resource_suggested,
+.message-icon-small.resource_special_access {
   margin-top: 0.2em;
   background-image: url("../images/sprites.png?v=6");
   background-size: 500px;
@@ -1571,7 +1579,8 @@ form.shared-vote-input-form .form-notes {
 .message-icon-small.resource_expires_soon:before,
 .message-icon-small.resource_status_update:before,
 .message-icon-small.resource_new_review:before,
-.message-icon-small.resource_suggested:before {
+.message-icon-small.resource_suggested:before,
+.message-icon-small.resource_special_access:before {
   content: '';
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
@@ -1579,7 +1588,8 @@ form.shared-vote-input-form .form-notes {
   .message-icon-small.resource_expires_soon,
   .message-icon-small.resource_status_update,
   .message-icon-small.resource_new_review,
-  .message-icon-small.resource_suggested {
+  .message-icon-small.resource_suggested,
+  .message-icon-small.resource_special_access {
     background-image: url("../images/sprites2x.png?v=6");
   }
 }
@@ -1765,6 +1775,23 @@ aside#activity-documents {
   padding-bottom: 15px;
   word-wrap: break-word;
 }
+.accent-box {
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px, rgba(0, 0, 0, 0.05) 0px 1px 4px 0px, rgba(0, 0, 0, 0.05) 0px 2px 8px 0px;
+  padding: 15px;
+}
+.accent-box span.ext {
+  background: none !important;
+  padding: 0px;
+}
+.accent-box.accent-grey {
+  background-color: #eaeaea;
+  border: 1px solid #ddd;
+}
+.accent-box.accent-yellow {
+  background-color: #fdf7e3;
+  border: 1px solid #f1e5bc;
+}
 #page {
   background: url("../images/body-bg.png?v=6") top right repeat-y;
 }
@@ -1795,3 +1822,4 @@ body.resources-dashboard #zone-postscript .region {
 body.resources-dashboard #zone-postscript .region:hover {
   outline-width: 2px;
 }
+/*# sourceMappingURL=global.css.map */

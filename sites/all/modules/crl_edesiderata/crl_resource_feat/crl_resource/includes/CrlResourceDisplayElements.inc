@@ -81,7 +81,11 @@ class CrlResourceDisplayElements {
       // Also show the "embedded" view mode for the provider node itself. First
       // make sure we can view the actual provider node.
       if (entity_access('view', 'node', $provider)) {
-        $provider_build = node_view($provider, 'embedded');
+        // We are going to manipulate the provider node object directly while
+        // modifying the output to be built. We must do this on a clone of the
+        // node so as not to corrupt the static cache and other future
+        // references to the provider node.
+        $provider_build = node_view(clone $provider, 'embedded');
         // Drop the title from this view.
         $provider_build['#node']->title = '';
         $output['provider_embed'] = $provider_build;
@@ -207,9 +211,34 @@ class CrlResourceDisplayElements {
     }
     return $built;
   }
+  
+  /**
+   * Build custom field: pseudo_field_resource_alerts
+   */
+  protected function build_pseudo_field_resource_special_access() {
+    $access_link = isset($this->entity_wrapper->field_link) && !empty($this->entity_wrapper->field_link->value()) ? $this->entity_wrapper->field_link->url->value() : NULL;
+    $provider = isset($this->entity_wrapper->field_provider) ? $this->entity_wrapper->field_provider->value()->title : '';
+    $build = [];
+    // Only show message if an access link is available or the resource is
+    // promoted.
+    if (!empty($access_link) || $this->entity->promote) {
+      $label = t('Special Member Access Available');
+      $desc = t('@provider is offering CRL members complementary access to this database through <strong>June 30</strong>. Patrons can access these resources through their institution’s EBSCO host platform using an on-campus IP address, proxy or OpenAthens.', array('@provider' => $provider));
+      $btn = '';
+      // Only show button with access link.
+      if (!empty($access_link)) {
+        $btn = '<a href="' . $access_link . '" target="_blank" class="button">' . t('Access this Resource') . '</a>';
+      }
+      $build = array(
+        '#prefix' => '<div class="accent-box accent-grey">',
+        '#suffix' => '</div>',
+        '#theme' => 'crl_helpers_pseudo_field', '#output' => '<p>' . $desc . '</p>' . $btn, '#label' => '<i class="icon icon-special_access"></i>' . $label);
+    }
+    return $build;
+  }
 
   /**
-   * Helper to generate fixed "source" text based on resoruce status.
+   * Helper to generate fixed "source" text based on resource status.
    */
   protected function get_source_text() {
     $jisc_id = isset($this->entity_wrapper->field_jisc_id) ? $this->entity_wrapper->field_jisc_id->value() : NULL;
