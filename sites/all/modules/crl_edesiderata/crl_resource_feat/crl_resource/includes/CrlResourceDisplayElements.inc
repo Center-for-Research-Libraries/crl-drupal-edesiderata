@@ -211,7 +211,7 @@ class CrlResourceDisplayElements {
     }
     return $built;
   }
-  
+
   /**
    * Build custom field: pseudo_field_resource_alerts
    */
@@ -223,7 +223,15 @@ class CrlResourceDisplayElements {
     // promoted.
     if (!empty($access_link) || $this->entity->promote) {
       $label = t('Special Member Access Available');
-      $desc = t('@provider is offering CRL members complementary access to this database through <strong>June 30</strong>. Patrons can access these resources through their institution’s EBSCO host platform using an on-campus IP address, proxy or OpenAthens.', array('@provider' => $provider));
+      $desc = t('@provider is offering CRL members complementary access to this database. Patrons can access this resource using an on-campus IP address or proxy service.', array('@provider' => $provider));
+      // The EBSCO message is special.
+      if (strpos(strtolower($provider), 'ebsco') === 0) {
+        $desc = t('@provider is offering CRL members complementary access to this database through <strong>June 30</strong>. Patrons can access this resource through their institution’s EBSCO host platform using an on-campus IP address, proxy or OpenAthens.', array('@provider' => $provider));
+      }
+      // The GALE message is special.
+      if (strpos(strtolower($provider), 'gale') === 0) {
+        $desc = t('@provider is offering CRL members complementary access to this database through <strong>June 30</strong>. Patrons can access this resource using the button below via an on-campus IP address or proxy service, or <a href="https://infotrac.gale.com/itweb/crlc19?db=GDC" target="_blank">browse all eligible Gale Primary Sources</a>.', array('@provider' => $provider));
+      }
       $btn = '';
       // Only show button with access link.
       if (!empty($access_link)) {

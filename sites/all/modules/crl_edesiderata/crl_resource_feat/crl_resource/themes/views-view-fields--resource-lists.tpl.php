@@ -33,16 +33,17 @@
     print theme('crl_resource_countdown_alert_tag', array('url' => $resource_url, 'days_left' => $days_left, 'long' => TRUE));
   } ?>
 </h2>
-<?php print $summary;
-  if (!empty($special_access)) {
-    print '<p><strong>' . t('Special Member Access Available.') . ' <a href="' . $resource_url . '">' . t('View Full Details.') . '</a></strong></p>';
-  }
-?>
+<?php print $summary; ?>
 <div class="teaser-details">
 <?php print $provider ?>
 <br />
 <?php print $updated ?>
 </div>
+<?php
+  if (!empty($special_access)) {
+    print '<br/><p><strong>' . t('Special Member Access Available.') . ' <a href="' . $resource_url . '">' . t('View Full Details.') . '</a></strong></p>';
+  }
+?>
 <?php
   if (!empty($status)) {
     print '<div class="view-teaser-status-icons">';
@@ -50,7 +51,7 @@
       print '<i class="icon icon-' . $stat . '" title="' . $status_options[$stat] . ': ' . $status_descriptions[$stat] . '"></i>';
     }
     print '</div>';
-  } 
+  }
   print $extra;
   ?>
 <div class="clearfix"></div>
