@@ -960,6 +960,7 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'create activity content',
     'roles' => array(
       'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
     ),
     'module' => 'node',
   );
@@ -989,6 +990,7 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'create institution content',
     'roles' => array(
       'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
     ),
     'module' => 'node',
   );
@@ -1025,6 +1027,7 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'create provider content',
     'roles' => array(
       'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
     ),
     'module' => 'node',
   );
@@ -1034,6 +1037,7 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'create resource content',
     'roles' => array(
       'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
     ),
     'module' => 'node',
   );
@@ -1186,7 +1190,6 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'delete any activity content',
     'roles' => array(
       'administrator' => 'administrator',
-      'editor power' => 'editor power',
     ),
     'module' => 'node',
   );
@@ -1234,7 +1237,6 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'delete any pp_resource content',
     'roles' => array(
       'administrator' => 'administrator',
-      'editor power' => 'editor power',
     ),
     'module' => 'node',
   );
@@ -1262,7 +1264,6 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'delete any spp_resource content',
     'roles' => array(
       'administrator' => 'administrator',
-      'editor power' => 'editor power',
     ),
     'module' => 'node',
   );
@@ -1281,7 +1282,6 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'delete own activity content',
     'roles' => array(
       'administrator' => 'administrator',
-      'editor power' => 'editor power',
     ),
     'module' => 'node',
   );
@@ -1320,7 +1320,6 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'delete own pp_resource content',
     'roles' => array(
       'administrator' => 'administrator',
-      'editor power' => 'editor power',
     ),
     'module' => 'node',
   );
@@ -1348,7 +1347,6 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'delete own spp_resource content',
     'roles' => array(
       'administrator' => 'administrator',
-      'editor power' => 'editor power',
     ),
     'module' => 'node',
   );
@@ -1567,7 +1565,7 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'edit any activity content',
     'roles' => array(
       'administrator' => 'administrator',
-      'editor power' => 'editor power',
+      'editor basic' => 'editor basic',
     ),
     'module' => 'node',
   );
@@ -1587,6 +1585,7 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'edit any institution content',
     'roles' => array(
       'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
     ),
     'module' => 'node',
   );
@@ -1614,7 +1613,6 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'edit any pp_resource content',
     'roles' => array(
       'administrator' => 'administrator',
-      'editor power' => 'editor power',
     ),
     'module' => 'node',
   );
@@ -1624,6 +1622,7 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'edit any provider content',
     'roles' => array(
       'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
     ),
     'module' => 'node',
   );
@@ -1633,6 +1632,7 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'edit any resource content',
     'roles' => array(
       'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
     ),
     'module' => 'node',
   );
@@ -1642,7 +1642,6 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'edit any spp_resource content',
     'roles' => array(
       'administrator' => 'administrator',
-      'editor power' => 'editor power',
     ),
     'module' => 'node',
   );
@@ -1691,7 +1690,7 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'edit own activity content',
     'roles' => array(
       'administrator' => 'administrator',
-      'editor power' => 'editor power',
+      'editor basic' => 'editor basic',
     ),
     'module' => 'node',
   );
@@ -1738,6 +1737,7 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'edit own institution content',
     'roles' => array(
       'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
     ),
     'module' => 'node',
   );
@@ -1756,7 +1756,6 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'edit own pp_resource content',
     'roles' => array(
       'administrator' => 'administrator',
-      'editor power' => 'editor power',
     ),
     'module' => 'node',
   );
@@ -1766,6 +1765,7 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'edit own provider content',
     'roles' => array(
       'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
     ),
     'module' => 'node',
   );
@@ -1775,6 +1775,7 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'edit own resource content',
     'roles' => array(
       'administrator' => 'administrator',
+      'editor basic' => 'editor basic',
     ),
     'module' => 'node',
   );
@@ -1784,7 +1785,6 @@ function crl_permissions_feat_user_default_permissions() {
     'name' => 'edit own spp_resource content',
     'roles' => array(
       'administrator' => 'administrator',
-      'editor power' => 'editor power',
     ),
     'module' => 'node',
   );
