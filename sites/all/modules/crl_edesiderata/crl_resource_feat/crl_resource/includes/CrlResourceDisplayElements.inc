@@ -232,6 +232,10 @@ class CrlResourceDisplayElements {
       if (strpos(strtolower($provider), 'gale') === 0) {
         $desc = t('@provider is offering CRL members complementary access to this database through <strong>June 30</strong>. Patrons can access this resource using the button below via an on-campus IP address or proxy service, or <a href="https://infotrac.gale.com/itweb/crlc19?db=GDC" target="_blank">browse all eligible Gale Primary Sources</a>.', array('@provider' => $provider));
       }
+      // The voxgov message is special.
+      if (strpos(strtolower($provider), 'voxgov') === 0) {
+        $desc = t('@provider is offering CRL members complementary access to this database through <strong>August 31, 2020</strong>. Patrons can access this resource using an on-campus IP address or proxy service.', array('@provider' => $provider));
+      }
       $btn = '';
       // Only show button with access link.
       if (!empty($access_link)) {
