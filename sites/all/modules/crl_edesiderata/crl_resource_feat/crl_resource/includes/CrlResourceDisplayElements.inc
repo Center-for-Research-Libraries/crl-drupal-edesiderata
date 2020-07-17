@@ -236,6 +236,10 @@ class CrlResourceDisplayElements {
       if (strpos(strtolower($provider), 'voxgov') === 0) {
         $desc = t('@provider is offering CRL members complementary access to this database through <strong>August 31, 2020</strong>. Patrons can access this resource using an on-campus IP address or proxy service.', array('@provider' => $provider));
       }
+      // The EVIS message is special.
+      if (strpos(strtolower($provider), 'east view information services') === 0) {
+        $desc = t('@provider is offering CRL members complementary access to this database through <strong>October 31, 2020</strong>. Patrons can access this resource using an on-campus IP address or proxy service.', array('@provider' => $provider));
+      }
       $btn = '';
       // Only show button with access link.
       if (!empty($access_link)) {
