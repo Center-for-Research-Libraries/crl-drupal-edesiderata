@@ -187,7 +187,7 @@ blockquote {
 
 #section-header {
   background-color: @header-background-color;
-  background-image: url("@{header-background-image-url}?v=@{image-version}");
+  // background-image: url("@{header-background-image-url}?v=@{image-version}");
   background-size: 538px;
   background-repeat: no-repeat;
   background-position: center top;
@@ -195,7 +195,7 @@ blockquote {
   position: relative;
   // Retina support.
   @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
-    background-image: url("@{header-background-image-url-retina}?v=@{image-version}");
+    // background-image: url("@{header-background-image-url-retina}?v=@{image-version}");
   }
   box-shadow: inset 0 -4px 15px -6px #333;
 }
@@ -212,20 +212,16 @@ blockquote {
   position: relative;
   width: 300px;
   margin: auto;
-  padding-top: 20px;
+  padding-top: 25px;
   a.logo {
-    background-image: url("@{sprite-image-url}?v=@{image-version}");
-    background-size: 500px;
-    height: 67px;
+    background-image: url("../images/crl_logo_full_light.svg?v=@{image-version}");
+    background-size: contain;
+    height: 100px;
     width: 300px;
     display: block;
     overflow: hidden;
     white-space: nowrap;
-    background-position: 0px -600px;
-    // Retina support.
-    @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
-      background-image: url("@{sprite-image-url-retina}?v=@{image-version}");
-    }
+    background-repeat: no-repeat;
   }
 }
 #header-typography {
