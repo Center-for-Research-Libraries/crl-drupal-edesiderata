@@ -268,7 +268,7 @@ label {
   padding-bottom: 3px;
 }
 #page a {
-  color: #493986;
+  color: #002056;
   transition: color 100ms ease-out;
 }
 #page a:hover {
@@ -358,8 +358,7 @@ blockquote {
    Header Styles - General
    -------------------------------------------------------------------------- */
 #section-header {
-  background-color: #474b6f;
-  background-image: url("../images/world-bg.png?v=6");
+  background-color: #002056;
   background-size: 538px;
   background-repeat: no-repeat;
   background-position: center top;
@@ -368,9 +367,6 @@ blockquote {
   box-shadow: inset 0 -4px 15px -6px #333;
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
-  #section-header {
-    background-image: url("../images/world-bg2x.png?v=6");
-  }
 }
 #zone-header {
   position: relative;
@@ -388,22 +384,17 @@ blockquote {
   position: relative;
   width: 300px;
   margin: auto;
-  padding-top: 20px;
+  padding-top: 25px;
 }
 #header-logo a.logo {
-  background-image: url("../images/sprites.png?v=6");
-  background-size: 500px;
-  height: 67px;
+  background-image: url("../images/crl_logo_full_light.svg?v=6");
+  background-size: contain;
+  height: 100px;
   width: 300px;
   display: block;
   overflow: hidden;
   white-space: nowrap;
-  background-position: 0px -600px;
-}
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-resolution: 240dpi) {
-  #header-logo a.logo {
-    background-image: url("../images/sprites2x.png?v=6");
-  }
+  background-repeat: no-repeat;
 }
 #header-typography {
   text-align: center;
@@ -454,7 +445,7 @@ header#section-header span.ext {
   display: block;
   height: 29px;
   padding: 5px 15px;
-  background-color: #1a1c35;
+  background-color: #004884;
   color: #fff;
   font-weight: bold;
   text-decoration: none !important;
@@ -474,7 +465,7 @@ header#section-header span.ext {
 #header-menus .main-menu ul li a:focus,
 #header-menus .secondary-menu ul li a:focus {
   color: #fff !important;
-  background-color: #8ca36b !important;
+  background-color: #485b2e !important;
 }
 form#ctools-jump-menu {
   width: 100px;
@@ -493,7 +484,7 @@ form#ctools-jump-menu {
 }
 footer#section-footer {
   margin-top: 30px;
-  background-color: #2B2A45;
+  background-color: #002056;
   color: #D1CFBD;
   box-shadow: inset 0 8px 15px -6px #222;
   font-size: 90%;
@@ -968,7 +959,7 @@ body.resources-dashboard .super-num {
   border-right: none;
 }
 .horizontal-tabs ul.horizontal-tabs-list li a {
-  background-color: #8ca36b;
+  background-color: #485b2e;
   color: #fff !important;
   transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
 }
@@ -1160,10 +1151,10 @@ body.page-node-add .end-date-wrapper .form-item label {
   font-weight: bold;
 }
 #page form .vertical-tabs ul.vertical-tabs-list a {
-  color: #493986;
+  color: #002056;
 }
 #page form .vertical-tabs ul.vertical-tabs-list a:hover {
-  color: #493986;
+  color: #002056;
 }
 /* --------------------------------------------------------------------------
    Drupal Tabs
@@ -1182,7 +1173,7 @@ ul.tabs.secondary li a {
   display: inline-block;
 }
 #page ul.tabs.primary {
-  border-bottom: 2px solid #1a1c35;
+  border-bottom: 2px solid #004884;
   border-collapse: collapse;
   line-height: 1.4em;
   list-style: none outside none;
@@ -1199,11 +1190,11 @@ ul.tabs.secondary li a {
   padding: 5px 10px;
 }
 #page ul.tabs.primary li a:hover {
-  background-color: #8ca36b;
+  background-color: #485b2e;
   color: #fff;
 }
 #page ul.tabs.primary li.active a {
-  background-color: #1a1c35;
+  background-color: #004884;
   border: 1px solid #b7b7b7;
   border-bottom: none;
   color: #ffffff;
@@ -1221,11 +1212,11 @@ ul.tabs.secondary li a {
   padding-bottom: 0px;
 }
 #page #region-preface-first ul.tabs.primary li a {
-  background-color: #1a1c35;
+  background-color: #004884;
   color: #fff;
 }
 #page #region-preface-first ul.tabs.primary li a:hover {
-  background-color: #8ca36b;
+  background-color: #485b2e;
   color: #fff;
 }
 #page #region-preface-first ul.tabs.primary li.active a {
