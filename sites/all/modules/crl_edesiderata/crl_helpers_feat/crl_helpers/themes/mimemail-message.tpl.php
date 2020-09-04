@@ -33,7 +33,7 @@
         <table cellpadding="5" cellspacing="20" style="border: 1px solid #d7d4e3; margin: auto; width: 90%">
             <tr>
                 <td style="background: #fff; width: 100%; padding-bottom: 20px; border-bottom: 1px solid #d7d4e3;" align="left" valign="middle">
-                    <a href="#"><img src="sites/default/files/mail-head.png" alt="eDesiderata -Informed Investment in Electronic Resources" style="border: none; outline: none;"></a>
+                    <a href="#"><img src="sites/default/files/mail-head.png" width="410" height="117" alt="eDesiderata -Informed Investment in Electronic Resources" style="border: none; outline: none;"></a>
                 </td>
             </tr>
 
@@ -46,7 +46,7 @@
             </tr>  
             <tr>
                 <td style="background: #fff; width: 100%; padding-top: 20px; border-top: 1px solid #d7d4e3;" align="left" valign="middle">
-                    <a href="#"><img src="sites/default/files/mail-foot.png" alt="Center for Research Libraries" style="border: none; outline: none;"></a>                                     
+                    <a href="#"><img src="sites/default/files/mail-foot.png" width="400" height="101" alt="Center for Research Libraries" style="border: none; outline: none;"></a>                                     
 
                 </td>
             </tr>

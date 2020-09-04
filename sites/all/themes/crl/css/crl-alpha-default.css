@@ -28,79 +28,6 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f4', GradientType=0);
 }
 /* --------------------------------------------------------------------------
-   Header Styles - General
-   -------------------------------------------------------------------------- */
-#section-header {
-  height: 250px;
-}
-#header-logo {
-  position: absolute;
-  right: 25px;
-  top: 0px;
-}
-.header-user-tools-back {
-  float: right;
-  width: 340px;
-  height: 250px;
-  background: url('../images/user-tools-bg.png') 0 0 repeat;
-}
-#header-user-tools {
-  position: absolute;
-  width: 300px;
-  right: 25px;
-  top: 100px;
-  text-align: left;
-}
-#header-typography {
-  text-align: left;
-  padding: 20px 0px 0px 15px;
-}
-h1.site-name,
-h2.site-name {
-  margin-top: 30px;
-  font-size: 400%;
-}
-p.site-slogan {
-  display: inline;
-  font-size: 110%;
-  font-weight: bold;
-}
-/* --------------------------------------------------------------------------
-   Header Styles - Menu
-   -------------------------------------------------------------------------- */
-#header-menus .main-menu,
-#header-menus .secondary-menu {
-  display: block;
-}
-#header-menus form#ctools-jump-menu {
-  display: none;
-}
-#header-menus .main-menu {
-  position: absolute;
-  bottom: 0px;
-  left: 15px;
-}
-#header-menus .secondary-menu {
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
-  width: 340px;
-  display: block;
-}
-#header-menus .secondary-menu ul li {
-  width: 170px;
-  margin: 0px;
-  padding: 0px;
-}
-#header-menus .secondary-menu ul li a {
-  width: 169px;
-  padding-left: 0px;
-  padding-right: 0px;
-}
-#header-menus .secondary-menu ul li.first a {
-  border-right: 1px solid #aaa;
-}
-/* --------------------------------------------------------------------------
    Footer
    -------------------------------------------------------------------------- */
 footer#section-footer #region-footer-first {
@@ -171,3 +98,4 @@ aside#activity-documents {
 #block-crl-helpers-crl-helpers-facet-breadcrumb .facet-breadcrumb-add {
   display: none;
 }
+/*# sourceMappingURL=crl-alpha-default.css.map */
