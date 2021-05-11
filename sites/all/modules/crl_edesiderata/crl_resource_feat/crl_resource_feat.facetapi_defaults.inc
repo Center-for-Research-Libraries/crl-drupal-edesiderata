@@ -19,6 +19,7 @@ function crl_resource_feat_facetapi_default_facet_settings() {
   $facet->realm = '';
   $facet->facet = 'crl_resource_status_backref';
   $facet->enabled = FALSE;
+  $facet->hash = '0';
   $facet->settings = array(
     'operator' => 'and',
     'hard_limit' => '75',
@@ -44,6 +45,7 @@ function crl_resource_feat_facetapi_default_facet_settings() {
   $facet->realm = '';
   $facet->facet = 'field_facets';
   $facet->enabled = FALSE;
+  $facet->hash = '0';
   $facet->settings = array(
     'operator' => 'and',
     'hard_limit' => '50',
@@ -71,6 +73,7 @@ function crl_resource_feat_facetapi_default_facet_settings() {
   $facet->realm = '';
   $facet->facet = 'field_provider';
   $facet->enabled = FALSE;
+  $facet->hash = '0';
   $facet->settings = array(
     'operator' => 'and',
     'hard_limit' => '75',
@@ -99,6 +102,7 @@ function crl_resource_feat_facetapi_default_facet_settings() {
   $facet->realm = '';
   $facet->facet = 'field_resource_type';
   $facet->enabled = FALSE;
+  $facet->hash = '0';
   $facet->settings = array(
     'operator' => 'and',
     'hard_limit' => '75',
@@ -127,6 +131,7 @@ function crl_resource_feat_facetapi_default_facet_settings() {
   $facet->realm = '';
   $facet->facet = 'field_subject_area';
   $facet->enabled = FALSE;
+  $facet->hash = '0';
   $facet->settings = array(
     'operator' => 'and',
     'hard_limit' => '75',
@@ -155,6 +160,7 @@ function crl_resource_feat_facetapi_default_facet_settings() {
   $facet->realm = 'block';
   $facet->facet = 'crl_resource_status_backref';
   $facet->enabled = TRUE;
+  $facet->hash = '0';
   $facet->settings = array(
     'weight' => 0,
     'widget' => 'facetapi_links',
@@ -202,6 +208,7 @@ function crl_resource_feat_facetapi_default_facet_settings() {
   $facet->realm = 'block';
   $facet->facet = 'field_facets';
   $facet->enabled = TRUE;
+  $facet->hash = '0';
   $facet->settings = array(
     'weight' => 0,
     'widget' => 'facetapi_links',
@@ -248,6 +255,7 @@ function crl_resource_feat_facetapi_default_facet_settings() {
   $facet->realm = 'block';
   $facet->facet = 'field_provider';
   $facet->enabled = TRUE;
+  $facet->hash = '0';
   $facet->settings = array(
     'weight' => 0,
     'widget' => 'facetapi_links',
@@ -295,6 +303,7 @@ function crl_resource_feat_facetapi_default_facet_settings() {
   $facet->realm = 'block';
   $facet->facet = 'field_resource_type';
   $facet->enabled = TRUE;
+  $facet->hash = '0';
   $facet->settings = array(
     'weight' => 0,
     'widget' => 'facetapi_links',
@@ -342,6 +351,7 @@ function crl_resource_feat_facetapi_default_facet_settings() {
   $facet->realm = 'block';
   $facet->facet = 'field_subject_area';
   $facet->enabled = TRUE;
+  $facet->hash = '0';
   $facet->settings = array(
     'weight' => 0,
     'widget' => 'facetapi_links',
