@@ -45,3 +45,9 @@ Run the command below to compile LESS:
 ```
 lessc sites/all/themes/crl_bootstrap/less/style.less > sites/all/themes/crl_bootstrap/css/style.css
 ```
+
+## Update process
+
+You may update core using [drush](https://www.drupal.org/docs/7/update/updating-drupal-using-drush).
+
+If you had modified .gitignore or .htaccess, make sure the modifications are reapplied. (Sometimes you can just copy the old files back.)
