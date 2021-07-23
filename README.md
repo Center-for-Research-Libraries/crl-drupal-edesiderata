@@ -45,3 +45,15 @@ Run the command below to compile LESS:
 ```
 lessc sites/all/themes/crl_bootstrap/less/style.less > sites/all/themes/crl_bootstrap/css/style.css
 ```
+
+## Drupal Core Update process
+
+You may update core using [drush](https://www.drupal.org/docs/7/update/updating-drupal-using-drush).
+
+If you had modified .gitignore or .htaccess, make sure the modifications are reapplied. (Sometimes you can just copy the old files back or revert relevant lines directly in your IDE).
+
+There may also be some core patch files that need to be re-applied in the rood directory. It's best to check the issue that these patch files are linked to in case a resolution has already been merged into the new Drupal core version. If the patch is still relevant it can be applied with the patch command directly, such as:
+
+```
+patch -p1 < D7-search-index_errors_on_broken_internal_links-1299530-10-do-not-test.patch
+```
