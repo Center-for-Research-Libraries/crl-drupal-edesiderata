@@ -636,8 +636,10 @@ function search_index($sid, $module, $text) {
               $linknid = $match[1];
               if ($linknid > 0) {
                 $node = db_query('SELECT title, nid, vid FROM {node} WHERE nid = :nid', array(':nid' => $linknid), array('target' => 'slave'))->fetchObject();
-                $link = TRUE;
-                $linktitle = $node->title;
+                if ($node) {
+                  $link = TRUE;
+                  $linktitle = $node->title;
+                }
               }
             }
           }
