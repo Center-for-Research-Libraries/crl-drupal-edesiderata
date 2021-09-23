@@ -133,6 +133,7 @@ DirectoryIndex index.php index.html index.htm
   RewriteRule .*favicon\.ico static/favicon.ico [L,R,QSA]
 
   # END CUSTOM CRL REDIRECTS
+  # RewriteBase /
 
   # Pass all requests not referring directly to files in the filesystem to
   # index.php. Clean URLs are handled in drupal_environment_initialize().
@@ -168,6 +169,7 @@ DirectoryIndex index.php index.html index.htm
 </IfModule>
 
 # Add headers to all responses.
+# Various header fixes.
 <IfModule mod_headers.c>
   # Disable content sniffing, since it's an attack vector.
   Header always set X-Content-Type-Options nosniff
@@ -181,4 +183,6 @@ DirectoryIndex index.php index.html index.htm
   <FilesMatch ".(js|css|html|)$">
     SetOutputFilter DEFLATE
   </FilesMatch>
+  # Disable Proxy header, since it's an attack vector.
+  RequestHeader unset Proxy
 </IfModule>
