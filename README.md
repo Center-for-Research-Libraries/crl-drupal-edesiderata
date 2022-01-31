@@ -57,3 +57,14 @@ There may also be some core patch files that need to be re-applied in the rood d
 ```
 patch -p1 < D7-search-index_errors_on_broken_internal_links-1299530-10-do-not-test.patch
 ```
+
+## GitHub Branch Rename
+
+If you have an existing copy of this repository in your local environment and you have not yet manually renamed the `master` branch to `main`, please use the following commands:
+
+```
+git branch -m master main
+git fetch origin
+git branch -u origin/main main
+git remote set-head origin -a
+```

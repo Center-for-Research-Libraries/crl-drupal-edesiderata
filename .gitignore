@@ -10,3 +10,7 @@ sites/*/private
 
 # Ignore modules that are maintained in separate git repos
 sites/all/modules/shared_unofficial
+
+# Ignore backstop directories as they are automatically regenerated every time.
+bitmaps_reference
+html_report
