@@ -27,7 +27,7 @@ index 26f55e5..35774b9 100644
 +    }
 +    // Report the options that Rate widgets use to Voting API so they can be
 +    // associated with aggregate option functions. This only applies to widgets
-+    // of value type "Options".
++    // of value type "Options". 
 +    if ($widget->value_type == 'option') {
 +      foreach ($widget->options as $option) {
 +        if (isset($option[0]) && !isset($data['functions']['option-' . $option[0]])) {
@@ -43,7 +43,8 @@ index 26f55e5..35774b9 100644
 -      'description' => t('Tag used for %name Rate widget', array('%name' => $widget->title)),
 -    );
    }
-
+ 
    if (!isset($data['value_types']['option'])) {
---
+-- 
 1.8.3.4 (Apple Git-47)
+

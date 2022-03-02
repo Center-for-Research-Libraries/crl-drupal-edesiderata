@@ -15,7 +15,7 @@ index e0e262a..a73ab28 100644
 @@ -36,8 +36,11 @@
        q = q + '&value=' + data.value;
      }
-
+ 
 -    // fetch all widgets with this id as class
 -    widget = $('.' + widget.attr('id'));
 +    // Fetch all widgets with this id as a class in case multiple copies of the
@@ -23,8 +23,9 @@ index e0e262a..a73ab28 100644
 +    // the ID (truncate the '--<id>' part).
 +    var ids = widget.attr('id').split('--');
 +    widget = $('.' + ids[0]);
-
+ 
      $.get(Drupal.settings.rate.basePath + q, function(response) {
        if (response.match(/^https?\:\/\/[^\/]+\/(.*)$/)) {
---
+-- 
 1.8.5.2 (Apple Git-48)
+
