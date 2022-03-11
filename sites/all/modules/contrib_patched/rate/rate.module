@@ -127,7 +127,7 @@ function rate_menu() {
 
   $menu[RATE_PATH_AHAH] = array(
     'page callback' => 'rate_vote_ahah',
-    'access arguments' => array('access content'),
+    'access callback' => 'rate_vote_ahah_access',
     'type' => MENU_CALLBACK
   );
 
@@ -259,6 +259,7 @@ function rate_generate_widget($widget_id, $content_type, $content_id, $mode = RA
     // template.
     array_splice($theme, 1, 0, $widget->theme);
   }
+
   // Get voting results.
   $results = rate_get_results($content_type, $content_id, $widget_id);
 
@@ -820,6 +821,26 @@ function rate_comment_view_alter(&$comment) {
       $comment[$widget_name] = $widget_code;
     }
   }
+}
+
+/**
+ * Access callback for AHAH callback.
+ */
+function rate_vote_ahah_access() {
+  $content_type = preg_replace('/[^\\w\\-]/', '', $_GET['content_type']);
+  $content_id = (int) $_GET['content_id'];
+  if ($content_type == 'node') {
+    // Check if the node exists and if the user has view access.
+    return ($node = node_load($content_id)) && node_access('view', $node);
+  }
+  if ($content_type == 'comment' && module_exists('comment')) {
+    // Check if the comment exists, is not hidden and if the user has view access on its node.
+    if (($comment = comment_load($content_id)) && ($node = node_load($comment->nid))) {
+      return $node->comment != COMMENT_NODE_HIDDEN && node_access('view', $node) && user_access('access comments');
+    }
+  }
+  // Rate only works on nodes and comments.
+  return FALSE;
 }
 
 /**
@@ -1481,26 +1502,13 @@ function rate_login_page() {
 function rate_votingapi_metadata_alter(&$data) {
   $widgets = variable_get(RATE_VAR_WIDGETS, array());
   foreach ($widgets as $widget) {
-    // Report the tags that Rate widgets use to Voting API.
-    if (!isset($data['tags'][$widget->tag])) {
-      $data['tags'][$widget->tag] = array(
-        'name' => $widget->tag,
-        'description' => t('Tag used for %name Rate widget', array('%name' => $widget->title)),
-      );
+    if (isset($data['tags'][$widget->tag])) {
+      continue;
     }
-    // Report the options that Rate widgets use to Voting API so they can be
-    // associated with aggregate option functions. This only applies to widgets
-    // of value type "Options". 
-    if ($widget->value_type == 'option') {
-      foreach ($widget->options as $option) {
-        if (isset($option[0]) && !isset($data['functions']['option-' . $option[0]])) {
-          $data['functions']['option-' . $option[0]] = array(
-            'name' => t('Number of votes for option @option', array('@option' => $option[0])),
-            'description' => t('Option @option used for @name Rate widget', array('@option' => $option[0], '@name' => $widget->title)),
-          );
-        }
-      }
-    }
+    $data['tags'][$widget->tag] = array(
+      'name' => $widget->tag,
+      'description' => t('Tag used for %name Rate widget', array('%name' => $widget->title)),
+    );
   }
 
   if (!isset($data['value_types']['option'])) {
