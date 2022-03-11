@@ -36,11 +36,8 @@
       q = q + '&value=' + data.value;
     }
 
-    // Fetch all widgets with this id as a class in case multiple copies of the
-    // same widget exists on the page. Note that we must match the base form of
-    // the ID (truncate the '--<id>' part).
-    var ids = widget.attr('id').split('--');
-    widget = $('.' + ids[0]);
+    // fetch all widgets with this id as class
+    widget = $('.' + widget.attr('id'));
 
     $.get(Drupal.settings.rate.basePath + q, function(response) {
       if (response.match(/^https?\:\/\/[^\/]+\/(.*)$/)) {
