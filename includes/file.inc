@@ -477,6 +477,10 @@ function file_ensure_htaccess() {
  *   already present. Defaults to FALSE.
  */
 function file_create_htaccess($directory, $private = TRUE, $force_overwrite = FALSE) {
+  if (isset($_ENV['PANTHEON_ENVIRONMENT'])) {
+    // Skip on Pantheon since we use nginx and this can hang.
+    return;
+  }
   if (file_uri_scheme($directory)) {
     $directory = file_stream_wrapper_uri_normalize($directory);
   }
@@ -533,6 +537,10 @@ SetHandler Drupal_Security_Do_Not_Remove_See_SA_2006_006
   php_flag engine off
 </IfModule>
 <IfModule mod_php7.c>
+  php_flag engine off
+</IfModule>
+# From PHP 8 there is no number in the module name.
+<IfModule mod_php.c>
   php_flag engine off
 </IfModule>
 EOF;
