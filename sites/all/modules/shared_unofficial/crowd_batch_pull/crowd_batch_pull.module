@@ -1,0 +1,220 @@
+<?php
+
+
+/**
+ * @file
+ * Provides cron-based pull sync between Drupal and Atlassian Crowd.
+ */
+
+
+/**
+ * Implements hook_menu().
+ */
+function crowd_batch_pull_menu() {
+  $items = array();
+  $items['admin/config/crowd/crowd_batch_pull'] = array(
+    'title' => 'Batch & Auto Pull',
+    'description' => 'Crowd Batch Pull settings and tools.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('crowd_batch_pull_form'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer crowd'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'includes/crowd_batch_pull_form.inc',
+    'weight' => 5,
+  );
+  return $items;
+}
+
+
+/**
+ * Implements hook_cron_queue_info().
+ */
+function crowd_batch_pull_cron_queue_info() {
+  $queues = array();
+  $queues['crowd_batch_pull'] = array(
+    'worker callback' => 'crowd_batch_pull_from_name',
+    'time' => 60,
+  );
+  return $queues;
+}
+
+
+/**
+ * Implements hook_cron().
+ */
+function crowd_batch_pull_cron() {
+  if (variable_get('crowd_batch_pull_enabled', FALSE)) {
+    $queue = DrupalQueue::get('crowd_batch_pull');
+    // Until all previously-deteted changed items are addressed, we cannot trust
+    // the reliability of our detection queries.
+    $queue_items_count = $queue->numberOfItems();
+    if ($queue_items_count) {
+      watchdog('crowd batch pull', 'Deferring Crowd batch pull detection to next maintenance run because the Crowd batch sync queue is not empty (currently there are @items items in the queue).', array('@items' => $queue_items_count));
+      return;
+    }
+    // Run detection.
+    try {
+      $detector = crowd_batch_pull_get_detector();
+      $last_sync = variable_get('crowd_batch_pull_last_timestamp', 0);
+      $group_map = variable_get('crowd_groups', array());
+      // Detect and queue updates, additions and group changes.
+      $to_queue = array_unique(array_merge($detector->detectUpdated($last_sync), $detector->detectGroupChanges($group_map)));
+      // Also detect and queue deletions if configured.
+      if (variable_get('crowd_batch_pull_auto_deletions', FALSE)) {
+        $to_queue = array_unique(array_merge($to_queue, $detector->detectDeleted()));
+      }
+    }
+    catch (CrowdException $e) {
+      $e->logResponse();
+      drupal_set_message(t('User data could not be fetched due to an error in the Crowd connection.'), 'error', FALSE);
+      return;
+    }
+    // Add our detected list of users to the queue.
+    if ($to_queue) {
+      $added = 0;
+      foreach ($to_queue as $name) {
+        $added += (int) $queue->createItem($name);
+      }
+      // Verify that we added all results to the queue and log appropriatly.
+      if (count($to_queue) == $added) {
+        watchdog('crowd batch pull', 'Detected a remote change in %count Crowd users. These users have been added to the Crowd sync queue for local update on future cron runs.', array('%count' => $added));
+      }
+      else {
+        watchdog('crowd batch pull', 'There was an error queueing Crowd user updates. Detected a change in %count Crowd users, but %added were added to the queue.', array('%count' => count($to_queue), '%added' => $added), WATCHDOG_ERROR);
+        drupal_set_message(t('There was an error queueing Crowd user updates. Please see the logs for more info.'), 'error', FALSE);
+        return;
+      }
+    }
+    // There were no major errors so we can refresh the sync timestamp.
+    variable_set('crowd_batch_pull_last_timestamp', REQUEST_TIME);
+  }
+}
+
+
+/**
+ * Worker callback to pull an individual Crowd user based on their username.
+ *
+ * Unlike a direct call to crowd_pull_user_data() this will also create the user
+ * if they do not yet exist locally.
+ *
+ * @param string $name
+ *   The Crowd username to pull. If the user exists in Drupal only a simple
+ *   Crowd sync is triggered, otherwise the user is created before being synced.
+ */
+function crowd_batch_pull_from_name($name) {
+  // Make sure we are dealing with all lowecase characters before proceeding
+  // with any write operations.
+  $name = mb_strtolower($name);
+  $crowd_user = crowd_client_connect()->getUserFromName($name);
+  // Get the mapped Drupal username.
+  $drupal_user = user_external_load($name);
+  if ($crowd_user) {
+    // If the user does not yet exist in Drupal we need to create them locally.
+    if (!$drupal_user) {
+      // Check for a collision and handle it based on the main Crowd admin
+      // settings.
+      $user_local = user_load_by_name($name);
+      if (!$user_local && variable_get('crowd_check_email_collision', TRUE)) {
+        $user_local = user_load_by_mail($crowd_user['email']);
+      }
+      if ($user_local) {
+        switch (variable_get('crowd_handle_username_collision', 'abort')) {
+          case 'merge':
+            // For a merge there is no need to create a new user since we
+            // already have one to match to.
+            $drupal_user = $user_local;
+            watchdog('crowd batch pull', 'Username collision detected. Username %username is being batch synced from Crowd but already exists as a local Drupal user. Merging Crowd and Drupal accounts.', array('%username' => $name), WATCHDOG_WARNING);
+            break;
+          case 'abort':
+          case 'default':
+            // If we abort the sync simply report and return.
+            watchdog('crowd batch pull', 'Username collision detected. Username %username is is being batch synced from Crowd but already exists as a local Drupal user. Aborting sync.', array('%username' => $name), WATCHDOG_ERROR);
+            return FALSE;
+        }
+      }
+      else {
+        $userinfo = array(
+          'name' => $name,
+          'pass' => user_password(),
+          'init' => $name,
+          'status' => 1,
+          'access' => REQUEST_TIME,
+        );
+        $drupal_user = user_save(drupal_anonymous_user(), $userinfo);
+        watchdog('crowd batch pull', 'Created new local user account for %username based on Crowd data.', array('%username' => $name));
+      }
+    }
+    // Ensure the user is linked to Crowd in the authmap table.
+    user_set_authmaps($drupal_user, array('authname_crowd' => $name));
+    // Pull all the user attributes.
+    crowd_pull_user_data($drupal_user, $crowd_user);
+  }
+  // If we don't have a Crowd user, but do have a Drupal user, it likley means
+  // there was a remote deletion that has not yet been reflected locally. If
+  // configured we process this as a local deletion with user_cancel().
+  elseif ($drupal_user && variable_get('crowd_batch_pull_auto_deletions', FALSE)) {
+    // We need to be really REALLY sure that the $crowd_user data (or rather
+    // lack thereof) that came back through the connection is accurate, so we
+    // run an extra validation of the current state of the connection to be sure
+    // before continuing.
+    if (!crowd_client_connect()->validateConnection()) {
+      throw new Exception('Aborting programmatic user deletion as the Crowd connection could not be fully validated.');
+    }
+    // Set a flag that we are in the middle of a pull operation that will
+    // persist throughout the delete process.
+    $drupal_user->crowd_user_pull = TRUE;
+    user_cancel(array(), $drupal_user->uid, 'user_cancel_reassign');
+    // Using user_cancel without the UI requires manually triggering a
+    // non-progressive batch process.
+    $batch =& batch_get();
+    $batch['progressive'] = FALSE;
+    batch_process();
+  }
+  // If none of the above conditions are met it means that a useranme was added
+  // to the queue that probably should not have been. Log it.
+  else {
+    watchdog('crowd batch pull', 'User @name was found in the crowd_batch_pull queue but could not be processed (as an update, addition or deletion) based on current crowd_batch_pull settings. This user was possibly deleted in Crowd or was added to the queue erroneously.', array('@name' => $name), WATCHDOG_WARNING);
+  }
+}
+
+
+/**
+ * Implements hook_hook_info().
+ */
+function crowd_batch_pull_hook_info() {
+  $hooks = array(
+    'crowd_batch_pull_detector_class_alter',
+    'crowd_batch_pull_detector_object_alter',
+  );
+  return array_fill_keys($hooks, array('group' => 'crowd'));
+}
+
+
+/**
+ * Factory to get a Crowd Sync Detector object.
+ *
+ * @return CrowdBatchPullDetectorInterface
+ *   A Crowd Sync Detector object.
+ */
+function crowd_batch_pull_get_detector($reset = FALSE) {
+  // For efficiency we maintain a static cache for the loaded detector.
+  $detector = &drupal_static(__FUNCTION__);
+  if (empty($detector) || $reset) {
+    $crowd = crowd_client_connect();
+    $detector_class = 'CrowdBatchPullDetector';
+    // Allow other modules to alter the detector class (this is probably only
+    // useful for one module to implement at any given time).
+    drupal_alter('crowd_batch_pull_detector_class', $detector_class);
+    if (class_exists($detector_class)) {
+      $detector = new $detector_class($crowd);
+      // Allow the object to be decorated by other modules.
+      drupal_alter('crowd_batch_pull_detector_object', $detector);
+    }
+  }
+  // Return the object.
+  if (is_object($detector) && $detector instanceof CrowdBatchPullDetectorInterface) {
+    return $detector;
+  }
+  throw new Exception('Cound not instantiate a Crowd batch pull detector of class ' . check_plain($detector_class) . '.');
+}

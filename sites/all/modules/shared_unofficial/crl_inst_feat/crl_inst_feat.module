@@ -1,0 +1,51 @@
+<?php
+/**
+ * @file
+ * Code for the CRL Institution Feature feature.
+ */
+
+include_once 'crl_inst_feat.features.inc';
+
+
+/**
+ * Implements hook_entity_info().
+ */
+function crl_inst_feat_entity_info() {
+  // Abstract a couple tables used to store misc SF data as entities.
+  // @see crl_inst_feat_schema()
+  return array(
+    'sf_net_affiliation' => array(
+      'label' => t('SF Network Affiliation'),
+      'plural label' => t('SF Network Affiliations'),
+      'entity class' => 'Entity',
+      'controller class' => 'EntityAPIController',
+      'base table' => 'crl_inst_sf_net_affiliations',
+      'entity keys' => array(
+        'id' => 'id', // Primary IP
+        'label' => 'id', // Property that can be used as the entity label (required)
+      ),
+      // Use the default label() and uri() functions
+      'label callback' => 'entity_class_label',
+      'uri callback' => 'entity_class_uri',
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_entity_property_info_alter().
+ */
+function crl_inst_feat_entity_property_info_alter(&$info) {
+  // Ensure that some properties defined in our module's schema are writable.
+  // Entity API will have automatically defined the DB fields for our custom
+  // entities as properties (using the default EntityDefaultMetadataController),
+  // but they are not writable until a setter callback is declared.
+  // @see crl_inst_feat_schema()
+  // @see crl_inst_feat_entity_info()
+  // @todo: Maybe implement our own metadata controller to avoid this step?
+  foreach (array('inst_sfid', 'status', 'type', 'sub_type') as $prop_key) {
+    if (isset($info['sf_net_affiliation']['properties'][$prop_key])) {
+      $info['sf_net_affiliation']['properties'][$prop_key]['setter callback'] = 'entity_property_verbatim_set';
+    }
+  }
+}

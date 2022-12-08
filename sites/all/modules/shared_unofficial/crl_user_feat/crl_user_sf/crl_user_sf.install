@@ -1,0 +1,78 @@
+<?php
+
+
+/**
+ * Setup schema for storing Salesforce relationships.
+ */
+function crl_user_sf_schema() {
+  $schema['crl_user_sf_contact_roles'] = array(
+    'description' => 'Contact role records synced from Salesforce',
+    'fields' => array(
+      'id' => array(
+        'description' => 'The primary identifier for the record',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'contact_sfid' => array(
+        'description' => 'The sfid of the contact linked to this role',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'inst_sfid' => array(
+        'description' => 'The sfid of the institution directly linked to this role',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'status' => array(
+        'description' => 'Role status',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'role' => array(
+        'description' => 'The role',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'role_type' => array(
+        'description' => 'The role type',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+    ),
+    'primary key' => array('id'),
+    'indexes' => array(
+      'contact_sfid' => array('contact_sfid'),
+    ),
+  );
+  return $schema;
+}
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function crl_user_sf_uninstall() {
+  // Uninstalling will remove the tables that our custom entities are based on.
+  // We need to also manually delete the SF object mappings associated with
+  // these entities so those records are not orphaned.
+  foreach (array('sf_contact_role') as $type) {
+    // Flush mapping objects.
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'salesforce_mapping_object')->propertyCondition('entity_type', $type);
+    $result = $query->execute();
+    if (!empty($result['salesforce_mapping_object'])) {
+      entity_delete_multiple('salesforce_mapping_object', array_keys($result['salesforce_mapping_object']));
+    }
+  }
+}

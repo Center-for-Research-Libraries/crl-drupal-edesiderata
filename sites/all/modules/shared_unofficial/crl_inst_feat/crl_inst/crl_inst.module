@@ -1,0 +1,152 @@
+<?php
+
+
+/**
+ * Implements hook_salesforce_pull_entity_value_alter().
+ */
+function crl_inst_salesforce_pull_entity_value_alter(&$value, $field_map, $sf_object) {
+  // If we are pulling the Account (inst) object trigger the related custom
+  // mapping logic.
+  if (isset($sf_object['attributes']['type']) && $sf_object['attributes']['type'] == 'Account') {
+    $field = $field_map['drupal_field']['fieldmap_value'];
+    $sfid = $sf_object['Id'];
+    switch ($field) {
+      // The status target requires an integer instead of a boolean.
+      case 'status':
+        $value = (int) $value;
+        break;
+      // The field_inst_rep target requires a special lookup as the object data
+      // is not part of the SF institution object itself.
+      case 'field_inst_rep':
+        module_load_include('inc', 'crl_inst');
+        $value = crl_inst_get_sf_rep($sfid);
+        break;
+      // The field_inst_net_affiliations target requires a special lookup as the
+      // object data is not part of the SF institution object itself.
+      case 'field_inst_net_affiliations':
+        module_load_include('inc', 'crl_inst');
+        $value = crl_inst_get_sf_net_affiliations($sfid);
+        break;
+      default:
+        // Most fields can be untouched.
+    }
+  }
+}
+
+
+/**
+ * Implements hook_entity_insert().
+ */
+function crl_inst_entity_insert($entity, $type) {
+  if ($type == 'user' || $type == 'sf_net_affiliation') {
+    module_load_include('inc', 'crl_inst');
+    crl_inst_related_crud($entity, $type);
+  }
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function crl_inst_entity_update($entity, $type) {
+  if ($type == 'user' || $type == 'sf_net_affiliation') {
+    module_load_include('inc', 'crl_inst');
+    crl_inst_related_crud($entity, $type);
+  }
+}
+
+/**
+ * Implements hook_entity_delete().
+ */
+function crl_inst_entity_delete($entity, $type) {
+  if ($type == 'user' || $type == 'sf_net_affiliation') {
+    module_load_include('inc', 'crl_inst');
+    crl_inst_related_crud($entity, $type);
+  }
+}
+
+
+/**
+ * Implements hook_node_view_alter().
+ */
+function crl_inst_node_view_alter(&$build) {
+  // Our institution fields are set via Salesforce, which in turn uses Entity
+  // API. Because the UI is not used in this process, several "is empty" checks
+  // seem to get bypassed. This means that empty values may get set for some
+  // fields, which then leads to field labels being shown when they should not
+  // be, etc. The logic below is something of a hack to re-implement the is
+  // empty checks at display time.
+  if (isset($build['#bundle']) && $build['#bundle'] == 'institution') {
+    $wrapper = entity_metadata_wrapper('node', $build['#node']);
+    if ($wrapper) {
+      foreach (field_info_instances('node', 'institution') as $field => $data) {
+        if (isset($wrapper->{$field}) && isset($build[$field])) {
+          $value = $wrapper->{$field}->value();
+          // A simple php empty check should suffice for all the field types
+          // used on an inst object, but the check below may need to be
+          // re-evaluated at some point.
+          if (empty($value)) {
+            unset($build[$field]);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+/**
+ * Implements hook_entity_property_info_alter().
+ */
+function crl_inst_entity_property_info_alter(&$info) {
+  $properties = &$info['node']['bundles']['institution']['properties'];
+  $properties['crl_inst_new'] = array(
+    'label' => t("CRL Institution New"),
+    'type' => 'boolean',
+    'entity views field' => TRUE,
+    'description' => t("Verify the institution is a new member."),
+    'getter callback' => 'crl_inst_member_new',
+  );
+}
+
+
+/**
+ * Property getter callback for new member value.
+ */
+function crl_inst_member_new($entity, array $options, $name, $type, $info){
+  $diff = 1;
+  $wrapper = entity_metadata_wrapper('node', $entity);
+  $year = isset($wrapper->field_inst_start_fy) ? $wrapper->field_inst_start_fy->value() : 0;
+  // Get the current FY. The new fiscal year start from July 1st.
+  $current_fy = ( date("n") >= 7)? date("Y")+1: date("Y");
+  return (($current_fy - $year) <= $diff) ? TRUE : FALSE;
+}
+
+
+/**
+ * Implement hook_query_TAG_alter
+ * 
+ * Provides a query tag that will add a role-based subquery to a user query
+ * (e.g. a user EFQ).
+ *
+ * @param QueryAlterableInterface $query
+ */
+function crl_inst_query_rolequery_alter(QueryAlterableInterface $query) {
+  $rids = $query->getMetaData('rids');
+  $query->leftJoin('users_roles', 'r', 'users.uid = r.uid');  
+  $and = db_and()->condition('r.rid', $rids, 'IN');
+  $query->condition($and);
+}
+
+
+/**
+ * Implements hook_salesforce_pull_mapping_object_alter().
+ */
+function crl_inst_salesforce_pull_mapping_object_alter(&$mapping_object, $sf_object, $sf_mapping) {
+  // For our purposes the SF mapping object's updated and last sync timestamp
+  // should not be allowed to differ. If they do differ then some SF pulls may
+  // get skipped. Drupal issue #2612832 has more info.
+  // @see https://www.drupal.org/node/2612832
+  if ($mapping_object && isset($sf_mapping->drupal_bundle) && ($sf_mapping->drupal_bundle == 'institution' || $sf_mapping->drupal_bundle == 'sf_net_affiliation')) {
+    $mapping_object->entity_updated = $mapping_object->last_sync;
+  }
+}

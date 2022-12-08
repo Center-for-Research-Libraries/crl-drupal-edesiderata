@@ -1,0 +1,362 @@
+<?php
+
+
+/**
+ * @file
+ * Push user updates from Drupal to Crowd, including user Provisioning.
+ */
+
+
+/**
+ * Implementation of hook_form_user_register_alter().
+ */
+function crowd_push_form_user_register_form_alter(&$form, &$form_state) {
+  global $user;
+  form_load_include($form_state, 'inc', 'crowd_push', 'includes/crowd_push_forms');
+  $enable_provision = variable_get('crowd_push_provision', TRUE);
+  // If a logged-in user is accessing this form then they are probably an
+  // admin creating an account on behalf of someone else. In this case the push
+  // feature may be optional as part of the form.
+  if ($user->uid) {
+    $form['crowd_push_enabled'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Push this user to Crowd'),
+      '#default_value' => $enable_provision,
+      '#description' => t('If checked this user will be provisioned to both Crowd and Drupal.'),
+      '#weight' => -100,
+    );
+    // Add the Crowd group picklist for privileged users with a visibility
+    // toggle linked to the crowd_push_enabled element (the picklist has no
+    // application if crowd_push_enabled is unchecked).
+    if (user_access('administer crowd group memberships')) {
+      _crowd_push_form_add_group_picklist($form, $form_state, 'crowd_push_enabled');
+    }
+  }
+  // Otherwise this is a self-registration operation. In this case the push
+  // feature is based on global configuration only. We also need to add a submit
+  // handler to run after core to process a remote login.
+  else {
+    $form['crowd_push_enabled']['#type'] = 'value';
+    $form['crowd_push_enabled']['#value'] = $enable_provision;
+    if ($enable_provision) {
+      $form['#submit'][] = '_crowd_push_user_register_submit';
+    }
+  }
+  // Add custom validation checks early in the validation chain.
+  array_unshift($form['#validate'], '_crowd_push_user_register_validate');
+  // Add submit handler to process the user's password input for Crowd.
+  array_unshift($form['#submit'], '_crowd_push_user_crowd_pass');
+}
+
+
+/**
+ * Implements hook_form_user_profile_form_alter().
+ */
+function crowd_push_form_user_profile_form_alter(&$form, &$form_state) {
+  // The profile form only needs alterations if we are dealing with a user that
+  // is linked to Crowd and if we are configured to push during updates.
+  if (crowd_user_is_linked($form['#user']->name) && variable_get('crowd_push_update', TRUE)) {
+    form_load_include($form_state, 'inc', 'crowd_push', 'includes/crowd_push_forms');
+    // Add the Crowd group picklist for privileged users.
+    if (user_access('administer crowd group memberships')) {
+      _crowd_push_form_add_group_picklist($form, $form_state);
+    }
+    // Add submit handler to process the user's password input for Crowd.
+    array_unshift($form['#submit'], '_crowd_push_user_crowd_pass');
+    // If this form has a current password validation handler we need to swap it
+    // out for one that validates against Crowd.
+    $validate_pass_key = array_search('user_validate_current_pass', $form['#validate']);
+    if ($validate_pass_key) {
+      $form['#validate'][$validate_pass_key] = '_crowd_push_user_validate_current_pass';
+    }
+  }
+}
+
+
+/**
+ * Implements hook_user_insert().
+ */
+function crowd_push_user_insert(&$edit, $account, $category) {
+  // The variable $edit['crowd_push_enabled'] is our flag that this user create
+  // operation should also trigger a creation in Crowd. This variable is
+  // typically set as part of the registration form logic. This check also
+  // prevents arbitrary/programmatic user_save() calls from triggering a push.
+  if (!empty($edit['crowd_push_enabled']) && !empty($edit['crowd_pass'])) {
+    global $user;
+    // Setup user data to pass to Crowd. We only specifiy enough placeholder
+    // data to create the remote account with the correct username. The final
+    // population of official user data in Crowd will be triggered later in
+    // crowd_push_user_data().
+    $data['name'] = $account->name;
+    $data['email'] = $account->mail;
+    $data['password'] = $edit['crowd_pass'];
+    $data['first-name'] = 'Firstname'; // Required placeholder
+    $data['last-name'] = 'Lastname'; // Required placeholder
+    try {
+      crowd_client_connect()->addUser($data['name'], $data);
+    }
+    catch (CrowdException $e) {
+      $e->logResponse();
+      // Remove the Drupal user since we can't link it to Crowd and don't want
+      // it hanging around as an orphaned record that restricts access to a
+      // username.
+      user_delete($account->uid);
+      // Abort by redirecting to the homepage with a message.
+      drupal_set_message(t('There is currently a problem with user registration system, please try again later.'), 'error');
+      drupal_goto();
+    }
+    // We now have a user created in both Drupal and Crowd, so we can finalize
+    // the link between them and do a formal push.
+    user_set_authmaps($account, array('authname_crowd' => $account->name));
+    // See if we have any groups data to pass on. Note that the password was
+    // already set remotely above.
+    $groups = (isset($edit['crowd_groups']) && is_array($edit['crowd_groups'])) ? array_filter($edit['crowd_groups']) : NULL;
+    $created_crowd_name = crowd_push_user_data($account, $groups);
+    // Only show Crowd-specific messages to user admins.
+    if (user_access('administer users')) {
+      if ($created_crowd_name) {
+        drupal_set_message(t('User %user was successfully created in Crowd.', array('%user' => $created_crowd_name)));
+      }
+      else {
+        drupal_set_message(t('Some values could not be saved remotely in Crowd for user %user.', array('%user' => $account->name)), 'error');
+      }
+    }
+  }
+}
+
+
+/**
+ * Implements hook_user_update().
+ */
+function crowd_push_user_update(&$edit, $account, $category) {
+  // Don't do anything if this is not a Crowd-linked user, we are not configured
+  // to push updates, we are in the middle of a pull or we are directly told to
+  // bypass.
+  if (!crowd_user_is_linked($account->name)
+      || !variable_get('crowd_push_update', TRUE)
+      || !empty($account->crowd_user_pull)
+      || !empty($account->crowd_push_bypass)) {
+    return;
+  }
+  // Ensure we can't get into a recursive loop (in case hook implementations
+  // within crowd_push_user_data() also do a user_save() for this user).
+  $account->crowd_push_bypass = TRUE;
+  // Check if we have groups or password updates to pass-on and do the push.
+  $groups = (isset($edit['crowd_groups']) && is_array($edit['crowd_groups'])) ? array_filter($edit['crowd_groups']) : NULL;
+  $pass = !empty($edit['crowd_pass']) ? $edit['crowd_pass'] : NULL;
+  $updated_crowd_name = crowd_push_user_data($account, $groups, $pass);
+  // Only show Crowd-specific messages to user admins.
+  if (user_access('administer users')) {
+    if ($updated_crowd_name) {
+      drupal_set_message(t('Crowd user %cuser was successfully updated from data in Drupal user %duser.', array('%cuser' => $updated_crowd_name, '%duser' => $account->name)));
+    }
+    else {
+      drupal_set_message(t('Some values could not be saved remotely in Crowd for user %duser. Please confirm that this user still exists in Crowd and that there are no errors with the Crowd connection.', array('%duser' => $account->name)), 'error');
+    }
+  }
+  $account->crowd_push_bypass = FALSE;
+}
+
+
+/**
+ * Implements hook_user_delete().
+ */
+function crowd_push_user_delete($account) {
+  // If configured we need to delete linked users from Crowd when they are being
+  // deleted from Drupal. Note that we also abort if we are in the middle of a
+  // pull operation or are directly told to bypass.
+  $success_message = 'User %cuser was removed from Crowd based on the deletion of Drupal user %duser';
+  if (variable_get('crowd_push_delete', FALSE)
+      && crowd_user_is_linked($account->name)
+      && empty($account->crowd_user_pull)
+      && empty($account->crowd_push_bypass)) {
+    try {
+     $authname = crowd_user_authmap_name($account->name);
+     crowd_client_connect()->removeUser($authname);
+    }
+    catch (CrowdException $e) {
+      // If we can confirm a response from Crowd and that response is a specific
+      // "Not Found" 404, then we know the user was removed already (e.g. they
+      // were manually deleted in Crowd before Drupal). In this context we do
+      // not treat this as an error.
+      if ($e->getCode() == '404') {
+        $success_message = 'User %cuser does not exist in Crowd so no remote deletion was required.';
+      }
+      else {
+        $e->logResponse();
+        if (user_access('administer users')) {
+          drupal_set_message(t('There was an error removing user %cuser from Crowd.', array('%cuser' => $authname)), 'error');
+        }
+      }
+    }
+    if (user_access('administer users')) {
+      drupal_set_message(t($success_message, array('%cuser' => $authname, '%duser' => $account->name)));
+    }
+  }
+}
+
+
+/**
+ * Implements hook_hook_info().
+ */
+function crowd_push_hook_info() {
+  $hooks = array(
+    'crowd_push_user_data_alter',
+  );
+  return array_fill_keys($hooks, array('group' => 'crowd'));
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function crowd_push_permission() {
+  return array(
+    // Add general permission to control access to the crowd widgets.
+    'administer crowd group memberships' => array(
+      'title' => t('Administer Crowd group memberships'),
+      'description' => t('Add and remove <em>any</em> group memberships in Crowd for linked Drupal users.'),
+      'restrict access' => TRUE,
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_init().
+ */
+function crowd_push_init() {
+  // If we are about to view or edit a user make sure they are updated first.
+  // This should help prevent closely-timed sets of edits (for the same user) on
+  // different sites from overwriting each other. This logic only applies to
+  // user profile pages and only if this request is not a form submission/post
+  // request.
+  $menu = menu_get_item();
+  if (($menu['path'] == 'user/%' || $menu['path'] == 'user/%/edit') && empty($_POST)) {
+    $account = menu_get_object('user');
+    if ($account && crowd_user_is_linked($account->name)) {
+      crowd_pull_user_data($account);
+    }
+  }
+}
+
+
+/**
+ * Push user data from Drupal to Crowd.
+ *
+ * @param object $account
+ *   A Drupal user object representing the user to push. If NULL the current
+ *   user will be used.
+ * @param array $groups
+ *   An array of Crowd groups to set for the user. If this value is set any
+ *   groups listed will be added and any not listed will be removed. Leave
+ *   this value NULL to retain the current group values.
+ * @param string $pass
+ *   A new password to push to Crowd for this user. Leave this value NULL to
+ *   retain the current password.
+ * @return mixed
+ *   Returns the Crowd username that was updated a successfull update or FALSE
+ *   if there was an error and not all data could be saved.
+ */
+function crowd_push_user_data($account = NULL, $groups = NULL, $pass = NULL) {
+  global $user;
+  // Ensure $account is set.
+  $account = empty($account) ? $user : $account;
+  // Lookup the authname in case it's different from the local username.
+  $authname = crowd_user_authmap_name($account->name);
+  if (!$authname) {
+    watchdog('crowd push', 'Could not push user %duser because they do not appear to be linked to Crowd', array('%duser' => $account->name), WATCHDOG_ERROR);
+    return;
+  }
+  // Get the base data to push.
+  $data = array();
+  // We don't push the actual username as part of the update, but it may still
+  // be useful to have a reference to it for hook invocations that use $data.
+  $data['authname'] = $authname;
+  $data['email'] = $account->mail;
+  // Also map Drupal status to Crowd status if configured.
+  if (!variable_get('crowd_allow_local_block', TRUE)) {
+    $data['active'] = $account->status;
+  }
+  // Allow other modules to alter the data being pushed.
+  drupal_alter('crowd_push_user_data', $data, $groups, $account);
+  try {
+    $crowd = crowd_client_connect();
+    // If the first and last name values are still empty (not populated by a
+    // hook_crowd_push_user_data_alter() implementation) we need to fetch the
+    // current values from Crowd and pass those. If we don't do this we may be
+    // blowing away existing data in Crowd during our update.
+    if (empty($data['first-name']) || empty($data['last-name'])) {
+      $current_crowd_data = $crowd->getUserFromName($authname);
+      if ($current_crowd_data) {
+        $data += array('first-name' => $current_crowd_data['first-name'], 'last-name' => $current_crowd_data['last-name']);
+      }
+    }
+    // Do the update(s).
+    if ($crowd->updateUser($authname, $data)) {
+      watchdog('crowd push', 'Crowd user %cuser was successfully updated from data in Drupal user %duser.', array('%cuser' => $authname, '%duser' => $account->name), WATCHDOG_INFO);
+    }
+    // Update password if needed.
+    if (!empty($pass) && $crowd->updateUserPassword($authname, $pass)) {
+      watchdog('crowd push', 'The password for Crowd user %cuser was successfully updated remotely.', array('%cuser' => $authname), WATCHDOG_INFO);
+    }
+    // Update groups if needed.
+    if (isset($groups) && is_array($groups)) {
+      $current_groups = $crowd->getUserGroups($authname);
+      foreach (array_diff($groups, $current_groups) as $addition) {
+        if ($crowd->addUserToGroup($authname, $addition)) {
+          watchdog('crowd push', 'Added user %cuser to group %group in Crowd.', array('%cuser' => $authname, '%group' => $addition), WATCHDOG_INFO);
+        }
+      }
+      foreach (array_diff($current_groups, $groups) as $removal) {
+        if ($crowd->removeUserFromGroup($authname, $removal)) {
+          watchdog('crowd push', 'Removed user %cuser from group %group in Crowd.', array('%cuser' => $authname, '%group' => $removal), WATCHDOG_INFO);
+        }
+      }
+    }
+  }
+  catch (CrowdException $e) {
+    $e->logResponse();
+    return FALSE;
+  }
+  return $authname;
+}
+
+
+/**
+ * Implements hook_form_crowd_admin_settings_alter().
+ */
+function crowd_push_form_crowd_admin_settings_alter(&$form, &$form_state) {
+  // Add a fieldset for Crowd push options.
+  $form['crowd_push_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Crowd Push Options'),
+    '#description' => t(''),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['crowd_push_settings']['crowd_push_provision'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Push new users to Crowd during provisioning'),
+    '#default_value' => variable_get('crowd_push_provision', TRUE),
+    '#description' => t('Whether-or-not to push new user registrations to Crowd. This setting applies to self-registrations automatically but can be overwritten on a case-by-case basis when administrators create new users.'),
+  );
+  $form['crowd_push_settings']['crowd_push_update'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Push user updates to Crowd'),
+    '#default_value' => variable_get('crowd_push_update', TRUE),
+    '#description' => t('Whether-or-not to push user updates to Crowd. This applies to edits made by administrators and by users modifying their own accounts, but only for accounts that are already linked to Crowd.'),
+  );
+  $form['crowd_push_settings']['crowd_push_random_local_pass'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Randomize local passwords for users linked to Crowd'),
+    '#default_value' => variable_get('crowd_push_random_local_pass', FALSE),
+    '#description' => t('When enabled user passwords are maintained as-entered in Crowd but are randomized in Drupal during all password updates. This can be useful if you want Crowd to be the unique authentication authority for users. This is typically incompatible with the "Allow local logins if Crowd fails" setting.'),
+  );
+  $form['crowd_push_settings']['crowd_push_delete'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Delete users from Crowd when they are deleted in Drupal'),
+    '#default_value' => variable_get('crowd_push_delete', FALSE),
+    '#description' => t('Whether-or-not to delete linked users from Crowd when they are deleted from Drupal. <strong>WARNING:</strong> By enabling this option you are allowing all users with Drupal "administer users" or "cancel own user account" the ability to initiate user deletions in Crowd.'),
+  );
+}

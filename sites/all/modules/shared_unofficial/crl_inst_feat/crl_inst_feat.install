@@ -1,0 +1,240 @@
+<?php
+
+
+/**
+ * Setup schema for storing Salesforce relationships.
+ */
+function crl_inst_feat_schema() {
+  $schema['crl_inst_sf_net_affiliations'] = array(
+    'description' => 'Network affiliation records synced from Salesforce',
+    'fields' => array(
+      'id' => array(
+        'description' => 'The primary identifier for the record',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'inst_sfid' => array(
+        'description' => 'The sfid of the inst that this affiliation is linked to',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'status' => array(
+        'description' => 'Affiliation status',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'type' => array(
+        'description' => 'The type of the affiliation',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'sub_type' => array(
+        'description' => 'The sub-type of the affiliation',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+    ),
+    'primary key' => array('id'),
+    'indexes' => array(
+      'inst_sfid' => array('inst_sfid'),
+    ),
+  );
+  $schema['crl_inst_sf_memberships'] = array(
+    'description' => 'Membership records synced from Salesforce',
+    'fields' => array(
+      'id' => array(
+        'description' => 'The primary identifier for the record',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'renewal_period_sfid' => array(
+        'description' => 'The sfid of the renewal period that this membership is linked to',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'inst_sfid' => array(
+        'description' => 'The sfid of the inst that this membership is linked to',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'membership_id' => array(
+        'description' => 'The auto-number id of this membership',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'renewal_status' => array(
+        'description' => 'The renewal status',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'ame' => array(
+        'description' => 'Annual materials expenditures',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'branches' => array(
+        'description' => 'The branches involved in the renewal',
+        'type' => 'text',
+        'not null' => TRUE,
+      ),
+      'comments' => array(
+        'description' => 'Comments provided during renewal',
+        'type' => 'text',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('id'),
+    'indexes' => array(
+      'inst_sfid' => array('inst_sfid'),
+      'renewal_period_sfid' => array('renewal_period_sfid'),
+    ),
+  );
+  return $schema;
+}
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function crl_inst_feat_uninstall() {
+  // Uninstalling will remove the tables that our custom entities are based on.
+  // We need to also manually delete the SF object mappings associated with
+  // these entities so those records are not orphaned.
+  foreach (array('sf_net_affiliation', 'sf_user') as $type) {
+    // Flush mapping objects.
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'salesforce_mapping_object')->propertyCondition('entity_type', $type);
+    $result = $query->execute();
+    if (!empty($result['salesforce_mapping_object'])) {
+      entity_delete_multiple('salesforce_mapping_object', array_keys($result['salesforce_mapping_object']));
+    }
+  }
+}
+
+
+/**
+ * Add new schema for inst metadata that is part of Salesforce integration.
+ */
+function crl_inst_feat_update_7001() {
+  // It turns out that the line below will not add the new tables. The next
+  // hook_update_N will address this properly.
+  // @see crl_inst_feat_update_7002()
+  // drupal_install_schema('crl_inst');
+}
+
+/**
+ * Add new tables for inst metadata that is part of Salesforce integration.
+ */
+function crl_inst_feat_update_7002() {
+  // Note that fetching the schema dynamically like this (as opposed to
+  // statically defining the arrray here) is not ideal as it won't work properly
+  // if multiple hook_update_N() are run at once that both made different
+  // changes to the schema. For our controlled purposes however this should not
+  // be an issue.
+  $schema = crl_inst_feat_schema();
+  foreach (array('crl_inst_sf_net_affiliations', 'crl_inst_sf_users') as $tablename) {
+    if (!db_table_exists($tablename)) {
+      db_create_table($tablename, $schema[$tablename]);
+    }
+  }
+}
+
+
+/**
+ * Add contact_sfid field to crl_inst_sf_users table.
+ */
+function crl_inst_feat_update_7003() {
+  $spec = array(
+    'description' => 'The sfid of the contact that this user is linked to',
+    'type' => 'varchar',
+    'length' => 32,
+    'not null' => TRUE,
+    'default' => '',
+  );
+  db_add_field('crl_inst_sf_users', 'contact_sfid', $spec);
+}
+
+
+/**
+ * Placeholder update 7004.
+ */
+function crl_inst_feat_update_7004() {
+  // Prvioulsy used to add new table for membership metadata that is part of
+  // Salesforce integration. Reverted by update 7005.
+  return; // DO NOTHING!
+  // Note that fetching the schema dynamically like this (as opposed to
+  // statically defining the arrray here) is not ideal as it won't work properly
+  // if multiple hook_update_N() are run at once that both made different
+  // changes to the schema. For our controlled purposes however this should not
+  // be an issue.
+  $schema = crl_inst_feat_schema();
+  foreach (array('crl_inst_sf_memberships') as $tablename) {
+    if (!db_table_exists($tablename)) {
+      db_create_table($tablename, $schema[$tablename]);
+    }
+  }
+}
+
+
+/**
+ * Placeholder update 7005.
+ */
+function crl_inst_feat_update_7005() {
+  // Previously used to revert membership metadata setup from update 7004.
+  return; // DO NOTHING!
+  // Remove memership mapping objects.
+  foreach (array('sf_membership') as $type) {
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'salesforce_mapping_object')->propertyCondition('entity_type', $type);
+    $result = $query->execute();
+    if (!empty($result['salesforce_mapping_object'])) {
+      entity_delete_multiple('salesforce_mapping_object', array_keys($result['salesforce_mapping_object']));
+    }
+  }
+  // Drop the membership records table.
+  if (db_table_exists('crl_inst_sf_memberships')) {
+    db_drop_table('crl_inst_sf_memberships');
+  }
+}
+
+
+/**
+ * Remove sf_user data that is no longer used in the integration.
+ */
+function crl_inst_feat_update_7006() {
+  // Manually delete the SF object mappings associated with sf_user entities
+  // so those records are not orphaned after deleting the main sf_user table.
+  foreach (array('sf_user') as $type) {
+    // Flush mapping objects.
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'salesforce_mapping_object')->propertyCondition('entity_type', $type);
+    $result = $query->execute();
+    if (!empty($result['salesforce_mapping_object'])) {
+      entity_delete_multiple('salesforce_mapping_object', array_keys($result['salesforce_mapping_object']));
+    }
+  }
+  // Then drop the actual crl_inst_sf_users records table.
+  if (db_table_exists('crl_inst_sf_users')) {
+    db_drop_table('crl_inst_sf_users');
+  }
+}

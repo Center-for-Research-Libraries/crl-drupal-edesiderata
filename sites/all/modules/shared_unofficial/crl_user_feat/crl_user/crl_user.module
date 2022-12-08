@@ -1,0 +1,933 @@
+<?php
+
+
+// Define some "static" variables centrally.
+define('CRL_USER_MEMBER_ROLE', 'member-crl');
+define('CRL_USER_MEMBER_ALERT_CROWD_GROUP', 'member-alert');
+define('CRL_USER_LIAISON_CROWD_GROUP', 'liaison');
+// Constants for admin user tools and related.
+// @todo, Make these configurable.
+define('CRL_USER_CRL_SFID', '001A000000AXFFFIA5');
+define('CRL_USER_MOVED_SFID', '001A000000SrZGGIA3');
+define('CRL_USER_INST_OR_EMAIL_CHANGE_URL', 'http://www.crl.edu/update-inst-or-email');
+define('CRL_USER_DISALLOW_MEM_MAIL_PATTERN', '/(gmail\.com|googlemail\.com|yahoo\.com|hotmail\.com)/i');
+
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function crl_user_module_implements_alter(&$implementations, $hook) {
+  // Ensure our user form alter hooks run last.
+  if (($hook == 'form_user_register_form_alter' || $hook == 'form_user_profile_form_alter' || $hook == 'form_alter') && isset($implementations['crl_user'])) {
+    $group = $implementations['crl_user'];
+    unset($implementations['crl_user']);
+    $implementations['crl_user'] = $group;
+  }
+}
+
+
+/**
+ * Implements hook_form_alter().
+ */
+function crl_user_form_alter(&$form, &$form_state, $form_id) {
+  // This function is intentionally left blank. We do most fo our form
+  // alterations with hook_form_FORM_ID_alter() implementations. However, in
+  // order to ensure that ALL our form hook alterations run last for this module
+  // we need a hook_form_alter() implmentation of some form to re-order in
+  // hook_module_implements_alter(). This will ensure that other module's
+  // hook_form_alter()s also run BEFORE our hook_form_FORM_ID_alter()s
+  // @see crl_user_module_implements_alter().
+}
+
+
+/**
+ * Implements hook_form_user_register_form_alter().
+ *
+ * Used to manipulate the main registration form.
+ */
+function crl_user_form_user_register_form_alter(&$form, &$form_state) {
+  // Do the common alterations.
+  crl_user_common_user_form_alterations($form, $form_state);
+  // Deal with the fact that we will be using the email address as the
+  // username. Set an initial random value for username which will then be
+  // changed to match the email in a form handler.
+  $form['account']['name']['#type'] = 'value';
+  $form['account']['name']['#value'] = 'temp_username_' . user_password();
+  $form['account']['mail']['#title'] = t('Email address (this will also be your CRL username)');
+  $form['account']['mail']['#attributes']['placeholder'] = t('name@institution.edu');
+  $inst_lang = $form['field_institution']['#language'];
+  $form['field_institution'][$inst_lang]['#options'] = crl_user_inst_list_builder(FALSE, FALSE, FALSE, TRUE);
+  // See if we can auto-detect the user's institution value and set it as the
+  // default on the member inst picklist.
+  $sfid = crl_user_get_sfid();
+  if ($sfid
+      && isset($form['field_institution'])
+      && empty($form['field_institution'][$inst_lang]['#default_value'])
+      && array_key_exists($sfid, $form['field_institution'][$inst_lang]['#options'])) {
+    $form['field_institution'][$inst_lang]['#default_value'] = $sfid;
+  }
+  // If this user did not pass the IP check then we need to dissallow the
+  // selection of an associated member institution and put up a warning along
+  // with an option to request manual review and approval of benifits.
+  if (!crl_access_by_ip_is_member() && !user_access('administer users')) {
+    drupal_add_css(drupal_get_path('module', 'crl_user') . '/css/crl-user-reg.css');
+    $form['field_profile_inst_other']['#prefix'] = '<div class="inst-member-warning">';
+    $form['field_profile_inst_other']['#suffix'] = '</div>';
+    $member_list_link = l(t('CRL Member Institution'), '//www.crl.edu/membership/members', array('attributes' => array('target' => '_blank')));
+    $form['field_profile_inst_other']['inst_member_alert'] = array(
+      '#prefix' => '<p><strong>' . t('Special Registration') . '</strong></p>' .
+        '<p>' . t('Your CRL member status cannot be verified from your current location. If you are affiliated with a !member_list_link you are strongly encouraged to register via an on-campus computer or proxy service to automatically gain CRL member access status. CRL also accepts registrations from individuals at nonmember institutions for limited activities.', array('!member_list_link' => $member_list_link)) . '</p>',
+      '#type' => 'radios',
+      '#title' => t('Institution Affiliation'),
+      '#options' => array(
+        'claim_member' => t('My institution is a !member_list_link but I must register from an off-campus location. Please manually verify my member access status after registration.', array('!member_list_link' => $member_list_link)),
+        'nonmember' => t('My institution is <strong>not</strong> a CRL member but I would like to participate in limited activites available to registered users.'),
+      ),
+      '#weight' => -10,
+      '#default_value' => 'nonmember',
+    );
+    // In this case the "other" inst field is required and we force the formal
+    // member picklist selection to be "other" as well.
+    $form['field_profile_inst_other'][$inst_lang][0]['value']['#required'] = TRUE;
+    $form['field_profile_inst_other'][$inst_lang][0]['value']['#title'] = t('Institution Name');
+    $form['field_institution'][$inst_lang]['#default_value'] = 'other';
+    $form['field_institution'][$inst_lang]['#type'] = 'hidden';
+  }
+}
+
+
+/**
+ * Implements hook_form_user_profile_form_alter().
+ *
+ * Used to manipulate the user profile form.
+ */
+function crl_user_form_user_profile_form_alter(&$form, &$form_state) {
+  // Do the common alterations.
+  crl_user_common_user_form_alterations($form, $form_state);
+  // Hide the username field from all users (admin or otherwise). User 1 can
+  // bypass this however.
+  global $user;
+  if ($user->uid != 1) {
+    $form['account']['name']['#access'] = FALSE;
+  }
+  // Hide mail/name/inst stuff for non-admins regardless of the individual
+  // #access settings for each. We never want direct changes to these.
+  if (!user_access('administer users')) {
+    $inst_lang = $form['field_institution']['#language'];
+    $form['field_institution']['#access'] = FALSE;
+    $form['field_profile_inst_other']['#access'] = FALSE;
+    $form['account']['mail']['#access'] = FALSE;
+    if (isset($form['account']['current_pass'])) {
+      $form['account']['current_pass']['#description'] = t('This value is only required if you are changing your password.');
+    }
+    // Add alterantive option for displaying and changing these values.
+    $identity_message = '<p>' . t('These values are important identifiers of your CRL member status and cannot be updated here. If you need to make changes to this information please use !form_link instead.', array('!form_link' => l(t('this form'), CRL_USER_INST_OR_EMAIL_CHANGE_URL, array('attributes' => array('target' => '_blank'))))) . '</p>';
+    $form['account']['identity_set'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Email and Affiliation'),
+      '#description' => $identity_message,
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+    );
+    if (isset($form['field_institution'][$inst_lang]['#default_value']) && $form['field_institution'][$inst_lang]['#default_value'] != 'other') {
+      $inst_field = field_view_field('user', $form['#user'], 'field_institution', 'default');
+    }
+    else {
+      $inst_field = field_view_field('user', $form['#user'], 'field_profile_inst_other', 'default');
+    }
+    $inst_markup = render($inst_field);
+    $form['account']['identity_set']['info'] = array(
+      '#suffix' => '',
+      '#markup' => '<p><strong>Email</strong>&nbsp;&nbsp;' . check_plain($form['#user']->mail) . '</p>' . $inst_markup . '<p>',
+      '#weight' => 10,
+    );
+  }
+  else { // User has administer-user rights
+    // Some special alterations apply related to Salesforce user mappings.
+    // This really only applies for a site that is running crl_user_sf, so
+    // ideally this logic would be placed in a form_alter within that module
+    // instead of here. However, we already have a pretty convoluted alter
+    // ordering in place (see crl_user_module_implements_alter()) for user forms
+    // which makes it much easier to simply handle this logic procedurally here.
+    if (module_exists('crl_user_sf')) {
+      $mapping_object = salesforce_mapping_object_load_by_drupal('user', $form['#user']->uid);
+      if ($mapping_object) {
+        $wrapper_mapping_object = entity_metadata_wrapper('salesforce_mapping_object', $mapping_object);
+        $sf_url = $wrapper_mapping_object->salesforce_url->value();
+        // Display general Drupal message warning.
+        if (empty($form_state['input'])) {
+          drupal_set_message(t('This user is linked to CIS. Some values can only be updated by editing this user\'s CIS entry. <a target="_blank" href="!url">View or edit this user in CIS</a>.', array('!url' => $sf_url)), 'warning');
+        }
+        // Each mapped field should be disabled for local editing.
+        $contact_map = salesforce_mapping_load('contacts');
+        foreach ($contact_map->field_mappings as $field_mapping) {
+          $field_name = $field_mapping['drupal_field']['fieldmap_value'];
+          if (strpos($field_name, 'field') === 0) {
+            $element =& $form[$field_name][$form[$field_name]['#language']];
+            if (!empty($element[0]['value'])) {
+              $element =& $element[0]['value'];
+            }
+          }
+          elseif (isset($form['account'][$field_name])) {
+            $element =& $form['account'][$field_name];
+          }
+          $element['#disabled'] = TRUE;
+          $element['#title'] = $element['#title'] . ' ' . t('(Must be edited in CIS)');
+        }
+        // Status values are linked to institution values so we disable that too.
+        $form['account']['status']['#disabled'] = TRUE;
+        $form['account']['status']['#title'] = $form['account']['status']['#title'] . ' ' . t('(Controlled by CIS institution status)');
+      }
+    }
+    // If crl_user_sf is not installed then we really cannot tell if the user
+    // is linked to CIS. In this case making edits could be problamatic as CIS
+    // updates could be synced through Crowd (on another site with crl_user_sf)
+    // to this site thus overrideing any edits made. So we show a warning.
+    elseif (empty($form_state['input'])) {
+      drupal_set_message(t('This user may be linked to CIS but the offical link status cannot be determined from this site. Please consider editing this user via the main website where their CIS link status can be confirmed.'), 'warning');
+    }
+  }
+}
+
+
+/**
+ * Pre render callback for alteration of crowd group checkboxes.
+ */
+function crl_user_form_hide_cis_crowd_groups($element) {
+  $role_mapping = array_flip(crl_user_map_groups_from_sf_roles());
+  $hidden = array_intersect_key($element, $role_mapping);
+  ksort($hidden, SORT_NATURAL);
+  $i = 0;
+  foreach ($hidden as $group => $data) {
+    $element[$group]['#attributes']['onclick'] = 'return false'; // Hacky, but simple way to disable checkbox while keeping the value
+    $element[$group]['#weight'] = 1000 + $i; // Move to bottom
+    $element[$group]['#title'] = $element[$group]['#title'] . ' - <strong>' . $element['#crl_user_cis_group_hide_message'] . '</strong>';
+    $i++;
+  }
+  return $element;
+}
+
+/**
+ * Common form alterations for user forms (apply to both register and profile
+ * forms).
+ */
+function crl_user_common_user_form_alterations(&$form, &$form_state) {
+  // Set custom validation rules that are common.
+  array_unshift($form['#validate'], 'crl_user_common_user_form_validate');
+  // Conditionally toggle the "other" inst option based on the value entered in
+  // the main member inst picklist.
+  $inst_lang = $form['field_institution']['#language'];
+  $form['field_profile_inst_other']['#states'] = array(
+    'visible' => array(
+      ':input[name="field_institution[' . $inst_lang . ']"]' => array('value' => 'other'),
+    ),
+    // Note that a required state change only works client-side (e.g.,
+    // show/hide the "*"). We still need custom validation rules.
+    'required' => array(
+      ':input[name="field_institution[' . $inst_lang . ']"]' => array('value' => 'other'),
+    ),
+  );
+  // Add some help text related to the "other" int option.
+  $form['field_institution'][$inst_lang]['#description'] = t('If your institution is not a CRL member, or you do not see it listed, please select <strong>Other / Non-member</strong>.');
+  // Hide some stuff universally to tidy-up the form for all permission levels
+  // (we can always use the default values for these elements).
+  if (isset($form['locale'])) {
+    $form['locale']['#access'] = FALSE;
+  }
+  if (isset($form['mimemail'])) {
+    $form['mimemail']['#access'] = FALSE;
+  }
+  if (isset($form['message_subscribe_email'])) {
+    $form['message_subscribe_email']['#access'] = FALSE;
+  }
+  if (isset($form['message_subscribe_email_freq'])) {
+    $form['message_subscribe_email_freq']['#access'] = FALSE;
+  }
+  // Also hide the CRL member role option as it's always set programmatically.
+  // @see crl_user_user_presave().
+  $member_role = user_role_load_by_name(CRL_USER_MEMBER_ROLE);
+  if ($member_role) {
+    // @todo: Enable hide after some additional production testing.
+    // unset($form['account']['roles']['#options'][$member_role->rid]);
+  }
+  // Cluster the role selection inside a fieldset so that it's consistent with
+  // the Crowd groupds options.
+  if (!empty($form['account']['roles']['#access'])) {
+    $form['account']['roles_set'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Drupal Roles'),
+      '#description' => t(''),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+    $form['account']['roles_set']['roles'] = $form['account']['roles'];
+    unset($form['account']['roles']);
+    if (isset($form['account']['crowd_groups_set'])) {
+      $form['account']['crowd_groups_set']['#collapsed'] = FALSE;
+      $form['account']['crowd_groups_set']['#title'] = t('CUD Groups');
+    }
+  }
+  // Setting CIS-linked groups should be disallowed for all users regardless
+  // of thier CIS mapping status.
+  if (isset($form['account']['crowd_groups_set'])) {
+    $user = isset($form['#user']->uid) ? $form['#user']->uid : 0;
+    $mapping_object = salesforce_mapping_object_load_by_drupal('user', $user);
+    $crowd_groups_element =& $form['account']['crowd_groups_set']['crowd_groups'];
+    if (!isset($crowd_groups_element['#pre_render'])) {
+      $crowd_groups_element['#pre_render'] = array();
+    }
+    $crowd_groups_element['#crl_user_cis_group_hide_message'] = $mapping_object ? t('Must be edited in CIS') : t('Only applies to CIS-linked users');
+    array_unshift($crowd_groups_element['#pre_render'], 'crl_user_form_hide_cis_crowd_groups');
+  }
+}
+
+
+/**
+ * Validation handler for the registration and profile forms.
+ *
+ * @see crl_user_form_user_register_form_alter().
+ */
+function crl_user_common_user_form_validate($form, &$form_state)  {
+  // Grab a couple values from the form that are common to logic below.
+  $inst = $form_state['values']['field_institution'][$form['field_institution']['#language']][0]['value'];
+  $other_inst = $form_state['values']['field_profile_inst_other'][$form['field_profile_inst_other']['#language']][0]['value'];
+  // Apply our custom conditional required logic for "other" inst, but only
+  // if we have not already enforced that field_profile_inst_other is required
+  // and only if the user actually has access to the field.
+  if (empty($form['field_profile_inst_other']['#required'])
+    && !empty($form['field_profile_inst_other']['#access'])
+    && $inst == 'other'
+    && empty($other_inst)) {
+    form_set_error('field_profile_inst_other', 'Other institution is required.');
+  }
+  // Some of this logic only applies to the registration form.
+  if ($form['#form_id'] == 'user_register_form') {
+    // For any future validation and submit callbacks we want the username to be
+    // set to the email address.
+    $form_state['values']['name'] = $form_state['values']['mail'];
+    // Capture the member alert data in a place that can be accessed later
+    // during the save process. We have to do this as it looks like any extra
+    // data added directly to a field value gets stripped on later processing.
+    $claim_member = (!empty($form_state['values']['field_profile_inst_other']['inst_member_alert']) && $form_state['values']['field_profile_inst_other']['inst_member_alert'] == 'claim_member');
+    $form_state['values']['crl_user_reg_member_alert'] = $claim_member;
+    // Special validation for email addresses (restrict personal email addresses
+    // when user is registering with an member inst association).
+    if (($claim_member || $inst != 'other') && preg_match(CRL_USER_DISALLOW_MEM_MAIL_PATTERN, $form_state['values']['mail'])) {
+      form_set_error('mail', t('Personal email addresses are not allowed when associating an account with a CRL member institution. Please use an institution-specific email address.'));
+    }
+    // Bot Check. Having all role values checked is a sign of a bot submission.
+    $roles_set = $form_state['values']['field_profile_roles'][$form['field_profile_roles']['#language']];
+    $roles_options = $form['field_profile_roles'][$form['field_profile_roles']['#language']]['#options'];
+    if (count($roles_set) == count($roles_options)) {
+      form_set_error('field_profile_roles', t('Professional Roles field value is invalid.'));
+    }
+    // Bot Check. Using a number for the inst value is a sign of a bot
+    // submission.
+    if ($inst == 'other' && is_numeric($other_inst)) {
+      form_set_error('field_profile_inst_other', t('Institution Name field value is invalid.'));
+    }
+  }
+}
+
+
+/**
+ * Implements hook_form_user_login_alter().
+ *
+ * Used to manipulate the main login form.
+ */
+function crl_user_form_user_login_alter(&$form, &$form_state) {
+  // Run our "common" modifications.
+  crl_user_common_user_login_form_alterations($form, $form_state);
+}
+
+
+/**
+ * Implements hook_form_user_login_block_alter().
+ *
+ * Used to manipulate the block-based login form.
+ */
+function crl_user_form_user_login_block_alter(&$form, &$form_state) {
+  // Run our "common" modifications.
+  crl_user_common_user_login_form_alterations($form, $form_state);
+}
+
+
+/**
+ * Implements hook_form_user_pass_alter().
+ *
+ * Used to manipulate the request new password form.
+ */
+function crl_user_form_user_pass_alter(&$form, &$form_state) {
+  // Run our "common" modifications.
+  crl_user_common_user_login_form_alterations($form, $form_state);
+  // Tweak the button text.
+  $form['actions']['submit']['#value'] = t('Request new password');
+}
+
+
+/**
+ * Common form alterations for user login forms.
+ */
+function crl_user_common_user_login_form_alterations(&$form, &$form_state) {
+  $form['name']['#title'] = t('Username (Your affiliated institution email address)');
+  $form['name']['#attributes']['placeholder'] = t('name@institution.edu');
+  $form['name']['#description'] = '';
+  $form['pass']['#description'] = '';
+  $form['actions']['submit']['#value'] = t('Sign In');
+}
+
+
+/**
+ * Implements hook_init().
+ */
+function crl_user_init() {
+  // See if we need to redierect a http request to https based on Crowd session.
+  // This is a bit like what auth_ssl_redirect does but specific to Crowd-based
+  // authentication. If we have dynamic_cache running then all Crowd checks are
+  // run in hook_init(), and requests that contain a crowd cookie will invoke
+  // hook_init() regadless of the core cache settings. As this implementation of
+  // hook_init() should be firing before Crowd's, so our redirect can kick-in
+  // before any SSO checks and validations take place. This is temporary and can
+  // be disabled when we are able to enforce secure cookies for all Crowd sites.
+  // Note that we only do this if securelogin is active, as we DEPEND on
+  // securelogin's implementaion of hook_url_outbound_alter() to ensure a
+  // drupal_goto() call can force https. This also gives us a way to toggle the
+  // behavior off on an instance-by-instance basis (disable in stage, etc.).
+  if (module_exists('securelogin')) {
+    global $is_https, $user;
+    $query = drupal_get_query_parameters();
+    // See if we have a SSO cookie or a SSO session. In either case redirect
+    // away from http. Note that we want to catch cases where there is an
+    // untested cookie and redirect before it will be tested (and potentially
+    // triggering a local session).
+    if (!$is_https
+        && (crowd_get_set_cookie_data() || crowd_get_set_session_data())
+        && !array_key_exists('crl-https', $query)) {
+      $name = isset($user->name) ? $user->name : 'anonymous';
+      // watchdog('crl user', 'Redirecting @user to https connection because a Crowd token and/or session was detected.', array('@user' => $name));
+      // Add a sanity check to signal that the redirect is happening and to help
+      // avoid infinite redirects.
+      $query += array('crl-https' => 1);
+      unset($_GET['destination']);
+      // IMPORTANT: a drupal_goto() with the https option will not always work
+      // by default. This works here if securelogin is active as it FORCES the
+      // https option via securelogin_url_outbound_alter(). Otherwise we would
+      // need to manually detect the secure base absolute path (https://...).
+      drupal_goto(current_path(), array('query' => $query, 'https' => TRUE, 'external' => FALSE));
+    }
+  }
+}
+
+
+/**
+ * Implements hook_user_view().
+ */
+function crl_user_user_view($account, $view_mode) {
+  $menu = menu_get_item();
+  // If we are on the user's profile page expose the user's email address. We
+  // typically restrict view access to user profiles to staff users, so no
+  // additional permission checks should be needed here. However, if this
+  // changes in the future some modifications may be needed.
+  if ($menu['path'] == 'user/%') {
+    drupal_set_title(drupal_get_title() . ' (' . $account->mail . ')');
+  }
+
+}
+
+
+/**
+ * Implements hook_preprocess_fieldset().
+ */
+function crl_user_preprocess_fieldset(&$vars) {
+  // Quick hack to change the CAPTCHA field label.
+  if (isset($vars['element']['#title']) && $vars['element']['#title'] == t('CAPTCHA')) {
+    $vars['element']['#title'] = t('Security');
+  }
+}
+
+
+/**
+ * Implements hook_form_system_site_information_settings_alter().
+ */
+function crl_user_form_system_site_information_settings_alter(&$form, &$form_state) {
+  // A custom site 403 page is in conflict with any tools that must make dynamic
+  // cache alterations. When page caching is enabled Drupal would associate this
+  // path with the contents of any 403 page internally. It would do this in such
+  // a strict way that the contents of this custom 403 page would always be
+  // shown no matter what we do in hook_boot() to alter caching and re-generate
+  // the page. See _drupal_bootstrap_page_cache() where $_GET['q'] is hijacked
+  // for a primed cache.
+  $form['error_page']['site_403']['#default_value'] = '';
+  $form['error_page']['site_403']['#disabled'] = TRUE;
+  $form['error_page']['site_403']['#description'] = t('<strong>This option has been disabled by crl_user as it may be incompatible with crl_access_by_ip and crowd</strong>. When page caching is enabled this path\'s content would be cached in such a way that it would be impossible to re-access the initially-requested page. This makes it impossible for dynamic cache alterations to work reliably for 403s.');
+}
+
+
+/**
+ * Implementation of hook_page_build().
+ *
+ * This provides a quick way to make alterations to access denied pages.
+ * hook_page_build gets invoked AFTER the menu callback has run but BEFORE
+ * the page data is processed (which is where messages are printed). So by this
+ * point all access logic should have run and we should have accurate headers
+ * set (to indicate whether-or-not Drupal is about to deliver a 403).
+ *
+ * Note that we can't use a custom site 403 page via core settings.
+ * See crl_user_form_system_site_information_settings_alter() for more info.
+ */
+function crl_user_page_build(&$page) {
+  // Only proceed if we know this is an access denied case.
+  if (strpos(drupal_get_http_header('status'), '403 Forbidden') !== FALSE) {
+    global $user;
+    // Clear the default content and set our own.
+    unset($page['content']);
+    $title = t('Login Required');
+    $message = t('This resource may only be available to CRL member users.');
+    if (!empty($user->uid)) {
+      $title = t('Access Restricted');
+      $message = t('Some resources may be restricted based on your CRL user account.');
+    }
+    drupal_set_title($title);
+    $page['content']['login_notice']['#markup'] = '<p>' . $message . '</p><hr/>';
+    // Add the login form as well. Note that it won't show anything if the user
+    // is already logged-in.
+    $login_block = module_invoke('user', 'block_view', 'login');
+    $page['content']['login'] = !empty($login_block['content']) ? $login_block['content'] : '';
+  }
+}
+
+
+/**
+ * Implements hook_webform_select_options_info().
+ */
+function crl_user_webform_select_options_info() {
+  $items = array();
+  $items['institutions'] = array(
+    'title' => t('Institutions'),
+    'options callback' => 'crl_user_inst_webform_oplist',
+    'options arguments' => array(FALSE, FALSE, FALSE, FALSE),
+  );
+   $items['institutions_with_other'] = array(
+    'title' => t('Institutions with Other'),
+    'options callback' => 'crl_user_inst_webform_oplist',
+    'options arguments' => array(FALSE, FALSE, FALSE, TRUE),
+  );
+  return $items;
+}
+
+
+/**
+ * Allowed values function callback for the institution picklist.
+ *
+ * Note that this is a callback, so the arguments are set. This means that any
+ * callers that require *conditional* build logic for the list cannot use this
+ * function directly.
+ */
+function crl_user_inst_oplist() {
+  // Call the oplist builder to get the main list inclusive of all options.
+  return crl_user_inst_list_builder(TRUE, TRUE, FALSE, TRUE);
+}
+
+
+/**
+ * Allowed values function callback for the institution picklist that appears
+ * on webforms.
+ *
+ * @see crl_user_webform_select_options_info()
+ */
+function crl_user_inst_webform_oplist($component, $flat, $arguments) {
+  // Call the oplist builder with our passed-in arguments.
+  return call_user_func_array('crl_user_inst_list_builder', $arguments);
+}
+
+
+/**
+ * Helper to dynamically build an institution list. Any time an inst list is
+ * needed, it should be fetched with this central function.
+ *
+ * @param boolean $show_nonmem
+ *   Whether-or-not to add nonmember institutions to the resulting list.
+ * @param boolean $label_nonmem
+ *   Whether-or-not to append a "(NONMEMBER)" string to the title/label for each
+ *   nonmember institution. Has no effect if no nonmember instutions are in the
+ *   resulting list.
+ * @param boolean $use_opgroup
+ *   Whether-or-not to make the returned list an associative array, separating
+ *   members and nonmembers, that the form API can treat as opgroups. May not
+ *   work on all forms (such as core field edit forms).
+ * @param boolean $add_other
+ *   Whether-or-not to add an "Other" option to the list.
+ * @return array
+ *   Returns an associative array, keyed by sfid of each institution. If
+ *   $use_opgroup is set, this array will be multidimensional and separated by
+ *   member and nonmember.
+ *
+ * @see crl_user_inst_oplist()
+ */
+function crl_user_inst_list_builder($show_nonmem = TRUE, $label_nonmem = TRUE, $use_opgroup = FALSE, $add_other = TRUE) {
+  $inst_list_mem = variable_get('crl_sf_sync_institutions_array_sfid_mem', array());
+  $inst_list_all = variable_get('crl_sf_sync_institutions_array_sfid', array());
+  // For the purposes of most picklists the member list should also include CRL.
+  if (array_key_exists(CRL_USER_CRL_SFID, $inst_list_all)) {
+    $inst_list_mem[CRL_USER_CRL_SFID] = $inst_list_all[CRL_USER_CRL_SFID];
+  }
+  $list = $inst_list_mem;
+  // If configured, extract the nonmenbers.
+  if ($show_nonmem) {
+    $inst_list_nonmem = array_diff_key($inst_list_all, $inst_list_mem);
+    asort($inst_list_nonmem);
+    // If configured, add "Nonmember" text to labels for reference.
+    if ($label_nonmem) {
+      foreach ($inst_list_nonmem as $key => $value) {
+        $inst_list_nonmem[$key] = $inst_list_nonmem[$key] . ' (NONMEMBER)';
+      }
+    }
+    // If configured, create list that separates members and nonmembers with
+    // opgroups.
+    if ($use_opgroup) {
+      $list = array(
+        'MEMBERS' => $inst_list_mem,
+        'NON-MEMBERS' => $inst_list_nonmem,
+      );
+    }
+    // Otherwise just return the two lists unioned together.
+    else {
+      $list = $inst_list_mem + $inst_list_nonmem;
+    }
+  }
+  // Also add the "other" option if configured.
+  if ($add_other) {
+    $list = array('other' => t('Other / Non-member')) + $list;
+  }
+  return $list;
+}
+
+
+/**
+ * Utility to get a sfid based on the user's IP.
+ *
+ * This is something of a bridge between the salesforce sync logic and the
+ * crl_access_by_ip logic. It is included here in crl_user as most of the
+ * forms that need to use this utility are manipulated here (and related to
+ * provisioning or other crowd-centric logic).
+ *
+ * @return string
+ *   Returns the sfid of the user's inst if it can be detected, otherwise NULL.
+ */
+function crl_user_get_sfid() {
+  $sfid = NULL;
+  $id_map = variable_get('crl_sf_sync_institutions_array_id_map', array());
+  $member_data = crl_access_by_ip_get_member_data();
+  if (isset($member_data['id'])) {
+    // Get sfid through crlid.
+    if (!empty($id_map[$member_data['id']])) {
+      $sfid = $id_map[$member_data['id']];
+    }
+  }
+  return $sfid;
+}
+
+
+/**
+ * Helper to get the institution info for a user (either the name or the iid).
+ *
+ * @param int $uid
+ *   An optional user ID representing the user to check. If NULL the current
+ *   user will be checked.
+ * @param int $sfid
+ *   An optional (known) sfid. If this is passed in, no user-specific lookup is
+ *   done, and we simply return the inst name associated with the iid.
+ * @param boolean $return_iid
+ *   Optional indicator to specifiy if an iid should be returned instead of the
+ *   instituion name. Has no significance if a specific $iid is passed in.
+ * @return mixed
+ *   Returns the user's institution as a string or int ID (depending on the
+ *   value of $return_iid). Returns boolean FALSE if the inst could not be
+ *   determined.
+ */
+function crl_user_get_institution($uid = NULL, $sfid = NULL, $return_iid = FALSE) {
+  // Short-circuit everything for anon users.
+  if ($uid === 0) {
+    return FALSE;
+  }
+  // Get the FULL list of institutions for label reference. We could use
+  // crl_user_inst_list_builder() for this but that implements some
+  // permission-based filtering which does not always apply (we are only
+  // showing one label for the list here, not the whole list).
+  $institutions_array_id = variable_get('crl_sf_sync_institutions_array_sfid', array());
+  // If we have an iid, then we return the institution name independent of any
+  // user details passed-in.
+  if (isset($sfid)) {
+    if (isset($institutions_array_id[$sfid])) {
+      return $institutions_array_id[$sfid];
+    }
+    else {
+      return FALSE;
+    }
+  }
+  // If we don't have an iid then we are checking for it based on specific
+  // user info.
+  if (empty($uid)) {
+    global $user;
+    $uid = $user->uid;
+  }
+  // Make sure to only lookup the specific user iid once for each user per page.
+  static $user_institution_ids = array();
+  if (empty($user_institution_ids[$uid])) {
+    // Make sure user fields are loaded.
+    $account = user_load($uid);
+    $entity_wrapper = entity_metadata_wrapper('user', $account);
+    $user_institution_ids[$uid] = isset($entity_wrapper->field_institution) ? $entity_wrapper->field_institution->value() : -1;
+  }
+  // Get and return the appropriate inst id or name.
+  $user_institution_id = $user_institution_ids[$uid];
+  if (isset($institutions_array_id[$user_institution_id])) {
+    if ($return_iid) {
+      return $user_institution_id;
+    }
+    return $institutions_array_id[$user_institution_id];
+  }
+  return FALSE;
+}
+
+
+/**
+ * Implements hook_cron().
+ */
+function crl_user_cron() {
+  module_load_include('inc', 'crl_user', 'includes/crl_user_sf');
+  // Sync institution picklist from Salesforce
+  crl_user_sf_sync_inst();
+}
+
+
+/**
+ * Implements hook_cron_queue_info().
+ */
+function crl_user_cron_queue_info() {
+  $queues = array();
+  $queues['crl_user_update_mem_roles'] = array(
+    'worker callback' => 'crl_user_update_mem_roles',
+    'time' => 60,
+  );
+  return $queues;
+}
+
+
+/**
+ * Worker callback to update member roles for a given institution ID.
+ *
+ * @param string $sfid
+ *   The sfid of an institution for which we want to re-check member roles.
+ *
+ * @see crl_user_user_presave()
+ */
+function crl_user_update_mem_roles($sfid) {
+  // Query all users that have this inst value, then simply run a user save on
+  // each to trigger the role calculations that are part of the save hooks.
+  $query = new EntityFieldQuery();
+  $query
+      ->entityCondition('entity_type', 'user')
+      ->fieldCondition('field_institution', 'value', $sfid, '=')
+      ->addTag('DANGEROUS_ACCESS_CHECK_OPT_OUT'); // Needed for drush/cron execution.
+  $result = $query->execute();
+  if (!empty($result['user'])) {
+    $users_to_update = user_load_multiple(array_keys($result['user']));
+    foreach ($users_to_update as $user) {
+      // Bypass the Crowd push logic for this save as the change logic that we
+      // are interested in is strictly related to local roles.
+      $user->crowd_push_bypass = TRUE;
+      user_save($user);
+    }
+    $all_institutions = variable_get('crl_sf_sync_institutions_array_sfid', array());
+    watchdog('crl_user', 'Re-saved %count users affiliated with %inst in order to re-calculate their member-related roles.', array('%count' => count($users_to_update), '%inst' => $all_institutions[$sfid]));
+  }
+}
+
+
+/**
+ * Implements hook_entity_presave().
+ */
+function crl_user_entity_presave($entity, $type) {
+  if ($type == 'user') {
+    // Grab some common variables.
+    $wrapper = entity_metadata_wrapper('user', $entity);
+    $inst = $wrapper->field_institution->value();
+    $entity->roles = isset($entity->roles) ? $entity->roles : array(DRUPAL_AUTHENTICATED_RID => 'authenticated user');
+    $roles =& $entity->roles;
+    // If the inst value is changing check to see if we need to also toggle the
+    // status of the user ("Contact Moved" users should be deactivated).
+    $inst_orig = isset($entity->original) ? entity_metadata_wrapper('user', $entity->original)->field_institution->value() : '';
+    if ($inst != $inst_orig) {
+      if ($inst_orig == CRL_USER_MOVED_SFID) {
+        $entity->status = 1;
+      }
+      elseif ($inst == CRL_USER_MOVED_SFID) {
+        $entity->status = 0;
+      }
+    }
+    // Programmatically set the user's member roles based on thier current inst
+    // value. This applies only to local Drupal roles.
+    $member_role = user_role_load_by_name(CRL_USER_MEMBER_ROLE);
+    if ($member_role) {
+      if ($inst != 'other' && array_key_exists($inst, crl_user_inst_list_builder(FALSE))) {
+        $roles += array($member_role->rid => $member_role->name);
+      }
+      else {
+        unset($roles[$member_role->rid]);
+      }
+    }
+    // If this is a new user also check if the member_alert group/role should be
+    // applied.
+    if (!empty($entity->is_new) && !empty($entity->crl_user_reg_member_alert)) {
+      // Save member_alert group addition directly in Crowd (depends on
+      // crowd_push)
+      $entity->crowd_groups[CRL_USER_MEMBER_ALERT_CROWD_GROUP] = CRL_USER_MEMBER_ALERT_CROWD_GROUP;
+      // Capture any local role changes that may also need to be applied based
+      // on this change.
+      crowd_update_roles_from_groups($roles, $entity->crowd_groups);
+      // Stash the fact that this was a member alert on the user's data array.
+      $entity->data['crl_user_reg_member_alert'] = TRUE;
+    }
+  }
+}
+
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function crl_user_views_pre_render(&$view) {
+  // When looking at a manage user view place add an appropriate message in the
+  // screen to declare how fresh the data is.
+  if ($view->name == 'manage_users') {
+    // First check if we are configured to maintain a sync with Crowd. If so the
+    // specific message depends on the last sync timestamp and queue state.
+    if (module_exists('crowd_batch_pull')) {
+      $last_sync = variable_get('crowd_batch_pull_last_timestamp', REQUEST_TIME);
+      $last_sync_formatteed = format_interval(REQUEST_TIME - $last_sync);
+      $sync_link = drupal_valid_path('admin/reports/status/run-cron') ? l(t('Sync now (runs cron)'), 'admin/reports/status/run-cron', array('query' => array('destination' => current_path()))) : '';
+      $queue = DrupalQueue::get('crowd_batch_pull');
+      $queue_items_count = $queue->numberOfItems();
+      if ($queue_items_count) {
+        drupal_set_message(t('The user list is partially out-of-sync with the central user directory. There are currently <strong>@count</strong> user records in the sync queue which may be displaying outdated information below. These users will be updated automatically during future cron runs and this message will disappear once the sync queue is empty.', array('@count' => $queue_items_count)) . '</br>' . $sync_link, 'error', FALSE);
+      }
+      elseif ($last_sync > REQUEST_TIME - 300) {
+        drupal_set_message(t('The central user directory was synced <strong>@time ago</strong>. The data displayed here should be up-to-date.', array('@time' => $last_sync_formatteed)), 'status', FALSE);
+      }
+      else {
+        drupal_set_message(t('The central user directory was last synced <strong>@time ago</strong>. Any remote updates since that time may not yet be reflected here.', array('@time' => $last_sync_formatteed)) . '</br>' . $sync_link, 'warning', FALSE);
+      }
+    }
+    // If we are not maintaining a sync with Crowd, then we should make that
+    // clear as an error message.
+    else {
+      drupal_set_message(t('Automatic Crowd sync features are not configured. The data below only represents the state of each user at the time of their last <strong>local</strong> login. This information should not be used for global user administration.'), 'error');
+    }
+  }
+}
+
+
+/**
+ * Factory for a LDAP connection class.
+ *
+ * Nothing too fancy here. We just ensure that we can re-use the same connection
+ * object multiple times in one page request (without forcing a singleton or
+ * anything like that).
+ *
+ * @param boolean $reset
+ *   Whether-or-not to reset the connect values if they have previously been
+ *   loaded during this page request.
+ * @return
+ *   A CRL LDAP connection object, or false on failure.
+ */
+function crl_user_ldap_connect($reset = FALSE) {
+  static $ldap;
+  if (empty($ldap)) {
+    $ldap = new crlLdap();
+  }
+  if (is_object($ldap)) {
+    return $ldap;
+  }
+  return FALSE;
+}
+
+
+/**
+ * Utility to get mappings for SF Contact Roles to Crowd Groups
+ *
+ * From a data management perspective this mapping is only used by crl_user_sf
+ * but even instances without crl_user_sf enabled need to be aware of which
+ * Crowd groups might be controlled by Salesforce via other instances in the
+ * same Crowd cluster.
+ *
+ * @return array
+ *   An associative array in the form SF Contact Role => Crowd Group
+ */
+function crl_user_map_groups_from_sf_roles() {
+  return array( // SF Contact Role => Crowd Group
+    'Board Member' => 'board of directors',
+    'Director' => 'Director',
+    'PP Main Contact' => 'pp-main',
+    'CAMP' => 'CAMP',
+    'CAMP Affiliate Member' => 'CAMP',
+    'CAMP Extra' => 'CAMP',
+    'CIFNAL' => 'GRN-CIFNAL',
+    'CIFNAL personal' => 'GRN-CIFNAL',
+    'CIFNAL Extra' => 'GRN-CIFNAL',
+    'GNARP' => 'GRN-GNARP',
+    'GNARP personal' => 'GRN-GNARP',
+    'GNARP Extra' => 'GRN-GNARP',
+    'LAMP' => 'LAMP',
+    'LAMP Extra' => 'LAMP',
+    'LARRP' => 'GRN-LARRP',
+    'LARRP Extra' => 'GRN-LARRP',
+    'MEMP' => 'MEMP',
+    'MEMP Extra' => 'MEMP',
+    'SAMP' => 'SAMP',
+    'SAMP Extra' => 'SAMP',
+    'SEAM' => 'SEAM',
+    'SEAM Extra' => 'SEAM',
+    'SEEMP' => 'SEEMP',
+    'SEEMP Extra' => 'SEEMP',
+    'TRAIL' => 'trail',
+    'TRAIL personal' => 'trail',
+    'TRAIL Extra' => 'trail',
+    'SAOA' => 'SAOA',
+    'SAOA Extra' => 'SAOA',
+    'Liaison' => 'liaison',
+    'NERL Contact' => 'nerl',
+    'GCI-L Rep' => 'GCI-L',
+  );
+}
+
+
+/**
+ * Implements hook_views_data_alter().
+ *
+ * Add a raw username value that gets around some limitations of the realname
+ * module.
+ *
+ * @see https://www.drupal.org/node/1239478
+ */
+function crl_user_views_data_alter(&$data) {
+  $data['users']['username'] = array(
+    'title' => t('Username'),
+    'help' => t("The user or author username."),
+    'real field' => 'name',
+    'field' => array(
+      'handler' => 'views_handler_field_user',
+      'click sortable' => TRUE,
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_string',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+      'title' => t('Name'),
+      'help' => t("The user's actual, raw, username.")
+    ),
+  );
+}

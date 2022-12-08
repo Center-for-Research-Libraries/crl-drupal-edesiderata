@@ -1,0 +1,27 @@
+<?php
+
+
+/**
+ * Implements hook_install().
+ */
+function crl_inst_install() {
+  // This module, and its related feature, needs to "take over" the handling of
+  // all institution bundle data and field structures. If this site already
+  // has institution data we need to clear it to start with.
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')->entityCondition('bundle', 'institution');
+  $result = $query->execute();
+  if (!empty($result['node'])) {
+    node_delete_multiple(array_keys($result['node']));
+  }
+  // Also drop some field instances that may have been part of old inst objects
+  // but are no longer needed once this module is in place.
+  $instance_old_affiliations = field_info_instance('node', 'field_inst_affiliations', 'institution');
+  if ($instance_old_affiliations) {
+    field_delete_instance($instance_old_affiliations);
+  }
+  $instance_old_fy = field_info_instance('node', 'field_inst_starting_fy', 'institution');
+  if ($instance_old_fy) {
+    field_delete_instance($instance_old_fy);
+  }
+}

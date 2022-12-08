@@ -1,0 +1,13 @@
+name = "CRL User"
+description = "CRL user management customizations and integrations with Crowd and SFDC"
+core = 7.x
+dependencies[] = crl_user_feat
+dependencies[] = crowd
+dependencies[] = crowd_push
+dependencies[] = crl_access_by_ip
+dependencies[] = entity
+package = "CRL"
+
+files[] = "includes/CrlUserLdap.inc"
+files[] = "includes/CrlUserBatchPullDetector.inc"
+files[] = "includes/CrlUserCrowdRestClient.inc"

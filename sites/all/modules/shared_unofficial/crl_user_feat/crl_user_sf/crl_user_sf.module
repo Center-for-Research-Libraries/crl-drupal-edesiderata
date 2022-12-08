@@ -1,0 +1,472 @@
+<?php
+/**
+ * @file
+ * Code for the CRL User SF Bridge feature.
+ */
+
+include_once 'crl_user_sf.features.inc';
+
+
+/**
+ * Implements hook_entity_info().
+ */
+function crl_user_sf_entity_info() {
+  // Abstract a table to store contact role data as entities.
+  // @see crl_user_sf_schema()
+  return array(
+    'sf_contact_role' => array(
+      'label' => t('SF Contact Role'),
+      'plural label' => t('SF Contact Roles'),
+      'entity class' => 'Entity',
+      'controller class' => 'EntityAPIController',
+      'base table' => 'crl_user_sf_contact_roles',
+      'entity keys' => array(
+        'id' => 'id', // Primary IP
+        'label' => 'id', // Property that can be used as the entity label (required)
+      ),
+      // Use the default label() and uri() functions
+      'label callback' => 'entity_class_label',
+      'uri callback' => 'entity_class_uri',
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_entity_property_info_alter().
+ */
+function crl_user_sf_entity_property_info_alter(&$info) {
+  // Ensure that some properties defined in our module's schema are writable.
+  // Entity API will have automatically defined the DB fields for our custom
+  // entities as properties (using the default EntityDefaultMetadataController),
+  // but they are not writable until a setter callback is declared.
+  // @see crl_user_sf_schema()
+  // @see crl_user_sf_entity_info()
+  // @todo: Maybe implement our own metadata controller to avoid this step?
+  foreach (array('contact_sfid', 'inst_sfid', 'status', 'role', 'role_type') as $prop_key) {
+    if (isset($info['sf_contact_role']['properties'][$prop_key])) {
+      $info['sf_contact_role']['properties'][$prop_key]['setter callback'] = 'entity_property_verbatim_set';
+    }
+  }
+  // Also add an offical property that can be used to identify times when a
+  // Salesforce-linked user entity is being updated externally to Salesforce.
+  // This property will be available in Rules which will make it possible to
+  // separate which updates may need to trigger an admin email.
+  $info['user']['properties']['flag_linked_sf_update'] = array(
+    'label' => t('Flag linked Salesforce User on Update'),
+    'description' => t('Check if the user is linked to Salesforce and if a user update is happening independent of a Salesforce pull.'),
+    'type' => 'boolean',
+    'getter callback' => 'crl_user_sf_flag_linked_sf_update',
+  );
+}
+
+
+/**
+ * Getter callback: flag_linked_sf_update property.
+ *
+ * Tests if a user is already linked to salesforce and is not currently being
+ * updated.
+ */
+function crl_user_sf_flag_linked_sf_update($entity) {
+  // Only flag the user if they are linked to Salesforce, are not being locally
+  // created and are not being updated from Salesforce right now. If this
+  // property is used in a rule data comparison condition additional filters
+  // (check which user fields have changes, etc.) may be needed there.
+  return (salesforce_mapping_object_load_by_drupal('user', $entity->uid) && empty($entity->is_new) && empty($entity->salesforce_pull));
+}
+
+
+/**
+ * Implements hook_salesforce_push_entity_allowed().
+ */
+function crl_user_salesforce_push_entity_allowed($entity_type, $entity, $sf_sync_trigger, $mapping) {
+  // Only relay a contact update to SF if the user is mapped AND has mapped
+  // fields that are changing. Entity updates (which trigger push) are very
+  // frequent because of Crowd activity. This leads to the possibility of
+  // infinite update loops between Crowd and Salesforce. We can prevent these
+  // problems by ensuring the we only send anything to SF (and therefore update
+  // the related timestamps) when we know there is a change to at least one
+  // mapped push-enabled field.
+  if ($entity_type == 'user') {
+    $push = FALSE;
+    // First make sure the user is already mapped.
+    if (crl_user_sf_flag_linked_sf_update($entity)) {
+      // Then check if any mapped fields are changing.
+      $user_wrapper = entity_metadata_wrapper('user', $entity);
+      $user_wrapper_orig = entity_metadata_wrapper('user', $entity->original);
+      foreach ($mapping->field_mappings as $field_mapping) {
+        if ($field_mapping['drupal_field']['fieldmap_type'] == 'property'
+            && ($field_mapping['direction'] == SALESFORCE_MAPPING_DIRECTION_SYNC || $field_mapping['direction'] == SALESFORCE_MAPPING_DIRECTION_DRUPAL_SF)) {
+          // Compare orgional to updated.
+          if ($user_wrapper->{$field_mapping['drupal_field']['fieldmap_value']}->value() != $user_wrapper_orig->{$field_mapping['drupal_field']['fieldmap_value']}->value()) {
+            $push = TRUE;
+            break;
+          }
+        }
+      }
+    }
+    return $push;
+  }
+}
+
+
+/**
+ * Implements hook_salesforce_pull_mapping_object_alter().
+ */
+function crl_user_sf_salesforce_pull_mapping_object_alter(&$mapping_object, $sf_object, $sf_mapping) {
+  // For our purposes the SF mapping object's updated and last sync timestamp
+  // should not be allowed to differ. If they do differ then some SF pulls may
+  // get skipped. Drupal issue #2612832 has more info.
+  // @see https://www.drupal.org/node/2612832
+  if ($mapping_object && $sf_mapping->drupal_entity_type == 'user') {
+    $mapping_object->entity_updated = $mapping_object->last_sync;
+  }
+  // Do some prematching for incoming user pulls if we don't already have a
+  // match.
+  if (!$mapping_object && $sf_mapping->drupal_entity_type == 'user') {
+    // Create a temporary entity that represents what would be created if we
+    // did not do any prematching. This allows our matching logic to be run
+    // against an entity object instead of the raw Salesforce object data.
+    $values = array(
+      $sf_mapping->drupal_bundle => $sf_mapping->drupal_bundle,
+      'salesforce_pull' => TRUE,
+    );
+    try {
+      $wrapper = entity_metadata_wrapper($sf_mapping->drupal_entity_type, entity_create($sf_mapping->drupal_entity_type, $values));
+      salesforce_pull_map_fields($sf_mapping->field_mappings, $wrapper, $sf_object);
+    }
+    catch (Exception $e) {
+      // If we can't generate a temporary entity then there was likely a
+      // validation error with the incoming SF data. Abort the prematch process
+      // gracefully.
+      return;
+    }
+    $match_message = '';
+    if (!empty($wrapper->value()->mail)) {
+      // See if any users (active or not) have an exact match between SF email
+      // and their local email address or username.
+      $name_match = user_load_by_name($wrapper->value()->mail);
+      $mail_match = user_load_by_mail($wrapper->value()->mail);
+      $match = $name_match ? $name_match : $mail_match;
+      $match_message = $match ? t('User @user prematched based on username and/or email.', array('@user' => $wrapper->value()->mail)) : $match_message;
+    }
+    // If no email match see if there is an exact match on both the first/last
+    // name and instutition for any ACTIVE local users.
+    if (!$match && !empty($wrapper->field_first_name) && !empty($wrapper->field_last_name) && !empty($wrapper->field_institution)) {
+      $query = new EntityFieldQuery;
+      $query
+        ->entityCondition('entity_type', 'user')
+        ->fieldCondition('field_first_name', 'value', $wrapper->field_first_name->value(), '=')
+        ->fieldCondition('field_last_name', 'value', $wrapper->field_last_name->value(), '=')
+        ->fieldCondition('field_institution', 'value', $wrapper->field_institution->value(), '=')
+        ->propertyCondition('status', 1);
+      $results = $query->execute();
+      if (!empty($results['user'])) {
+        $match = user_load(key($results['user']));
+        $match_message = t('User @user prematched based on first name, last name and institution combination.', array('@user' => $wrapper->value()->mail));
+      }
+    }
+    if ($match) {
+      // If the match found by our prematch logic is a user that's ALREADY
+      // linked to Salesfoce it means there is likely some kind of integrity
+      // issue on the Salesforce side (likely duplicates).
+      if (salesforce_mapping_object_load_by_drupal('user', $match->uid)) {
+        $message = 'Could not complete prematch logic for ' . $wrapper->value()->mail . ' on Salesforce pull. A Salesforce-linked user already exists with a matching username, email address and/or name and institution combination. This signals an integrity problem in Salesforce (likely duplicates)';
+        watchdog('crl user sf', $message, array(), WATCHDOG_ERROR);
+        throw new SalesforcePullException($message);
+      }
+      // Log the prematch.
+      watchdog('crl user sf', $match_message);
+      // Create mapping object and then reload it.
+      entity_create('salesforce_mapping_object', array(
+        'salesforce_id' => $sf_object['Id'],
+        'entity_type' => $sf_mapping->drupal_entity_type,
+        'entity_id' => $match->uid,
+        'last_sync_message' => $match_message,
+        'last_sync_status' => SALESFORCE_MAPPING_STATUS_SUCCESS
+      ))->save();
+      $mapping_object = salesforce_mapping_object_load_by_sfid($sf_object['Id'], TRUE);
+    }
+  }
+}
+
+
+/**
+ * Implements hook_salesforce_pull_entity_presave().
+ *
+ * Note that unlike hook_entity_presave() this only fires for entity saves that
+ * we know are being pulled from Salesforce.
+ */
+function crl_user_sf_salesforce_pull_entity_presave($entity, $sf_object, $sf_mapping) {
+  if ($sf_mapping->drupal_entity_type == 'user') {
+    // Abort any pulls that don't have an email address to work with (some of
+    // our custom logic depends on an email value).
+    if (empty($entity->mail)) {
+      throw new SalesforcePullException('Cannot pull Contact from Salesforce without a known email address.');
+    }
+    // Also pre-check the Crowd connection as we don't want to take any chances
+    // that chagnes will not fully propgate through to Crowd.
+    if (!crowd_client_connect()->validateConnection()) {
+      throw new SalesforcePullException('Aborting Salesforce pull because the Crowd connection is not responding.');
+    }
+    if (!empty($entity->is_new)) {
+      // Ensure user creations from Salesforce are also relayed to Crowd during
+      // the final save.
+      $entity->crowd_push_enabled = TRUE;
+      $entity->crowd_pass = user_password();
+      // Our mapping may not have provided us with a name value for the new
+      // account. If not we need to match it to the email.
+      $entity->name = empty($entity->name) ? $entity->mail : $entity->name;
+      // New users created in Salesforce should have an initial status of
+      // active. Other hooks may programatically override this later however.
+      $entity->status = 1;
+    }
+    else {
+      // See if we need to update related data (profile roles and Crowd groups).
+      // Note that users being created won't have a uid by this time, so for
+      // them we can't run this line until hook_salesforce_pull_entity_insert().
+      // For existing users we also do NOT overwrite any local profile role
+      // data.
+      // @see crl_user_sf_salesforce_pull_entity_insert()
+      crl_user_sf_sync_related_user_data($entity, FALSE, TRUE);
+      // Detect and log any cases where a Salesforce update may be resuling in
+      // duplications locally.
+      $query = "SELECT u.uid, u.name, u.mail FROM {users} AS u INNER JOIN {authmap} AS a ON u.uid = a.uid WHERE (u.name = :name OR u.mail = :name OR u.name = :mail OR u.mail = :mail) AND a.module = :authgroup";
+      $results = db_query($query, array(':name' => $entity->name, 'mail' => $entity->mail, 'authgroup' => 'crowd'))->fetchAllKeyed();
+      if (count($results) > 1) {
+        $found_count++;
+        $message = t('Name @name and/or email @mail appears to be used across multiple Drupal users: ', array('@name' => $entity->name, '@mail' => $entity->mail));
+        $i = 0;
+        foreach ($results as $uid => $data) {
+          $i++;
+          $user_dup = user_load($uid);
+          $message .= t('@num) User: @uid, Status: @status, Name: @name, Email: @mail ', array('@num' => $i, '@name' => $entity->name, '@uid' => $user_dup->uid, '@name' => $user_dup->name, '@mail' => $user_dup->mail, '@status' => $user_dup->status));
+        }
+        watchdog('crl user sf', $message, array(), WATCHDOG_ERROR);
+      }
+    }
+  }
+}
+
+
+/**
+ * Implements hook_salesforce_pull_entity_insert().
+ */
+function crl_user_sf_salesforce_pull_entity_insert($entity, $sf_object, $sf_mapping) {
+  // AFTER a user has been created (and has a uid) see if we need to update
+  // related data (profile roles and Crowd groups).
+  if ($sf_mapping->drupal_entity_type == 'user') {
+    crl_user_sf_sync_related_user_data($entity);
+    $wrapper = entity_metadata_wrapper('user', $entity);
+    $wrapper->save();
+  }
+}
+
+
+/**
+ * Implements hook_entity_update().
+ */
+function crl_user_sf_entity_update($entity, $type) {
+  crl_user_sf_entity_crud($entity, $type, 'add');
+}
+
+
+/**
+ * Implements hook_entity_insert().
+ */
+function crl_user_sf_entity_insert($entity, $type) {
+  crl_user_sf_entity_crud($entity, $type, 'add');
+}
+
+
+/**
+ * Implements hook_entity_delete().
+ */
+function crl_user_sf_entity_delete($entity, $type) {
+  crl_user_sf_entity_crud($entity, $type, 'remove');
+}
+
+
+/**
+ * Process CRUD operations related to contact role updates.
+ *
+ * @param object $entity
+ *   The Drupal entity undergoing a CRUD operations.
+ * @param string $type
+ *   The Drupal entity type.
+ * @param string $op
+ *   The type of operation ('add' or 'remove').
+ *
+ * @see crl_user_sf_entity_update()
+ * @see crl_user_sf_entity_insert()
+ * @see crl_user_sf_entity_delete()
+ */
+function crl_user_sf_entity_crud($entity, $type, $op) {
+  // If a contact role is being updated we also want to trigger an update to any
+  // related Drupal users. This is because changes to contact
+  // roles my affect the calculated values for users that are linked via a
+  // contact_sfid relationship (Crowd groups, etc.).
+  if ($type == 'sf_contact_role') {
+    // We check BOTH the updated and original states of the passed entity in
+    // case the field with the contact_sfid value has been changed/emptied as
+    // part of the crud operation.
+    $contact_sfids = array(entity_metadata_wrapper($type, $entity)->contact_sfid->value());
+    if (!empty($entity->original)) {
+      $orig_contact_sfid = entity_metadata_wrapper($type, $entity->original)->contact_sfid->value();
+      if (!in_array($orig_contact_sfid, $contact_sfids)) {
+        $contact_sfids[] = $orig_contact_sfid;
+      }
+    }
+    foreach ($contact_sfids as $contact_sfid) {
+      $user_mapping = salesforce_mapping_object_load_by_sfid($contact_sfid);
+      if ($user_mapping) {
+        $user = user_load($user_mapping->entity_id);
+        $wrapper_user = entity_metadata_wrapper('user', $user);
+        // Sync data for the related user (profile roles and Crowd groups).
+        crl_user_sf_sync_related_user_data($user);
+        $wrapper_user->save();
+      }
+    }
+  }
+}
+
+
+/**
+ * Utility to update a user account based on SF contact role data.
+ *
+ * Note that this utility will also set the appropriate Crowd groups for the
+ * user by setting the $account->crowd_groups property (which is processed by
+ * by the crowd_push module during any user updates).
+ *
+ * @param object $account
+ *   A Drupal user account to update.
+ * @param boolean $sync_profile_roles
+ *   Whether-or-not to sync local profile roles from Salesforce role data.
+ * @param boolean $sync_groups
+ *   Whether-or-not to sync Crowd groups from Salesforce data.
+ */
+function crl_user_sf_sync_related_user_data($account, $sync_profile_roles = TRUE, $sync_groups = TRUE) {
+  $wrapper_user = entity_metadata_wrapper('user', $account);
+  $sf_roles = _crl_user_sf_get_contact_roles($account);
+  // Check for profile role changes.
+  if ($sync_profile_roles) {
+    $profile_roles = $profile_roles_orig = $wrapper_user->field_profile_roles->value();
+    _crl_user_sf_update_profile_roles_from_sf_roles($profile_roles, $sf_roles);
+    if ($profile_roles != $profile_roles_orig) {
+      $wrapper_user->field_profile_roles->set($profile_roles);
+    }
+  }
+  // Check for Crowd group changes.
+  if ($sync_groups) {
+    try {
+      $groups = $groups_orig = crowd_client_connect()->getUserGroups(crowd_user_authmap_name($account->name));
+      _crl_user_sf_update_groups_from_sf_roles($groups, $sf_roles);
+      if ($groups != $groups_orig) {
+        $account->crowd_groups = $groups;
+        // Also be sure to respect local role mappings.
+        crowd_update_roles_from_groups($account->roles, $groups);
+      }
+    }
+    catch (CrowdException $e) {
+      $e->logResponse();
+    }
+  }
+}
+
+/**
+ * Utility to calculate Drupal profile role changes based on a user's SF roles.
+ *
+ * @param array $profile_roles
+ *   The current profile roles for a user that are to be updated if needed.
+ * @param array $sf_roles
+ *   The current SF roles for a user.
+ */
+function _crl_user_sf_update_profile_roles_from_sf_roles(&$profile_roles, $sf_roles) {
+
+  // Profile role syncing is currently disabled. The logic below has been tested
+  // however, so this could be enabled when needed.
+  return;
+
+  $mapping = array( // SF Contact Role => Profile Role (key)
+    'Bibliographic Instruction' => 'bibliographic_instr',
+    'Branch Director' => 'branch_dir',
+    'Circulation' => 'circulation',
+    'Collection Development' => 'collection_dev',
+    'Digital Preservation' => 'digital_preservation',
+    'Director' => 'director',
+    "Director's Assistant" => 'director_assistant',
+    'Electronic Resource Officer' => 'electronic_res_officer',
+    'ILL' => 'ill',
+    'Library Staff' => 'lib_staff',
+    'Print Preservation' => 'print_reservation',
+    'Reference' => 'reference',
+    'Special Collections' => 'special_collections',
+    'Systems' => 'systems',
+    'Technical Services' => 'tech_services',
+  );
+  $profile_roles = array_filter($profile_roles);
+  // Process additions.
+  $additions = array_unique(array_intersect_key($mapping, $sf_roles));
+  $profile_roles = array_unique(array_merge($profile_roles, array_values($additions)));
+  // Process removals without touching local values external to the mapping.
+  $removals = array_unique(array_diff_key($mapping, $sf_roles));
+  $profile_roles = array_diff($profile_roles, $removals);
+}
+
+
+/**
+ * Utility to calculate Crowd group changes based on a user's SF roles.
+ *
+ * @param array $groups
+ *   The current Crowd groups that are to be updated if needed.
+ * @param array $sf_roles
+ *   The current SF roles for a user.
+ */
+function _crl_user_sf_update_groups_from_sf_roles(&$groups, $sf_roles) {
+  $mapping = crl_user_map_groups_from_sf_roles();
+  // Process additions.
+  $additions = array_unique(array_intersect_key($mapping, $sf_roles));
+  // If we have ANY normal mapped groups also be sure to add the general
+  // confluence users group.
+  if (count($additions)) {
+    $additions['confluence-users'] = 'confluence-users';
+  }
+  $groups = array_unique(array_merge($groups, array_values($additions)));
+  // Process removals without touching local values external to the mapping.
+  $removals = array_unique(array_diff_key($mapping, $sf_roles));
+  // The mapping supports a many-to-one relationship between SF roles and
+  // Crowd groups (roles are OR'ed to determine if the mapped group is active).
+  // This means that we have to ensure we aren't removing a group that was just
+  // set above when only a fraction of the mapped roles are set.
+  $removals = array_diff($removals, $additions);
+  $groups = array_diff($groups, $removals);
+}
+
+
+/**
+ * Utility to get the Salesforce contact roles for a given user (based on the
+ * current state of locally synced contact role data).
+ *
+ * @param object $account
+ *   A Drupal user account to lookup roles for.
+ * @return array
+ *   An indexed array of active Salesforce contact role names for this user.
+ */
+function _crl_user_sf_get_contact_roles($account) {
+  $roles = array();
+  $user_mapping = salesforce_mapping_object_load_by_drupal('user', $account->uid);
+  if ($user_mapping) {
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'sf_contact_role')
+        ->propertyCondition('contact_sfid', $user_mapping->salesforce_id, '=')
+        ->propertyCondition('status', 'Current', '=');
+    $result = $query->execute();
+    if (!empty($result['sf_contact_role'])) {
+      $role_entities = entity_load('sf_contact_role', array_keys($result['sf_contact_role']));
+      foreach ($role_entities as $role_entity) {
+        $roles[$role_entity->role] = $role_entity->role;
+      }
+    }
+  }
+  return $roles;
+}
