@@ -3,7 +3,7 @@
 #
 
 # Protect files and directories from prying eyes.
-<FilesMatch "\.(engine|inc|info|install|make|module|profile|test|po|sh|.*sql|theme|tpl(\.php)?|xtmpl)(~|\.sw[op]|\.bak|\.orig|\.save)?$|^(\.(?!well-known).*|Entries.*|Repository|Root|Tag|Template|composer\.(json|lock)|web\.config)$|^#.*#$|\.php(~|\.sw[op]|\.bak|\.orig\.save)$">
+<FilesMatch "\.(engine|inc|info|install|make|module|profile|test|po|sh|.*sql|theme|tpl(\.php)?|xtmpl)(~|\.sw[op]|\.bak|\.orig|\.save)?$|^(\.(?!well-known).*|Entries.*|Repository|Root|Tag|Template|composer\.(json|lock)|web\.config)$|^#.*#$|\.php(~|\.sw[op]|\.bak|\.orig|\.save)$">
   <IfModule mod_authz_core.c>
     Require all denied
   </IfModule>
@@ -112,27 +112,6 @@ DirectoryIndex index.php index.html index.htm
   #
   # If your site is running in a VirtualDocumentRoot at http://example.com/,
   # uncomment the following line:
-  RewriteBase /
-
-  # CUSTOM CRL REDRIECTS
-  # *** BE MINDFUL DURING THE CORE UPGRADES ***
-
-  # PREVENT COMMON 404s FROM BOOTSRAPPING DRUPAL OR BEING LOGGED IN DRUPAL
-  # Do a fast 403 for any common wordpress admin paths that get hit by bots.
-  RewriteRule ^wp-.*\.php - [L,R=403]
-  # Preventy logging of common 404s for apple touch icons. Apple devices
-  # should just use a screenshot of the page if these are not available. Note
-  # that we have to overide the normal ErrorDocument to deliver a 404 that does
-  # not touch Drupal in any way.
-  <FilesMatch "(apple-touch-icon|apple-touch-icon-precomposed)\.png">
-    RewriteRule .* - [L,R=404]
-    ErrorDocument 404 '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL was not found on this server (fast).</p></body></html>'
-  </FilesMatch>
-  # Catch misc requests to favicon.
-  RewriteCond %{REQUEST_URI} !^/static/favicon.ico
-  RewriteRule .*favicon\.ico static/favicon.ico [L,R,QSA]
-
-  # END CUSTOM CRL REDIRECTS
   # RewriteBase /
 
   # Pass all requests not referring directly to files in the filesystem to
@@ -168,21 +147,10 @@ DirectoryIndex index.php index.html index.htm
   </IfModule>
 </IfModule>
 
-# Add headers to all responses.
 # Various header fixes.
 <IfModule mod_headers.c>
   # Disable content sniffing, since it's an attack vector.
   Header always set X-Content-Type-Options nosniff
-</IfModule>
-
-# When CSS/JS aggregation is on Drupal writes an aggregate version to a .gz
-# file and then redirects to that via the directives above. However, we also
-# want to enforce compression for non-aggregated files and the main request
-# itself.
-<IfModule mod_deflate.c>
-  <FilesMatch ".(js|css|html|)$">
-    SetOutputFilter DEFLATE
-  </FilesMatch>
   # Disable Proxy header, since it's an attack vector.
   RequestHeader unset Proxy
 </IfModule>
