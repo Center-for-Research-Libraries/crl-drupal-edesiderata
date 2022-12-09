@@ -50,4 +50,43 @@ class CrlUserCrowdRestClient extends CrowdRestClient {
     throw new CrowdException('REST updateUserAttributes method error.', NULL, NULL, $response);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  protected function apiHttpRequest($path, $options = array(), $data = NULL, $method = 'GET') {
+    // Build the request, including path and headers.
+    $options += array('external' => TRUE);
+    $url = url($this->request_url . '/' . $path, $options);
+    $options = array(
+      'method' => $method,
+      'data' => $data,
+      'headers' => $this->request_headers,
+      'max_redirects' => $this->max_redirects,
+      'timeout' => $this->timeout,
+    );
+    // CRL CUSTOMIZATION
+    // We need to connect to Crowd via Pantheon tunnels and direct IP
+    // connections which will break certficiate validation. Allow cert
+    // verifications to be ignoted. WITH THESE SETTINGS WE SHOULD ONLY USE
+    // DIRECT IP ADDRESSING FOR CROWD.
+    // @see https://gist.github.com/pounard/6a40174d93925687b00a30cf1ab253fd
+    $options['context'] = stream_context_create();
+    stream_context_set_option($options['context'], 'ssl', 'verify_host', false);
+    stream_context_set_option($options['context'], 'ssl', 'verify_peer', false);
+    stream_context_set_option($options['context'], 'ssl', 'verify_peer_name', false);
+    stream_context_set_option($options['context'], 'ssl', 'allow_self_signed', true);
+    // Send the request and check for generic errors.
+    $response = drupal_http_request($url, $options);
+    // Both 2xx and 4xx response codes are used by Crowd to communicate the
+    // results of specific requests, and can generally be interpreted as a
+    // "correct" responses. One generic exception to this is a 401 which
+    // signifies an application-level authentication error
+    if (preg_match('/^(2|4)[0-9]{2}$/', $response->code) && $response->code != 401) {
+      return $response;
+    }
+    // If we don't have a workable response code we won't be able to deliver
+    // any confirmed results (regardless of the request method used).
+    throw new CrowdException('Could not connect to the Crowd server.', NULL, NULL, $response);
+  }
+
 }
