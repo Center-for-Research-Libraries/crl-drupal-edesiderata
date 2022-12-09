@@ -456,3 +456,10 @@ ini_set('session.cookie_lifetime', 2000000);
  * Remove the leading hash signs to disable.
  */
 # $conf['allow_authorize_operations'] = FALSE;
+
+
+// Panthoen overrides
+if (defined('PANTHEON_ENVIRONMENT')) {
+  $conf['crowd_validate_url'] = 'https://209.175.55.110';
+  $conf['crowd_port'] = '443';
+}
