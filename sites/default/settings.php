@@ -460,6 +460,6 @@ ini_set('session.cookie_lifetime', 2000000);
 
 // Panthoen overrides
 if (defined('PANTHEON_ENVIRONMENT')) {
-  $conf['crowd_validate_url'] = 'https://209.175.55.110';
+  $conf['crowd_server'] = 'https://209.175.55.110';
   $conf['crowd_port'] = '443';
 }
