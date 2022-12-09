@@ -462,4 +462,6 @@ ini_set('session.cookie_lifetime', 2000000);
 if (defined('PANTHEON_ENVIRONMENT')) {
   $conf['crowd_server'] = 'https://209.175.55.110';
   $conf['crowd_port'] = '443';
+  // For non-live environments
+  $conf['crowd_logout_no_cookie'] = FALSE;
 }
