@@ -81,6 +81,7 @@ class CrlUserCrowdRestClient extends CrowdRestClient {
         'verify_depth' => 5,
         'allow_self_signed' => TRUE,
         'verify_peer_name' => FALSE,
+        'verify_host' => FALSE,
       )
     ));
     $options['context'] = $context;
