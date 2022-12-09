@@ -21,9 +21,8 @@ function crl_user_crowd_push_user_data_alter(&$data, &$groups, $account) {
   try {
     // As of Dec 2022 we manage attributes on Crowd directly instead of LDAP
     crl_user_update_crowd_attributes_from_user($username, $account);
-    // Keep pushing to LDAP for additional testing purposes.
-    $ldap = crl_user_ldap_connect();
-    $success = $ldap->updateLdapFromUser($username, $account);
+    //$ldap = crl_user_ldap_connect();
+    //$success = $ldap->updateLdapFromUser($username, $account);
     if (!$success) {
       watchdog('crl user', 'There was an error setting the LDAP user attribute values for @user during push.', array('@user' => $account->name), WATCHDOG_ERROR);
     } 
