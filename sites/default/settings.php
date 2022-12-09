@@ -460,8 +460,17 @@ ini_set('session.cookie_lifetime', 2000000);
 
 // Panthoen overrides
 if (defined('PANTHEON_ENVIRONMENT')) {
-  $conf['crowd_server'] = 'https://209.175.55.110';
+  $conf['crowd_server'] = 'https://1.1.1.1';
+  //$conf['crowd_server'] = 'https://209.175.55.110';
   $conf['crowd_port'] = '443';
+  $conf['crl_access_by_ip_options_url'] = 'https://1.1.1.1';
+  //$conf['crl_access_by_ip_options_url'] = 'https://209.175.55.9';
   // For non-live environments
   $conf['crowd_logout_no_cookie'] = FALSE;
+}
+// Adjustments unique only to local install (non Pantheon) environments
+else {
+  $conf['crowd_server'] = 'https://1.1.1.1';
+  $conf['crowd_port'] = '443';
+  $conf['crl_access_by_ip_options_url'] = 'https://1.1.1.1';
 }
