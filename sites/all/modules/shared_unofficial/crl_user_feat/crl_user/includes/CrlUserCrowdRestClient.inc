@@ -72,8 +72,8 @@ class CrlUserCrowdRestClient extends CrowdRestClient {
     // @see https://gist.github.com/pounard/6a40174d93925687b00a30cf1ab253fd
     $context = stream_context_create(array(
       'ssl' => array(
-        //'verify_peer' => FALSE,
-        //'verify_peer_name' => FALSE,
+        'verify_peer' => FALSE,
+        'verify_peer_name' => FALSE,
         'allow_self_signed' => TRUE,
       )
     ));
