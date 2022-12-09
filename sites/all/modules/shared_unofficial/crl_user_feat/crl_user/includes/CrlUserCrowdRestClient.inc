@@ -70,11 +70,20 @@ class CrlUserCrowdRestClient extends CrowdRestClient {
     // verifications to be ignoted. WITH THESE SETTINGS WE SHOULD ONLY USE
     // DIRECT IP ADDRESSING FOR CROWD.
     // @see https://gist.github.com/pounard/6a40174d93925687b00a30cf1ab253fd
-    $options['context'] = stream_context_create();
-    stream_context_set_option($options['context'], 'ssl', 'verify_host', false);
-    stream_context_set_option($options['context'], 'ssl', 'verify_peer', false);
-    stream_context_set_option($options['context'], 'ssl', 'verify_peer_name', false);
-    stream_context_set_option($options['context'], 'ssl', 'allow_self_signed', true);
+    //$options['context'] = stream_context_create();
+    //stream_context_set_option($options['context'], 'ssl', 'verify_host', false);
+    //stream_context_set_option($options['context'], 'ssl', 'verify_peer', false);
+    //stream_context_set_option($options['context'], 'ssl', 'verify_peer_name', false);
+    //stream_context_set_option($options['context'], 'ssl', 'allow_self_signed', true);
+    $context = stream_context_create(array(
+      'ssl' => array(
+        'verify_peer' => FALSE,
+        'verify_depth' => 5,
+        'allow_self_signed' => TRUE,
+        'verify_peer_name' => FALSE,
+      )
+    ));
+    $options['context'] = $context;
     // Send the request and check for generic errors.
     $response = drupal_http_request($url, $options);
     // Both 2xx and 4xx response codes are used by Crowd to communicate the
