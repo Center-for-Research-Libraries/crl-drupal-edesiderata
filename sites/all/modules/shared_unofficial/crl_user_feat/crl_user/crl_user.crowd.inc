@@ -23,9 +23,9 @@ function crl_user_crowd_push_user_data_alter(&$data, &$groups, $account) {
     crl_user_update_crowd_attributes_from_user($username, $account);
     //$ldap = crl_user_ldap_connect();
     //$success = $ldap->updateLdapFromUser($username, $account);
-    if (!$success) {
-      watchdog('crl user', 'There was an error setting the LDAP user attribute values for @user during push.', array('@user' => $account->name), WATCHDOG_ERROR);
-    } 
+    //if (!$success) {
+    //  watchdog('crl user', 'There was an error setting the LDAP user attribute values for @user during push.', array('@user' => $account->name), WATCHDOG_ERROR);
+    //} 
   }
   catch (Exception $e) {
     watchdog_exception('crl user', $e);
