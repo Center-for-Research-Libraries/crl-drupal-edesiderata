@@ -458,19 +458,51 @@ ini_set('session.cookie_lifetime', 2000000);
 # $conf['allow_authorize_operations'] = FALSE;
 
 
+/**
+ * --------------------------
+ * Environment-Specific Rules
+ * --------------------------
+ */
+
 // Panthoen overrides
 if (defined('PANTHEON_ENVIRONMENT')) {
-  $conf['crowd_server'] = 'https://1.1.1.1';
+
+  // Live/Production environment
+  if (PANTHEON_ENVIRONMENT == 'live') {
+    // Do not reroute email on Live
+    $conf['reroute_email_enable'] = 1;
+    // Force logout for invalid Crowd cookies.
+    $conf['crowd_logout_no_cookie'] = FALSE;
+  }
+
+  // Dev/Test Pantheon environments
+  else {
+    // Block all outgoing emails.
+    $conf['reroute_email_enable'] = 1;
+    $conf['reroute_email_address'] = "";
+    $conf['reroute_email_enable_message'] = 1;
+    // Allow Crowd logins to work on non crl.edu domains (dev/test) where the
+    // Crowd cookie will not be properly managed.
+    $conf['crowd_logout_no_cookie'] = FALSE;
+  }
+
+  // ALL Pantheon environments
+  // Crowd connection details
   //$conf['crowd_server'] = 'https://209.175.55.110';
+  $conf['crowd_server'] = 'https://1.1.1.1'; // Use to DISABLE Crowd connection
   $conf['crowd_port'] = '443';
-  $conf['crl_access_by_ip_options_url'] = 'https://1.1.1.1';
-  //$conf['crl_access_by_ip_options_url'] = 'https://209.175.55.9';
-  // For non-live environments
-  $conf['crowd_logout_no_cookie'] = FALSE;
+  // CRL IP Filter (Access by IP) connection details
+  $conf['crl_access_by_ip_options_url'] = 'https://209.175.55.9';
+  //$conf['crl_access_by_ip_options_url'] = 'https://1.1.1.1'; // Use to DISABLE Ip filter connection
 }
-// Adjustments unique only to local install (non Pantheon) environments
+
+// Adjustments unique to local install (non Pantheon) environments.
 else {
-  $conf['crowd_server'] = 'https://1.1.1.1';
-  $conf['crowd_port'] = '443';
-  $conf['crl_access_by_ip_options_url'] = 'https://1.1.1.1';
+  // Block all outgoing emails.
+  $conf['reroute_email_enable'] = 1;
+  $conf['reroute_email_address'] = "";
+  $conf['reroute_email_enable_message'] = 1;
+  // Allow Crowd logins to work on non crl.edu domains (dev/test) where the
+  // Crowd cookie will not be properly managed.
+  $conf['crowd_logout_no_cookie'] = FALSE;
 }
