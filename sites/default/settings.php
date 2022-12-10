@@ -492,7 +492,7 @@ if (defined('PANTHEON_ENVIRONMENT')) {
   $conf['crowd_server'] = 'https://1.1.1.1'; // Use to DISABLE Crowd connection
   $conf['crowd_port'] = '443';
   // CRL IP Filter (Access by IP) connection details
-  $conf['crl_access_by_ip_options_url'] = 'https://dds.crl.edu';
+  $conf['crl_access_by_ip_options_url'] = 'http://dds.crl.edu/ipcheck/%/json';
   //$conf['crl_access_by_ip_options_url'] = 'https://1.1.1.1'; // Use to DISABLE Ip filter connection
 }
 
