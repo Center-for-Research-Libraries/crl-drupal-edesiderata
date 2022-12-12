@@ -471,6 +471,7 @@ $conf['reroute_email_enable_message'] = 1;
 // Disable Crowd syncing everywhere except live (doesn't disable Crowd logins)
 $conf['crowd_push_provision'] = FALSE;
 $conf['crowd_push_update'] = FALSE;
+$conf['crowd_push_delete'] = FALSE;
 // Disable SF-Crowd user sync everywhere except live
 $conf['crl_user_sf_sync_disabled'] = TRUE;
 // Also allow Crowd logins to work on non crl.edu domains outside live
@@ -480,6 +481,7 @@ if (defined('PANTHEON_ENVIRONMENT') && PANTHEON_ENVIRONMENT == 'live') {
   $conf['reroute_email_enable_message'] = 0;
   $conf['crowd_push_provision'] = TRUE;
   $conf['crowd_push_update'] = TRUE;
+  $conf['crowd_push_delete'] = TRUE;
   // Force logout for invalid Crowd cookies. Only works on crl.edu domains.
   $conf['crowd_logout_no_cookie'] = TRUE;
 }
