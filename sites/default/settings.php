@@ -463,46 +463,33 @@ ini_set('session.cookie_lifetime', 2000000);
  * Environment-Specific Rules
  * --------------------------
  */
-
-// Panthoen overrides
-if (defined('PANTHEON_ENVIRONMENT')) {
-
-  // Live/Production environment
-  if (PANTHEON_ENVIRONMENT == 'live') {
-    // Do not reroute email on Live
-    $conf['reroute_email_enable'] = 1;
-    // Force logout for invalid Crowd cookies.
-    $conf['crowd_logout_no_cookie'] = FALSE;
-  }
-
-  // Dev/Test Pantheon environments
-  else {
-    // Block all outgoing emails.
-    $conf['reroute_email_enable'] = 1;
-    $conf['reroute_email_address'] = "";
-    $conf['reroute_email_enable_message'] = 1;
-    // Allow Crowd logins to work on non crl.edu domains (dev/test) where the
-    // Crowd cookie will not be properly managed.
-    $conf['crowd_logout_no_cookie'] = FALSE;
-  }
-
-  // ALL Pantheon environments
-  // Crowd connection details
-  //$conf['crowd_server'] = 'https://209.175.55.110';
-  $conf['crowd_server'] = 'https://1.1.1.1'; // Use to DISABLE Crowd connection
-  $conf['crowd_port'] = '443';
-  // CRL IP Filter (Access by IP) connection details
-  $conf['crl_access_by_ip_options_url'] = 'http://dds.crl.edu/ipcheck/%/json';
-  //$conf['crl_access_by_ip_options_url'] = 'https://1.1.1.1'; // Use to DISABLE Ip filter connection
+// There are some settings that apply everywhere except the main live site.
+// Re-route emails everywhere except live
+$conf['reroute_email_enable'] = 1;
+$conf['reroute_email_address'] = "";
+$conf['reroute_email_enable_message'] = 1;
+// Disable Crowd syncing everywhere except live (doesn't disable Crowd logins)
+$conf['crowd_push_provision'] = FALSE;
+$conf['crowd_push_update'] = FALSE;
+// Disable SF-Crowd user sync everywhere except live
+$conf['crl_user_sf_sync_disabled'] = TRUE;
+// Also allow Crowd logins to work on non crl.edu domains outside live
+$conf['crowd_logout_no_cookie'] = FALSE;
+if (defined('PANTHEON_ENVIRONMENT') && PANTHEON_ENVIRONMENT == 'live') {
+  $conf['reroute_email_enable'] = 0;
+  $conf['reroute_email_enable_message'] = 0;
+  $conf['crowd_push_provision'] = TRUE;
+  $conf['crowd_push_update'] = TRUE;
+  // Force logout for invalid Crowd cookies. Only works on crl.edu domains.
+  $conf['crowd_logout_no_cookie'] = TRUE;
 }
-
-// Adjustments unique to local install (non Pantheon) environments.
-else {
-  // Block all outgoing emails.
-  $conf['reroute_email_enable'] = 1;
-  $conf['reroute_email_address'] = "";
-  $conf['reroute_email_enable_message'] = 1;
-  // Allow Crowd logins to work on non crl.edu domains (dev/test) where the
-  // Crowd cookie will not be properly managed.
-  $conf['crowd_logout_no_cookie'] = FALSE;
+// Integration connection overrides for all Pantheon environments.
+if (defined('PANTHEON_ENVIRONMENT')) {
+  // Set Crowd connection details.
+  //$conf['crowd_server'] = 'https://209.175.55.110';
+  $conf['crowd_server'] = 'https://1.1.1.1'; // Use to DISABLE Crowd connection completely.
+  $conf['crowd_port'] = '443';
+  // Set CRL IP Filter (Access by IP) connection details
+  $conf['crl_access_by_ip_options_url'] = 'http://dds.crl.edu/ipcheck/%/json';
+  //$conf['crl_access_by_ip_options_url'] = 'https://1.1.1.1'; // Use to DISABLE Ip filter connection completely.
 }
