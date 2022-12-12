@@ -80,6 +80,10 @@ function crl_user_sf_flag_linked_sf_update($entity) {
  * Implements hook_salesforce_push_entity_allowed().
  */
 function crl_user_salesforce_push_entity_allowed($entity_type, $entity, $sf_sync_trigger, $mapping) {
+  // Don't do anything if sync disabled.
+  if (variable_get('crl_user_sf_sync_disabled', FALSE)) {
+    return;
+  }
   // Only relay a contact update to SF if the user is mapped AND has mapped
   // fields that are changing. Entity updates (which trigger push) are very
   // frequent because of Crowd activity. This leads to the possibility of
@@ -114,6 +118,10 @@ function crl_user_salesforce_push_entity_allowed($entity_type, $entity, $sf_sync
  * Implements hook_salesforce_pull_mapping_object_alter().
  */
 function crl_user_sf_salesforce_pull_mapping_object_alter(&$mapping_object, $sf_object, $sf_mapping) {
+  // Don't do anything if sync disabled.
+  if (variable_get('crl_user_sf_sync_disabled', FALSE)) {
+    return;
+  }
   // For our purposes the SF mapping object's updated and last sync timestamp
   // should not be allowed to differ. If they do differ then some SF pulls may
   // get skipped. Drupal issue #2612832 has more info.
@@ -198,6 +206,10 @@ function crl_user_sf_salesforce_pull_mapping_object_alter(&$mapping_object, $sf_
  * we know are being pulled from Salesforce.
  */
 function crl_user_sf_salesforce_pull_entity_presave($entity, $sf_object, $sf_mapping) {
+  // Don't do anything if sync disabled.
+  if (variable_get('crl_user_sf_sync_disabled', FALSE)) {
+    return;
+  }
   if ($sf_mapping->drupal_entity_type == 'user') {
     // Abort any pulls that don't have an email address to work with (some of
     // our custom logic depends on an email value).
@@ -253,6 +265,10 @@ function crl_user_sf_salesforce_pull_entity_presave($entity, $sf_object, $sf_map
  * Implements hook_salesforce_pull_entity_insert().
  */
 function crl_user_sf_salesforce_pull_entity_insert($entity, $sf_object, $sf_mapping) {
+  // Don't do anything if sync disabled.
+  if (variable_get('crl_user_sf_sync_disabled', FALSE)) {
+    return;
+  }
   // AFTER a user has been created (and has a uid) see if we need to update
   // related data (profile roles and Crowd groups).
   if ($sf_mapping->drupal_entity_type == 'user') {
@@ -267,6 +283,10 @@ function crl_user_sf_salesforce_pull_entity_insert($entity, $sf_object, $sf_mapp
  * Implements hook_entity_update().
  */
 function crl_user_sf_entity_update($entity, $type) {
+  // Don't do anything if sync disabled.
+  if (variable_get('crl_user_sf_sync_disabled', FALSE)) {
+    return;
+  }
   crl_user_sf_entity_crud($entity, $type, 'add');
 }
 
@@ -275,6 +295,10 @@ function crl_user_sf_entity_update($entity, $type) {
  * Implements hook_entity_insert().
  */
 function crl_user_sf_entity_insert($entity, $type) {
+  // Don't do anything if sync disabled.
+  if (variable_get('crl_user_sf_sync_disabled', FALSE)) {
+    return;
+  }
   crl_user_sf_entity_crud($entity, $type, 'add');
 }
 
@@ -283,6 +307,10 @@ function crl_user_sf_entity_insert($entity, $type) {
  * Implements hook_entity_delete().
  */
 function crl_user_sf_entity_delete($entity, $type) {
+  // Don't do anything if sync disabled.
+  if (variable_get('crl_user_sf_sync_disabled', FALSE)) {
+    return;
+  }
   crl_user_sf_entity_crud($entity, $type, 'remove');
 }
 
