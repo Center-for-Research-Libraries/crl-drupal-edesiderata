@@ -466,8 +466,8 @@ ini_set('session.cookie_lifetime', 2000000);
 // There are some settings that apply everywhere except the main live site.
 // Re-route emails everywhere except live
 $conf['reroute_email_enable'] = 1;
-$conf['reroute_email_address'] = "";
 $conf['reroute_email_enable_message'] = 1;
+$conf['reroute_email_address'] = "";
 // Disable Crowd syncing everywhere except live (doesn't disable Crowd logins)
 $conf['crowd_push_provision'] = FALSE;
 $conf['crowd_push_update'] = FALSE;
@@ -477,8 +477,8 @@ $conf['crl_user_sf_sync_disabled'] = TRUE;
 // Also allow Crowd logins to work on non crl.edu domains outside live
 $conf['crowd_logout_no_cookie'] = FALSE;
 if (defined('PANTHEON_ENVIRONMENT') && PANTHEON_ENVIRONMENT == 'live') {
-  $conf['reroute_email_enable'] = 0;
-  $conf['reroute_email_enable_message'] = 0;
+  $conf['reroute_email_enable'] = 1; // SWITCH TO 0 WHEN LAUNCHED
+  $conf['reroute_email_enable_message'] = 1; // SWITCH TO 0 WHEN LAUNCHED
   $conf['crowd_push_provision'] = TRUE;
   $conf['crowd_push_update'] = TRUE;
   $conf['crowd_push_delete'] = TRUE;
