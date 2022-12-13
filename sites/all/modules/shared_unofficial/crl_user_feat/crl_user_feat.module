@@ -1,0 +1,30 @@
+<?php
+/**
+ * @file
+ * Code for the CRL User Feature feature.
+ */
+
+include_once 'crl_user_feat.features.inc';
+
+
+/**
+ * Implements hook__views_view_presave().
+ */
+function crl_user_feat_views_view_presave($view) {
+  // The manage_users view must be compatible across multiple instances, so we
+  // need to strip unneeded views configuration added by modules that may not
+  // be installed on all instances. One example if autocomplete_filters. There
+  // may be a better what to do this through features or ctools hooks directly.
+  if ($view->name == 'manage_users') {
+    $handler =& $view->display['default']->handler;
+    // Only strip the autocomplete conf values if autocomplete is not actaully
+    // active.
+    if (empty($handler->display->display_options['filters']['combine']['expose']['autocomplete_dependent'])) {
+      foreach ($handler->display->display_options['filters']['combine']['expose'] as $key => $value) {
+        if (strpos($key, 'autocomplete_') !== FALSE) {
+          unset($handler->display->display_options['filters']['combine']['expose'][$key]);
+        }
+      }
+    }
+  }
+}

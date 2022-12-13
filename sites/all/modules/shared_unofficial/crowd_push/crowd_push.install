@@ -1,0 +1,13 @@
+<?php
+
+
+/**
+ * Implements hook_uninstall.
+ */
+function crowd_push_uninstall() {
+  // Remove variables specific to the module.
+  variable_del('crowd_push_provision');
+  variable_del('crowd_push_update');
+  variable_del('crowd_push_random_local_pass');
+  variable_del('crowd_push_delete');
+}

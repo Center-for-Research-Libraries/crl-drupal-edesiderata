@@ -1,0 +1,9 @@
+name = "CRL Institutions Helpers"
+description = "CRL institution management and integrations with SFDC"
+core = 7.x
+dependencies[] = crl_inst_feat
+dependencies[] = salesforce
+dependencies[] = salesforce_pull
+dependencies[] = entity
+dependencies[] = crl_user
+package = "CRL"

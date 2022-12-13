@@ -1,0 +1,27 @@
+/* Style the main alert box */
+.inst-member-warning {
+  background-color: #fff2be;
+  padding: 20px;
+  margin: 20px 0px;
+  border: 1px solid #eee0a8;
+  border-radius: 4px;
+}
+
+/* Make the radio buttons and labels a bit prettier. */
+.inst-member-warning .form-type-radio {
+  margin-top: 5px;
+}
+.inst-member-warning .form-type-radio label {
+  display: inline-block;
+  padding-left: 20px;
+}
+.inst-member-warning .form-type-radio input {
+  position: absolute;
+  margin-top: 5px;
+}
+
+/* Ensure the inst input scales to the container independent of inline "size"
+attribute. */
+.inst-member-warning #field-profile-inst-other-add-more-wrapper input.text-full {
+  width: 100%;
+}

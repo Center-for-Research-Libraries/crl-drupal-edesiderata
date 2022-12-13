@@ -1,0 +1,11 @@
+<?php
+
+/**
+ * Implements hook_uninstall.
+ */
+function crowd_batch_pull_uninstall() {
+  // Remove variables specific to the module.
+  variable_del('crowd_batch_pull_enabled');
+  variable_del('crowd_batch_pull_auto_deletions');
+  variable_del('crowd_batch_pull_last_timestamp');
+}

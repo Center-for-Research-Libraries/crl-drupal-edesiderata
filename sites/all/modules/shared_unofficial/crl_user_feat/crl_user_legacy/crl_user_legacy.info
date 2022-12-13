@@ -1,0 +1,10 @@
+name = "CRL User Legacy"
+description = "Legacy tools from the CRL user module"
+core = 7.x
+dependencies[] = crl_user_feat
+dependencies[] = crl_user
+dependencies[] = crowd
+dependencies[] = crl_access_by_ip
+dependencies[] = salesforce
+dependencies[] = entity
+package = "CRL"

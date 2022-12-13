@@ -1,0 +1,6 @@
+name = "Crowd Push"
+description = "Push user updates from Drupal to Crowd, including user Provisioning."
+core = 7.x
+dependencies[] = crowd (>=7.x-2.1)
+package = "Authentication"
+

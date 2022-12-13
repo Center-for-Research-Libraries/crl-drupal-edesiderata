@@ -1,0 +1,682 @@
+<?php
+
+/**
+ * @file
+ * This module implements a simple REST-based technique which allows Drupal
+ * to fetch member details, based on the user's current IP, from CRL's DDS
+ * server. A REST check to DDS happens at hook_boot in Drupal and, depending on
+ * the results, we can assign a Drupal member role to the user (independent of
+ * their login status).
+ *
+ */
+
+
+// Set the label for the member IP role. This will officially be managed based
+// on an internal Drupal role ID, but setting the label also helps ensure the
+// raw Drupal user object is more readable.
+define('CRL_MEMBER_IP_LABEL', 'member-ip');
+// Set the cache duration for both local and cookie caches.
+define('CRL_ACCESS_IP_CACHE_DURATION', 60*60*24*2);
+// Set the name that will be used for nonmember cookie caches. Changing this
+// value will invalidate any existing remote cookie caches.
+define('CRL_ACCESS_IP_NONMEMBER_COOKIE_NAME', 'crl_nonmember');
+// Set a wait time to enforce between remote re-checks when there are errors.
+define('CRL_ACCESS_IP_ERROR_DELAY', 60);
+
+
+/**
+ * Implements hook_boot().
+ *
+ * This is where the real magic happens. Here, during the bootstrap, we check
+ * to see if the current user has member access based on their IP, and if so
+ * we give them a member role and ensure they are not shown any cached data.
+ *
+ * IMPORTANT NOTE: In order for the "$conf['cache'] = FALSE;"
+ * statements to work the dymanic_cache module must be installed.
+ */
+function crl_access_by_ip_boot() {
+  // If we have a member disable cache for this page and grant member role.
+  $member_data = crl_access_by_ip_get_member_data();
+  if ($member_data['status']) {
+    global $user, $conf;
+    // Force cache bypass. Will only work with with dynamic_cache enabled!
+    $conf['cache'] = FALSE;
+    // Before we can dynamically manupulate any user data we have to ensure
+    // that session init logic has been run. This is critial as this session
+    // init logic may reset the global $user object. It can be risky to jump
+    // bootstrap phases while in hook_boot, but this should be safe to do within
+    // page_cache and page_header phases where hook_boot may have been invoked.
+    drupal_bootstrap(DRUPAL_BOOTSTRAP_SESSION, FALSE);
+    $user->roles[variable_get('crl_access_by_ip_options_roles', FALSE)] = CRL_MEMBER_IP_LABEL;
+  }
+  // Log the results if configured to do so.
+  $logging = variable_get('crl_access_by_ip_logging', 2);
+  if ($logging) {
+    // If logging is to be deferred we call it from a shutdown function.
+    // Otherwise we run the logging now.
+    if ($logging == 2) { // Defer
+      drupal_register_shutdown_function('crl_access_by_ip_shutdown');
+    }
+    else {
+      _crl_access_by_ip_log_data($member_data);
+    }
+  }
+}
+
+
+/**
+ * Shutdown function used for logging purposes (if logging is deferred).
+ */
+function crl_access_by_ip_shutdown() {
+  // Try to ensure that our logging happens after the page content has been sent
+  // to the browser, and ideally after the connection is closed.
+  // fastcgi_finish_request() is our best option as it's designed for exactly
+  // this purpose, but php may not always be running under FastCGI. As an
+  // alterative we just force buffers to be flushed (this will not close the
+  // connection but it will at least get the page content pushed out).
+  if (function_exists('fastcgi_finish_request')) {
+    fastcgi_finish_request();
+  }
+  else {
+    flush();
+  }
+  _crl_access_by_ip_log_data();
+}
+
+
+/**
+ * Central logic for fetching member data from a given IP. This function has
+ * extensive caching and error handling.
+ *
+ * @param string $ip_recieved
+ *   IP address to check for member access. If ommitted the current IP is used.
+ * @param boolean $reset
+ *   Whether or not to bypass any internal caching and force a remote lookup.
+ * @return array
+ *   Associative array with member data. Including:
+ *   - status: Boolean flag for member status (TRUE if member).
+ *   - member: String flag for member status (either 'member' or 'nonmember').
+ *   - id: Int internal CRL id for the member.
+ *   - name: String display name for the member.
+ *   - cached: Boolen flag indicating if the data was fetched from cache or not.
+ *   - lookup_time: Float mtime needed to run a remore lookup (only set if
+ *     cached is FALSE).
+ *   - error_recheck: Int timestamp of the earliest time that another remote
+ *     lookup can be run (only set for error cases).
+ */
+function crl_access_by_ip_get_member_data($ip_recieved = NULL, $reset = FALSE) {
+  $ip = $ip_recieved ? $ip_recieved : crl_access_by_ip_get_ip();
+  // This static cache is really important as it allows this function to be
+  // available in a performant way on a global scope. This cache is typically
+  // primed by a call in hook_boot().
+  static $member_data_static = array();
+  if (!empty($member_data_static[$ip])) {
+    return $member_data_static[$ip];
+  }
+  // If we detect a crawler/spider just set some special member data values and
+  // skip all other checks. This is only an option if we are checking the
+  // current request.
+  if (!$ip_recieved && crl_access_by_ip_check_if_spider()) {
+    return array(
+      'status' => FALSE,
+      'member' => 'nonmember',
+      'id' => 10002,
+      'name' => 'crawler',
+      'cached' => TRUE,
+    );
+  }
+  // Try to get the data from our persistent cache.
+  $member_data = _crl_access_by_ip_get_set_cache($ip);
+  if ($member_data) {
+    $member_data['cached'] = TRUE;
+  }
+  // If we don't have cached data, or a previous remote check resulted in an
+  // error, we need to do a remote lookup.
+  if (!$member_data || (!empty($member_data['error_recheck']) && REQUEST_TIME > $member_data['error_recheck'])) {
+    // Start a timer that we can use to see how long the full check takes.
+    $start_time = microtime(TRUE);
+    try {
+      $member_data = _crl_access_by_ip_remote_check($ip);
+    }
+    // If we couldn't get data we still set values to return for logging
+    // purposes. We also set a timer to delay our next recheck.
+    catch (Exception $e) {
+      $member_data = array(
+        'status' => FALSE,
+        'member' => 'nonmember',
+        'id' => 10001, // Error code for logs
+        'name' => 'error',
+        'error_recheck' => REQUEST_TIME + CRL_ACCESS_IP_ERROR_DELAY,
+      );
+      // Log the error if configured.
+      if (variable_get('crl_access_by_ip_debug_log', FALSE)) {
+        watchdog_exception('crl access by ip', $e, 'Remote IP lookup failed. @message. Code: @code. | Thrown from: %function (line %line of %file).', array('@message' => $e->getMessage(), '@code' => $e->getCode()));
+      }
+    }
+    // Set the cache for later passes.
+    _crl_access_by_ip_get_set_cache($ip, $member_data);
+    $member_data['cached'] = FALSE;
+    $member_data['lookup_time'] = microtime(TRUE) - $start_time;
+  }
+  $member_data_static[$ip] = $member_data;
+  return $member_data;
+}
+
+
+/**
+ * Get or set cached member data. This is a persistant cache, keyed by IP, that
+ * lives across multiple requests and user sessions.
+ *
+ * @param string $ip
+ *   IP address get or set cached member data for.
+ * @param arrat $member_data
+ *   If set this data will be cached, if null a cache lookup will take place.
+ * @return array
+ *   The member data that was set or retrieved.
+ */
+function _crl_access_by_ip_get_set_cache($ip, $member_data = array()) {
+  // If no member data was passed we check the caches.
+  if (empty($member_data)) {
+    // First check DB cache. This is a trusted data as it's maintained locally.
+    $member_data_cached = cache_get($ip, 'cache_crl_access_ip');
+    if ($member_data_cached && !empty($member_data_cached->data)) {
+      $member_data = $member_data_cached->data;
+      // If this is nonmember data and we also have a nonmember cookie flag we
+      // can tidy-up the DB cache by elimiating this entry. This adds extra
+      // overhead, but it will keep the DB cache much smaller.
+      if (!$member_data['status'] && filter_input(INPUT_COOKIE, CRL_ACCESS_IP_NONMEMBER_COOKIE_NAME, FILTER_VALIDATE_IP) == $ip) {
+        cache_clear_all($ip, 'cache_crl_access_ip');
+      }
+      return $member_data;
+    }
+    // Then check for a known nonmember cookie. This is UNTRUSTED data, and
+    // could be spoofed. However, we only use this cookie as a nonmember flag
+    // (i.e. it can never be used to assign member status). This just saves us
+    // from filling-up the DB with persisting cached data for every random site
+    // visitor's IP.
+    if (filter_input(INPUT_COOKIE, CRL_ACCESS_IP_NONMEMBER_COOKIE_NAME, FILTER_VALIDATE_IP) == $ip) {
+      $member_data = array(
+        'status' => FALSE,
+        'member' => 'nonmember',
+        'id' => 10000, // Known nonmember code
+        'name' => 'known nonmember',
+      );
+      return $member_data;
+    }
+    return array();
+  }
+  // Otherwise we are setting the cache.
+  else {
+    // If we have a member then cache the result locally.
+    if ($member_data['status']) {
+      cache_set($ip, $member_data, 'cache_crl_access_ip', REQUEST_TIME + CRL_ACCESS_IP_CACHE_DURATION);
+    }
+    // Error cases also need to be cached locally, but not for a very long time.
+    elseif (isset($member_data['error_recheck'])) {
+      cache_set($ip, $member_data, 'cache_crl_access_ip', CACHE_TEMPORARY);
+    }
+    // For known nonmembers we try to cache the result remotely in a cookie
+    // instead.
+    else {
+      if (!headers_sent()) {
+        setcookie(CRL_ACCESS_IP_NONMEMBER_COOKIE_NAME, $ip, REQUEST_TIME + CRL_ACCESS_IP_CACHE_DURATION, '/');
+      }
+      // Though we set a cookie, some clients may ignore it. To catch such
+      // cases we also set a temporary DB cache entry. If subsequent checks
+      // show that the cookie is available this cache entry will be removed.
+      cache_set($ip, $member_data, 'cache_crl_access_ip', CACHE_TEMPORARY);
+    }
+    return $member_data;
+  }
+}
+
+
+/**
+ * Run an actual IP check to DDS server.
+ *
+ * This function runs the formal IP check. It creates a simple http request
+ * that includes the IP address as a parameter and passes it to DDS. The
+ * response must be properly formatted JSON that we can parse the member status
+ * and other member details from.
+ *
+ * @param string $ip
+ *   IP address to check for member access.
+ * @throws Exception
+ *   If reliable data cannot be remotely fetched a standard exception is thrown.
+ * @return array
+ *   Associative array with member data. Including:
+ *   - status: Boolean flag for member status (TRUE if member).
+ *   - member: String flag for member status (either 'member' or 'nonmember').
+ *   - id: Int internal CRL id for the member.
+ *   - name: String display name for the member.
+ *   - cached: Boolen flag indicating if the data was fetched from cache or not.
+ *
+ */
+function _crl_access_by_ip_remote_check($ip) {
+  global $user;
+  $member_data = array();
+  require_once DRUPAL_ROOT . '/includes/common.inc'; // Needed as we may still be in bootstrap
+  // Prep and run the request.
+  $request_url = str_replace('%', $ip, variable_get('crl_access_by_ip_options_url', NULL));
+  $request_method = 'GET';
+  $request_retry = 3; // Number of redirects to follow
+  $timeout = 2.0; // Max time (seconds) we can allow our check to delay a page load
+  $data = ''; // not required for GET
+  $request_headers = array(); // not required for GET
+  // Send the request.
+  $request_result = drupal_http_request($request_url, array('headers' => $request_headers, 'method' => $request_method, 'data' => $data, 'max_redirects' => $request_retry, 'timeout' => $timeout));
+  // Verify and parse the request results.
+  $response = 0;
+  if (is_object($request_result) && isset($request_result->status_message) && $request_result->status_message == "OK" && isset($request_result->data)) {
+    // Parse the result for our specific member data. We stricly expect JSON.
+    $result = json_decode($request_result->data);
+    if (isset($result->data->ipaddress) && $result->data->ipaddress == $ip) {
+      $member_data['status'] = !empty($result->data->status) ? TRUE : FALSE;
+      $member_data['id'] = !empty($result->data->instid) ? $result->data->instid : '';
+      $member_data['name'] = !empty($result->data->displayName) ? $result->data->displayName : '';
+      // Clean-up $member_data
+      if (!$member_data['status']) { // KNOWN nonmember
+        $member_data['member'] = 'nonmember';
+        $member_data['id'] = (int) 10000; // KNOWN nonmember code for logs
+        $member_data['name'] = 'known nonmember';
+      }
+      else {
+        $member_data['member'] = 'member';
+      }
+    }
+  }
+  // If we don't yet have data it means something went wrong in the request. We
+  // can't return reliable data so throw an error instead.
+  if (empty($member_data)) {
+    $status = isset($request_result->status_message) ? $request_result->status_message : 'Unknown status';
+    $error = isset($request_result->error) ? $request_result->error : 'Unknown error';
+    $code = isset($request_result->code) ? $request_result->code : '0';
+    throw new Exception('Error fetching remote member data based on IP. Status: ' . $status . '. Error: ' . $error, $code);
+  }
+  return $member_data;
+}
+
+
+/**
+ * Log member data for this request.
+ */
+function _crl_access_by_ip_log_data($member_data_passed = array()) {
+  // Get the data to log. If it was not passed-in than it probably means that
+  // logging was deferred, and we need to grab it again. Note that in the
+  // latter case the result should be coming from a static cache.
+  $member_data = $member_data_passed ? $member_data_passed : crl_access_by_ip_get_member_data();
+  // First make sure that we have member data to work with and that the DB is
+  // accessible (if this function is called very early in the bootstrap it's
+  // possible that the DB is not yet loaded).
+  if (empty($member_data['id']) || empty($member_data['name']) || !class_exists('Database', FALSE)) {
+    // Log this if configured.
+    if (variable_get('crl_access_by_ip_debug_log', FALSE)) {
+      watchdog('crl access by ip', 'Missing data, or DB unavailable, during hit logging. Data: @data', array('@data' => $member_data), WATCHDOG_ERROR);
+    }
+    return;
+  }
+  $sql = '';
+  if (!empty($member_data['cached'])) {
+    $check_time = 0;
+    $sql = "INSERT INTO crl_member_hits (member_id, member_name, hits_cached, hits_not_cached, timer_not_cached) VALUES (:id, :name, " . 1 . ", " . 0 . ", :check_time) ON DUPLICATE KEY UPDATE hits_cached = hits_cached + 1";
+  }
+  else {
+    $check_time = !empty($member_data['lookup_time']) ? $member_data['lookup_time'] : 0;
+    $sql = "INSERT INTO crl_member_hits (member_id, member_name, hits_cached, hits_not_cached, timer_not_cached) VALUES (:id, :name, " . 0 . ", " . 1 . ", :check_time) ON DUPLICATE KEY UPDATE hits_not_cached = hits_not_cached + 1, timer_not_cached = timer_not_cached + :check_time";
+  }
+  $result = db_query($sql, array(':id' => $member_data['id'], ':name' => $member_data['name'], ':check_time' => $check_time));
+}
+
+
+/**
+ * Implements hook_flush_caches().
+ */
+function crl_access_by_ip_flush_caches() {
+  if (db_table_exists('cache_crl_access_ip')) {
+    return array('cache_crl_access_ip');
+  }
+}
+
+
+/**
+ * Implements hook_form_user_profile_form_alter().
+ *
+ * Used to manipulate the user profile form.
+ */
+function crl_access_by_ip_form_user_profile_form_alter(&$form, &$form_state) {
+  // Hide the access by IP role as it is always set programmatically.
+  $rid_to_hide = variable_get('crl_access_by_ip_options_roles', FALSE);
+  if (!empty($form['account']['roles']['#access']) && $rid_to_hide) {
+    unset($form['account']['roles']['#options'][$rid_to_hide]);
+  }
+}
+
+
+/**
+ * Implementation of hook_user_presave().
+ */
+function crl_access_by_ip_user_presave(&$edit, $account, $category) {
+  // The "member" role may have dynamically been set by this module, but it
+  // should never actaully be saved to the user's account.
+  if (isset($edit['roles'][variable_get('crl_access_by_ip_options_roles', FALSE)])) {
+    unset($edit['roles'][variable_get('crl_access_by_ip_options_roles', FALSE)]);
+  }
+}
+
+
+/**
+ * Implementation of hook_page_build().
+ *
+ * This provides a quick way to detect if the URL being displayed is an access
+ * denied page that was triggered because of the IP filter. If such a case is
+ * detected, a custom message is shown.
+ *
+ * hook_page_build gets invoked AFTER the menu callback has run but BEFORE
+ * the page data is processed (which is where messages are printed). So by this
+ * point all access logic should have run and we should have accurate headers
+ * set (to indicate whether-or-not Drupal is about to deliver a 403).
+ *
+ * Note that this check is only aware of node-based access controls (via
+ * node_access()). There are UNLIMITED ways that access may be controlled to a
+ * request, and there is no universal method to re-check access based on a
+ * different user. Because of the the accuracy of the detection here is limited.
+ */
+function crl_access_by_ip_page_build(&$page) {
+  // Make sure messages are enabled.
+  if (variable_get('crl_access_by_ip_show_messages', TRUE)) {
+    global $user;
+    // Only proceed if we know this is an access denied case and if we are not
+    // already a member.
+    if (strpos(drupal_get_http_header('status'), '403 Forbidden') !== FALSE && !array_key_exists(variable_get('crl_access_by_ip_options_roles', FALSE), $user->roles)) {
+      // We need to check access to the INITIAL page that was requested, which
+      // Drupal has stashed in $_GET['destination'].
+      if (!empty($_GET['destination'])) {
+        $path = $_GET['destination'];
+        $menu_item = menu_get_item($path);
+        // Create a temp user account for a user that passed the IP filter.
+        $user_passed = clone $user;
+        $user_passed->roles[variable_get('crl_access_by_ip_options_roles', FALSE)] = CRL_MEMBER_IP_LABEL;
+        $member_access = FALSE;
+        // Our checks make use of node_access(), so we have to clear it's static
+        // cache.
+        drupal_static_reset('node_access');
+        // Test the case of a basic node page.
+        if ($menu_item['path'] == 'node/%' && !empty($menu_item['original_map'][1])) {
+          $node = node_load($menu_item['original_map'][1]);
+          $member_access = node_access('view', $node, $user_passed);
+        }
+        // Test the case of a private file request.
+        elseif ($menu_item['page_callback'] == 'file_download') {
+          $member_access = _crl_access_by_ip_file_node_access($path, $user_passed);
+        }
+        // Be sure to reset the node_access() static cache so that it returns
+        // correct results for the current user for the rest of the currnet
+        // page request.
+        drupal_static_reset('node_access');
+        // Show our message if needed.
+        if ($member_access) {
+          drupal_set_message(t('Access to this resource is limited to CRL members, as identified either by on-campus IP address or Proxy service.'), 'error');
+        }
+      }
+    }
+  }
+}
+
+
+/**
+ * Utility to check file access for a specific user based on node_access()
+ * controls.
+ *
+ * This is an insane function. Drupal does not offer us any universal file
+ * access check that can take a specific user account as input. As a result we
+ * have to create our own logic here that re-impements much of what
+ * file_file_download() does. This ONLY checks if access is allowed or denied
+ * based on node_access() tests of the nodes that a file may be attached to.
+ * There are MANY other was file access may be controlled, so the results of
+ * this function should NOT be trusted for any form of true access control.
+ *
+ * @param string $file_path
+ *   The path to a private file.
+ * @param object $account
+ *   A Drupal user account to check access for.
+ * @return boolean
+ *   Returns TRUE if the passed $account object has access to ALL nodes that the
+ *   file is attached to, FALSE otherwise.
+ */
+function _crl_access_by_ip_file_node_access($file_path, $account) {
+  $menu_item = menu_get_item($file_path);
+  if ($menu_item['page_callback'] == 'file_download' && !empty($menu_item['page_arguments'])) {
+    // Build a URI for the file and get the file object.
+    $args = $menu_item['page_arguments'];
+    $scheme = array_shift($args);
+    $target = implode('/', $args);
+    $uri = $scheme . '://' . $target;
+    $files = file_load_multiple(array(), array('uri' => $uri));
+    if ($files) {
+      $file = reset($files);
+      // Run the logic from file_get_file_references() but WITHOUT access
+      // checks. This gives us the base list of references that make use of this
+      // file independent of the currnet request and user.
+      $references = array();
+      foreach (field_info_fields() as $field_name => $file_field) {
+        if ($file_field['type'] == 'file') {
+          // Get each time this file is used within a field.
+          $query = new EntityFieldQuery();
+          $query
+            ->fieldCondition($file_field, 'fid', $file->fid)
+            ->age(FIELD_LOAD_CURRENT)
+            ->addTag('DANGEROUS_ACCESS_CHECK_OPT_OUT');
+          $references[$field_name] = $query->execute();
+        }
+      }
+      // Extract the node IDs from the query results above.
+      $node_ids_to_check = array();
+      foreach ($references as $field_name => $field_references) {
+        foreach ($field_references as $entity_type => $type_references) {
+          foreach ($type_references as $id => $reference) {
+            if ($entity_type == 'node') {
+              $node_ids_to_check[] = $id;
+            }
+          }
+        }
+      }
+      // Test node access for the passed $account to all nodes that use this
+      // file. If ANY reject access, then we determine that the file is also
+      // restricted.
+      if ($node_ids_to_check) {
+        $nodes = node_load_multiple($node_ids_to_check);
+        foreach ($nodes as $node) {
+          if (!node_access('view', $node, $account)) {
+            return FALSE;
+          }
+        }
+        return TRUE;
+      }
+    }
+  }
+  return FALSE;
+}
+
+
+/**
+ * Implements hook_token_info().
+ *
+ * Here we set new tokens that can be used to report member details. Any
+ * modules that use tokens can then take advantage of this data.
+ */
+function crl_access_by_ip_token_info() {
+  $info['tokens']['user']['member_status'] = array(
+    'name' => t("CRL Member Status"),
+    'description' => t("The user's CRL member status based on IP address."),
+  );
+  $info['tokens']['user']['member_institution'] = array(
+    'name' => t("CRL Member Institution"),
+    'description' => t("The user's CRL member institution (if member) based on IP address."),
+  );
+  $info['tokens']['user']['member_id'] = array(
+    'name' => t("CRL Member ID"),
+    'description' => t("The CRL member ID for an institution (if member) based on IP address."),
+  );
+  return $info;
+}
+
+
+/**
+ * Implements hook_token_values().
+ */
+function crl_access_by_ip_tokens($type, $tokens, array $data = array(), array $options = array()) {
+  $replacements = array();
+  $sanitize = !empty($options['sanitize']);
+  if ($type == 'user') {
+    // Because the function below runs in hook boot these results will typically
+    // be coming from the static cache.
+    $member_data = crl_access_by_ip_get_member_data();
+    if (!empty($member_data)) {
+      foreach ($tokens as $name => $original) {
+        switch ($name) {
+          case 'member_status':
+            $replacements[$original] = $sanitize ? check_plain($member_data['member']) : $member_data['member'];
+            break;
+          case 'member_institution':
+            $replacements[$original] = $sanitize ? check_plain($member_data['name']) : $member_data['name'];
+            break;
+          case 'member_id':
+            $replacements[$original] = $sanitize ? check_plain($member_data['id']) : $member_data['id'];
+            break;
+          }
+      }
+    }
+    return $replacements;
+  }
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function crl_access_by_ip_menu() {
+  $items['admin/config/crl'] = array(
+    'title' => 'CRL Customizations',
+    'description' => 'Options for CRL-specific Functionality.',
+    'position' => 'right',
+    'weight' => -100,
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
+  $items['admin/config/crl/access_by_ip'] = array(
+    'title' => 'CRL Access by IP',
+    'description' => 'Options for CRL Access by IP Functionality.',
+    'weight' => 0,
+    'page callback' => 'drupal_get_form',
+    'page arguments'   => array('crl_access_by_ip_options'),
+    'type'             => MENU_NORMAL_ITEM,
+    'access arguments' => array('access administration pages'),
+  );
+  return $items;
+}
+
+
+/**
+ * Configuration form callback.
+ */
+function crl_access_by_ip_options($form, $form_state) {
+  // Run a quick check to see if remote lookups work with the current settings.
+  if (empty($form_state['input'])) {
+    try {
+      $data = _crl_access_by_ip_remote_check(crl_access_by_ip_get_ip());
+      // If we completed the call and got data back then all is working.
+      drupal_set_message(t('Remote IP lookups appear to be functioning correctly.'));
+    }
+    catch (Exception $e) {
+      drupal_set_message(t('Remote IP lookups appear to be malfunctioning, please check your settings below. @message. Code: @code.', array('@message' => $e->getMessage(), '@code' => $e->getCode())), 'error');
+    }
+  }
+  $form['crl_access_by_ip_options'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Access-by-IP Options'),
+    '#description' => t('Options related to the member access-by-ip feature'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#weight' => 0,
+  );
+  $form['crl_access_by_ip_options']['crl_access_by_ip_options_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Lookup URL'),
+    '#default_value' => variable_get('crl_access_by_ip_options_url', NULL),
+    '#description' => t('The full URL for IP validation. <strong>Use "%" as a placeholder for the actual IP address of the current user</strong>, such as: http://dds.crl.edu/ipcheck/%/json'),
+  );
+  $form['crl_access_by_ip_options']['crl_access_by_ip_options_roles']  = array(
+    '#title' => t('Member role'),
+    '#type' => 'select',
+    '#options' => user_roles(),
+    '#default_value' => variable_get('crl_access_by_ip_options_roles', 0),
+    '#description' => t('Specify the member role that will be assigned to all users that pass the IP check (including anonmyous).'),
+  );
+  $form['crl_access_by_ip_options']['crl_access_by_ip_logging']  = array(
+    '#title' => t('Log hits'),
+    '#type' => 'select',
+    '#options' => array(0 => t('Disabled'), 1 => t('In hook_boot'), 2 => t('Deferred in shutdown')),
+    '#default_value' => variable_get('crl_access_by_ip_logging', 2),
+    '#description' => t('Specify logging details for member data in the crl_member_hits table. If enabled an extra DB write will occur during every page request. If logging is "deferred" an attempt will be made to ensure that all page markup is returned before the logging action takes place.'),
+  );
+  $form['crl_access_by_ip_options']['crl_access_by_ip_show_messages'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show member restricted messages to users'),
+    '#default_value' => variable_get('crl_access_by_ip_show_messages', TRUE),
+    '#description' => t('If enabled each request that results in a 403 will be tested to see if a user with member access would have been granted access. If so, a message will be displayed indicating that the resource is IP-restriced/member-only. <strong>This detection does not work correctly with all access control modules.</strong>'),
+  );
+  $form['crl_access_by_ip_options']['crl_access_by_ip_debug_log'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Debug logging'),
+    '#default_value' => variable_get('crl_access_by_ip_debug_log', FALSE),
+    '#description' => t('If enabled errors encountered during remote lookups and logging will be recorded in the system log.'),
+  );
+  $form['crl_access_by_ip_options']['crl_access_by_ip_simulate_ip'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Simulate IP (For Testing)'),
+    '#default_value' => variable_get('crl_access_by_ip_simulate_ip', ''),
+    '#description' => t('An IP address to simulate for all requests or blank to use normal Drupal IP detection. This is good for debugging and testing other features that depend on the IP filter. <strong>This should be blank for production instances.</strong>'),
+  );
+  return system_settings_form($form);
+}
+
+
+// Helper function to detect a spider. We do not use php's get_browser() as
+// browsecap.ini may not be enabled.
+function crl_access_by_ip_check_if_spider() {
+  // Define spider list and use in preg_match
+  $spiders = 'Spider|Crawler|Googlebot|Adsbot|Bingbot|DotBot|FeedFetcher|LinkWalker|QihooBot|Yammybot|Openbot|Slurp|msnbot|ia_archiver|Scooter|Teoma|Rambler|AbachoBOT|accoona|AcioRobot|ASPSeek|Dumbot|GeonaBot|Gigabot|Lycos|MSRBOT|Scooter|AltaVista|IDBot|eStyle|Scrubby|alexa|froogle|dotbot|inktomi|looksmart|InfoSeek|Spade|ZyBorg|rabaz|TechnoratiSnoop|Rankivabot|StackRambler';
+  if (!empty($_SERVER['HTTP_USER_AGENT'])) {
+    if (preg_match('/' . $spiders . '/i', $_SERVER['HTTP_USER_AGENT'])) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+
+/**
+ * Helper function to simply check if the current user is a member (if they
+ * passed the IP check).
+ */
+function crl_access_by_ip_is_member() {
+  // Because the function below runs in hook boot these results will typically
+  // be coming from the static cache.
+  $member_data = crl_access_by_ip_get_member_data();
+  if (!empty($member_data['status'])) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+
+/**
+ * Helper function to get the IP address. This is just a wrapper for
+ * ip_address() that gives us a central place to make alterations if needed.
+ */
+function crl_access_by_ip_get_ip() {
+  $simulate_ip = variable_get('crl_access_by_ip_simulate_ip', '');
+  return !empty($simulate_ip) ? $simulate_ip : ip_address();
+}

@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * Implements hook_install.
+ */
+function crl_user_install() {
+  // Assuming a field_institution field is in place already, set the oplist
+  // function for it.
+  crl_user_set_oplist_function('field_institution', 'crl_user_inst_oplist');
+  // Remove any custom 403 pages are they are incompatible with some features.
+  variable_set('site_403', '');
+}
+
+
+/**
+ * Set custom allowed values function for field_institution.
+ */
+function crl_user_update_7100() {
+  // Set oplist function for field_institution.
+  crl_user_set_oplist_function('field_institution', 'crl_user_inst_oplist');
+}
+
+
+/**
+ * Remove any custom 403 page settings.
+ */
+function crl_user_update_7101() {
+  variable_set('site_403', '');
+}
+
+
+/**
+ * Helper to associate a custom oplist function with a field.
+ */
+function crl_user_set_oplist_function($field_name, $function_name) {
+  $field = field_info_field($field_name);
+  if (!empty($field)) {
+    if (isset($field['settings']['allowed_values'])) {
+      unset($field['settings']['allowed_values']);
+    }
+    $field['settings']['allowed_values_function'] = $function_name;
+    field_update_field($field);
+  }
+}

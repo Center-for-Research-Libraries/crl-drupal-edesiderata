@@ -1,0 +1,7 @@
+; $Id$
+name = CRL Access by IP
+description = Provide access to member-specific content based on IP
+core = 7.x
+package = CRL
+dependencies[] = dynamic_cache
+dependencies[] = views

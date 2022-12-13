@@ -1,0 +1,8 @@
+name = "Crowd Batch & Auto Pull"
+description = "Sync/pull remote changes from Crowd into Drupal automatically and/or in bulk."
+core = 7.x
+dependencies[] = crowd (>=7.x-2.1)
+package = "Authentication"
+
+files[] = "includes/CrowdBatchPullDetector.inc"
+files[] = "includes/CrowdBatchPullDetectorInterface.inc"

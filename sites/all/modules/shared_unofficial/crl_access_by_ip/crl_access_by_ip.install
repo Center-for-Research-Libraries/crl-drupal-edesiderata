@@ -1,0 +1,106 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the crl_access_by_ip module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function crl_access_by_ip_uninstall() {
+  db_delete('variable')
+  ->condition('{name}', 'crl_access_by_ip_%', 'LIKE')
+  ->execute();
+}
+
+/**
+ * Implements hook_schema().
+ */
+function crl_access_by_ip_schema() {
+  $schema['crl_member_hits'] = array(
+    'description' => 'Records hits and stats about member activity',
+    'fields' => array(
+      'member_id' => array(
+        'description' => 'Specific member identifier',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'member_name' => array(
+        'description' => 'The name of the member institution',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'hits_cached' => array(
+        'description' => 'How many times has we have identified the member details via cached session info.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
+      'hits_not_cached' => array(
+        'description' => 'How many times has we have NOT identified the member details via cached session info.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
+      'timer_not_cached' => array(
+        'description' => 'Cummulative time for non-cached member checks.',
+        'type' => 'float',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('member_id'),
+  );
+  // Add schema for some of our own internal caching.
+  $schema['cache_crl_access_ip'] = drupal_get_schema_unprocessed('system', 'cache');
+  $schema['cache_crl_access_ip']['description'] = 'Cache table to store internal access by ip data across requests.';
+  return $schema;
+}
+
+
+/**
+ * Streamline schema for crl_member_hits table.
+ */
+function crl_access_by_ip_update_7001() {
+  // Before we can drop the current primary key we have to remove the
+  // auto-increment setting on it or else MySQL will complain.
+  $updated_field = array(
+    'description' => 'Primary key for this table.',
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+    'no export' => TRUE,
+  );
+  db_change_field('crl_member_hits', 'id', 'id', $updated_field);
+  // Make the member_id table our primary index.
+  db_drop_primary_key('crl_member_hits');
+  db_add_primary_key('crl_member_hits', array('member_id'));
+  db_drop_unique_key('crl_member_hits', 'name');
+  // Now we can drop the old ID field.
+  db_drop_field('crl_member_hits', 'id');
+}
+
+
+/**
+ * Create new database cache table {cache_crl_access_ip}.
+ */
+function crl_access_by_ip_update_7002() {
+  $schema['cache_crl_access_ip'] = drupal_get_schema_unprocessed('system', 'cache');
+  db_create_table('cache_crl_access_ip', $schema['cache_crl_access_ip']);
+}
+
+
+/**
+ * Remove unneeded timer_cached field from crl_member_hits table.
+ */
+function crl_access_by_ip_update_7003() {
+  db_drop_field('crl_member_hits', 'timer_cached');
+}

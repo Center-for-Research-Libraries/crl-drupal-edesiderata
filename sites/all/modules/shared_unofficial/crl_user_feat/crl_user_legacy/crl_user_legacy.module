@@ -1,0 +1,196 @@
+<?php
+
+
+/**
+ * Implements hook_menu().
+ *
+ * @todo: Move to other module.
+ */
+function crl_user_legacy_menu() {
+  // Define base root for our CRL user tools within the existing Drupal user
+  // tools.
+  $items['admin/people/crl'] = array(
+    'title' => t('CRL Remote User Admin User Tools'),
+    'description' => t('CRL user tools.'),
+    'page callback' => 'theme',
+    'page arguments' => array('crl_user_legacy_tools_landing_text'),
+    'access arguments' => array('access crl admin tools'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  // The base root should also serve as an "Intro" tab.
+  $items['admin/people/crl/main'] = $items['admin/people/crl'];
+  $items['admin/people/crl/main']['type'] = MENU_DEFAULT_LOCAL_TASK;
+  $items['admin/people/crl/main']['title'] = t('Intro');
+  // Define item for attributes (change inst) tool.
+  $items['admin/people/crl/attributes'] = array(
+    'title' => t('Manage user institutions'),
+    'description' => t('Lookup and change user institution affiliations.'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('crl_user_admin_attributes'),
+    'access arguments' => array('access crl admin tools'),
+    'file' => '/includes/crl_user_admin_tools_attributes.inc',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 1,
+  );
+  // We also want an "old" path to work for the attributes tool.
+  $items['admin/crowd/attributes'] = $items['admin/people/crl/attributes'];
+  $items['admin/crowd/attributes']['type'] = MENU_CALLBACK;
+  // Define item for bulk group validate.
+  $items['admin/people/crl/group_validate'] = array(
+    'title' => t('Validate member groups'),
+    'description' => t('Bulk vaidate CRL user member group affiliations.'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('crl_user_admin_group_validate'),
+    'access arguments' => array('access crl admin tools'),
+    'file' => '/includes/crl_user_admin_tools_group_validate.inc',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 2,
+  );
+  // Define item for bulk group validate processing.
+  $items['admin/people/crl/group_validate/process/%'] = array(
+    'title' => t('Auto-correct member groups'),
+    'description' => t('Bulk process and fix CRL user member group affiliations.'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('crl_user_admin_group_validate_process', 5),
+    'access arguments' => array('access crl admin tools'),
+    'file' => '/includes/crl_user_admin_tools_group_validate.inc',
+    'type' => MENU_CALLBACK,
+  );
+  // Define user query items. The history query will be the default.
+  $items['admin/people/crl/query'] = array(
+    'title' => t('Query users'),
+    'description' => t('Query remote user lists based on special filters (update history and institution affiliation).'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('crl_user_admin_query', 'history'),
+    'access arguments' => array('access crl admin tools'),
+    'file' => '/includes/crl_user_admin_tools_query.inc',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 3,
+  );
+  // Also define (sub) local tasks for the query items.
+  $items['admin/people/crl/query/updated'] = $items['admin/people/crl/query'];
+  $items['admin/people/crl/query/updated']['type'] = MENU_DEFAULT_LOCAL_TASK;
+  $items['admin/people/crl/query/updated']['title'] = t('Recently updated');
+  $items['admin/people/crl/query/inst'] = array(
+    'title' => t('By institution'),
+    'description' => t('Query remote user lists based on special filters (update history and institution affiliation).'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('crl_user_admin_query', 'inst'),
+    'access arguments' => array('access crl admin tools'),
+    'file' => '/includes/crl_user_admin_tools_query.inc',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 5,
+  );
+  // Define an item for the user-facing inst widget that's embedded within the
+  // Crowd interface.
+  $items['crowd/attributes/show'] = array(
+    'title' => '',
+    'description' => t('Set user attributes.'),
+    'page callback' => 'crl_user_legacy_attributes_show',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+
+/**
+ * Implements hook_theme().
+ *
+ * @todo: Move to other module.
+ */
+function crl_user_legacy_theme() {
+  return array(
+    // Theme hook for the user tools landing page.
+    'crl_user_legacy_tools_landing_text' => array(
+      'variables' => array(),
+      'path' => drupal_get_path('module', 'crl_user_legacy') . '/themes',
+      'file' => 'crl_user_legacy.theme.inc',
+    ),
+    // Theme hook for the user-facing inst widget that's embedded within the
+    // Crowd interface.
+    'crl_user_legacy_attributes_show' => array(
+      'variables' => array('inst_text' => NULL, 'email' => NULL, 'change_text' => NULL, 'change_url' => NULL),
+      'path' => drupal_get_path('module', 'crl_user_legacy') . '/themes',
+      'template' => 'crowd_helpers_attributes',
+    )
+  );
+}
+
+
+/**
+ * Implements hook_permission().
+ *
+ * @todo: Move to other module.
+ */
+function crl_user_legacy_permission() {
+  return array(
+    // Add general permission to control access to the crowd widgets.
+    'access crl admin tools' => array(
+      'title' => t('Access CRL Admin Tools'),
+      'description' => t('Use the custom CRL Admin Tools that are part of the administrative interface.')
+    ),
+  );
+}
+
+
+/**
+ * Menu callback for the user inst widget that's embedded within the Crowd
+ * interface.
+ *
+ * @todo: Move to other module.
+ */
+function crl_user_legacy_attributes_show() {
+  global $user;
+  $inst_text = '';
+  $change_text = '';
+  $change_url = '';
+  $email = $user->mail;
+  // Check that this is a logged-in user that's linked to Crowd and that the
+  // active user is the SAME user we are being asked to check.
+  if (crowd_user_is_linked($user->name)) {
+    // Set the change link
+    $change_text = t('Update Email');
+    $change_url = CRL_USER_INST_OR_EMAIL_CHANGE_URL;
+    // Get the user's current inst value. Note that this value is fetched from
+    // the local profile details and not LDAP directly so it assumes that the
+    // crowd sync ran recently.
+    $inst_set = crl_user_get_institution();
+    if ($inst_set) {
+      $change_text = t('Update Email or Member Institution');
+      $inst_text = $inst_set;
+    }
+  }
+  // Print the results directly with a plain-text template.
+  print theme('crl_user_legacy_attributes_show', array('inst_text' => $inst_text, 'email' => $email, 'change_text' => $change_text, 'change_url' => $change_url));
+}
+
+
+/**
+ * Helper to set the Crowd updated timestamp to the current time for a given
+ * user.
+ *
+ * The Crowd timestamp may be used to globally monitor which users have been
+ * altered within a given period of time. By calling this method we can
+ * ensure that this timestamp gets updated even while bypassing the Crowd
+ * APIs (e.g. modifyng a user's LDAP data directly).
+ *
+ * @todo: Move to other module.
+ *
+ * @param string $username
+ *   The username for which to adjust the timestamp.
+ * @return boolean
+ *   Returns boolean TRUE on success or FALSE on failure.
+ */
+function crl_user_legacy_update_crowd_timestamp($username) {
+  try {
+    $crowd = crowd_client_connect();
+    // We simply get and then re-set the user data to update the timestamp.
+    // Unfortunatly there does not appear to be a more direct way to do this
+    // via the Crowd API.
+    return $crowd->updateUser($username, $crowd->getUserFromName($username));
+  }
+  catch (CrowdException $e) {
+    $e->logResponse();
+  }
+}
