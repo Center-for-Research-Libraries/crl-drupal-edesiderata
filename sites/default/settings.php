@@ -177,21 +177,21 @@
  *   );
  * @endcode
  */
-$databases = array (
-  'default' => 
-  array (
-    'default' => 
-    array (
-      'database' => 'edes-dev7',
-      'username' => 'root',
-      'password' => 'root',
-      'host' => 'localhost',
-      'port' => '',
-      'driver' => 'mysql',
-      'prefix' => '',
-    ),
-  ),
-);
+//$databases = array (
+//  'default' => 
+//  array (
+//    'default' => 
+//    array (
+//      'database' => 'edes-dev7',
+//      'username' => 'root',
+//      'password' => 'root',
+//      'host' => 'localhost',
+//      'port' => '',
+//      'driver' => 'mysql',
+//      'prefix' => '',
+//    ),
+//  ),
+//);
 
 /**
  * Access control for update.php script.
@@ -494,4 +494,10 @@ if (defined('PANTHEON_ENVIRONMENT')) {
   // Set CRL IP Filter (Access by IP) connection details
   $conf['crl_access_by_ip_options_url'] = 'http://dds.crl.edu/ipcheck/%/json';
   //$conf['crl_access_by_ip_options_url'] = 'https://1.1.1.1'; // Use to DISABLE Ip filter connection completely.
+}
+
+# Pull-in additional LOCAL environment settings external to version control
+$local_settings = DRUPAL_ROOT . '/sites/default/local.settings.php';
+if (file_exists($local_settings)) {
+ require_once($local_settings);
 }
