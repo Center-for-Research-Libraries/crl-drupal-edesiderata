@@ -472,6 +472,7 @@ $conf['reroute_email_address'] = "";
 $conf['crowd_push_provision'] = FALSE;
 $conf['crowd_push_update'] = FALSE;
 $conf['crowd_push_delete'] = FALSE;
+$conf['crowd_batch_pull_enabled'] = FALSE;
 // Disable SF-Crowd user sync everywhere except live
 $conf['crl_user_sf_sync_disabled'] = TRUE;
 // Also allow Crowd logins to work on non crl.edu domains outside live
@@ -482,15 +483,16 @@ if (defined('PANTHEON_ENVIRONMENT') && PANTHEON_ENVIRONMENT == 'live') {
   $conf['crowd_push_provision'] = TRUE;
   $conf['crowd_push_update'] = TRUE;
   $conf['crowd_push_delete'] = TRUE;
+  $conf['crowd_batch_pull_enabled'] = TRUE;
   // Force logout for invalid Crowd cookies. Only works on crl.edu domains.
   $conf['crowd_logout_no_cookie'] = TRUE;
 }
 // Integration connection overrides for all Pantheon environments.
 if (defined('PANTHEON_ENVIRONMENT')) {
   // Set Crowd connection details.
-  //$conf['crowd_server'] = 'https://209.175.55.110';
-  $conf['crowd_server'] = 'https://1.1.1.1'; // Use to DISABLE Crowd connection completely.
-  $conf['crowd_port'] = '443';
+  $conf['crowd_server'] = 'https://127.0.0.1';
+  //$conf['crowd_server'] = 'https://1.1.1.1'; // Use to DISABLE Crowd connection completely.
+  $conf['crowd_port'] = PANTHEON_SOIP_CROWD_CONNECTION_API;
   // Set CRL IP Filter (Access by IP) connection details
   $conf['crl_access_by_ip_options_url'] = 'http://dds.crl.edu/ipcheck/%/json';
   //$conf['crl_access_by_ip_options_url'] = 'https://1.1.1.1'; // Use to DISABLE Ip filter connection completely.
