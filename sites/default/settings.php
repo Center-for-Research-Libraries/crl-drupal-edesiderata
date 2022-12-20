@@ -475,7 +475,11 @@ $conf['crowd_push_delete'] = FALSE;
 $conf['crowd_batch_pull_enabled'] = FALSE;
 // Disable SF-Crowd user sync everywhere except live
 $conf['crl_user_sf_sync_disabled'] = TRUE;
-// Also allow Crowd logins to work on non crl.edu domains outside live
+// Also allow Crowd logins to work independent of domain and edge caching. 
+// Pantheon CDN and edge caching appears to break detection of the Crowd cookie
+// in some situations and we do not want that to lead to logouts and broken
+// sessions. This setting breaks SSO, but preserves working Crowd logins.
+// Unlike other setting above, this should NOT be reverted in live.
 $conf['crowd_logout_no_cookie'] = FALSE;
 if (defined('PANTHEON_ENVIRONMENT') && PANTHEON_ENVIRONMENT == 'live') {
   $conf['reroute_email_enable'] = 0;
@@ -484,12 +488,10 @@ if (defined('PANTHEON_ENVIRONMENT') && PANTHEON_ENVIRONMENT == 'live') {
   $conf['crowd_push_update'] = TRUE;
   $conf['crowd_push_delete'] = TRUE;
   $conf['crowd_batch_pull_enabled'] = TRUE;
-  // Force logout for invalid Crowd cookies. Only works on crl.edu domains.
-  $conf['crowd_logout_no_cookie'] = FALSE;
 }
 // Integration connection overrides for all Pantheon environments.
 if (defined('PANTHEON_ENVIRONMENT')) {
-  // Set Crowd connection details.
+  // Set Crowd connection details using Pantheon Secure Integration.
   $conf['crowd_server'] = 'https://127.0.0.1';
   //$conf['crowd_server'] = 'https://1.1.1.1'; // Use to DISABLE Crowd connection completely.
   $conf['crowd_port'] = PANTHEON_SOIP_CROWD_CONNECTION_API;
