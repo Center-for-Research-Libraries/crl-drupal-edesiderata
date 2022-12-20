@@ -485,7 +485,7 @@ if (defined('PANTHEON_ENVIRONMENT') && PANTHEON_ENVIRONMENT == 'live') {
   $conf['crowd_push_delete'] = TRUE;
   $conf['crowd_batch_pull_enabled'] = TRUE;
   // Force logout for invalid Crowd cookies. Only works on crl.edu domains.
-  $conf['crowd_logout_no_cookie'] = TRUE;
+  $conf['crowd_logout_no_cookie'] = FALSE;
 }
 // Integration connection overrides for all Pantheon environments.
 if (defined('PANTHEON_ENVIRONMENT')) {
