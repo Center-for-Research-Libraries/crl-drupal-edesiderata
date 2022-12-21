@@ -416,6 +416,15 @@ function crl_user_init() {
       drupal_goto(current_path(), array('query' => $query, 'https' => TRUE, 'external' => FALSE));
     }
   }
+  // Allow the crl_user_sf module to be enabled or disabled based on a variable
+  // This is needed for Pantheon environments and is taken from the habitat
+  // module. We only want crl_user_sf to be enabled in ONE environment globally.
+  if (variable_get('crl_user_sf_enabled', NULL) === FALSE && module_exists('crl_user_sf')) {
+    module_disable(array('crl_user_sf'));
+  }
+  if (variable_get('crl_user_sf_enabled', NULL) === TRUE && !module_exists('crl_user_sf')) {
+    module_enable(array('crl_user_sf'));
+  }
 }
 
 

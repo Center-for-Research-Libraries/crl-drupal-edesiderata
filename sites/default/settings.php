@@ -473,8 +473,6 @@ $conf['crowd_push_provision'] = FALSE;
 $conf['crowd_push_update'] = FALSE;
 $conf['crowd_push_delete'] = FALSE;
 $conf['crowd_batch_pull_enabled'] = FALSE;
-// Disable SF-Crowd user sync everywhere except live
-$conf['crl_user_sf_sync_disabled'] = TRUE;
 // Also allow Crowd logins to work independent of domain and edge caching. 
 // Pantheon CDN and edge caching appears to break detection of the Crowd cookie
 // in some situations and we do not want that to lead to logouts and broken
